@@ -5,12 +5,13 @@ import { Form } from "@/components/ui/form";
 import { IntakeFormSection1 } from "@/components/IntakeFormSection1";
 import { IntakeFormSection2 } from "@/components/IntakeFormSection2";
 import { IntakeFormSection3 } from "@/components/IntakeFormSection3";
+import { IntakeFormSection4 } from "@/components/IntakeFormSection4";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
-  // Section 1
+  // Section 1 - Personal Information
   fullName: z.string().min(2, { message: "Name must be at least 2 characters" }),
   dateOfBirth: z.string(),
   idType: z.enum(["1", "2", "3"]),
@@ -20,7 +21,23 @@ const formSchema = z.object({
   workType: z.enum(["1", "2"]),
   livingWith: z.enum(["1", "2", "3", "4", "5"]),
   childrenCount: z.string(),
-  // ... We'll add more sections as we build them
+  
+  // Section 2 - Accident Information
+  accidentDate: z.string(),
+  accidentTime: z.enum(["1", "2", "3", "4"]),
+  vehiclePosition: z.enum(["1", "2", "3"]),
+  
+  // Section 3 - Medical Information
+  neckPain: z.enum(["1", "2"]),
+  additionalInfo: z.string().optional(),
+  
+  // Section 4 - Shoulder Pain Information
+  shoulderPain: z.enum(["1", "2"]),
+  shoulderSide: z.enum(["1", "2", "3"]),
+  shoulderPainStart: z.enum(["1", "2", "3"]),
+  shoulderPainInitialSeverity: z.enum(["1", "2", "3"]),
+  shoulderPainCurrentSeverity: z.enum(["1", "2", "3", "4"]),
+  shoulderPainResolveDays: z.string().optional(),
 });
 
 export default function Index() {
@@ -39,6 +56,17 @@ export default function Index() {
       workType: "1",
       livingWith: "1",
       childrenCount: "0",
+      accidentDate: "",
+      accidentTime: "1",
+      vehiclePosition: "1",
+      neckPain: "1",
+      additionalInfo: "",
+      shoulderPain: "1",
+      shoulderSide: "1",
+      shoulderPainStart: "1",
+      shoulderPainInitialSeverity: "1",
+      shoulderPainCurrentSeverity: "1",
+      shoulderPainResolveDays: "",
     },
   });
 
@@ -50,15 +78,30 @@ export default function Index() {
     console.log(values);
   }
 
+  const totalSections = 4;
+
   return (
     <div className="container mx-auto py-10">
       <h1 className="text-2xl font-bold mb-8">Medical Intake Form</h1>
+      
+      <div className="mb-6">
+        <p className="text-sm text-muted-foreground">
+          Section {currentSection} of {totalSections}
+        </p>
+        <div className="w-full bg-gray-200 h-2 rounded-full mt-2">
+          <div 
+            className="bg-primary h-2 rounded-full transition-all duration-300"
+            style={{ width: `${(currentSection / totalSections) * 100}%` }}
+          />
+        </div>
+      </div>
       
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           {currentSection === 1 && <IntakeFormSection1 form={form} />}
           {currentSection === 2 && <IntakeFormSection2 form={form} />}
           {currentSection === 3 && <IntakeFormSection3 form={form} />}
+          {currentSection === 4 && <IntakeFormSection4 form={form} />}
           
           <div className="flex justify-between">
             <Button 
@@ -70,10 +113,10 @@ export default function Index() {
               Previous
             </Button>
             
-            {currentSection < 3 ? (
+            {currentSection < totalSections ? (
               <Button 
                 type="button"
-                onClick={() => setCurrentSection(prev => Math.min(3, prev + 1))}
+                onClick={() => setCurrentSection(prev => Math.min(totalSections, prev + 1))}
               >
                 Next
               </Button>
