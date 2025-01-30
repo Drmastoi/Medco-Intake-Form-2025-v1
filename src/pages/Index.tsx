@@ -6,6 +6,8 @@ import { IntakeFormSection1 } from "@/components/IntakeFormSection1";
 import { IntakeFormSection2 } from "@/components/IntakeFormSection2";
 import { IntakeFormSection3 } from "@/components/IntakeFormSection3";
 import { IntakeFormSection4 } from "@/components/IntakeFormSection4";
+import { IntakeFormSection5 } from "@/components/IntakeFormSection5";
+import { IntakeFormSection6 } from "@/components/IntakeFormSection6";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
@@ -38,6 +40,22 @@ const formSchema = z.object({
   shoulderPainInitialSeverity: z.enum(["1", "2", "3"]),
   shoulderPainCurrentSeverity: z.enum(["1", "2", "3", "4"]),
   shoulderPainResolveDays: z.string().optional(),
+
+  // Section 5 - Back Pain Information
+  backPain: z.enum(["1", "2"]),
+  backLocation: z.enum(["1", "2", "3", "4"]),
+  backPainStart: z.enum(["1", "2", "3"]),
+  backPainInitialSeverity: z.enum(["1", "2", "3"]),
+  backPainCurrentSeverity: z.enum(["1", "2", "3", "4"]),
+  backPainResolveDays: z.string().optional(),
+
+  // Section 6 - Headache Information
+  headache: z.enum(["1", "2"]),
+  headacheStart: z.enum(["1", "2", "3"]),
+  headacheInitialSeverity: z.enum(["1", "2", "3"]),
+  headacheCurrentSeverity: z.enum(["1", "2", "3", "4"]),
+  headacheResolveDays: z.string().optional(),
+  headachePastHistory: z.string().optional(),
 });
 
 export default function Index() {
@@ -67,6 +85,18 @@ export default function Index() {
       shoulderPainInitialSeverity: "1",
       shoulderPainCurrentSeverity: "1",
       shoulderPainResolveDays: "",
+      backPain: "1",
+      backLocation: "1",
+      backPainStart: "1",
+      backPainInitialSeverity: "1",
+      backPainCurrentSeverity: "1",
+      backPainResolveDays: "",
+      headache: "1",
+      headacheStart: "1",
+      headacheInitialSeverity: "1",
+      headacheCurrentSeverity: "1",
+      headacheResolveDays: "",
+      headachePastHistory: "",
     },
   });
 
@@ -78,7 +108,7 @@ export default function Index() {
     console.log(values);
   }
 
-  const totalSections = 4;
+  const totalSections = 6;
 
   return (
     <div className="container mx-auto py-10">
@@ -102,6 +132,8 @@ export default function Index() {
           {currentSection === 2 && <IntakeFormSection2 form={form} />}
           {currentSection === 3 && <IntakeFormSection3 form={form} />}
           {currentSection === 4 && <IntakeFormSection4 form={form} />}
+          {currentSection === 5 && <IntakeFormSection5 form={form} />}
+          {currentSection === 6 && <IntakeFormSection6 form={form} />}
           
           <div className="flex justify-between">
             <Button 
