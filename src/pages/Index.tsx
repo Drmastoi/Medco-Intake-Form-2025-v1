@@ -8,6 +8,12 @@ import { IntakeFormSection3 } from "@/components/IntakeFormSection3";
 import { IntakeFormSection4 } from "@/components/IntakeFormSection4";
 import { IntakeFormSection5 } from "@/components/IntakeFormSection5";
 import { IntakeFormSection6 } from "@/components/IntakeFormSection6";
+import { IntakeFormSection7 } from "@/components/IntakeFormSection7";
+import { IntakeFormSection8 } from "@/components/IntakeFormSection8";
+import { IntakeFormSection9 } from "@/components/IntakeFormSection9";
+import { IntakeFormSection10 } from "@/components/IntakeFormSection10";
+import { IntakeFormSection11 } from "@/components/IntakeFormSection11";
+import { IntakeFormSection12 } from "@/components/IntakeFormSection12";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
@@ -108,7 +114,7 @@ export default function Index() {
     console.log(values);
   }
 
-  const totalSections = 6;
+  const totalSections = 12;
 
   return (
     <div className="container mx-auto py-10">
@@ -134,6 +140,12 @@ export default function Index() {
           {currentSection === 4 && <IntakeFormSection4 form={form} />}
           {currentSection === 5 && <IntakeFormSection5 form={form} />}
           {currentSection === 6 && <IntakeFormSection6 form={form} />}
+          {currentSection === 7 && <IntakeFormSection7 form={form} />}
+          {currentSection === 8 && <IntakeFormSection8 form={form} />}
+          {currentSection === 9 && <IntakeFormSection9 form={form} />}
+          {currentSection === 10 && <IntakeFormSection10 form={form} />}
+          {currentSection === 11 && <IntakeFormSection11 form={form} />}
+          {currentSection === 12 && <IntakeFormSection12 form={form} />}
           
           <div className="flex justify-between">
             <Button 
