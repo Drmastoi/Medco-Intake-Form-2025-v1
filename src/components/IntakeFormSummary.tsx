@@ -1,6 +1,7 @@
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { PDFDownloadLink, Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import { ReactElement } from "react";
 
 const styles = StyleSheet.create({
   page: {
@@ -62,8 +63,6 @@ const MedicalReport = ({ formData }: { formData: any }) => (
               }.`
             : "The claimant does not report any travel anxiety."}
         </Text>
-
-        {/* Additional sections can be added following the same pattern */}
       </View>
     </Page>
   </Document>
@@ -116,8 +115,6 @@ export function IntakeFormSummary({ form }: { form: any }) {
         {formData.travelAnxiety === "2" && (
           <p>The claimant does not report any travel anxiety.</p>
         )}
-
-        {/* Additional sections can be added here following the same pattern */}
       </div>
 
       <div className="mt-6">
@@ -125,7 +122,7 @@ export function IntakeFormSummary({ form }: { form: any }) {
           document={<MedicalReport formData={formData} />}
           fileName="medical-report.pdf"
         >
-          {({ loading }) => (
+          {({ loading }: { loading: boolean }): ReactElement => (
             <Button disabled={loading}>
               {loading ? "Generating PDF..." : "Download Medical Report"}
             </Button>
