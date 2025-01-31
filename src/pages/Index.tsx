@@ -146,6 +146,7 @@ export default function Index() {
           {currentSection === 10 && <IntakeFormSection10 form={form} />}
           {currentSection === 11 && <IntakeFormSection11 form={form} />}
           {currentSection === 12 && <IntakeFormSection12 form={form} />}
+          {currentSection === 13 && <IntakeFormSummary form={form} />}
           
           <div className="flex justify-between">
             <Button 
@@ -157,10 +158,10 @@ export default function Index() {
               Previous
             </Button>
             
-            {currentSection < totalSections ? (
+            {currentSection < totalSections + 1 ? (
               <Button 
                 type="button"
-                onClick={() => setCurrentSection(prev => Math.min(totalSections, prev + 1))}
+                onClick={() => setCurrentSection(prev => Math.min(totalSections + 1, prev + 1))}
               >
                 Next
               </Button>
