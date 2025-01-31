@@ -14,6 +14,7 @@ import { IntakeFormSection9 } from "@/components/IntakeFormSection9";
 import { IntakeFormSection10 } from "@/components/IntakeFormSection10";
 import { IntakeFormSection11 } from "@/components/IntakeFormSection11";
 import { IntakeFormSection12 } from "@/components/IntakeFormSection12";
+import { IntakeFormSummary } from "@/components/IntakeFormSummary";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
