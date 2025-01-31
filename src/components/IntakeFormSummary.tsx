@@ -1,6 +1,6 @@
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { PDFDownloadLink, Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import { PDFDownloadLink, Document, Page, Text, View, StyleSheet, BlobProvider } from '@react-pdf/renderer';
 import { ReactElement } from "react";
 
 const styles = StyleSheet.create({
@@ -118,16 +118,20 @@ export function IntakeFormSummary({ form }: { form: any }) {
       </div>
 
       <div className="mt-6">
-        <PDFDownloadLink
-          document={<MedicalReport formData={formData} />}
-          fileName="medical-report.pdf"
-        >
-          {({ loading }: { loading: boolean }): ReactElement => (
-            <Button disabled={loading}>
+        <BlobProvider document={<MedicalReport formData={formData} />}>
+          {({ url, loading }) => (
+            <Button 
+              disabled={loading}
+              onClick={() => {
+                if (url) {
+                  window.open(url, '_blank');
+                }
+              }}
+            >
               {loading ? "Generating PDF..." : "Download Medical Report"}
             </Button>
           )}
-        </PDFDownloadLink>
+        </BlobProvider>
       </div>
     </div>
   );
