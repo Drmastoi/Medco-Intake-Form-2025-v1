@@ -5,16 +5,12 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export function IntakeFormSection5({ form }: { form: any }) {
+  const backPain = form.watch("backPain");
+
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold mb-4">Back Pain Information</h2>
@@ -23,131 +19,198 @@ export function IntakeFormSection5({ form }: { form: any }) {
         control={form.control}
         name="backPain"
         render={({ field }) => (
-          <FormItem>
-            <FormLabel>Did you get Any Back Pain?</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select yes or no" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="1">Yes</SelectItem>
-                <SelectItem value="2">No</SelectItem>
-              </SelectContent>
-            </Select>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={form.control}
-        name="backLocation"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Where in the back?</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select back location" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="1">Upper back</SelectItem>
-                <SelectItem value="2">Middle Back</SelectItem>
-                <SelectItem value="3">Lower Back</SelectItem>
-                <SelectItem value="4">All over back</SelectItem>
-              </SelectContent>
-            </Select>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={form.control}
-        name="backPainStart"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>When did this back pain start?</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select when pain started" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="1">Same day</SelectItem>
-                <SelectItem value="2">Next Day</SelectItem>
-                <SelectItem value="3">Few days Later</SelectItem>
-              </SelectContent>
-            </Select>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={form.control}
-        name="backPainInitialSeverity"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Initial Severity of pain</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select initial severity" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="1">Mild</SelectItem>
-                <SelectItem value="2">Moderate</SelectItem>
-                <SelectItem value="3">Severe</SelectItem>
-              </SelectContent>
-            </Select>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={form.control}
-        name="backPainCurrentSeverity"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Current Severity of pain</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select current severity" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="1">Mild</SelectItem>
-                <SelectItem value="2">Moderate</SelectItem>
-                <SelectItem value="3">Severe</SelectItem>
-                <SelectItem value="4">Resolved</SelectItem>
-              </SelectContent>
-            </Select>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={form.control}
-        name="backPainResolveDays"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>If resolved, how many days did it take to resolve?</FormLabel>
+          <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
             <FormControl>
-              <Input type="number" placeholder="Enter number of days" {...field} />
+              <Checkbox
+                checked={field.value === "1"}
+                onCheckedChange={(checked) => {
+                  field.onChange(checked ? "1" : "2");
+                }}
+              />
             </FormControl>
+            <div className="space-y-1 leading-none">
+              <FormLabel>Did you get Any Back Pain?</FormLabel>
+            </div>
             <FormMessage />
           </FormItem>
         )}
       />
+
+      {backPain === "1" && (
+        <>
+          <FormField
+            control={form.control}
+            name="backLocation"
+            render={({ field }) => (
+              <FormItem className="space-y-3">
+                <FormLabel>Where in the back?</FormLabel>
+                <FormControl>
+                  <div className="flex flex-col space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "1"}
+                        onCheckedChange={() => field.onChange("1")}
+                      />
+                      <label>Upper back</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "2"}
+                        onCheckedChange={() => field.onChange("2")}
+                      />
+                      <label>Middle Back</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "3"}
+                        onCheckedChange={() => field.onChange("3")}
+                      />
+                      <label>Lower Back</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "4"}
+                        onCheckedChange={() => field.onChange("4")}
+                      />
+                      <label>All over back</label>
+                    </div>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="backPainStart"
+            render={({ field }) => (
+              <FormItem className="space-y-3">
+                <FormLabel>When did this back pain start?</FormLabel>
+                <FormControl>
+                  <div className="flex flex-col space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "1"}
+                        onCheckedChange={() => field.onChange("1")}
+                      />
+                      <label>Same day</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "2"}
+                        onCheckedChange={() => field.onChange("2")}
+                      />
+                      <label>Next Day</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "3"}
+                        onCheckedChange={() => field.onChange("3")}
+                      />
+                      <label>Few days Later</label>
+                    </div>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="backPainInitialSeverity"
+            render={({ field }) => (
+              <FormItem className="space-y-3">
+                <FormLabel>Initial Severity of pain</FormLabel>
+                <FormControl>
+                  <div className="flex flex-col space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "1"}
+                        onCheckedChange={() => field.onChange("1")}
+                      />
+                      <label>Mild</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "2"}
+                        onCheckedChange={() => field.onChange("2")}
+                      />
+                      <label>Moderate</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "3"}
+                        onCheckedChange={() => field.onChange("3")}
+                      />
+                      <label>Severe</label>
+                    </div>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="backPainCurrentSeverity"
+            render={({ field }) => (
+              <FormItem className="space-y-3">
+                <FormLabel>Current Severity of pain</FormLabel>
+                <FormControl>
+                  <div className="flex flex-col space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "1"}
+                        onCheckedChange={() => field.onChange("1")}
+                      />
+                      <label>Mild</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "2"}
+                        onCheckedChange={() => field.onChange("2")}
+                      />
+                      <label>Moderate</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "3"}
+                        onCheckedChange={() => field.onChange("3")}
+                      />
+                      <label>Severe</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "4"}
+                        onCheckedChange={() => field.onChange("4")}
+                      />
+                      <label>Resolved</label>
+                    </div>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="backPainResolveDays"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>If resolved, how many days did it take to resolve?</FormLabel>
+                <FormControl>
+                  <Input type="number" placeholder="Enter number of days" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </>
+      )}
     </div>
   );
 }
