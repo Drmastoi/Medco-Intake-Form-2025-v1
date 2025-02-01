@@ -21,6 +21,19 @@ const styles = StyleSheet.create({
   },
 });
 
+const getImpactMechanism = (vehiclePosition: string) => {
+  switch (vehiclePosition) {
+    case "1": // Driver - assuming rear impact
+      return "jolted forward and backward";
+    case "2": // Front Passenger - assuming side impact
+      return "jolted sideways";
+    case "3": // Back Passenger - assuming collision
+      return "jolted backwards and then forward";
+    default:
+      return "experienced impact";
+  }
+};
+
 const getPrognosis = (severity: string) => {
   switch (severity) {
     case "1": return "3 MONTHS"; // Mild
