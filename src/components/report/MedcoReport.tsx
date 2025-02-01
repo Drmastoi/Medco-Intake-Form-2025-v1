@@ -1,16 +1,11 @@
 import { Document, Page, Text, StyleSheet } from '@react-pdf/renderer';
 import { PersonalDetailsSection } from './PersonalDetailsSection';
 import { SummaryOfInjuriesSection } from './SummaryOfInjuriesSection';
-import { TreatmentDetailsSection } from './TreatmentDetailsSection';
-import { ClinicalExaminationSection } from './ClinicalExaminationSection';
 import { PreviousMedicalHistorySection } from './PreviousMedicalHistorySection';
-import { DailyLifeImpactSection } from './DailyLifeImpactSection';
-import { AdditionalInformationSection } from './AdditionalInformationSection';
 import { AccidentHistorySection } from './AccidentHistorySection';
+import { TreatmentDetailsSection } from './TreatmentDetailsSection';
 import { InjuriesAndSymptomsSection } from './InjuriesAndSymptomsSection';
-import { MedicalRecordsSection } from './MedicalRecordsSection';
-import { CaseClassificationSection } from './CaseClassificationSection';
-import { DeclarationSection } from './DeclarationSection';
+import { DailyLifeImpactSection } from './DailyLifeImpactSection';
 
 const styles = StyleSheet.create({
   page: {
@@ -35,10 +30,10 @@ const styles = StyleSheet.create({
 
 export const MedcoReport = ({ formData }: { formData: any }) => (
   <Document>
+    {/* Page 1 */}
     <Page size="A4" style={styles.page}>
       <Text style={styles.title}>MEDCO MEDICAL REPORT</Text>
       <PersonalDetailsSection formData={formData} />
-      <AccidentHistorySection formData={formData} />
       <Text 
         style={styles.pageNumber} 
         render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} 
@@ -46,32 +41,46 @@ export const MedcoReport = ({ formData }: { formData: any }) => (
       />
     </Page>
     
+    {/* Page 2 */}
     <Page size="A4" style={styles.page}>
-      <TreatmentDetailsSection formData={formData} />
+      {/* Section 1: Summary of Injuries */}
       <SummaryOfInjuriesSection formData={formData} />
-      <Text 
-        style={styles.pageNumber} 
-        render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} 
-        fixed 
-      />
-    </Page>
-    
-    <Page size="A4" style={styles.page}>
-      <InjuriesAndSymptomsSection formData={formData} />
+      
+      {/* Section 2: Past Medical History */}
       <PreviousMedicalHistorySection formData={formData} />
+      
+      {/* Section 3: Previous Road Traffic Accident */}
+      <Text style={styles.subtitle}>Previous Road Traffic Accident and Impact on Previous Injuries</Text>
+      {formData.previousAccident === "1" && (
+        <Text style={styles.text}>
+          The claimant was involved in a previous road traffic accident on {formData.previousAccidentDate}. 
+          {formData.previousAccidentRecovery === "1" 
+            ? "They made a complete recovery from the previous incident."
+            : "They had not fully recovered from the previous incident when this accident occurred."}
+          {formData.previousInjuriesWorse === "1" && 
+            "This current accident has exacerbated their previous injuries."}
+        </Text>
+      )}
+      
+      {/* Section 4: Exceptional Circumstances */}
+      <Text style={styles.subtitle}>Exceptional Circumstances</Text>
+      <Text style={styles.text}>
+        The claimant has not claimed exceptional physical or psychological circumstances.
+        Based on the history, symptoms, and examination, this assessment appears appropriate.
+      </Text>
+      
+      {/* Section 5: History of the Incident */}
+      <AccidentHistorySection formData={formData} />
+      
+      {/* Section 6: Treatment Details */}
+      <TreatmentDetailsSection formData={formData} />
+      
+      {/* Section 7: Injuries and Symptoms */}
+      <InjuriesAndSymptomsSection formData={formData} />
+      
+      {/* Sections 8-11: Daily Life Impact */}
       <DailyLifeImpactSection formData={formData} />
-      <Text 
-        style={styles.pageNumber} 
-        render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} 
-        fixed 
-      />
-    </Page>
-
-    <Page size="A4" style={styles.page}>
-      <MedicalRecordsSection />
-      <CaseClassificationSection />
-      <DeclarationSection />
-      <AdditionalInformationSection formData={formData} />
+      
       <Text 
         style={styles.pageNumber} 
         render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} 
