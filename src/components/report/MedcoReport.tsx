@@ -1,11 +1,16 @@
-import { Document, Page, Text, StyleSheet, View } from '@react-pdf/renderer';
+import { Document, Page, Text, StyleSheet } from '@react-pdf/renderer';
 import { PersonalDetailsSection } from './PersonalDetailsSection';
 import { SummaryOfInjuriesSection } from './SummaryOfInjuriesSection';
-import { PreviousMedicalHistorySection } from './PreviousMedicalHistorySection';
-import { AccidentHistorySection } from './AccidentHistorySection';
 import { TreatmentDetailsSection } from './TreatmentDetailsSection';
-import { InjuriesAndSymptomsSection } from './InjuriesAndSymptomsSection';
+import { ClinicalExaminationSection } from './ClinicalExaminationSection';
+import { PreviousMedicalHistorySection } from './PreviousMedicalHistorySection';
 import { DailyLifeImpactSection } from './DailyLifeImpactSection';
+import { AdditionalInformationSection } from './AdditionalInformationSection';
+import { AccidentHistorySection } from './AccidentHistorySection';
+import { InjuriesAndSymptomsSection } from './InjuriesAndSymptomsSection';
+import { MedicalRecordsSection } from './MedicalRecordsSection';
+import { CaseClassificationSection } from './CaseClassificationSection';
+import { DeclarationSection } from './DeclarationSection';
 
 const styles = StyleSheet.create({
   page: {
@@ -17,19 +22,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     fontWeight: 'bold',
     textAlign: 'center',
-  },
-  subtitle: {
-    fontSize: 12,
-    marginBottom: 8,
-    fontWeight: 'bold',
-  },
-  text: {
-    fontSize: 10,
-    marginBottom: 5,
-    lineHeight: 1.4,
-  },
-  section: {
-    marginBottom: 15,
   },
   pageNumber: {
     position: 'absolute',
@@ -43,10 +35,10 @@ const styles = StyleSheet.create({
 
 export const MedcoReport = ({ formData }: { formData: any }) => (
   <Document>
-    {/* Page 1 */}
     <Page size="A4" style={styles.page}>
       <Text style={styles.title}>MEDCO MEDICAL REPORT</Text>
       <PersonalDetailsSection formData={formData} />
+      <AccidentHistorySection formData={formData} />
       <Text 
         style={styles.pageNumber} 
         render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} 
@@ -54,65 +46,32 @@ export const MedcoReport = ({ formData }: { formData: any }) => (
       />
     </Page>
     
-    {/* Page 2 */}
     <Page size="A4" style={styles.page}>
-      {/* Section 1: Summary of Injuries */}
-      <View style={styles.section}>
-        <Text style={styles.subtitle}>1. SUMMARY OF INJURIES</Text>
-        <SummaryOfInjuriesSection formData={formData} />
-      </View>
-      
-      {/* Section 2: Past Medical History */}
-      <View style={styles.section}>
-        <Text style={styles.subtitle}>2. Past Medical History</Text>
-        <PreviousMedicalHistorySection formData={formData} />
-      </View>
-      
-      {/* Section 3: Previous Road Traffic Accident */}
-      <View style={styles.section}>
-        <Text style={styles.subtitle}>3. Previous Road Traffic Accident and Impact on Previous Injuries</Text>
-        {formData.previousAccident === "1" && (
-          <Text style={styles.text}>
-            The claimant was involved in a previous road traffic accident on {formData.previousAccidentDate}. 
-            {formData.previousAccidentRecovery === "1" 
-              ? " They made a complete recovery from the previous incident."
-              : " They had not fully recovered from the previous incident when this accident occurred."}
-            {formData.previousInjuriesWorse === "1" && 
-              " This current accident has exacerbated their previous injuries."}
-          </Text>
-        )}
-      </View>
-      
-      {/* Section 4: Exceptional Circumstances */}
-      <View style={styles.section}>
-        <Text style={styles.subtitle}>4. Exceptional Circumstances</Text>
-        <Text style={styles.text}>
-          The claimant has not claimed exceptional physical or psychological circumstances.
-          Based on the history, symptoms, and examination, this assessment appears appropriate.
-        </Text>
-      </View>
-      
-      {/* Section 5: History of the Incident */}
-      <View style={styles.section}>
-        <Text style={styles.subtitle}>5. History of the Incident in Question</Text>
-        <AccidentHistorySection formData={formData} />
-      </View>
-      
-      {/* Section 6: Treatment Details */}
-      <View style={styles.section}>
-        <Text style={styles.subtitle}>6. Treatment after the Accident</Text>
-        <TreatmentDetailsSection formData={formData} />
-      </View>
-      
-      {/* Section 7: Injuries and Symptoms */}
-      <View style={styles.section}>
-        <Text style={styles.subtitle}>7. Injuries/Symptoms and Present Position Reported by Claimant</Text>
-        <InjuriesAndSymptomsSection formData={formData} />
-      </View>
-      
-      {/* Sections 8-11: Daily Life Impact */}
+      <TreatmentDetailsSection formData={formData} />
+      <SummaryOfInjuriesSection formData={formData} />
+      <Text 
+        style={styles.pageNumber} 
+        render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} 
+        fixed 
+      />
+    </Page>
+    
+    <Page size="A4" style={styles.page}>
+      <InjuriesAndSymptomsSection formData={formData} />
+      <PreviousMedicalHistorySection formData={formData} />
       <DailyLifeImpactSection formData={formData} />
-      
+      <Text 
+        style={styles.pageNumber} 
+        render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} 
+        fixed 
+      />
+    </Page>
+
+    <Page size="A4" style={styles.page}>
+      <MedicalRecordsSection />
+      <CaseClassificationSection />
+      <DeclarationSection />
+      <AdditionalInformationSection formData={formData} />
       <Text 
         style={styles.pageNumber} 
         render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} 
