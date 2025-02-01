@@ -21,96 +21,103 @@ const styles = StyleSheet.create({
   },
 });
 
-export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => (
-  <View style={styles.section}>
-    <Text style={styles.heading}>Injuries/Symptoms and Present Position Reported by Claimant</Text>
+const getImpactMechanism = (vehiclePosition: string) => {
+  switch (vehiclePosition) {
+    case "1": // Driver - assuming rear impact
+      return "jolted forward and backward";
+    case "2": // Front Passenger - assuming side impact
+      return "jolted sideways";
+    case "3": // Back Passenger - assuming collision
+      return "jolted backwards and then forward";
+    default:
+      return "experienced impact";
+  }
+};
 
-    {/* Neck Pain */}
-    {formData.neckPain === "1" && (
-      <View>
-        <Text style={styles.subheading}>Neck Pain</Text>
-        <Text style={styles.text}>
-          The claimant developed neck pain {
-            formData.neckPainStart === "1" ? "on the same day" :
-            formData.neckPainStart === "2" ? "the next day" :
-            formData.neckPainStart === "3" ? "a few days later" : ""
-          }. The initial severity was {
-            formData.neckPainInitialSeverity === "1" ? "mild" :
-            formData.neckPainInitialSeverity === "2" ? "moderate" :
-            formData.neckPainInitialSeverity === "3" ? "severe" : "not specified"
-          }. Currently, the pain is {
-            formData.neckPainCurrentSeverity === "1" ? "mild" :
-            formData.neckPainCurrentSeverity === "2" ? "moderate" :
-            formData.neckPainCurrentSeverity === "3" ? "severe" :
-            formData.neckPainCurrentSeverity === "4" ? "resolved" : "not specified"
-          }.
-          {formData.neckPainResolveDays && ` The pain resolved after ${formData.neckPainResolveDays} days.`}
-        </Text>
-      </View>
-    )}
+const getPrognosis = (severity: string) => {
+  switch (severity) {
+    case "1": return "3 MONTHS"; // Mild
+    case "2": return "6 MONTHS"; // Moderate
+    case "3": return "9 MONTHS"; // Severe
+    default: return "6 MONTHS";
+  }
+};
 
-    {/* Shoulder Pain */}
-    {formData.shoulderPain === "1" && (
-      <View>
-        <Text style={styles.subheading}>Shoulder Pain</Text>
-        <Text style={styles.text}>
-          The claimant experienced pain in the {
-            formData.shoulderSide === "1" ? "left" :
-            formData.shoulderSide === "2" ? "right" :
-            formData.shoulderSide === "3" ? "both shoulders" : "shoulder"
-          }. The initial severity was {
-            formData.shoulderPainInitialSeverity === "1" ? "mild" :
-            formData.shoulderPainInitialSeverity === "2" ? "moderate" :
-            formData.shoulderPainInitialSeverity === "3" ? "severe" : "not specified"
-          }. Currently, the pain is {
-            formData.shoulderPainCurrentSeverity === "1" ? "mild" :
-            formData.shoulderPainCurrentSeverity === "2" ? "moderate" :
-            formData.shoulderPainCurrentSeverity === "3" ? "severe" :
-            formData.shoulderPainCurrentSeverity === "4" ? "resolved" : "not specified"
-          }.
-          {formData.shoulderPainResolveDays && ` The pain resolved after ${formData.shoulderPainResolveDays} days.`}
-        </Text>
-      </View>
-    )}
+export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
+  const mechanism = getImpactMechanism(formData.vehiclePosition);
 
-    {/* Back Pain */}
-    {formData.backPain === "1" && (
-      <View>
-        <Text style={styles.subheading}>Back Pain</Text>
-        <Text style={styles.text}>
-          The claimant experienced pain in the {
-            formData.backLocation === "1" ? "upper back" :
-            formData.backLocation === "2" ? "middle back" :
-            formData.backLocation === "3" ? "lower back" :
-            formData.backLocation === "4" ? "entire back" : "back"
-          }. The initial severity was {
-            formData.backPainInitialSeverity === "1" ? "mild" :
-            formData.backPainInitialSeverity === "2" ? "moderate" :
-            formData.backPainInitialSeverity === "3" ? "severe" : "not specified"
-          }. Currently, the pain is {
-            formData.backPainCurrentSeverity === "1" ? "mild" :
-            formData.backPainCurrentSeverity === "2" ? "moderate" :
-            formData.backPainCurrentSeverity === "3" ? "severe" :
-            formData.backPainCurrentSeverity === "4" ? "resolved" : "not specified"
-          }.
-          {formData.backPainResolveDays && ` The pain resolved after ${formData.backPainResolveDays} days.`}
-        </Text>
-      </View>
-    )}
+  return (
+    <View style={styles.section}>
+      <Text style={styles.heading}>Injuries/Symptoms and Present Position Reported by Claimant</Text>
 
-    {/* Bruising and Scarring */}
-    {formData.hasBruising === "1" && (
-      <View>
-        <Text style={styles.subheading}>Bruising and Scarring</Text>
-        <Text style={styles.text}>
-          The claimant noticed bruising/scarring {
-            formData.bruisingNoticed === "1" ? "on the same day" :
-            formData.bruisingNoticed === "2" ? "the next day" :
-            formData.bruisingNoticed === "3" ? "a few days later" : ""
-          } at {formData.bruisingLocation || "unspecified location"}. 
-          {formData.hasVisibleScar === "1" && " There is visible scarring present."}
-        </Text>
-      </View>
-    )}
-  </View>
-);
+      {formData.neckPain === "1" && (
+        <View>
+          <Text style={styles.subheading}>NECK PAIN</Text>
+          <Text style={styles.text}>Classification: Whiplash injury</Text>
+          <Text style={styles.text}>Causation/Mechanism: Due to motor vehicle collision and {mechanism}</Text>
+          <Text style={styles.text}>Examination:</Text>
+          <Text style={styles.text}>Palpation: {
+            formData.neckPainCurrentSeverity === "1" ? "Mild" :
+            formData.neckPainCurrentSeverity === "2" ? "Moderate" :
+            formData.neckPainCurrentSeverity === "3" ? "Severe" : "Moderate"
+          } tenderness in the para cervical muscles</Text>
+          <Text style={styles.text}>Range of Motion: Flexion and extension limited due to pain</Text>
+          <Text style={styles.text}>Neurological Assessment: normal</Text>
+          <Text style={styles.text}>Treatment Recommendations:</Text>
+          <Text style={styles.text}>Pain management: Over-the-counter pain medication and ice therapy recommended</Text>
+          <Text style={styles.text}>Physiotherapy: Recommended - Number of sessions to be decided by the referred expert</Text>
+          <Text style={styles.text}>Prognosis: From the date of accident: {getPrognosis(formData.neckPainCurrentSeverity)}</Text>
+        </View>
+      )}
+
+      {formData.shoulderPain === "1" && (
+        <View>
+          <Text style={styles.subheading}>SHOULDER PAIN</Text>
+          <Text style={styles.text}>Classification: Whiplash injury</Text>
+          <Text style={styles.text}>Side Affected: {
+            formData.shoulderSide === "1" ? "Left" :
+            formData.shoulderSide === "2" ? "Right" :
+            formData.shoulderSide === "3" ? "Both" : "Unspecified"
+          } shoulder</Text>
+          <Text style={styles.text}>Causation/Mechanism: Due to motor vehicle collision and {mechanism}</Text>
+          <Text style={styles.text}>Examination:</Text>
+          <Text style={styles.text}>Palpation: {
+            formData.shoulderPainCurrentSeverity === "1" ? "Mild" :
+            formData.shoulderPainCurrentSeverity === "2" ? "Moderate" :
+            formData.shoulderPainCurrentSeverity === "3" ? "Severe" : "Moderate"
+          } tenderness in the shoulder region</Text>
+          <Text style={styles.text}>Range of Motion: Limited due to pain</Text>
+          <Text style={styles.text}>Treatment Recommendations:</Text>
+          <Text style={styles.text}>Pain management: Over-the-counter pain medication and ice therapy recommended</Text>
+          <Text style={styles.text}>Physiotherapy: Recommended - Number of sessions to be decided by the referred expert</Text>
+          <Text style={styles.text}>Prognosis: From the date of accident: {getPrognosis(formData.shoulderPainCurrentSeverity)}</Text>
+        </View>
+      )}
+
+      {formData.backPain === "1" && (
+        <View>
+          <Text style={styles.subheading}>BACK PAIN</Text>
+          <Text style={styles.text}>Classification: Whiplash injury</Text>
+          <Text style={styles.text}>Location: {
+            formData.backLocation === "1" ? "Upper back" :
+            formData.backLocation === "2" ? "Middle Back" :
+            formData.backLocation === "3" ? "Lower Back" :
+            formData.backLocation === "4" ? "All over back" : "Back"
+          }</Text>
+          <Text style={styles.text}>Causation/Mechanism: Due to motor vehicle collision and {mechanism}</Text>
+          <Text style={styles.text}>Examination:</Text>
+          <Text style={styles.text}>Palpation: {
+            formData.backPainCurrentSeverity === "1" ? "Mild" :
+            formData.backPainCurrentSeverity === "2" ? "Moderate" :
+            formData.backPainCurrentSeverity === "3" ? "Severe" : "Moderate"
+          } tenderness in the affected region</Text>
+          <Text style={styles.text}>Range of Motion: Limited due to pain</Text>
+          <Text style={styles.text}>Treatment Recommendations:</Text>
+          <Text style={styles.text}>Pain management: Over-the-counter pain medication and ice therapy recommended</Text>
+          <Text style={styles.text}>Physiotherapy: Recommended - Number of sessions to be decided by the referred expert</Text>
+          <Text style={styles.text}>Prognosis: From the date of accident: {getPrognosis(formData.backPainCurrentSeverity)}</Text>
+        </View>
+      )}
+    </View>
+  );
+};
