@@ -9,6 +9,11 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     fontWeight: 'bold',
   },
+  sectionTitle: {
+    fontSize: 12,
+    marginBottom: 8,
+    fontWeight: 'extrabold',
+  },
   text: {
     fontSize: 10,
     marginBottom: 5,
@@ -37,7 +42,7 @@ export const DailyLifeImpactSection = ({ formData }: { formData: any }) => {
 
   return (
     <View style={styles.section}>
-      <Text style={styles.subtitle}>Employment Position/Education</Text>
+      <Text style={styles.sectionTitle}>Employment Position/Education</Text>
       <Text style={styles.text}>Occupation: {formData.occupation || "Not specified"}</Text>
       <Text style={styles.text}>Work Type: {getWorkTypeText(formData.workType)}</Text>
       <Text style={styles.text}>Time taken off work: {formData.daysOffWork || "0"} Days</Text>
@@ -46,13 +51,13 @@ export const DailyLifeImpactSection = ({ formData }: { formData: any }) => {
       <Text style={styles.text}>Employment prospects in the open job market would be unaffected because of the injuries.</Text>
 
       <View style={styles.subsection}>
-        <Text style={styles.subtitle}>Home Circumstances</Text>
+        <Text style={styles.sectionTitle}>Home Circumstances</Text>
         <Text style={styles.text}>Claimant lives with: {getLivingWithText(formData.livingWith)}</Text>
         <Text style={styles.text}>Number of Children at home: {formData.childrenCount || "0"}</Text>
       </View>
 
       <View style={styles.subsection}>
-        <Text style={styles.subtitle}>Effects on Daily Life</Text>
+        <Text style={styles.sectionTitle}>Effects on Daily Life</Text>
         
         {formData.effectOnDomesticLiving === "1" ? (
           <Text style={styles.text}>
