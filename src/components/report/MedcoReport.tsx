@@ -65,28 +65,11 @@ export const MedcoReport = ({ formData }: { formData: any }) => (
     <Page size="A4" style={styles.page}>
       <Text style={styles.subtitle}>Section 1: SUMMARY OF INJURIES</Text>
       <SummaryOfInjuriesSection formData={formData} />
-
-      <Text style={styles.text}>
-        Claimant has not claimed exceptional physical or exceptional psychological circumstances. 
-        I would agree considering history symptoms and examination.
-      </Text>
-
-      <Text style={styles.text}>
-        The claimant have Previous Medical conditions which are made worse because of this accident
-      </Text>
       
-      <Text style={styles.subtitle}>Section 2: Previous Road Traffic Accident and Impact</Text>
-      <Text style={styles.text}>
-        {formData.previousAccident === "1" ? 
-          `Previous accident date: ${formData.previousAccidentDate || 'Not specified'}. 
-           Recovery status: ${formData.previousAccidentRecovery === "1" ? "Fully recovered" : "Not fully recovered"}` 
-          : "No previous road traffic accidents reported"}
-      </Text>
-      
-      <Text style={styles.subtitle}>Section 3: History of the Incident</Text>
+      <Text style={styles.subtitle}>Section 2: History of the Incident</Text>
       <AccidentHistorySection formData={formData} />
       
-      <Text style={styles.subtitle}>Section 4: Treatment after the Accident</Text>
+      <Text style={styles.subtitle}>Section 3: Treatment after the Accident</Text>
       <TreatmentDetailsSection formData={formData} />
       
       <Text 
@@ -97,10 +80,10 @@ export const MedcoReport = ({ formData }: { formData: any }) => (
     </Page>
     
     <Page size="A4" style={styles.page}>
-      <Text style={styles.subtitle}>Section 5: Injuries/Symptoms and Present Position</Text>
+      <Text style={styles.subtitle}>Section 4: Injuries/Symptoms and Present Position</Text>
       <InjuriesAndSymptomsSection formData={formData} />
       
-      <Text style={styles.subtitle}>Section 6: Employment Position/Education</Text>
+      <Text style={styles.subtitle}>Section 5: Employment Position/Education</Text>
       <Text style={styles.text}>
         The claimant is employed as {formData.occupation || 'not specified'}, working 
         {formData.workType === "1" ? " full-time" : formData.workType === "2" ? " part-time" : ""}. 
@@ -108,7 +91,7 @@ export const MedcoReport = ({ formData }: { formData: any }) => (
         days of light duties following the accident.
       </Text>
       
-      <Text style={styles.subtitle}>Section 7: Home Circumstances</Text>
+      <Text style={styles.subtitle}>Section 6: Home Circumstances</Text>
       <Text style={styles.text}>
         The claimant resides with {
           formData.livingWith === "1" ? "their wife" :
@@ -120,10 +103,10 @@ export const MedcoReport = ({ formData }: { formData: any }) => (
         provides a supportive setting for recovery.
       </Text>
       
-      <Text style={styles.subtitle}>Section 8: Effects on Daily Life</Text>
+      <Text style={styles.subtitle}>Section 7: Effects on Daily Life</Text>
       <DailyLifeImpactSection formData={formData} />
       
-      <Text style={styles.subtitle}>Section 9: Psychological Effects</Text>
+      <Text style={styles.subtitle}>Section 8: Psychological Effects</Text>
       <Text style={styles.text}>
         Following the accident, the claimant has experienced psychological impacts. 
         {formData.travelAnxiety === "1" ? 
