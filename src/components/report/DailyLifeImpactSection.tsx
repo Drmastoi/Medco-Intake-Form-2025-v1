@@ -19,89 +19,72 @@ const styles = StyleSheet.create({
   },
 });
 
-export const DailyLifeImpactSection = ({ formData }: { formData: any }) => (
-  <View style={styles.section}>
-    <Text style={styles.subtitle}>Impact on Daily Life</Text>
+export const DailyLifeImpactSection = ({ formData }: { formData: any }) => {
+  const getLivingWithText = (value: string) => {
+    const livingWithMap: { [key: string]: string } = {
+      "1": "Wife",
+      "2": "Husband",
+      "3": "Partner",
+      "4": "Parents",
+      "5": "Alone"
+    };
+    return livingWithMap[value] || "Not specified";
+  };
 
-    {/* Work Impact */}
-    <View style={styles.subsection}>
-      <Text style={styles.subtitle}>1. Work Impact</Text>
-      <Text style={styles.text}>Days Off Work: {formData.daysOffWork || "_______"}</Text>
-      <Text style={styles.text}>Light Duties/Reduced Hours: {formData.daysLightDuties || "_______"} days</Text>
-      <Text style={styles.text}>Work Difficulties: {formData.workDifficulties || "_______"}</Text>
-      <Text style={styles.text}>Current Work Status: {
-        formData.currentWorkStatus === "1" ? "Returned to normal duties" :
-        formData.currentWorkStatus === "2" ? "On light duties" :
-        formData.currentWorkStatus === "3" ? "Still off work" : "_______"
-      }</Text>
-    </View>
+  const getWorkTypeText = (value: string) => {
+    return value === "1" ? "Full Time" : value === "2" ? "Part Time" : "Not specified";
+  };
 
-    {/* Sleep Impact */}
-    <View style={styles.subsection}>
-      <Text style={styles.subtitle}>2. Sleep Disturbance</Text>
-      <Text style={styles.text}>Present: {formData.sleepDisturbance === "1" ? "Yes" : "No"}</Text>
-      {formData.sleepDisturbance === "1" && (
-        <>
-          <Text style={styles.text}>Nature of Disturbance: {formData.sleepDisturbanceDetails || "_______"}</Text>
-          <Text style={styles.text}>Duration: {formData.sleepDisturbanceDuration || "_______"} days</Text>
-          <Text style={styles.text}>Current Status: {
-            formData.sleepDisturbanceStatus === "1" ? "Resolved" :
-            formData.sleepDisturbanceStatus === "2" ? "Improving" :
-            formData.sleepDisturbanceStatus === "3" ? "Unchanged" : "_______"
-          }</Text>
-        </>
-      )}
-    </View>
+  return (
+    <View style={styles.section}>
+      <Text style={styles.subtitle}>Employment Position/Education</Text>
+      <Text style={styles.text}>Occupation: {formData.occupation || "Not specified"}</Text>
+      <Text style={styles.text}>Work Type: {getWorkTypeText(formData.workType)}</Text>
+      <Text style={styles.text}>Time taken off work: {formData.daysOffWork || "0"} Days</Text>
+      <Text style={styles.text}>Light duties: {formData.daysLightDuties || "0"} Days</Text>
+      <Text style={styles.text}>Work Difficulties: {formData.workDifficulties || "None reported"}</Text>
+      <Text style={styles.text}>Employment prospects in the open job market would be unaffected because of the injuries.</Text>
 
-    {/* Domestic Life Impact */}
-    <View style={styles.subsection}>
-      <Text style={styles.subtitle}>3. Effect on Domestic Living</Text>
-      <Text style={styles.text}>Present: {formData.effectOnDomesticLiving === "1" ? "Yes" : "No"}</Text>
-      {formData.effectOnDomesticLiving === "1" && (
-        <>
-          <Text style={styles.text}>Activities Affected: {formData.domesticLivingDetails || "_______"}</Text>
-          <Text style={styles.text}>Duration of Impact: {formData.domesticLivingDuration || "_______"} days</Text>
-          <Text style={styles.text}>Current Status: {
-            formData.domesticLivingStatus === "1" ? "Resolved" :
-            formData.domesticLivingStatus === "2" ? "Improving" :
-            formData.domesticLivingStatus === "3" ? "Unchanged" : "_______"
-          }</Text>
-        </>
-      )}
-    </View>
+      <View style={styles.subsection}>
+        <Text style={styles.subtitle}>Home Circumstances</Text>
+        <Text style={styles.text}>Claimant lives with: {getLivingWithText(formData.livingWith)}</Text>
+        <Text style={styles.text}>Number of Children at home: {formData.childrenCount || "0"}</Text>
+      </View>
 
-    {/* Sport & Leisure Impact */}
-    <View style={styles.subsection}>
-      <Text style={styles.subtitle}>4. Effect on Sport & Leisure</Text>
-      <Text style={styles.text}>Present: {formData.effectOnSportLeisure === "1" ? "Yes" : "No"}</Text>
-      {formData.effectOnSportLeisure === "1" && (
-        <>
-          <Text style={styles.text}>Activities Affected: {formData.sportLeisureDetails || "_______"}</Text>
-          <Text style={styles.text}>Duration of Impact: {formData.sportLeisureDuration || "_______"} days</Text>
-          <Text style={styles.text}>Current Status: {
-            formData.sportLeisureStatus === "1" ? "Resolved" :
-            formData.sportLeisureStatus === "2" ? "Improving" :
-            formData.sportLeisureStatus === "3" ? "Unchanged" : "_______"
-          }</Text>
-        </>
-      )}
-    </View>
+      <View style={styles.subsection}>
+        <Text style={styles.subtitle}>Effects on Daily Life</Text>
+        
+        {formData.effectOnDomesticLiving === "1" ? (
+          <Text style={styles.text}>
+            Effects on Domestic Lifestyle: The claimant's ability to perform domestic activities has been mildly restricted. 
+            {formData.domesticLivingDetails && `Details: ${formData.domesticLivingDetails}`}
+          </Text>
+        ) : (
+          <Text style={styles.text}>No effects on domestic lifestyle reported.</Text>
+        )}
 
-    {/* Social Life Impact */}
-    <View style={styles.subsection}>
-      <Text style={styles.subtitle}>5. Effect on Social Life</Text>
-      <Text style={styles.text}>Present: {formData.effectOnSocialLife === "1" ? "Yes" : "No"}</Text>
-      {formData.effectOnSocialLife === "1" && (
-        <>
-          <Text style={styles.text}>Activities Affected: {formData.socialLifeDetails || "_______"}</Text>
-          <Text style={styles.text}>Duration of Impact: {formData.socialLifeDuration || "_______"} days</Text>
-          <Text style={styles.text}>Current Status: {
-            formData.socialLifeStatus === "1" ? "Resolved" :
-            formData.socialLifeStatus === "2" ? "Improving" :
-            formData.socialLifeStatus === "3" ? "Unchanged" : "_______"
-          }</Text>
-        </>
-      )}
+        {formData.effectOnSportLeisure === "1" ? (
+          <Text style={styles.text}>
+            Effects on Social and Leisure: The claimant's ability to participate in sport & leisure activities is mildly restricted due to pains.
+            {formData.sportLeisureDetails && `Details: ${formData.sportLeisureDetails}`}
+          </Text>
+        ) : (
+          <Text style={styles.text}>No effects on social and leisure activities reported.</Text>
+        )}
+
+        {formData.sleepDisturbance === "1" ? (
+          <Text style={styles.text}>
+            Sleep Disturbance: {formData.sleepDisturbanceDetails || "Present but no details provided"}
+          </Text>
+        ) : (
+          <Text style={styles.text}>No sleep disturbance reported.</Text>
+        )}
+      </View>
+
+      <View style={styles.subsection}>
+        <Text style={styles.subtitle}>Psychological Effects</Text>
+        <Text style={styles.text}>The claimant continues to drive but is more cautious and vigilant about driving.</Text>
+      </View>
     </View>
-  </View>
-);
+  );
+};
