@@ -52,7 +52,6 @@ const styles = StyleSheet.create({
 
 export const MedcoReport = ({ formData }: { formData: any }) => (
   <Document>
-    {/* Page 1: Personal Details */}
     <Page size="A4" style={styles.page}>
       <Text style={styles.title}>MEDCO MEDICAL REPORT</Text>
       <PersonalDetailsSection formData={formData} />
@@ -63,18 +62,15 @@ export const MedcoReport = ({ formData }: { formData: any }) => (
       />
     </Page>
     
-    {/* Page 2: Summary and Medical History */}
     <Page size="A4" style={styles.page}>
       <Text style={styles.subtitle}>Section 1: SUMMARY OF INJURIES</Text>
       <SummaryOfInjuriesSection formData={formData} />
 
-      <Text style={styles.subtitle}>Exceptional Circumstances:</Text>
       <Text style={styles.text}>
         Claimant has not claimed exceptional physical or exceptional psychological circumstances. 
         I would agree considering history symptoms and examination.
       </Text>
 
-      <Text style={styles.subtitle}>Past Medical History:</Text>
       <Text style={styles.text}>
         The claimant have Previous Medical conditions which are made worse because of this accident
       </Text>
@@ -100,7 +96,6 @@ export const MedcoReport = ({ formData }: { formData: any }) => (
       />
     </Page>
     
-    {/* Page 3: Injuries and Impact */}
     <Page size="A4" style={styles.page}>
       <Text style={styles.subtitle}>Section 5: Injuries/Symptoms and Present Position</Text>
       <InjuriesAndSymptomsSection formData={formData} />
@@ -149,7 +144,6 @@ export const MedcoReport = ({ formData }: { formData: any }) => (
       />
     </Page>
 
-    {/* Page 4: Additional Information and Declaration */}
     <Page size="A4" style={styles.page}>
       <MedicalRecordsSection />
       <CaseClassificationSection />
