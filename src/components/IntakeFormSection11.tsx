@@ -8,12 +8,26 @@ import {
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
+import { useState } from "react";
 
 export function IntakeFormSection11({ form }: { form: any }) {
+  const [showOtherWorkDifficulties, setShowOtherWorkDifficulties] = useState(false);
   const sleepDisturbance = form.watch("sleepDisturbance");
   const effectOnDomesticLiving = form.watch("effectOnDomesticLiving");
   const effectOnSportLeisure = form.watch("effectOnSportLeisure");
   const effectOnSocialLife = form.watch("effectOnSocialLife");
+  const workDifficulties = form.watch("workDifficulties") || [];
+
+  const workDifficultyOptions = [
+    { id: "sitting", label: "Sitting for long periods" },
+    { id: "standing", label: "Standing for long periods" },
+    { id: "lifting", label: "Lifting heavy objects" },
+    { id: "bending", label: "Bending or twisting" },
+    { id: "typing", label: "Typing/Computer work" },
+    { id: "concentration", label: "Concentration" },
+    { id: "driving", label: "Driving" },
+    { id: "other", label: "Other" },
+  ];
 
   return (
     <div className="space-y-4">
@@ -53,13 +67,45 @@ export function IntakeFormSection11({ form }: { form: any }) {
         render={({ field }) => (
           <FormItem>
             <FormLabel>What things are hard to do at work?</FormLabel>
-            <FormControl>
-              <Textarea placeholder="Enter details of work difficulties" {...field} />
-            </FormControl>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {workDifficultyOptions.map((option) => (
+                <div key={option.id} className="flex items-center space-x-2">
+                  <Checkbox
+                    checked={field.value?.includes(option.id)}
+                    onCheckedChange={(checked) => {
+                      const updatedValue = checked
+                        ? [...(field.value || []), option.id]
+                        : (field.value || []).filter((id: string) => id !== option.id);
+                      field.onChange(updatedValue);
+                      if (option.id === "other") {
+                        setShowOtherWorkDifficulties(checked);
+                      }
+                    }}
+                  />
+                  <label className="text-sm">{option.label}</label>
+                </div>
+              ))}
+            </div>
             <FormMessage />
           </FormItem>
         )}
       />
+
+      {showOtherWorkDifficulties && (
+        <FormField
+          control={form.control}
+          name="otherWorkDifficulties"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Please specify other work difficulties</FormLabel>
+              <FormControl>
+                <Textarea placeholder="Enter other work difficulties" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      )}
 
       <FormField
         control={form.control}
