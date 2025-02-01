@@ -5,17 +5,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 
 export function IntakeFormSection7({ form }: { form: any }) {
+  const travelAnxiety = form.watch("travelAnxiety");
+
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold mb-4">Travel Anxiety Information</h2>
@@ -24,209 +20,285 @@ export function IntakeFormSection7({ form }: { form: any }) {
         control={form.control}
         name="travelAnxiety"
         render={({ field }) => (
-          <FormItem>
-            <FormLabel>Did you experience Travel Anxiety after the accident?</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select yes or no" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="1">Yes</SelectItem>
-                <SelectItem value="2">No</SelectItem>
-              </SelectContent>
-            </Select>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={form.control}
-        name="currentlyDriving"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Are you back to driving currently?</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select yes or no" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="1">Yes</SelectItem>
-                <SelectItem value="2">No</SelectItem>
-              </SelectContent>
-            </Select>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={form.control}
-        name="moreCautious"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Are you more cautious driver after the accident?</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select yes or no" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="1">Yes</SelectItem>
-                <SelectItem value="2">No</SelectItem>
-              </SelectContent>
-            </Select>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={form.control}
-        name="checkingMirrors"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Do you keep looking in the rear mirror or over the shoulders and worry of being hit again?</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select yes or no" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="1">Yes</SelectItem>
-                <SelectItem value="2">No</SelectItem>
-              </SelectContent>
-            </Select>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={form.control}
-        name="preventedDriving"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Has it prevented you from driving for leisure and work?</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select yes or no" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="1">Yes</SelectItem>
-                <SelectItem value="2">No</SelectItem>
-              </SelectContent>
-            </Select>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={form.control}
-        name="anxietyStart"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>When did your travel anxiety start?</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select when anxiety started" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="1">Same day</SelectItem>
-                <SelectItem value="2">Next Day</SelectItem>
-                <SelectItem value="3">Few days Later</SelectItem>
-              </SelectContent>
-            </Select>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={form.control}
-        name="anxietyInitialSeverity"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Initial Severity of travel anxiety</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select initial severity" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="1">Mild</SelectItem>
-                <SelectItem value="2">Moderate</SelectItem>
-                <SelectItem value="3">Severe</SelectItem>
-              </SelectContent>
-            </Select>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={form.control}
-        name="anxietyCurrentSeverity"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Current Severity of travel anxiety</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select current severity" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="1">Mild</SelectItem>
-                <SelectItem value="2">Moderate</SelectItem>
-                <SelectItem value="3">Severe</SelectItem>
-                <SelectItem value="4">Resolved</SelectItem>
-              </SelectContent>
-            </Select>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={form.control}
-        name="anxietyResolveDays"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>If resolved, how many days did it take to resolve?</FormLabel>
+          <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
             <FormControl>
-              <Input type="number" placeholder="Enter number of days" {...field} />
+              <Checkbox
+                checked={field.value === "1"}
+                onCheckedChange={(checked) => {
+                  field.onChange(checked ? "1" : "2");
+                }}
+              />
             </FormControl>
+            <div className="space-y-1 leading-none">
+              <FormLabel>Did you experience Travel Anxiety after the accident?</FormLabel>
+            </div>
             <FormMessage />
           </FormItem>
         )}
       />
 
-      <FormField
-        control={form.control}
-        name="anxietyPastHistory"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Past Medical History of anxiety before the accident</FormLabel>
-            <FormControl>
-              <Textarea placeholder="Enter past medical history" {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+      {travelAnxiety === "1" && (
+        <>
+          <FormField
+            control={form.control}
+            name="currentlyDriving"
+            render={({ field }) => (
+              <FormItem className="space-y-3">
+                <FormLabel>Are you back to driving currently?</FormLabel>
+                <FormControl>
+                  <div className="flex flex-col space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "1"}
+                        onCheckedChange={() => field.onChange("1")}
+                      />
+                      <label>Yes</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "2"}
+                        onCheckedChange={() => field.onChange("2")}
+                      />
+                      <label>No</label>
+                    </div>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="moreCautious"
+            render={({ field }) => (
+              <FormItem className="space-y-3">
+                <FormLabel>Are you more cautious driver after the accident?</FormLabel>
+                <FormControl>
+                  <div className="flex flex-col space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "1"}
+                        onCheckedChange={() => field.onChange("1")}
+                      />
+                      <label>Yes</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "2"}
+                        onCheckedChange={() => field.onChange("2")}
+                      />
+                      <label>No</label>
+                    </div>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="checkingMirrors"
+            render={({ field }) => (
+              <FormItem className="space-y-3">
+                <FormLabel>Do you keep looking in the rear mirror or over the shoulders and worry of being hit again?</FormLabel>
+                <FormControl>
+                  <div className="flex flex-col space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "1"}
+                        onCheckedChange={() => field.onChange("1")}
+                      />
+                      <label>Yes</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "2"}
+                        onCheckedChange={() => field.onChange("2")}
+                      />
+                      <label>No</label>
+                    </div>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="preventedDriving"
+            render={({ field }) => (
+              <FormItem className="space-y-3">
+                <FormLabel>Has it prevented you from driving for leisure and work?</FormLabel>
+                <FormControl>
+                  <div className="flex flex-col space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "1"}
+                        onCheckedChange={() => field.onChange("1")}
+                      />
+                      <label>Yes</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "2"}
+                        onCheckedChange={() => field.onChange("2")}
+                      />
+                      <label>No</label>
+                    </div>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="anxietyStart"
+            render={({ field }) => (
+              <FormItem className="space-y-3">
+                <FormLabel>When did your travel anxiety start?</FormLabel>
+                <FormControl>
+                  <div className="flex flex-col space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "1"}
+                        onCheckedChange={() => field.onChange("1")}
+                      />
+                      <label>Same day</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "2"}
+                        onCheckedChange={() => field.onChange("2")}
+                      />
+                      <label>Next Day</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "3"}
+                        onCheckedChange={() => field.onChange("3")}
+                      />
+                      <label>Few days Later</label>
+                    </div>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="anxietyInitialSeverity"
+            render={({ field }) => (
+              <FormItem className="space-y-3">
+                <FormLabel>Initial Severity of travel anxiety</FormLabel>
+                <FormControl>
+                  <div className="flex flex-col space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "1"}
+                        onCheckedChange={() => field.onChange("1")}
+                      />
+                      <label>Mild</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "2"}
+                        onCheckedChange={() => field.onChange("2")}
+                      />
+                      <label>Moderate</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "3"}
+                        onCheckedChange={() => field.onChange("3")}
+                      />
+                      <label>Severe</label>
+                    </div>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="anxietyCurrentSeverity"
+            render={({ field }) => (
+              <FormItem className="space-y-3">
+                <FormLabel>Current Severity of travel anxiety</FormLabel>
+                <FormControl>
+                  <div className="flex flex-col space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "1"}
+                        onCheckedChange={() => field.onChange("1")}
+                      />
+                      <label>Mild</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "2"}
+                        onCheckedChange={() => field.onChange("2")}
+                      />
+                      <label>Moderate</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "3"}
+                        onCheckedChange={() => field.onChange("3")}
+                      />
+                      <label>Severe</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "4"}
+                        onCheckedChange={() => field.onChange("4")}
+                      />
+                      <label>Resolved</label>
+                    </div>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="anxietyResolveDays"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>If resolved, how many days did it take to resolve?</FormLabel>
+                <FormControl>
+                  <Input type="number" placeholder="Enter number of days" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="anxietyPastHistory"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Past Medical History of anxiety before the accident</FormLabel>
+                <FormControl>
+                  <Textarea placeholder="Enter past medical history" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </>
+      )}
     </div>
   );
 }
