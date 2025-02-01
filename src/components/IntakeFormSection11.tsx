@@ -12,11 +12,13 @@ import { useState } from "react";
 
 export function IntakeFormSection11({ form }: { form: any }) {
   const [showOtherWorkDifficulties, setShowOtherWorkDifficulties] = useState(false);
+  const [showOtherSleepDisturbance, setShowOtherSleepDisturbance] = useState(false);
   const sleepDisturbance = form.watch("sleepDisturbance");
   const effectOnDomesticLiving = form.watch("effectOnDomesticLiving");
   const effectOnSportLeisure = form.watch("effectOnSportLeisure");
   const effectOnSocialLife = form.watch("effectOnSocialLife");
   const workDifficulties = form.watch("workDifficulties") || [];
+  const sleepDisturbances = form.watch("sleepDisturbances") || [];
 
   const workDifficultyOptions = [
     { id: "sitting", label: "Sitting for long periods" },
@@ -26,6 +28,16 @@ export function IntakeFormSection11({ form }: { form: any }) {
     { id: "typing", label: "Typing/Computer work" },
     { id: "concentration", label: "Concentration" },
     { id: "driving", label: "Driving" },
+    { id: "other", label: "Other" },
+  ];
+
+  const sleepDisturbanceOptions = [
+    { id: "fallingAsleep", label: "Difficulty falling asleep" },
+    { id: "stayingAsleep", label: "Difficulty staying asleep" },
+    { id: "earlyWaking", label: "Early morning waking" },
+    { id: "nightmares", label: "Nightmares" },
+    { id: "painDisturbs", label: "Pain disturbs sleep" },
+    { id: "restlessness", label: "Restlessness" },
     { id: "other", label: "Other" },
   ];
 
@@ -137,12 +149,50 @@ export function IntakeFormSection11({ form }: { form: any }) {
       {sleepDisturbance === "1" && (
         <FormField
           control={form.control}
-          name="sleepDisturbanceDetails"
+          name="sleepDisturbances"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Details of sleep disturbance</FormLabel>
+              <FormLabel>What type of sleep disturbances do you experience?</FormLabel>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {sleepDisturbanceOptions.map((option) => (
+                  <div key={option.id} className="flex items-center space-x-2">
+                    <Checkbox
+                      checked={field.value?.includes(option.id)}
+                      onCheckedChange={(checked) => {
+                        if (checked) {
+                          const updatedValue = [...(field.value || []), option.id];
+                          field.onChange(updatedValue);
+                          if (option.id === "other") {
+                            setShowOtherSleepDisturbance(true);
+                          }
+                        } else {
+                          const updatedValue = (field.value || []).filter((id: string) => id !== option.id);
+                          field.onChange(updatedValue);
+                          if (option.id === "other") {
+                            setShowOtherSleepDisturbance(false);
+                          }
+                        }
+                      }}
+                    />
+                    <label className="text-sm">{option.label}</label>
+                  </div>
+                ))}
+              </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      )}
+
+      {showOtherSleepDisturbance && (
+        <FormField
+          control={form.control}
+          name="otherSleepDisturbances"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Please specify other sleep disturbances</FormLabel>
               <FormControl>
-                <Textarea placeholder="Enter details of sleep disturbance" {...field} />
+                <Textarea placeholder="Enter other sleep disturbances" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
