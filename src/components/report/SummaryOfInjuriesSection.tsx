@@ -75,17 +75,6 @@ const styles = StyleSheet.create({
 
 export const SummaryOfInjuriesSection = ({ formData }: { formData: any }) => (
   <View style={styles.section}>
-    <Text style={styles.heading}>Exceptional Circumstances:</Text>
-    <Text style={styles.paragraph}>
-      Claimant has not claimed exceptional physical or exceptional psychological circumstances. 
-      I would agree considering history symptoms and examination.
-    </Text>
-
-    <Text style={styles.heading}>Past Medical History:</Text>
-    <Text style={styles.paragraph}>
-      The claimant have Previous Medical conditions which are made worse because of this accident
-    </Text>
-
     <View style={styles.table}>
       <Text style={styles.tableTitle}>SUMMARY OF INJURIES:</Text>
       
