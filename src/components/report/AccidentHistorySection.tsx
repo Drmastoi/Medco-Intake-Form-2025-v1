@@ -30,10 +30,10 @@ export const AccidentHistorySection = ({ formData }: { formData: any }) => {
 
   const getPosition = (position: string) => {
     switch (position) {
-      case "1": return "driver";
-      case "2": return "front passenger";
-      case "3": return "back passenger";
-      default: return "unspecified position";
+      case "1": return "driving the vehicle";
+      case "2": return "seated in the front passenger seat";
+      case "3": return "seated in the back of the vehicle";
+      default: return "in an unspecified position";
     }
   };
 
@@ -41,28 +41,23 @@ export const AccidentHistorySection = ({ formData }: { formData: any }) => {
     <View style={styles.section}>
       <Text style={styles.subtitle}>History of the Incident in Question</Text>
       <Text style={styles.text}>
-        {`The claimant was involved in a road traffic accident on ${formatDate(formData.accidentDate)}. 
-        The incident occurred during the ${getTimeOfDay(formData.accidentTime)} when the claimant was 
-        the ${getPosition(formData.vehiclePosition)} of the vehicle.`}
+        {`On ${formatDate(formData.accidentDate)}, during the ${getTimeOfDay(formData.accidentTime)}, 
+        the claimant was involved in a road traffic incident while ${getPosition(formData.vehiclePosition)}. 
+        At the time of the incident, they were traveling in a ${formData.vehicleType || 'vehicle'} on a 
+        ${formData.roadType || 'road'} when their vehicle was struck from the 
+        ${formData.impactLocation || 'rear'} by a ${formData.otherVehicleType || 'vehicle'}.`}
       </Text>
       
       <Text style={styles.text}>
-        {`The claimant was traveling in a ${formData.vehicleType || 'car'}. 
-        At the time of the accident, the vehicle was ${formData.vehicleMovement || 'moving'} on a 
-        ${formData.roadType || 'main road'}. The impact to the claimant's vehicle was from the 
-        ${formData.impactLocation || 'rear'}.`}
+        {`The impact caused the claimant to be jolted ${formData.joltDirection || 'forward and backward'}. 
+        ${formData.airbagsDeployed ? 'The airbags were deployed during the collision.' : 'The airbags did not deploy during the collision.'} 
+        The claimant was wearing a seatbelt and the vehicle was equipped with a fitted headrest at the time of the incident.`}
       </Text>
       
       <Text style={styles.text}>
-        {`The other vehicle involved was a ${formData.otherVehicleType || 'car'}. 
-        During the collision, the claimant was jolted ${formData.joltDirection || 'forward'}. 
-        ${formData.airbagsDeployed ? 'The airbags were deployed.' : 'The airbags did not deploy.'}`}
-      </Text>
-      
-      <Text style={styles.text}>
-        {`The claimant was wearing a seatbelt at the time of the accident, and the vehicle was equipped 
-        with a fitted headrest. ${formData.exitAssistance ? 'The claimant required assistance to exit the vehicle.' 
-        : 'The claimant was able to exit the vehicle without assistance.'}`}
+        {`Following the collision, ${formData.exitAssistance === "1" ? 
+          'the claimant required assistance to exit the vehicle due to their injuries.' : 
+          'the claimant was able to exit the vehicle independently.'}`}
       </Text>
     </View>
   );
