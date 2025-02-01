@@ -13,12 +13,14 @@ import { useState } from "react";
 export function IntakeFormSection11({ form }: { form: any }) {
   const [showOtherWorkDifficulties, setShowOtherWorkDifficulties] = useState(false);
   const [showOtherSleepDisturbance, setShowOtherSleepDisturbance] = useState(false);
+  const [showOtherDomesticEffect, setShowOtherDomesticEffect] = useState(false);
   const sleepDisturbance = form.watch("sleepDisturbance");
   const effectOnDomesticLiving = form.watch("effectOnDomesticLiving");
   const effectOnSportLeisure = form.watch("effectOnSportLeisure");
   const effectOnSocialLife = form.watch("effectOnSocialLife");
   const workDifficulties = form.watch("workDifficulties") || [];
   const sleepDisturbances = form.watch("sleepDisturbances") || [];
+  const domesticEffects = form.watch("domesticEffects") || [];
 
   const workDifficultyOptions = [
     { id: "sitting", label: "Sitting for long periods" },
@@ -38,6 +40,17 @@ export function IntakeFormSection11({ form }: { form: any }) {
     { id: "nightmares", label: "Nightmares" },
     { id: "painDisturbs", label: "Pain disturbs sleep" },
     { id: "restlessness", label: "Restlessness" },
+    { id: "other", label: "Other" },
+  ];
+
+  const domesticEffectOptions = [
+    { id: "cleaning", label: "House cleaning" },
+    { id: "cooking", label: "Cooking meals" },
+    { id: "laundry", label: "Doing laundry" },
+    { id: "shopping", label: "Grocery shopping" },
+    { id: "childcare", label: "Childcare duties" },
+    { id: "gardening", label: "Gardening/yard work" },
+    { id: "petCare", label: "Pet care" },
     { id: "other", label: "Other" },
   ];
 
@@ -224,12 +237,50 @@ export function IntakeFormSection11({ form }: { form: any }) {
       {effectOnDomesticLiving === "1" && (
         <FormField
           control={form.control}
-          name="domesticLivingDetails"
+          name="domesticEffects"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Details of effect on domestic living</FormLabel>
+              <FormLabel>What domestic activities are affected?</FormLabel>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {domesticEffectOptions.map((option) => (
+                  <div key={option.id} className="flex items-center space-x-2">
+                    <Checkbox
+                      checked={field.value?.includes(option.id)}
+                      onCheckedChange={(checked) => {
+                        if (checked) {
+                          const updatedValue = [...(field.value || []), option.id];
+                          field.onChange(updatedValue);
+                          if (option.id === "other") {
+                            setShowOtherDomesticEffect(true);
+                          }
+                        } else {
+                          const updatedValue = (field.value || []).filter((id: string) => id !== option.id);
+                          field.onChange(updatedValue);
+                          if (option.id === "other") {
+                            setShowOtherDomesticEffect(false);
+                          }
+                        }
+                      }}
+                    />
+                    <label className="text-sm">{option.label}</label>
+                  </div>
+                ))}
+              </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      )}
+
+      {showOtherDomesticEffect && (
+        <FormField
+          control={form.control}
+          name="otherDomesticEffects"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Please specify other domestic activities affected</FormLabel>
               <FormControl>
-                <Textarea placeholder="Enter details" {...field} />
+                <Textarea placeholder="Enter other domestic activities affected" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
