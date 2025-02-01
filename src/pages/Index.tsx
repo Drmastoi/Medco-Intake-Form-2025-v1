@@ -126,12 +126,12 @@ export default function Index() {
       <h1 className="text-2xl font-bold mb-8">Medical Intake Form</h1>
       
       <Tabs.Root value={currentSection.toString()} onValueChange={handleTabChange} className="mb-6">
-        <Tabs.List className="grid grid-cols-7 lg:grid-cols-13 h-auto gap-2">
+        <Tabs.List className="grid grid-cols-7 lg:grid-cols-13 h-auto gap-1 max-w-[70%] mx-auto">
           {Array.from({ length: totalSections + 1 }, (_, i) => i + 1).map((section) => (
             <Tabs.Trigger
               key={section}
               value={section.toString()}
-              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-4 py-2 rounded-md"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-2 py-1 text-xs rounded-md"
             >
               {section === 13 ? "Summary" : `${section}`}
             </Tabs.Trigger>
