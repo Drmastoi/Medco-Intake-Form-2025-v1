@@ -12,6 +12,7 @@ import { useState } from "react";
 
 export function IntakeFormSection10({ form }: { form: any }) {
   const [showOtherTreatmentField, setShowOtherTreatmentField] = useState(false);
+  const [showHospitalOtherField, setShowHospitalOtherField] = useState(false);
   const sceneOfAccidentTreatment = form.watch("sceneOfAccidentTreatment");
   const wentToAE = form.watch("wentToAE");
   const wentToWalkInGP = form.watch("wentToWalkInGP");
@@ -183,39 +184,93 @@ export function IntakeFormSection10({ form }: { form: any }) {
                   <div className="flex flex-col space-y-2">
                     <div className="flex items-center space-x-2">
                       <Checkbox
-                        checked={field.value === "1"}
-                        onCheckedChange={() => field.onChange("1")}
+                        checked={field.value?.includes("none")}
+                        onCheckedChange={(checked) => {
+                          const currentValue = field.value || [];
+                          const newValue = checked
+                            ? [...currentValue, "none"]
+                            : currentValue.filter((v: string) => v !== "none");
+                          field.onChange(newValue);
+                        }}
                       />
                       <label>None</label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Checkbox
-                        checked={field.value === "2"}
-                        onCheckedChange={() => field.onChange("2")}
+                        checked={field.value?.includes("xray")}
+                        onCheckedChange={(checked) => {
+                          const currentValue = field.value || [];
+                          const newValue = checked
+                            ? [...currentValue, "xray"]
+                            : currentValue.filter((v: string) => v !== "xray");
+                          field.onChange(newValue);
+                        }}
                       />
                       <label>X-ray</label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Checkbox
-                        checked={field.value === "3"}
-                        onCheckedChange={() => field.onChange("3")}
+                        checked={field.value?.includes("ctScan")}
+                        onCheckedChange={(checked) => {
+                          const currentValue = field.value || [];
+                          const newValue = checked
+                            ? [...currentValue, "ctScan"]
+                            : currentValue.filter((v: string) => v !== "ctScan");
+                          field.onChange(newValue);
+                        }}
                       />
                       <label>CT Scan</label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Checkbox
-                        checked={field.value === "4"}
-                        onCheckedChange={() => field.onChange("4")}
+                        checked={field.value?.includes("bandage")}
+                        onCheckedChange={(checked) => {
+                          const currentValue = field.value || [];
+                          const newValue = checked
+                            ? [...currentValue, "bandage"]
+                            : currentValue.filter((v: string) => v !== "bandage");
+                          field.onChange(newValue);
+                        }}
                       />
                       <label>Bandage</label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Checkbox
-                        checked={field.value === "5"}
-                        onCheckedChange={() => field.onChange("5")}
+                        checked={field.value?.includes("neckCollar")}
+                        onCheckedChange={(checked) => {
+                          const currentValue = field.value || [];
+                          const newValue = checked
+                            ? [...currentValue, "neckCollar"]
+                            : currentValue.filter((v: string) => v !== "neckCollar");
+                          field.onChange(newValue);
+                        }}
                       />
                       <label>Neck Collar</label>
                     </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value?.includes("other")}
+                        onCheckedChange={(checked) => {
+                          setShowHospitalOtherField(checked === true);
+                          const currentValue = field.value || [];
+                          const newValue = checked
+                            ? [...currentValue, "other"]
+                            : currentValue.filter((v: string) => v !== "other");
+                          field.onChange(newValue);
+                        }}
+                      />
+                      <label>Other</label>
+                    </div>
+                    {showHospitalOtherField && (
+                      <Input 
+                        placeholder="Please specify other treatment"
+                        className="ml-6 mt-2"
+                        onChange={(e) => {
+                          const currentValue = field.value || [];
+                          field.onChange([...currentValue, e.target.value]);
+                        }}
+                      />
+                    )}
                   </div>
                 </FormControl>
                 <FormMessage />
