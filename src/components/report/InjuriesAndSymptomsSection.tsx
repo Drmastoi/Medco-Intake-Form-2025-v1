@@ -67,8 +67,6 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
 
   return (
     <View style={styles.section}>
-      <Text style={styles.heading}>Injuries/Symptoms and Present Position Reported by Claimant</Text>
-
       {formData.neckPain === "1" && (
         <View>
           <Text style={styles.subheading}>NECK PAIN</Text>
