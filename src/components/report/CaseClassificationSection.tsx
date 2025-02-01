@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 
 export const CaseClassificationSection = () => (
   <View style={styles.section}>
-    <Text style={styles.heading}>CASE CLASSIFICATION AND DECLARATION</Text>
+    <Text style={styles.heading}>3. CASE CLASSIFICATION AND DECLARATION</Text>
     <Text style={styles.text}>Seatbelts: Was the claimant wearing a seat belt? Yes</Text>
     <Text style={styles.text}>Soft-tissue Injury Claim: Yes</Text>
     <Text style={styles.text}>Was the Claimant an occupant of a motor vehicle? Yes</Text>
