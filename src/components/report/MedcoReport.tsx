@@ -1,5 +1,6 @@
 import { Document, Page, Text, StyleSheet } from '@react-pdf/renderer';
 import { PersonalDetailsSection } from './PersonalDetailsSection';
+import { SummaryOfInjuriesSection } from './SummaryOfInjuriesSection';
 import { TreatmentDetailsSection } from './TreatmentDetailsSection';
 import { ClinicalExaminationSection } from './ClinicalExaminationSection';
 import { PreviousMedicalHistorySection } from './PreviousMedicalHistorySection';
@@ -40,8 +41,8 @@ export const MedcoReport = ({ formData }: { formData: any }) => (
     </Page>
     
     <Page size="A4" style={styles.page}>
+      <SummaryOfInjuriesSection formData={formData} />
       <TreatmentDetailsSection formData={formData} />
-      <ClinicalExaminationSection formData={formData} />
       <Text 
         style={styles.pageNumber} 
         render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} 
@@ -50,6 +51,7 @@ export const MedcoReport = ({ formData }: { formData: any }) => (
     </Page>
     
     <Page size="A4" style={styles.page}>
+      <ClinicalExaminationSection formData={formData} />
       <PreviousMedicalHistorySection formData={formData} />
       <DailyLifeImpactSection formData={formData} />
       <AdditionalInformationSection formData={formData} />
