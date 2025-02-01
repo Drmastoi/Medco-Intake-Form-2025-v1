@@ -18,7 +18,7 @@ import { IntakeFormSummary } from "@/components/IntakeFormSummary";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import * as Tabs from "@radix-ui/react-tabs";
 
 const formSchema = z.object({
   // Section 1 - Personal Information
@@ -125,19 +125,19 @@ export default function Index() {
     <div className="container mx-auto py-10">
       <h1 className="text-2xl font-bold mb-8">Medical Intake Form</h1>
       
-      <Tabs value={currentSection.toString()} onValueChange={handleTabChange} className="mb-6">
-        <TabsList className="grid grid-cols-7 lg:grid-cols-13 h-auto gap-2">
+      <Tabs.Root value={currentSection.toString()} onValueChange={handleTabChange} className="mb-6">
+        <Tabs.List className="grid grid-cols-7 lg:grid-cols-13 h-auto gap-2">
           {Array.from({ length: totalSections + 1 }, (_, i) => i + 1).map((section) => (
-            <TabsTrigger
+            <Tabs.Trigger
               key={section}
               value={section.toString()}
-              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-4 py-2 rounded-md"
             >
               {section === 13 ? "Summary" : `${section}`}
-            </TabsTrigger>
+            </Tabs.Trigger>
           ))}
-        </TabsList>
-      </Tabs>
+        </Tabs.List>
+      </Tabs.Root>
       
       <div className="mb-6">
         <p className="text-sm text-muted-foreground">
