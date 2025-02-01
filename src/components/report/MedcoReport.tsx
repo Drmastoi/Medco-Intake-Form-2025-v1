@@ -80,7 +80,7 @@ export const MedcoReport = ({ formData }: { formData: any }) => (
       <Text style={styles.subtitle}>Section 2: History of the Incident</Text>
       <AccidentHistorySection formData={formData} />
       
-      <Text style={styles.subtitle}>Section 3: Treatment after the Accident</Text>
+      <Text style={styles.subtitle}>Section 3: Treatment Details</Text>
       <TreatmentDetailsSection formData={formData} />
       
       <Text 
@@ -91,7 +91,7 @@ export const MedcoReport = ({ formData }: { formData: any }) => (
     </Page>
     
     <Page size="A4" style={styles.page}>
-      <Text style={styles.subtitle}>Section 4: Injuries/Symptoms and Present Position</Text>
+      <Text style={styles.subtitle}>Section 4: Injuries and Symptoms</Text>
       <InjuriesAndSymptomsSection formData={formData} />
       
       <Text style={styles.subtitle}>Section 5: Employment Position/Education</Text>
