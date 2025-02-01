@@ -26,25 +26,8 @@ const styles = StyleSheet.create({
 });
 
 export const DailyLifeImpactSection = ({ formData }: { formData: any }) => {
-  const getLivingWithText = (value: string) => {
-    const livingWithMap: { [key: string]: string } = {
-      "1": "Wife",
-      "2": "Husband",
-      "3": "Partner",
-      "4": "Parents",
-      "5": "Alone"
-    };
-    return livingWithMap[value] || "Not specified";
-  };
-
-  const getWorkTypeText = (value: string) => {
-    return value === "1" ? "Full Time" : value === "2" ? "Part Time" : "Not specified";
-  };
-
   return (
-    <View style={styles.section}>
-      <Text style={styles.sectionTitle}>Effects on Daily Life</Text>
-      
+    <View style={styles.section}>      
       {formData.effectOnDomesticLiving === "1" ? (
         <Text style={styles.text}>
           Effects on Domestic Lifestyle: The claimant's ability to perform domestic activities has been mildly restricted. 
