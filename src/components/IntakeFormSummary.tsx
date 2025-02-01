@@ -1,6 +1,6 @@
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { PDFDownloadLink, Document, Page, Text, View, StyleSheet, BlobProvider } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet, BlobProvider } from '@react-pdf/renderer';
 import { ReactElement } from "react";
 
 const styles = StyleSheet.create({
@@ -32,35 +32,44 @@ const MedicalReport = ({ formData }: { formData: any }) => (
           {`The claimant ${formData.fullName || ''}, born on ${formData.dateOfBirth || ''}, was involved in a road traffic accident.`}
         </Text>
 
-        {/* Accident Information */}
-        <Text style={styles.text}>
-          {`The accident occurred on ${formData.accidentDate || ''} during the ${
-            formData.accidentTime === "1" ? "morning" :
-            formData.accidentTime === "2" ? "afternoon" :
-            formData.accidentTime === "3" ? "evening" : "night"
-          }. The claimant was the ${
-            formData.vehiclePosition === "1" ? "driver" :
-            formData.vehiclePosition === "2" ? "front passenger" : "back passenger"
-          } of the vehicle.`}
-        </Text>
-
-        {/* Neck Pain */}
+        {/* Neck Pain Section */}
         <Text style={styles.text}>
           {formData.neckPain === "1" 
-            ? "The claimant reports experiencing neck symptoms following the accident."
+            ? `The claimant reports experiencing neck symptoms following the accident. Additional details: ${formData.additionalInfo || 'No additional details provided'}`
             : "The claimant does not report any neck symptoms."}
         </Text>
 
-        {/* Travel Anxiety */}
+        {/* Shoulder Pain Section */}
+        <Text style={styles.text}>
+          {formData.shoulderPain === "1"
+            ? `The claimant reports shoulder pain on the ${
+                formData.shoulderSide === "1" ? "left side" :
+                formData.shoulderSide === "2" ? "right side" : "both sides"
+              }. The pain started ${
+                formData.shoulderPainStart === "1" ? "on the same day" :
+                formData.shoulderPainStart === "2" ? "the next day" : "a few days later"
+              }.`
+            : "The claimant does not report any shoulder symptoms."}
+        </Text>
+
+        {/* Back Pain Section */}
+        <Text style={styles.text}>
+          {formData.backPain === "1"
+            ? `The claimant reports back pain in the ${
+                formData.backLocation === "1" ? "upper back" :
+                formData.backLocation === "2" ? "middle back" :
+                formData.backLocation === "3" ? "lower back" : "entire back"
+              } region.`
+            : "The claimant does not report any back pain symptoms."}
+        </Text>
+
+        {/* Travel Anxiety Section */}
         <Text style={styles.text}>
           {formData.travelAnxiety === "1"
             ? `The claimant developed travel anxiety ${
                 formData.anxietyStart === "1" ? "on the same day" :
                 formData.anxietyStart === "2" ? "the next day" : "a few days later"
-              } after the accident. The initial severity was ${
-                formData.anxietyInitialSeverity === "1" ? "mild" :
-                formData.anxietyInitialSeverity === "2" ? "moderate" : "severe"
-              }.`
+              } after the accident.`
             : "The claimant does not report any travel anxiety."}
         </Text>
       </View>
@@ -81,38 +90,45 @@ export function IntakeFormSummary({ form }: { form: any }) {
           The claimant {formData.fullName}, born on {formData.dateOfBirth}, was involved in a road traffic accident.
         </p>
 
-        <h3>Accident Information</h3>
-        <p>
-          The accident occurred on {formData.accidentDate} during the {
-            formData.accidentTime === "1" ? "morning" :
-            formData.accidentTime === "2" ? "afternoon" :
-            formData.accidentTime === "3" ? "evening" : "night"
-          }. The claimant was the {
-            formData.vehiclePosition === "1" ? "driver" :
-            formData.vehiclePosition === "2" ? "front passenger" : "back passenger"
-          } of the vehicle.
-        </p>
-
         <h3>Medical Symptoms</h3>
+        
+        {/* Neck Pain Summary */}
         <p>
           {formData.neckPain === "1" 
-            ? "The claimant reports experiencing neck symptoms following the accident."
+            ? `The claimant reports experiencing neck symptoms following the accident. ${formData.additionalInfo || ''}`
             : "The claimant does not report any neck symptoms."}
         </p>
 
-        <h3>Travel Anxiety</h3>
-        {formData.travelAnxiety === "1" && (
+        {/* Shoulder Pain Summary */}
+        <p>
+          {formData.shoulderPain === "1"
+            ? `The claimant reports shoulder pain on the ${
+                formData.shoulderSide === "1" ? "left side" :
+                formData.shoulderSide === "2" ? "right side" : "both sides"
+              }.`
+            : "The claimant does not report any shoulder symptoms."}
+        </p>
+
+        {/* Back Pain Summary */}
+        <p>
+          {formData.backPain === "1"
+            ? `The claimant reports back pain in the ${
+                formData.backLocation === "1" ? "upper back" :
+                formData.backLocation === "2" ? "middle back" :
+                formData.backLocation === "3" ? "lower back" : "entire back"
+              } region.`
+            : "The claimant does not report any back pain symptoms."}
+        </p>
+
+        {/* Travel Anxiety Summary */}
+        {formData.travelAnxiety === "1" ? (
           <p>
             The claimant developed travel anxiety {
               formData.anxietyStart === "1" ? "on the same day" :
               formData.anxietyStart === "2" ? "the next day" : "a few days later"
-            } after the accident. The initial severity was {
-              formData.anxietyInitialSeverity === "1" ? "mild" :
-              formData.anxietyInitialSeverity === "2" ? "moderate" : "severe"
-            }.
+            } after the accident.
           </p>
-        )}
-        {formData.travelAnxiety === "2" && (
+        ) : (
           <p>The claimant does not report any travel anxiety.</p>
         )}
       </div>
