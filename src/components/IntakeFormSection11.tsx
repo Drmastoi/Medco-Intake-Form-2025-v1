@@ -73,12 +73,18 @@ export function IntakeFormSection11({ form }: { form: any }) {
                   <Checkbox
                     checked={field.value?.includes(option.id)}
                     onCheckedChange={(checked) => {
-                      const updatedValue = checked
-                        ? [...(field.value || []), option.id]
-                        : (field.value || []).filter((id: string) => id !== option.id);
-                      field.onChange(updatedValue);
-                      if (option.id === "other") {
-                        setShowOtherWorkDifficulties(checked);
+                      if (checked) {
+                        const updatedValue = [...(field.value || []), option.id];
+                        field.onChange(updatedValue);
+                        if (option.id === "other") {
+                          setShowOtherWorkDifficulties(true);
+                        }
+                      } else {
+                        const updatedValue = (field.value || []).filter((id: string) => id !== option.id);
+                        field.onChange(updatedValue);
+                        if (option.id === "other") {
+                          setShowOtherWorkDifficulties(false);
+                        }
                       }
                     }}
                   />
