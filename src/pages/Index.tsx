@@ -18,6 +18,7 @@ import { IntakeFormSummary } from "@/components/IntakeFormSummary";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const formSchema = z.object({
   // Section 1 - Personal Information
@@ -68,6 +69,7 @@ const formSchema = z.object({
 export default function Index() {
   const [currentSection, setCurrentSection] = useState(1);
   const { toast } = useToast();
+  const totalSections = 12;
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -115,11 +117,27 @@ export default function Index() {
     console.log(values);
   }
 
-  const totalSections = 12;
+  const handleTabChange = (value: string) => {
+    setCurrentSection(parseInt(value));
+  };
 
   return (
     <div className="container mx-auto py-10">
       <h1 className="text-2xl font-bold mb-8">Medical Intake Form</h1>
+      
+      <Tabs value={currentSection.toString()} onValueChange={handleTabChange} className="mb-6">
+        <TabsList className="grid grid-cols-7 lg:grid-cols-13 h-auto gap-2">
+          {Array.from({ length: totalSections + 1 }, (_, i) => i + 1).map((section) => (
+            <TabsTrigger
+              key={section}
+              value={section.toString()}
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+            >
+              {section === 13 ? "Summary" : `${section}`}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
       
       <div className="mb-6">
         <p className="text-sm text-muted-foreground">
