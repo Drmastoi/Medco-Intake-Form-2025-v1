@@ -14,37 +14,71 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     lineHeight: 1.4,
   },
+  paragraph: {
+    marginBottom: 10,
+  },
 });
+
+const formatList = (items: string[] = [], otherText?: string) => {
+  if (!items.length) return '';
+  const mainItems = items.filter(item => item !== 'other');
+  const formattedList = mainItems.join(', ');
+  return otherText ? `${formattedList}${mainItems.length ? ', and ' : ''}${otherText}` : formattedList;
+};
 
 export const DailyLifeSection = ({ formData }: { formData: any }) => (
   <View style={styles.section}>
     <Text style={styles.subtitle}>Impact on Daily Life</Text>
-    <Text style={styles.text}>Days off work: {formData.daysOffWork || "Claimant has not reported any days off work"}</Text>
-    <Text style={styles.text}>Days on light duties: {formData.daysLightDuties || "Claimant has not reported any light duties"}</Text>
-    <Text style={styles.text}>Work Difficulties: {formData.workDifficulties || "Claimant has not reported any work difficulties"}</Text>
 
-    {formData.sleepDisturbance === "1" ? (
-      <Text style={styles.text}>Sleep Disturbance: {formData.sleepDisturbanceDetails || "Yes, but no details provided"}</Text>
-    ) : (
-      <Text style={styles.text}>Claimant has not reported any sleep disturbance</Text>
+    <View style={styles.paragraph}>
+      <Text style={styles.text}>
+        {formData.daysOffWork ? 
+          `Following the accident, the claimant required ${formData.daysOffWork} days off work. ` :
+          "The claimant did not require any time off work. "}
+        {formData.daysLightDuties ? 
+          `They subsequently worked on light duties for ${formData.daysLightDuties} days. ` :
+          ""}
+      </Text>
+    </View>
+
+    {formData.workDifficulties?.length > 0 && (
+      <View style={styles.paragraph}>
+        <Text style={styles.text}>
+          The claimant reports experiencing difficulties at work with: {formatList(formData.workDifficulties, formData.otherWorkDifficulties)}.
+        </Text>
+      </View>
     )}
 
-    {formData.effectOnDomesticLiving === "1" ? (
-      <Text style={styles.text}>Effect on Domestic Living: {formData.domesticLivingDetails || "Yes, but no details provided"}</Text>
-    ) : (
-      <Text style={styles.text}>Claimant has not reported any effect on domestic living</Text>
+    {formData.sleepDisturbance === "1" && (
+      <View style={styles.paragraph}>
+        <Text style={styles.text}>
+          Sleep has been significantly affected. The claimant reports: {formatList(formData.sleepDisturbances, formData.otherSleepDisturbances)}.
+        </Text>
+      </View>
     )}
 
-    {formData.effectOnSportLeisure === "1" ? (
-      <Text style={styles.text}>Effect on Sport & Leisure: {formData.sportLeisureDetails || "Yes, but no details provided"}</Text>
-    ) : (
-      <Text style={styles.text}>Claimant has not reported any effect on sport and leisure activities</Text>
+    {formData.effectOnDomesticLiving === "1" && (
+      <View style={styles.paragraph}>
+        <Text style={styles.text}>
+          Daily domestic activities have been impacted, particularly: {formatList(formData.domesticEffects, formData.otherDomesticEffects)}.
+        </Text>
+      </View>
     )}
 
-    {formData.effectOnSocialLife === "1" ? (
-      <Text style={styles.text}>Effect on Social Life: {formData.socialLifeDetails || "Yes, but no details provided"}</Text>
-    ) : (
-      <Text style={styles.text}>Claimant has not reported any effect on social life</Text>
+    {formData.effectOnSportLeisure === "1" && (
+      <View style={styles.paragraph}>
+        <Text style={styles.text}>
+          Sport and leisure activities have been affected, specifically: {formatList(formData.sportLeisureEffects, formData.otherSportLeisureEffects)}.
+        </Text>
+      </View>
+    )}
+
+    {formData.effectOnSocialLife === "1" && (
+      <View style={styles.paragraph}>
+        <Text style={styles.text}>
+          Social activities have been impacted, particularly: {formatList(formData.socialLifeEffects, formData.otherSocialLifeEffects)}.
+        </Text>
+      </View>
     )}
   </View>
 );
