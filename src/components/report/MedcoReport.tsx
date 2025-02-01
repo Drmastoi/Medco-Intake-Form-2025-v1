@@ -18,6 +18,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  subtitle: {
+    fontSize: 12,
+    marginBottom: 8,
+    fontWeight: 'bold',
+  },
+  text: {
+    fontSize: 10,
+    marginBottom: 5,
+    lineHeight: 1.4,
+  },
   pageNumber: {
     position: 'absolute',
     bottom: 20,
