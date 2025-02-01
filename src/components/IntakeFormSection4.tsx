@@ -5,14 +5,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export function IntakeFormSection4({ form }: { form: any }) {
   const shoulderPain = form.watch("shoulderPain");
@@ -25,19 +19,18 @@ export function IntakeFormSection4({ form }: { form: any }) {
         control={form.control}
         name="shoulderPain"
         render={({ field }) => (
-          <FormItem>
-            <FormLabel>Did you get Any Shoulder Pain?</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select yes or no" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="1">Yes</SelectItem>
-                <SelectItem value="2">No</SelectItem>
-              </SelectContent>
-            </Select>
+          <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+            <FormControl>
+              <Checkbox
+                checked={field.value === "1"}
+                onCheckedChange={(checked) => {
+                  field.onChange(checked ? "1" : "2");
+                }}
+              />
+            </FormControl>
+            <div className="space-y-1 leading-none">
+              <FormLabel>Did you get Any Shoulder Pain?</FormLabel>
+            </div>
             <FormMessage />
           </FormItem>
         )}
@@ -49,20 +42,33 @@ export function IntakeFormSection4({ form }: { form: any }) {
             control={form.control}
             name="shoulderSide"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="space-y-3">
                 <FormLabel>Which side of shoulder?</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select shoulder side" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="1">Left</SelectItem>
-                    <SelectItem value="2">Right</SelectItem>
-                    <SelectItem value="3">Both</SelectItem>
-                  </SelectContent>
-                </Select>
+                <FormControl>
+                  <div className="flex flex-col space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "1"}
+                        onCheckedChange={() => field.onChange("1")}
+                      />
+                      <label>Left</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "2"}
+                        onCheckedChange={() => field.onChange("2")}
+                      />
+                      <label>Right</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "3"}
+                        onCheckedChange={() => field.onChange("3")}
+                      />
+                      <label>Both</label>
+                    </div>
+                  </div>
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
@@ -72,20 +78,33 @@ export function IntakeFormSection4({ form }: { form: any }) {
             control={form.control}
             name="shoulderPainStart"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="space-y-3">
                 <FormLabel>When did this pain start?</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select when pain started" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="1">Same day</SelectItem>
-                    <SelectItem value="2">Next Day</SelectItem>
-                    <SelectItem value="3">Few days Later</SelectItem>
-                  </SelectContent>
-                </Select>
+                <FormControl>
+                  <div className="flex flex-col space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "1"}
+                        onCheckedChange={() => field.onChange("1")}
+                      />
+                      <label>Same day</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "2"}
+                        onCheckedChange={() => field.onChange("2")}
+                      />
+                      <label>Next Day</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "3"}
+                        onCheckedChange={() => field.onChange("3")}
+                      />
+                      <label>Few days Later</label>
+                    </div>
+                  </div>
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
@@ -95,20 +114,33 @@ export function IntakeFormSection4({ form }: { form: any }) {
             control={form.control}
             name="shoulderPainInitialSeverity"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="space-y-3">
                 <FormLabel>Initial Severity of pain</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select initial severity" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="1">Mild</SelectItem>
-                    <SelectItem value="2">Moderate</SelectItem>
-                    <SelectItem value="3">Severe</SelectItem>
-                  </SelectContent>
-                </Select>
+                <FormControl>
+                  <div className="flex flex-col space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "1"}
+                        onCheckedChange={() => field.onChange("1")}
+                      />
+                      <label>Mild</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "2"}
+                        onCheckedChange={() => field.onChange("2")}
+                      />
+                      <label>Moderate</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "3"}
+                        onCheckedChange={() => field.onChange("3")}
+                      />
+                      <label>Severe</label>
+                    </div>
+                  </div>
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
@@ -118,21 +150,40 @@ export function IntakeFormSection4({ form }: { form: any }) {
             control={form.control}
             name="shoulderPainCurrentSeverity"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="space-y-3">
                 <FormLabel>Current Severity of pain</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select current severity" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="1">Mild</SelectItem>
-                    <SelectItem value="2">Moderate</SelectItem>
-                    <SelectItem value="3">Severe</SelectItem>
-                    <SelectItem value="4">Resolved</SelectItem>
-                  </SelectContent>
-                </Select>
+                <FormControl>
+                  <div className="flex flex-col space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "1"}
+                        onCheckedChange={() => field.onChange("1")}
+                      />
+                      <label>Mild</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "2"}
+                        onCheckedChange={() => field.onChange("2")}
+                      />
+                      <label>Moderate</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "3"}
+                        onCheckedChange={() => field.onChange("3")}
+                      />
+                      <label>Severe</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "4"}
+                        onCheckedChange={() => field.onChange("4")}
+                      />
+                      <label>Resolved</label>
+                    </div>
+                  </div>
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
