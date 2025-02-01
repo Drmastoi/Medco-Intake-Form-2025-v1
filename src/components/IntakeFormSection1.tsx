@@ -179,16 +179,29 @@ export function IntakeFormSection1({ form }: { form: any }) {
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     checked={field.value === "1"}
-                    onCheckedChange={() => field.onChange("1")}
+                    onCheckedChange={(checked) => {
+                      if (checked) field.onChange("1");
+                    }}
                   />
                   <label>Full Time</label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     checked={field.value === "2"}
-                    onCheckedChange={() => field.onChange("2")}
+                    onCheckedChange={(checked) => {
+                      if (checked) field.onChange("2");
+                    }}
                   />
                   <label>Part Time</label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    checked={field.value === "3"}
+                    onCheckedChange={(checked) => {
+                      if (checked) field.onChange("3");
+                    }}
+                  />
+                  <label>N/A</label>
                 </div>
               </div>
             </FormControl>
