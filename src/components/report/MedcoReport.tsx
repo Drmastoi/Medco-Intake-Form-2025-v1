@@ -8,6 +8,9 @@ import { DailyLifeImpactSection } from './DailyLifeImpactSection';
 import { AdditionalInformationSection } from './AdditionalInformationSection';
 import { AccidentHistorySection } from './AccidentHistorySection';
 import { InjuriesAndSymptomsSection } from './InjuriesAndSymptomsSection';
+import { MedicalRecordsSection } from './MedicalRecordsSection';
+import { CaseClassificationSection } from './CaseClassificationSection';
+import { DeclarationSection } from './DeclarationSection';
 
 const styles = StyleSheet.create({
   page: {
@@ -59,6 +62,17 @@ export const MedcoReport = ({ formData }: { formData: any }) => (
       <PreviousMedicalHistorySection formData={formData} />
       <DailyLifeImpactSection formData={formData} />
       <AdditionalInformationSection formData={formData} />
+      <Text 
+        style={styles.pageNumber} 
+        render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} 
+        fixed 
+      />
+    </Page>
+
+    <Page size="A4" style={styles.page}>
+      <MedicalRecordsSection />
+      <CaseClassificationSection />
+      <DeclarationSection />
       <Text 
         style={styles.pageNumber} 
         render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} 
