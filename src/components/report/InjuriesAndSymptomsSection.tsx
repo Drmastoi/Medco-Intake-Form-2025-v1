@@ -94,6 +94,35 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
         </View>
       )}
 
+      {formData.headache === "1" && (
+        <View>
+          <Text style={styles.subheading}>HEADACHE</Text>
+          <Text style={styles.text}>Classification: Neck whiplash Associated injury</Text>
+          <Text style={styles.text}>Causation: Due to psychological trauma</Text>
+          <Text style={styles.text}>Past History: {formData.headachePastHistory || "There is no history of previous anxiety"}</Text>
+          <Text style={styles.text}>Examination: Mental State and neurological examination and is normal</Text>
+          <Text style={styles.text}>Clinical Features:</Text>
+          <Text style={styles.text}>- Onset: {
+            formData.headacheStart === "1" ? "Same day" :
+            formData.headacheStart === "2" ? "Next day" :
+            formData.headacheStart === "3" ? "Few days later" : "Not specified"
+          }</Text>
+          <Text style={styles.text}>- Initial Severity: {
+            formData.headacheInitialSeverity === "1" ? "Mild" :
+            formData.headacheInitialSeverity === "2" ? "Moderate" :
+            formData.headacheInitialSeverity === "3" ? "Severe" : "Not specified"
+          }</Text>
+          <Text style={styles.text}>- Current Severity: {
+            formData.headacheCurrentSeverity === "1" ? "Mild" :
+            formData.headacheCurrentSeverity === "2" ? "Moderate" :
+            formData.headacheCurrentSeverity === "3" ? "Severe" :
+            formData.headacheCurrentSeverity === "4" ? "Resolved" : "Not specified"
+          }</Text>
+          <Text style={styles.text}>Treatment Recommendation: Self-Resolving condition. Take simple pain killers as and when required</Text>
+          <Text style={styles.text}>Prognosis: From the date of accident: {getPrognosis(formData.headacheCurrentSeverity)}</Text>
+        </View>
+      )}
+
       {formData.travelAnxiety === "1" && (
         <View>
           <Text style={styles.subheading}>TRAVEL ANXIETY</Text>
