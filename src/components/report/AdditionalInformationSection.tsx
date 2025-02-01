@@ -5,12 +5,12 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   subtitle: {
-    fontSize: 14,
+    fontSize: 12,
     marginBottom: 8,
     fontWeight: 'bold',
   },
   text: {
-    fontSize: 12,
+    fontSize: 10,
     marginBottom: 5,
     lineHeight: 1.4,
   },
@@ -19,8 +19,10 @@ const styles = StyleSheet.create({
 export const AdditionalInformationSection = ({ formData }: { formData: any }) => (
   <View style={styles.section}>
     <Text style={styles.subtitle}>Additional Information</Text>
+    
+    <Text style={styles.text}>Additional Information: {formData.additionalInformation === "1" ? "Yes" : "No"}</Text>
     {formData.additionalInformation === "1" && (
-      <Text style={styles.text}>{formData.additionalInformationDetails || "_______"}</Text>
+      <Text style={styles.text}>Details: {formData.additionalInformationDetails || "_______"}</Text>
     )}
   </View>
 );

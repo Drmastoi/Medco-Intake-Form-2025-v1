@@ -1,4 +1,4 @@
-import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import { Document, Page, Text, StyleSheet } from '@react-pdf/renderer';
 import { PersonalDetailsSection } from './PersonalDetailsSection';
 import { TreatmentDetailsSection } from './TreatmentDetailsSection';
 import { ClinicalExaminationSection } from './ClinicalExaminationSection';
@@ -33,17 +33,31 @@ export const MedcoReport = ({ formData }: { formData: any }) => (
       <Text style={styles.title}>MEDICAL REPORT</Text>
       <PersonalDetailsSection formData={formData} />
       <TreatmentDetailsSection formData={formData} />
-      <Text style={styles.pageNumber} render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} fixed />
+      <Text 
+        style={styles.pageNumber} 
+        render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} 
+        fixed 
+      />
     </Page>
+    
     <Page size="A4" style={styles.page}>
       <ClinicalExaminationSection formData={formData} />
       <PreviousMedicalHistorySection formData={formData} />
-      <Text style={styles.pageNumber} render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} fixed />
+      <Text 
+        style={styles.pageNumber} 
+        render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} 
+        fixed 
+      />
     </Page>
+    
     <Page size="A4" style={styles.page}>
       <DailyLifeImpactSection formData={formData} />
       <AdditionalInformationSection formData={formData} />
-      <Text style={styles.pageNumber} render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} fixed />
+      <Text 
+        style={styles.pageNumber} 
+        render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} 
+        fixed 
+      />
     </Page>
   </Document>
 );
