@@ -1,4 +1,4 @@
-import { Document, Page, Text, StyleSheet } from '@react-pdf/renderer';
+import { Document, Page, Text, StyleSheet, View } from '@react-pdf/renderer';
 import { PersonalDetailsSection } from './PersonalDetailsSection';
 import { SummaryOfInjuriesSection } from './SummaryOfInjuriesSection';
 import { PreviousMedicalHistorySection } from './PreviousMedicalHistorySection';
@@ -28,6 +28,9 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     lineHeight: 1.4,
   },
+  section: {
+    marginBottom: 15,
+  },
   pageNumber: {
     position: 'absolute',
     bottom: 20,
@@ -54,39 +57,58 @@ export const MedcoReport = ({ formData }: { formData: any }) => (
     {/* Page 2 */}
     <Page size="A4" style={styles.page}>
       {/* Section 1: Summary of Injuries */}
-      <SummaryOfInjuriesSection formData={formData} />
+      <View style={styles.section}>
+        <Text style={styles.subtitle}>1. SUMMARY OF INJURIES</Text>
+        <SummaryOfInjuriesSection formData={formData} />
+      </View>
       
       {/* Section 2: Past Medical History */}
-      <PreviousMedicalHistorySection formData={formData} />
+      <View style={styles.section}>
+        <Text style={styles.subtitle}>2. Past Medical History</Text>
+        <PreviousMedicalHistorySection formData={formData} />
+      </View>
       
       {/* Section 3: Previous Road Traffic Accident */}
-      <Text style={styles.subtitle}>Previous Road Traffic Accident and Impact on Previous Injuries</Text>
-      {formData.previousAccident === "1" && (
-        <Text style={styles.text}>
-          The claimant was involved in a previous road traffic accident on {formData.previousAccidentDate}. 
-          {formData.previousAccidentRecovery === "1" 
-            ? "They made a complete recovery from the previous incident."
-            : "They had not fully recovered from the previous incident when this accident occurred."}
-          {formData.previousInjuriesWorse === "1" && 
-            "This current accident has exacerbated their previous injuries."}
-        </Text>
-      )}
+      <View style={styles.section}>
+        <Text style={styles.subtitle}>3. Previous Road Traffic Accident and Impact on Previous Injuries</Text>
+        {formData.previousAccident === "1" && (
+          <Text style={styles.text}>
+            The claimant was involved in a previous road traffic accident on {formData.previousAccidentDate}. 
+            {formData.previousAccidentRecovery === "1" 
+              ? " They made a complete recovery from the previous incident."
+              : " They had not fully recovered from the previous incident when this accident occurred."}
+            {formData.previousInjuriesWorse === "1" && 
+              " This current accident has exacerbated their previous injuries."}
+          </Text>
+        )}
+      </View>
       
       {/* Section 4: Exceptional Circumstances */}
-      <Text style={styles.subtitle}>Exceptional Circumstances</Text>
-      <Text style={styles.text}>
-        The claimant has not claimed exceptional physical or psychological circumstances.
-        Based on the history, symptoms, and examination, this assessment appears appropriate.
-      </Text>
+      <View style={styles.section}>
+        <Text style={styles.subtitle}>4. Exceptional Circumstances</Text>
+        <Text style={styles.text}>
+          The claimant has not claimed exceptional physical or psychological circumstances.
+          Based on the history, symptoms, and examination, this assessment appears appropriate.
+        </Text>
+      </View>
       
       {/* Section 5: History of the Incident */}
-      <AccidentHistorySection formData={formData} />
+      <View style={styles.section}>
+        <Text style={styles.subtitle}>5. History of the Incident in Question</Text>
+        <AccidentHistorySection formData={formData} />
+      </View>
       
       {/* Section 6: Treatment Details */}
-      <TreatmentDetailsSection formData={formData} />
+      <View style={styles.section}>
+        <Text style={styles.subtitle}>6. Treatment after the Accident</Text>
+        <TreatmentDetailsSection formData={formData} />
+      </View>
       
       {/* Section 7: Injuries and Symptoms */}
-      <InjuriesAndSymptomsSection formData={formData} />
+      <View style={styles.section}>
+        <Text style={styles.subtitle}>7. Injuries/Symptoms and Present Position Reported by Claimant</Text>
+        <InjuriesAndSymptomsSection formData={formData} />
+      </View>
       
       {/* Sections 8-11: Daily Life Impact */}
       <DailyLifeImpactSection formData={formData} />
