@@ -6,13 +6,13 @@ const styles = StyleSheet.create({
     fontFamily: 'Helvetica',
   },
   subtitle: {
-    fontSize: 14,
+    fontSize: 11,
     marginBottom: 8,
     fontWeight: 'bold',
     fontFamily: 'Helvetica-Bold',
   },
   text: {
-    fontSize: 12,
+    fontSize: 10,
     marginBottom: 5,
     lineHeight: 1.4,
     fontFamily: 'Helvetica',
