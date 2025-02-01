@@ -14,6 +14,9 @@ export function IntakeFormSection11({ form }: { form: any }) {
   const [showOtherWorkDifficulties, setShowOtherWorkDifficulties] = useState(false);
   const [showOtherSleepDisturbance, setShowOtherSleepDisturbance] = useState(false);
   const [showOtherDomesticEffect, setShowOtherDomesticEffect] = useState(false);
+  const [showOtherSportLeisure, setShowOtherSportLeisure] = useState(false);
+  const [showOtherSocialLife, setShowOtherSocialLife] = useState(false);
+
   const sleepDisturbance = form.watch("sleepDisturbance");
   const effectOnDomesticLiving = form.watch("effectOnDomesticLiving");
   const effectOnSportLeisure = form.watch("effectOnSportLeisure");
@@ -21,6 +24,8 @@ export function IntakeFormSection11({ form }: { form: any }) {
   const workDifficulties = form.watch("workDifficulties") || [];
   const sleepDisturbances = form.watch("sleepDisturbances") || [];
   const domesticEffects = form.watch("domesticEffects") || [];
+  const sportLeisureEffects = form.watch("sportLeisureEffects") || [];
+  const socialLifeEffects = form.watch("socialLifeEffects") || [];
 
   const workDifficultyOptions = [
     { id: "sitting", label: "Sitting for long periods" },
@@ -51,6 +56,28 @@ export function IntakeFormSection11({ form }: { form: any }) {
     { id: "childcare", label: "Childcare duties" },
     { id: "gardening", label: "Gardening/yard work" },
     { id: "petCare", label: "Pet care" },
+    { id: "other", label: "Other" },
+  ];
+
+  const sportLeisureOptions = [
+    { id: "gym", label: "Going to the gym" },
+    { id: "running", label: "Running/Jogging" },
+    { id: "swimming", label: "Swimming" },
+    { id: "cycling", label: "Cycling" },
+    { id: "teamSports", label: "Team sports" },
+    { id: "hiking", label: "Hiking" },
+    { id: "yoga", label: "Yoga/Stretching" },
+    { id: "other", label: "Other" },
+  ];
+
+  const socialLifeOptions = [
+    { id: "meetingFriends", label: "Meeting friends" },
+    { id: "familyGatherings", label: "Family gatherings" },
+    { id: "dining", label: "Dining out" },
+    { id: "parties", label: "Attending parties" },
+    { id: "concerts", label: "Concerts/Events" },
+    { id: "traveling", label: "Traveling" },
+    { id: "hobbies", label: "Group hobbies" },
     { id: "other", label: "Other" },
   ];
 
@@ -312,12 +339,50 @@ export function IntakeFormSection11({ form }: { form: any }) {
       {effectOnSportLeisure === "1" && (
         <FormField
           control={form.control}
-          name="sportLeisureDetails"
+          name="sportLeisureEffects"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Details of effect on sport & leisure</FormLabel>
+              <FormLabel>What sport & leisure activities are affected?</FormLabel>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {sportLeisureOptions.map((option) => (
+                  <div key={option.id} className="flex items-center space-x-2">
+                    <Checkbox
+                      checked={field.value?.includes(option.id)}
+                      onCheckedChange={(checked) => {
+                        if (checked) {
+                          const updatedValue = [...(field.value || []), option.id];
+                          field.onChange(updatedValue);
+                          if (option.id === "other") {
+                            setShowOtherSportLeisure(true);
+                          }
+                        } else {
+                          const updatedValue = (field.value || []).filter((id: string) => id !== option.id);
+                          field.onChange(updatedValue);
+                          if (option.id === "other") {
+                            setShowOtherSportLeisure(false);
+                          }
+                        }
+                      }}
+                    />
+                    <label className="text-sm">{option.label}</label>
+                  </div>
+                ))}
+              </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      )}
+
+      {showOtherSportLeisure && (
+        <FormField
+          control={form.control}
+          name="otherSportLeisureEffects"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Please specify other sport & leisure activities affected</FormLabel>
               <FormControl>
-                <Textarea placeholder="Enter details" {...field} />
+                <Textarea placeholder="Enter other sport & leisure activities affected" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -349,12 +414,50 @@ export function IntakeFormSection11({ form }: { form: any }) {
       {effectOnSocialLife === "1" && (
         <FormField
           control={form.control}
-          name="socialLifeDetails"
+          name="socialLifeEffects"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Details of effect on social life</FormLabel>
+              <FormLabel>What social activities are affected?</FormLabel>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {socialLifeOptions.map((option) => (
+                  <div key={option.id} className="flex items-center space-x-2">
+                    <Checkbox
+                      checked={field.value?.includes(option.id)}
+                      onCheckedChange={(checked) => {
+                        if (checked) {
+                          const updatedValue = [...(field.value || []), option.id];
+                          field.onChange(updatedValue);
+                          if (option.id === "other") {
+                            setShowOtherSocialLife(true);
+                          }
+                        } else {
+                          const updatedValue = (field.value || []).filter((id: string) => id !== option.id);
+                          field.onChange(updatedValue);
+                          if (option.id === "other") {
+                            setShowOtherSocialLife(false);
+                          }
+                        }
+                      }}
+                    />
+                    <label className="text-sm">{option.label}</label>
+                  </div>
+                ))}
+              </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      )}
+
+      {showOtherSocialLife && (
+        <FormField
+          control={form.control}
+          name="otherSocialLifeEffects"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Please specify other social activities affected</FormLabel>
               <FormControl>
-                <Textarea placeholder="Enter details" {...field} />
+                <Textarea placeholder="Enter other social activities affected" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
