@@ -1,4 +1,5 @@
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
+import { formatDate } from '../../utils/dateUtils';
 
 const styles = StyleSheet.create({
   section: {
@@ -9,11 +10,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
   },
-  tableRow: {
+  table: {
+    width: '100%',
+    marginBottom: 10,
+  },
+  row: {
     flexDirection: 'row',
     borderBottomWidth: 1,
     borderBottomColor: '#000',
     minHeight: 24,
+    padding: 5,
   },
   headerRow: {
     flexDirection: 'row',
@@ -24,25 +30,21 @@ const styles = StyleSheet.create({
   dateCell: {
     width: '20%',
     padding: 5,
-    borderRightWidth: 1,
-    borderRightColor: '#000',
   },
   treatmentCell: {
     width: '50%',
     padding: 5,
-    borderRightWidth: 1,
-    borderRightColor: '#000',
   },
   providerCell: {
     width: '30%',
     padding: 5,
   },
-  headerText: {
-    fontSize: 8,
-    fontWeight: 'bold',
+  text: {
+    fontSize: 10,
   },
-  cellText: {
-    fontSize: 8,
+  headerText: {
+    fontSize: 10,
+    fontWeight: 'bold',
   },
 });
 
@@ -50,40 +52,43 @@ export const TreatmentDetailsSection = ({ formData }: { formData: any }) => (
   <View style={styles.section}>
     <Text style={styles.title}>Treatment Details</Text>
     
-    <View>
-      <View style={styles.headerRow}>
-        <View style={styles.dateCell}>
-          <Text style={styles.headerText}>Date</Text>
-        </View>
-        <View style={styles.treatmentCell}>
-          <Text style={styles.headerText}>Treatment</Text>
-        </View>
-        <View style={styles.providerCell}>
-          <Text style={styles.headerText}>Provider</Text>
-        </View>
-      </View>
-      
-      {formData.wentToWalkInGP === "1" && (
-        <View style={styles.tableRow}>
+    {/* Scene of Accident Treatment */}
+    {formData.sceneOfAccidentTreatment === "1" && (
+      <View style={styles.table}>
+        <View style={styles.headerRow}>
           <View style={styles.dateCell}>
-            <Text style={styles.cellText}>{formData.daysBeforeGPVisit ? `${formData.daysBeforeGPVisit} days after accident` : '_______'}</Text>
+            <Text style={styles.headerText}>Date</Text>
           </View>
           <View style={styles.treatmentCell}>
-            <Text style={styles.cellText}>{formData.currentTreatment || '_______'}</Text>
+            <Text style={styles.headerText}>Treatment</Text>
           </View>
           <View style={styles.providerCell}>
-            <Text style={styles.cellText}>GP/Walk-in Centre</Text>
+            <Text style={styles.headerText}>Provider</Text>
           </View>
         </View>
-      )}
-      
-      {formData.wentToAE === "1" && (
-        <View style={styles.tableRow}>
+        <View style={styles.row}>
           <View style={styles.dateCell}>
-            <Text style={styles.cellText}>Day of accident</Text>
+            <Text style={styles.text}>{formatDate(formData.accidentDate)}</Text>
           </View>
           <View style={styles.treatmentCell}>
-            <Text style={styles.cellText}>
+            <Text style={styles.text}>{formData.sceneOfAccidentTreatmentDetails || "_______"}</Text>
+          </View>
+          <View style={styles.providerCell}>
+            <Text style={styles.text}>Paramedics/First Responders</Text>
+          </View>
+        </View>
+      </View>
+    )}
+
+    {/* A&E Treatment */}
+    {formData.wentToAE === "1" && (
+      <View style={styles.table}>
+        <View style={styles.row}>
+          <View style={styles.dateCell}>
+            <Text style={styles.text}>{formatDate(formData.accidentDate)}</Text>
+          </View>
+          <View style={styles.treatmentCell}>
+            <Text style={styles.text}>
               {formData.hospitalTreatment === "1" ? "None" :
                formData.hospitalTreatment === "2" ? "X-ray" :
                formData.hospitalTreatment === "3" ? "CT Scan" :
@@ -92,10 +97,55 @@ export const TreatmentDetailsSection = ({ formData }: { formData: any }) => (
             </Text>
           </View>
           <View style={styles.providerCell}>
-            <Text style={styles.cellText}>{formData.hospitalName || '_______'}</Text>
+            <Text style={styles.text}>{formData.hospitalName || "_______"}</Text>
           </View>
         </View>
-      )}
-    </View>
+      </View>
+    )}
+
+    {/* GP/Walk-in Treatment */}
+    {formData.wentToWalkInGP === "1" && (
+      <View style={styles.table}>
+        <View style={styles.row}>
+          <View style={styles.dateCell}>
+            <Text style={styles.text}>
+              {formData.daysBeforeGPVisit ? 
+                `${formData.daysBeforeGPVisit} days after accident` : 
+                "_______"}
+            </Text>
+          </View>
+          <View style={styles.treatmentCell}>
+            <Text style={styles.text}>
+              {formData.currentTreatment === "1" ? "Paracetamol" :
+               formData.currentTreatment === "2" ? "Ibuprofen, Naproxen" :
+               formData.currentTreatment === "3" ? "Codeine" :
+               formData.currentTreatment === "4" ? "Other prescribed medicines" : "_______"}
+            </Text>
+          </View>
+          <View style={styles.providerCell}>
+            <Text style={styles.text}>GP/Walk-in Centre</Text>
+          </View>
+        </View>
+      </View>
+    )}
+
+    {/* Physiotherapy */}
+    {formData.physiotherapySessions && parseInt(formData.physiotherapySessions) > 0 && (
+      <View style={styles.table}>
+        <View style={styles.row}>
+          <View style={styles.dateCell}>
+            <Text style={styles.text}>Ongoing</Text>
+          </View>
+          <View style={styles.treatmentCell}>
+            <Text style={styles.text}>
+              {`${formData.physiotherapySessions} sessions completed`}
+            </Text>
+          </View>
+          <View style={styles.providerCell}>
+            <Text style={styles.text}>Physiotherapist</Text>
+          </View>
+        </View>
+      </View>
+    )}
   </View>
 );
