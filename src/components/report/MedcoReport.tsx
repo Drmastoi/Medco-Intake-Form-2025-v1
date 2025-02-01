@@ -66,6 +66,15 @@ export const MedcoReport = ({ formData }: { formData: any }) => (
       <Text style={styles.subtitle}>Section 1: SUMMARY OF INJURIES</Text>
       <SummaryOfInjuriesSection formData={formData} />
       
+      <Text style={styles.text}>
+        Exceptional Circumstances: Claimant has not claimed exceptional physical or exceptional psychological circumstances. 
+        I would agree considering history symptoms and examination.
+      </Text>
+
+      <Text style={styles.text}>
+        Past Medical History: The claimant have Previous Medical conditions which are made worse because of this accident
+      </Text>
+      
       <Text style={styles.subtitle}>Section 2: History of the Incident</Text>
       <AccidentHistorySection formData={formData} />
       
