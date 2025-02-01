@@ -6,6 +6,7 @@ import { ClinicalExaminationSection } from './ClinicalExaminationSection';
 import { PreviousMedicalHistorySection } from './PreviousMedicalHistorySection';
 import { DailyLifeImpactSection } from './DailyLifeImpactSection';
 import { AdditionalInformationSection } from './AdditionalInformationSection';
+import { AccidentHistorySection } from './AccidentHistorySection';
 
 const styles = StyleSheet.create({
   page: {
@@ -42,6 +43,7 @@ export const MedcoReport = ({ formData }: { formData: any }) => (
     
     <Page size="A4" style={styles.page}>
       <SummaryOfInjuriesSection formData={formData} />
+      <AccidentHistorySection formData={formData} />
       <TreatmentDetailsSection formData={formData} />
       <Text 
         style={styles.pageNumber} 
