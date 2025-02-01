@@ -1,151 +1,65 @@
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
-import { formatDate } from '../../utils/dateUtils';
 
 const styles = StyleSheet.create({
   section: {
-    marginBottom: 20,
+    marginBottom: 15,
   },
-  title: {
-    fontSize: 12,
+  subtitle: {
+    fontSize: 14,
+    marginBottom: 8,
     fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  table: {
-    width: '100%',
-    marginBottom: 10,
-  },
-  row: {
-    flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderBottomColor: '#000',
-    minHeight: 24,
-    padding: 5,
-  },
-  headerRow: {
-    flexDirection: 'row',
-    backgroundColor: '#f0f0f0',
-    borderBottomWidth: 1,
-    borderBottomColor: '#000',
-  },
-  dateCell: {
-    width: '20%',
-    padding: 5,
-  },
-  treatmentCell: {
-    width: '50%',
-    padding: 5,
-  },
-  providerCell: {
-    width: '30%',
-    padding: 5,
   },
   text: {
-    fontSize: 10,
-  },
-  headerText: {
-    fontSize: 10,
-    fontWeight: 'bold',
+    fontSize: 12,
+    marginBottom: 5,
+    lineHeight: 1.4,
   },
 });
 
-export const TreatmentDetailsSection = ({ formData }: { formData: any }) => (
-  <View style={styles.section}>
-    <Text style={styles.title}>Treatment Details</Text>
-    
-    {/* Scene of Accident Treatment */}
-    {formData.sceneOfAccidentTreatment === "1" && (
-      <View style={styles.table}>
-        <View style={styles.headerRow}>
-          <View style={styles.dateCell}>
-            <Text style={styles.headerText}>Date</Text>
-          </View>
-          <View style={styles.treatmentCell}>
-            <Text style={styles.headerText}>Treatment</Text>
-          </View>
-          <View style={styles.providerCell}>
-            <Text style={styles.headerText}>Provider</Text>
-          </View>
-        </View>
-        <View style={styles.row}>
-          <View style={styles.dateCell}>
-            <Text style={styles.text}>{formatDate(formData.accidentDate)}</Text>
-          </View>
-          <View style={styles.treatmentCell}>
-            <Text style={styles.text}>{formData.sceneOfAccidentTreatmentDetails || "_______"}</Text>
-          </View>
-          <View style={styles.providerCell}>
-            <Text style={styles.text}>Paramedics/First Responders</Text>
-          </View>
-        </View>
-      </View>
-    )}
+export const TreatmentDetailsSection = ({ formData }: { formData: any }) => {
+  const getSceneOfAccidentTreatment = () => {
+    if (formData.sceneOfAccidentTreatment === "1") {
+      return `The claimant received treatment at the scene: ${formData.sceneOfAccidentTreatmentDetails || 'details not provided'}.`;
+    }
+    return "The claimant did not receive any treatment at the scene of the accident.";
+  };
 
-    {/* A&E Treatment */}
-    {formData.wentToAE === "1" && (
-      <View style={styles.table}>
-        <View style={styles.row}>
-          <View style={styles.dateCell}>
-            <Text style={styles.text}>{formatDate(formData.accidentDate)}</Text>
-          </View>
-          <View style={styles.treatmentCell}>
-            <Text style={styles.text}>
-              {formData.hospitalTreatment === "1" ? "None" :
-               formData.hospitalTreatment === "2" ? "X-ray" :
-               formData.hospitalTreatment === "3" ? "CT Scan" :
-               formData.hospitalTreatment === "4" ? "Bandage" :
-               formData.hospitalTreatment === "5" ? "Neck Collar" : "_______"}
-            </Text>
-          </View>
-          <View style={styles.providerCell}>
-            <Text style={styles.text}>{formData.hospitalName || "_______"}</Text>
-          </View>
-        </View>
-      </View>
-    )}
+  const getWalkInGPDetails = () => {
+    if (formData.wentToWalkInGP === "1") {
+      return `The claimant attended a Walk-in clinic/GP ${formData.daysBeforeGPVisit || 'some'} days after the accident.`;
+    }
+    return "The claimant did not attend a Walk-in clinic/GP.";
+  };
 
-    {/* GP/Walk-in Treatment */}
-    {formData.wentToWalkInGP === "1" && (
-      <View style={styles.table}>
-        <View style={styles.row}>
-          <View style={styles.dateCell}>
-            <Text style={styles.text}>
-              {formData.daysBeforeGPVisit ? 
-                `${formData.daysBeforeGPVisit} days after accident` : 
-                "_______"}
-            </Text>
-          </View>
-          <View style={styles.treatmentCell}>
-            <Text style={styles.text}>
-              {formData.currentTreatment === "1" ? "Paracetamol" :
-               formData.currentTreatment === "2" ? "Ibuprofen, Naproxen" :
-               formData.currentTreatment === "3" ? "Codeine" :
-               formData.currentTreatment === "4" ? "Other prescribed medicines" : "_______"}
-            </Text>
-          </View>
-          <View style={styles.providerCell}>
-            <Text style={styles.text}>GP/Walk-in Centre</Text>
-          </View>
-        </View>
-      </View>
-    )}
+  const getCurrentTreatment = () => {
+    const treatments = {
+      "1": "Paracetamol",
+      "2": "Ibuprofen/Naproxen",
+      "3": "Codeine",
+      "4": "Other prescribed medicines"
+    };
+    return treatments[formData.currentTreatment as keyof typeof treatments] || "No specific medication";
+  };
 
-    {/* Physiotherapy */}
-    {formData.physiotherapySessions && parseInt(formData.physiotherapySessions) > 0 && (
-      <View style={styles.table}>
-        <View style={styles.row}>
-          <View style={styles.dateCell}>
-            <Text style={styles.text}>Ongoing</Text>
-          </View>
-          <View style={styles.treatmentCell}>
-            <Text style={styles.text}>
-              {`${formData.physiotherapySessions} sessions completed`}
-            </Text>
-          </View>
-          <View style={styles.providerCell}>
-            <Text style={styles.text}>Physiotherapist</Text>
-          </View>
-        </View>
-      </View>
-    )}
-  </View>
-);
+  return (
+    <View style={styles.section}>
+      <Text style={styles.subtitle}>Treatment after the Accident</Text>
+      
+      <Text style={styles.text}>
+        {getSceneOfAccidentTreatment()}
+      </Text>
+      
+      <Text style={styles.text}>
+        {getWalkInGPDetails()}
+      </Text>
+      
+      <Text style={styles.text}>
+        {`The claimant was advised on ${getCurrentTreatment()}, rest, and exercises.`}
+      </Text>
+      
+      <Text style={styles.text}>
+        {`Number of Physiotherapy Sessions received so far: ${formData.physiotherapySessions || '0'}`}
+      </Text>
+    </View>
+  );
+};
