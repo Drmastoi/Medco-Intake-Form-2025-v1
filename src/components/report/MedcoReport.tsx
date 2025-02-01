@@ -38,6 +38,7 @@ export const MedcoReport = ({ formData }: { formData: any }) => (
     <Page size="A4" style={styles.page}>
       <Text style={styles.title}>MEDCO MEDICAL REPORT</Text>
       <PersonalDetailsSection formData={formData} />
+      <AccidentHistorySection formData={formData} />
       <Text 
         style={styles.pageNumber} 
         render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} 
@@ -46,9 +47,8 @@ export const MedcoReport = ({ formData }: { formData: any }) => (
     </Page>
     
     <Page size="A4" style={styles.page}>
-      <SummaryOfInjuriesSection formData={formData} />
-      <AccidentHistorySection formData={formData} />
       <TreatmentDetailsSection formData={formData} />
+      <SummaryOfInjuriesSection formData={formData} />
       <Text 
         style={styles.pageNumber} 
         render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} 
@@ -61,7 +61,6 @@ export const MedcoReport = ({ formData }: { formData: any }) => (
       <ClinicalExaminationSection formData={formData} />
       <PreviousMedicalHistorySection formData={formData} />
       <DailyLifeImpactSection formData={formData} />
-      <AdditionalInformationSection formData={formData} />
       <Text 
         style={styles.pageNumber} 
         render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} 
@@ -73,6 +72,7 @@ export const MedcoReport = ({ formData }: { formData: any }) => (
       <MedicalRecordsSection />
       <CaseClassificationSection />
       <DeclarationSection />
+      <AdditionalInformationSection formData={formData} />
       <Text 
         style={styles.pageNumber} 
         render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} 
