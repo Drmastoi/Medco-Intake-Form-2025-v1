@@ -6,13 +6,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export function IntakeFormSection2({ form }: { form: any }) {
   return (
@@ -37,21 +31,40 @@ export function IntakeFormSection2({ form }: { form: any }) {
         control={form.control}
         name="accidentTime"
         render={({ field }) => (
-          <FormItem>
+          <FormItem className="space-y-3">
             <FormLabel>Accident Time</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select time of day" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="1">Morning</SelectItem>
-                <SelectItem value="2">Afternoon</SelectItem>
-                <SelectItem value="3">Evening</SelectItem>
-                <SelectItem value="4">Night</SelectItem>
-              </SelectContent>
-            </Select>
+            <FormControl>
+              <div className="flex flex-col space-y-2">
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    checked={field.value === "1"}
+                    onCheckedChange={() => field.onChange("1")}
+                  />
+                  <label>Morning</label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    checked={field.value === "2"}
+                    onCheckedChange={() => field.onChange("2")}
+                  />
+                  <label>Afternoon</label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    checked={field.value === "3"}
+                    onCheckedChange={() => field.onChange("3")}
+                  />
+                  <label>Evening</label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    checked={field.value === "4"}
+                    onCheckedChange={() => field.onChange("4")}
+                  />
+                  <label>Night</label>
+                </div>
+              </div>
+            </FormControl>
             <FormMessage />
           </FormItem>
         )}
@@ -61,26 +74,37 @@ export function IntakeFormSection2({ form }: { form: any }) {
         control={form.control}
         name="vehiclePosition"
         render={({ field }) => (
-          <FormItem>
+          <FormItem className="space-y-3">
             <FormLabel>Position in Vehicle</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select your position" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="1">Driver</SelectItem>
-                <SelectItem value="2">Front Passenger</SelectItem>
-                <SelectItem value="3">Back Passenger</SelectItem>
-              </SelectContent>
-            </Select>
+            <FormControl>
+              <div className="flex flex-col space-y-2">
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    checked={field.value === "1"}
+                    onCheckedChange={() => field.onChange("1")}
+                  />
+                  <label>Driver</label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    checked={field.value === "2"}
+                    onCheckedChange={() => field.onChange("2")}
+                  />
+                  <label>Front Passenger</label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    checked={field.value === "3"}
+                    onCheckedChange={() => field.onChange("3")}
+                  />
+                  <label>Back Passenger</label>
+                </div>
+              </div>
+            </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
-
-      {/* Add more accident-related fields here */}
     </div>
   );
 }

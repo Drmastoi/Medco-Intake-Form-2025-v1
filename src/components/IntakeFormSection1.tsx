@@ -6,13 +6,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export function IntakeFormSection1({ form }: { form: any }) {
   return (
@@ -51,20 +45,33 @@ export function IntakeFormSection1({ form }: { form: any }) {
         control={form.control}
         name="idType"
         render={({ field }) => (
-          <FormItem>
+          <FormItem className="space-y-3">
             <FormLabel>ID Type</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select ID type" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="1">Driving License</SelectItem>
-                <SelectItem value="2">Passport</SelectItem>
-                <SelectItem value="3">ID Card</SelectItem>
-              </SelectContent>
-            </Select>
+            <FormControl>
+              <div className="flex flex-col space-y-2">
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    checked={field.value === "1"}
+                    onCheckedChange={() => field.onChange("1")}
+                  />
+                  <label>Driving License</label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    checked={field.value === "2"}
+                    onCheckedChange={() => field.onChange("2")}
+                  />
+                  <label>Passport</label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    checked={field.value === "3"}
+                    onCheckedChange={() => field.onChange("3")}
+                  />
+                  <label>ID Card</label>
+                </div>
+              </div>
+            </FormControl>
             <FormMessage />
           </FormItem>
         )}
@@ -116,19 +123,26 @@ export function IntakeFormSection1({ form }: { form: any }) {
         control={form.control}
         name="workType"
         render={({ field }) => (
-          <FormItem>
+          <FormItem className="space-y-3">
             <FormLabel>Work Type</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select work type" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="1">Full Time</SelectItem>
-                <SelectItem value="2">Part Time</SelectItem>
-              </SelectContent>
-            </Select>
+            <FormControl>
+              <div className="flex flex-col space-y-2">
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    checked={field.value === "1"}
+                    onCheckedChange={() => field.onChange("1")}
+                  />
+                  <label>Full Time</label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    checked={field.value === "2"}
+                    onCheckedChange={() => field.onChange("2")}
+                  />
+                  <label>Part Time</label>
+                </div>
+              </div>
+            </FormControl>
             <FormMessage />
           </FormItem>
         )}
@@ -138,22 +152,47 @@ export function IntakeFormSection1({ form }: { form: any }) {
         control={form.control}
         name="livingWith"
         render={({ field }) => (
-          <FormItem>
+          <FormItem className="space-y-3">
             <FormLabel>Who Lives with You at Home</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select who you live with" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="1">Wife</SelectItem>
-                <SelectItem value="2">Husband</SelectItem>
-                <SelectItem value="3">Partner</SelectItem>
-                <SelectItem value="4">Parents</SelectItem>
-                <SelectItem value="5">Alone</SelectItem>
-              </SelectContent>
-            </Select>
+            <FormControl>
+              <div className="flex flex-col space-y-2">
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    checked={field.value === "1"}
+                    onCheckedChange={() => field.onChange("1")}
+                  />
+                  <label>Wife</label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    checked={field.value === "2"}
+                    onCheckedChange={() => field.onChange("2")}
+                  />
+                  <label>Husband</label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    checked={field.value === "3"}
+                    onCheckedChange={() => field.onChange("3")}
+                  />
+                  <label>Partner</label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    checked={field.value === "4"}
+                    onCheckedChange={() => field.onChange("4")}
+                  />
+                  <label>Parents</label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    checked={field.value === "5"}
+                    onCheckedChange={() => field.onChange("5")}
+                  />
+                  <label>Alone</label>
+                </div>
+              </div>
+            </FormControl>
             <FormMessage />
           </FormItem>
         )}

@@ -5,13 +5,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 
 export function IntakeFormSection3({ form }: { form: any }) {
@@ -23,19 +17,26 @@ export function IntakeFormSection3({ form }: { form: any }) {
         control={form.control}
         name="neckPain"
         render={({ field }) => (
-          <FormItem>
+          <FormItem className="space-y-3">
             <FormLabel>Did you get Any Neck Pain after the accident?</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select yes or no" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="1">Yes</SelectItem>
-                <SelectItem value="2">No</SelectItem>
-              </SelectContent>
-            </Select>
+            <FormControl>
+              <div className="flex flex-col space-y-2">
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    checked={field.value === "1"}
+                    onCheckedChange={() => field.onChange("1")}
+                  />
+                  <label>Yes</label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    checked={field.value === "2"}
+                    onCheckedChange={() => field.onChange("2")}
+                  />
+                  <label>No</label>
+                </div>
+              </div>
+            </FormControl>
             <FormMessage />
           </FormItem>
         )}
@@ -57,8 +58,6 @@ export function IntakeFormSection3({ form }: { form: any }) {
           </FormItem>
         )}
       />
-
-      {/* Add more medical-related fields here */}
     </div>
   );
 }
