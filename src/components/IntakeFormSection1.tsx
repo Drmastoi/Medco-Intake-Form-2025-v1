@@ -8,6 +8,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useState } from "react";
+import { type CheckedState } from "@radix-ui/react-checkbox";
 
 export function IntakeFormSection1({ form }: { form: any }) {
   const [showOtherIdField, setShowOtherIdField] = useState(false);
@@ -55,9 +56,9 @@ export function IntakeFormSection1({ form }: { form: any }) {
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     checked={field.value?.includes("1")}
-                    onCheckedChange={(checked) => {
+                    onCheckedChange={(checked: CheckedState) => {
                       const currentValue = field.value || [];
-                      if (checked) {
+                      if (checked === true) {
                         field.onChange([...currentValue, "1"]);
                       } else {
                         field.onChange(currentValue.filter((v: string) => v !== "1"));
@@ -69,9 +70,9 @@ export function IntakeFormSection1({ form }: { form: any }) {
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     checked={field.value?.includes("2")}
-                    onCheckedChange={(checked) => {
+                    onCheckedChange={(checked: CheckedState) => {
                       const currentValue = field.value || [];
-                      if (checked) {
+                      if (checked === true) {
                         field.onChange([...currentValue, "2"]);
                       } else {
                         field.onChange(currentValue.filter((v: string) => v !== "2"));
@@ -83,9 +84,9 @@ export function IntakeFormSection1({ form }: { form: any }) {
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     checked={field.value?.includes("3")}
-                    onCheckedChange={(checked) => {
+                    onCheckedChange={(checked: CheckedState) => {
                       const currentValue = field.value || [];
-                      if (checked) {
+                      if (checked === true) {
                         field.onChange([...currentValue, "3"]);
                       } else {
                         field.onChange(currentValue.filter((v: string) => v !== "3"));
@@ -97,10 +98,10 @@ export function IntakeFormSection1({ form }: { form: any }) {
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     checked={field.value?.includes("4")}
-                    onCheckedChange={(checked) => {
+                    onCheckedChange={(checked: CheckedState) => {
                       const currentValue = field.value || [];
-                      setShowOtherIdField(checked);
-                      if (checked) {
+                      setShowOtherIdField(checked === true);
+                      if (checked === true) {
                         field.onChange([...currentValue, "4"]);
                       } else {
                         field.onChange(currentValue.filter((v: string) => v !== "4"));
@@ -179,8 +180,8 @@ export function IntakeFormSection1({ form }: { form: any }) {
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     checked={field.value === "1"}
-                    onCheckedChange={(checked) => {
-                      if (checked) field.onChange("1");
+                    onCheckedChange={(checked: CheckedState) => {
+                      if (checked === true) field.onChange("1");
                     }}
                   />
                   <label>Full Time</label>
@@ -188,8 +189,8 @@ export function IntakeFormSection1({ form }: { form: any }) {
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     checked={field.value === "2"}
-                    onCheckedChange={(checked) => {
-                      if (checked) field.onChange("2");
+                    onCheckedChange={(checked: CheckedState) => {
+                      if (checked === true) field.onChange("2");
                     }}
                   />
                   <label>Part Time</label>
@@ -197,8 +198,8 @@ export function IntakeFormSection1({ form }: { form: any }) {
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     checked={field.value === "3"}
-                    onCheckedChange={(checked) => {
-                      if (checked) field.onChange("3");
+                    onCheckedChange={(checked: CheckedState) => {
+                      if (checked === true) field.onChange("3");
                     }}
                   />
                   <label>N/A</label>
