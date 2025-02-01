@@ -5,13 +5,6 @@ const styles = StyleSheet.create({
   section: {
     marginBottom: 20,
   },
-  table: {
-    display: 'table',
-    width: '100%',
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: '#000',
-  },
   row: {
     flexDirection: 'row',
     borderBottomWidth: 1,
@@ -37,7 +30,7 @@ const styles = StyleSheet.create({
 
 export const PersonalDetailsSection = ({ formData }: { formData: any }) => (
   <View style={styles.section}>
-    <View style={styles.table}>
+    <View>
       <View style={styles.row}>
         <Text style={styles.label}>Full Name:</Text>
         <Text style={styles.value}>{formData.fullName || '_________________'}</Text>
