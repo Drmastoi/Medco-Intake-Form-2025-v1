@@ -20,6 +20,27 @@ const styles = StyleSheet.create({
   value: {
     width: '70%',
   },
+  expertSection: {
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  heading: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  paragraph: {
+    fontSize: 10,
+    marginBottom: 10,
+    lineHeight: 1.4,
+  },
+  methodologyList: {
+    marginLeft: 20,
+  },
+  listItem: {
+    fontSize: 10,
+    marginBottom: 5,
+  },
 });
 
 export const PersonalDetailsSection = ({ formData }: { formData: any }) => {
@@ -117,6 +138,27 @@ export const PersonalDetailsSection = ({ formData }: { formData: any }) => {
         <View style={styles.row}>
           <Text style={styles.label}>Date of Report:</Text>
           <Text style={styles.value}>{formatDate(reportDate)}</Text>
+        </View>
+      </View>
+
+      <View style={styles.expertSection}>
+        <Text style={styles.heading}>Prepared by: Dr Awais Iqbal, MBBS, Direct Medical Expert</Text>
+        
+        <Text style={styles.paragraph}>
+          I, Dr Awais Iqbal, am a medico-legal practitioner. Full details of my qualifications and experience entitling me to provide an expert opinion can be found on the last page of this medical report.
+        </Text>
+        
+        <Text style={styles.paragraph}>
+          Methodology: I have been instructed to prepare this medical report for The Court in connection with the personal injuries sustained by the claimant. I interviewed and examined the claimant.
+        </Text>
+        
+        <Text style={styles.paragraph}>This medical report is based on the following assessments:</Text>
+        
+        <View style={styles.methodologyList}>
+          <Text style={styles.listItem}>i.    Verbal information.</Text>
+          <Text style={styles.listItem}>ii.   Clinical examination.</Text>
+          <Text style={styles.listItem}>iii.  Written instructions from the instructing party.</Text>
+          <Text style={styles.listItem}>iv.   My own professional medical opinion</Text>
         </View>
       </View>
     </View>
