@@ -12,6 +12,7 @@ import { type CheckedState } from "@radix-ui/react-checkbox";
 
 export function IntakeFormSection1({ form }: { form: any }) {
   const [showOtherIdField, setShowOtherIdField] = useState(false);
+  const [showOtherLivingWithField, setShowOtherLivingWithField] = useState(false);
 
   return (
     <div className="space-y-4">
@@ -254,6 +255,25 @@ export function IntakeFormSection1({ form }: { form: any }) {
                   />
                   <label>Alone</label>
                 </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    checked={field.value === "6"}
+                    onCheckedChange={(checked: CheckedState) => {
+                      setShowOtherLivingWithField(checked === true);
+                      if (checked === true) field.onChange("6");
+                    }}
+                  />
+                  <label>Other</label>
+                </div>
+                {showOtherLivingWithField && (
+                  <Input 
+                    placeholder="Please specify who lives with you"
+                    className="ml-6 mt-2"
+                    onChange={(e) => {
+                      field.onChange(e.target.value);
+                    }}
+                  />
+                )}
               </div>
             </FormControl>
             <FormMessage />
