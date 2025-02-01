@@ -30,19 +30,18 @@ const styles = StyleSheet.create({
 export const MedcoReport = ({ formData }: { formData: any }) => (
   <Document>
     <Page size="A4" style={styles.page}>
-      <Text style={styles.title}>MEDICAL REPORT</Text>
+      <Text style={styles.title}>MEDCO MEDICAL REPORT</Text>
       <PersonalDetailsSection formData={formData} />
+      <Text 
+        style={styles.pageNumber} 
+        render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} 
+        fixed 
+      />
+    </Page>
+    
+    <Page size="A4" style={styles.page}>
       <TreatmentDetailsSection formData={formData} />
-      <Text 
-        style={styles.pageNumber} 
-        render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} 
-        fixed 
-      />
-    </Page>
-    
-    <Page size="A4" style={styles.page}>
       <ClinicalExaminationSection formData={formData} />
-      <PreviousMedicalHistorySection formData={formData} />
       <Text 
         style={styles.pageNumber} 
         render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} 
@@ -51,6 +50,7 @@ export const MedcoReport = ({ formData }: { formData: any }) => (
     </Page>
     
     <Page size="A4" style={styles.page}>
+      <PreviousMedicalHistorySection formData={formData} />
       <DailyLifeImpactSection formData={formData} />
       <AdditionalInformationSection formData={formData} />
       <Text 
