@@ -10,9 +10,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   sectionTitle: {
-    fontSize: 12,
-    marginBottom: 8,
-    fontWeight: 'extrabold',
+    fontSize: 13,  // Increased from 12 to 13
+    marginBottom: 10,  // Increased from 8 to 10
+    fontWeight: 'extrabold',  // Changed from 'bold' to 'extrabold'
+    textTransform: 'uppercase',  // Added uppercase transform
   },
   text: {
     fontSize: 10,
