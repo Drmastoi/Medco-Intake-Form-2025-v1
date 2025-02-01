@@ -1,36 +1,9 @@
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { Document, Page, Text, StyleSheet } from '@react-pdf/renderer';
 import { BlobProvider } from '@react-pdf/renderer';
 import emailjs from '@emailjs/browser';
 import { useToast } from "@/components/ui/use-toast";
-import { PersonalInfoSection } from './report/PersonalInfoSection';
-import { AccidentInfoSection } from './report/AccidentInfoSection';
-import { InjuriesSection } from './report/InjuriesSection';
-import { DailyLifeSection } from './report/DailyLifeSection';
-
-const styles = StyleSheet.create({
-  page: {
-    padding: 30,
-  },
-  title: {
-    fontSize: 18,
-    marginBottom: 10,
-    fontWeight: 'bold',
-  },
-});
-
-const MedicalReport = ({ formData }: { formData: any }) => (
-  <Document>
-    <Page size="A4" style={styles.page}>
-      <Text style={styles.title}>Medical Report - Road Traffic Accident</Text>
-      <PersonalInfoSection formData={formData} />
-      <AccidentInfoSection formData={formData} />
-      <InjuriesSection formData={formData} />
-      <DailyLifeSection formData={formData} />
-    </Page>
-  </Document>
-);
+import { MedcoReport } from './report/MedcoReport';
 
 export function IntakeFormSummary({ form }: { form: any }) {
   const { toast } = useToast();
@@ -43,7 +16,7 @@ export function IntakeFormSummary({ form }: { form: any }) {
       const templateParams = {
         to_email: formData.email || "Not provided",
         cc_email: "drawais@gmail.com",
-        message: "Please find attached your medical report.",
+        message: "Please find attached your MEDCO medical report.",
         pdf_url: pdfUrl,
       };
 
@@ -55,7 +28,7 @@ export function IntakeFormSummary({ form }: { form: any }) {
 
       toast({
         title: "Report Sent",
-        description: "The medical report has been sent to your email.",
+        description: "The MEDCO medical report has been sent to your email.",
       });
     } catch (error) {
       toast({
@@ -68,16 +41,16 @@ export function IntakeFormSummary({ form }: { form: any }) {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-semibold mb-4">Summary Report</h2>
+      <h2 className="text-xl font-semibold mb-4">MEDCO Report</h2>
       
       <div className="prose max-w-none">
         <p className="text-sm text-muted-foreground mb-4">
-          This is a sample report showing how your submitted data will appear. The actual report will contain your submitted information.
+          This report follows the MEDCO format requirements. You can preview, download, or email the report using the buttons below.
         </p>
       </div>
 
       <div className="flex gap-4 mt-6">
-        <BlobProvider document={<MedicalReport formData={formData} />}>
+        <BlobProvider document={<MedcoReport formData={formData} />}>
           {({ url, loading }) => (
             <>
               <Button 
@@ -88,7 +61,7 @@ export function IntakeFormSummary({ form }: { form: any }) {
                   }
                 }}
               >
-                {loading ? "Generating PDF..." : "Download Report"}
+                {loading ? "Generating PDF..." : "Download MEDCO Report"}
               </Button>
 
               <Button 
