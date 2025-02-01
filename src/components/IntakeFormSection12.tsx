@@ -5,17 +5,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export function IntakeFormSection12({ form }: { form: any }) {
+  const previousAccident = form.watch("previousAccident");
+  const additionalInformation = form.watch("additionalInformation");
+
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold mb-4">Previous Medical History</h2>
@@ -24,55 +21,55 @@ export function IntakeFormSection12({ form }: { form: any }) {
         control={form.control}
         name="previousAccident"
         render={({ field }) => (
-          <FormItem>
-            <FormLabel>Did you have previous road traffic accident?</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select yes or no" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="1">Yes</SelectItem>
-                <SelectItem value="2">No</SelectItem>
-              </SelectContent>
-            </Select>
+          <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+            <FormControl>
+              <Checkbox
+                checked={field.value === "1"}
+                onCheckedChange={(checked) => {
+                  field.onChange(checked ? "1" : "2");
+                }}
+              />
+            </FormControl>
+            <div className="space-y-1 leading-none">
+              <FormLabel>Did you have previous road traffic accident?</FormLabel>
+            </div>
             <FormMessage />
           </FormItem>
         )}
       />
 
-      <FormField
-        control={form.control}
-        name="previousAccidentDate"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>When was it?</FormLabel>
-            <FormControl>
-              <Input type="date" {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+      {previousAccident === "1" && (
+        <FormField
+          control={form.control}
+          name="previousAccidentDate"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>When was it?</FormLabel>
+              <FormControl>
+                <Input type="date" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      )}
 
       <FormField
         control={form.control}
         name="previousAccidentRecovery"
         render={({ field }) => (
-          <FormItem>
-            <FormLabel>Did you recover completely from previous accident?</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select yes or no" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="1">Yes</SelectItem>
-                <SelectItem value="2">No</SelectItem>
-              </SelectContent>
-            </Select>
+          <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+            <FormControl>
+              <Checkbox
+                checked={field.value === "1"}
+                onCheckedChange={(checked) => {
+                  field.onChange(checked ? "1" : "2");
+                }}
+              />
+            </FormControl>
+            <div className="space-y-1 leading-none">
+              <FormLabel>Did you recover completely from previous accident?</FormLabel>
+            </div>
             <FormMessage />
           </FormItem>
         )}
@@ -82,19 +79,18 @@ export function IntakeFormSection12({ form }: { form: any }) {
         control={form.control}
         name="previousInjuriesWorse"
         render={({ field }) => (
-          <FormItem>
-            <FormLabel>Has this accident made previous injuries worse?</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select yes or no" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="1">Yes</SelectItem>
-                <SelectItem value="2">No</SelectItem>
-              </SelectContent>
-            </Select>
+          <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+            <FormControl>
+              <Checkbox
+                checked={field.value === "1"}
+                onCheckedChange={(checked) => {
+                  field.onChange(checked ? "1" : "2");
+                }}
+              />
+            </FormControl>
+            <div className="space-y-1 leading-none">
+              <FormLabel>Has this accident made previous injuries worse?</FormLabel>
+            </div>
             <FormMessage />
           </FormItem>
         )}
@@ -118,37 +114,38 @@ export function IntakeFormSection12({ form }: { form: any }) {
         control={form.control}
         name="additionalInformation"
         render={({ field }) => (
-          <FormItem>
-            <FormLabel>Is there anything else you want to add?</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select yes or no" />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                <SelectItem value="1">Yes</SelectItem>
-                <SelectItem value="2">No</SelectItem>
-              </SelectContent>
-            </Select>
+          <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+            <FormControl>
+              <Checkbox
+                checked={field.value === "1"}
+                onCheckedChange={(checked) => {
+                  field.onChange(checked ? "1" : "2");
+                }}
+              />
+            </FormControl>
+            <div className="space-y-1 leading-none">
+              <FormLabel>Is there anything else you want to add?</FormLabel>
+            </div>
             <FormMessage />
           </FormItem>
         )}
       />
 
-      <FormField
-        control={form.control}
-        name="additionalInformationDetails"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Additional details</FormLabel>
-            <FormControl>
-              <Textarea placeholder="Enter additional details" {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+      {additionalInformation === "1" && (
+        <FormField
+          control={form.control}
+          name="additionalInformationDetails"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Additional details</FormLabel>
+              <FormControl>
+                <Textarea placeholder="Enter additional details" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      )}
     </div>
   );
 }
