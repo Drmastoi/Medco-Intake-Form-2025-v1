@@ -10,10 +10,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   sectionTitle: {
-    fontSize: 13,  // Increased from 12 to 13
-    marginBottom: 10,  // Increased from 8 to 10
-    fontWeight: 'extrabold',  // Changed from 'bold' to 'extrabold'
-    textTransform: 'uppercase',  // Added uppercase transform
+    fontSize: 13,
+    marginBottom: 10,
+    fontWeight: 'extrabold',
+    textTransform: 'uppercase',
   },
   text: {
     fontSize: 10,
@@ -43,49 +43,33 @@ export const DailyLifeImpactSection = ({ formData }: { formData: any }) => {
 
   return (
     <View style={styles.section}>
-      <Text style={styles.sectionTitle}>Employment Position/Education</Text>
-      <Text style={styles.text}>Occupation: {formData.occupation || "Not specified"}</Text>
-      <Text style={styles.text}>Work Type: {getWorkTypeText(formData.workType)}</Text>
-      <Text style={styles.text}>Time taken off work: {formData.daysOffWork || "0"} Days</Text>
-      <Text style={styles.text}>Light duties: {formData.daysLightDuties || "0"} Days</Text>
-      <Text style={styles.text}>Work Difficulties: {formData.workDifficulties || "None reported"}</Text>
-      <Text style={styles.text}>Employment prospects in the open job market would be unaffected because of the injuries.</Text>
+      <Text style={styles.sectionTitle}>Effects on Daily Life</Text>
+      
+      {formData.effectOnDomesticLiving === "1" ? (
+        <Text style={styles.text}>
+          Effects on Domestic Lifestyle: The claimant's ability to perform domestic activities has been mildly restricted. 
+          {formData.domesticLivingDetails && `Details: ${formData.domesticLivingDetails}`}
+        </Text>
+      ) : (
+        <Text style={styles.text}>No effects on domestic lifestyle reported.</Text>
+      )}
 
-      <View style={styles.subsection}>
-        <Text style={styles.sectionTitle}>Home Circumstances</Text>
-        <Text style={styles.text}>Claimant lives with: {getLivingWithText(formData.livingWith)}</Text>
-        <Text style={styles.text}>Number of Children at home: {formData.childrenCount || "0"}</Text>
-      </View>
+      {formData.effectOnSportLeisure === "1" ? (
+        <Text style={styles.text}>
+          Effects on Social and Leisure: The claimant's ability to participate in sport & leisure activities is mildly restricted due to pains.
+          {formData.sportLeisureDetails && `Details: ${formData.sportLeisureDetails}`}
+        </Text>
+      ) : (
+        <Text style={styles.text}>No effects on social and leisure activities reported.</Text>
+      )}
 
-      <View style={styles.subsection}>
-        <Text style={styles.sectionTitle}>Effects on Daily Life</Text>
-        
-        {formData.effectOnDomesticLiving === "1" ? (
-          <Text style={styles.text}>
-            Effects on Domestic Lifestyle: The claimant's ability to perform domestic activities has been mildly restricted. 
-            {formData.domesticLivingDetails && `Details: ${formData.domesticLivingDetails}`}
-          </Text>
-        ) : (
-          <Text style={styles.text}>No effects on domestic lifestyle reported.</Text>
-        )}
-
-        {formData.effectOnSportLeisure === "1" ? (
-          <Text style={styles.text}>
-            Effects on Social and Leisure: The claimant's ability to participate in sport & leisure activities is mildly restricted due to pains.
-            {formData.sportLeisureDetails && `Details: ${formData.sportLeisureDetails}`}
-          </Text>
-        ) : (
-          <Text style={styles.text}>No effects on social and leisure activities reported.</Text>
-        )}
-
-        {formData.sleepDisturbance === "1" ? (
-          <Text style={styles.text}>
-            Sleep Disturbance: {formData.sleepDisturbanceDetails || "Present but no details provided"}
-          </Text>
-        ) : (
-          <Text style={styles.text}>No sleep disturbance reported.</Text>
-        )}
-      </View>
+      {formData.sleepDisturbance === "1" ? (
+        <Text style={styles.text}>
+          Sleep Disturbance: {formData.sleepDisturbanceDetails || "Present but no details provided"}
+        </Text>
+      ) : (
+        <Text style={styles.text}>No sleep disturbance reported.</Text>
+      )}
     </View>
   );
 };
