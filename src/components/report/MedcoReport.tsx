@@ -58,7 +58,6 @@ export const MedcoReport = ({ formData }: { formData: any }) => (
     
     <Page size="A4" style={styles.page}>
       <InjuriesAndSymptomsSection formData={formData} />
-      <ClinicalExaminationSection formData={formData} />
       <PreviousMedicalHistorySection formData={formData} />
       <DailyLifeImpactSection formData={formData} />
       <Text 
