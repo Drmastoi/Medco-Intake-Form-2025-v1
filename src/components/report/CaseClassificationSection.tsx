@@ -3,16 +3,19 @@ import { Text, View, StyleSheet } from '@react-pdf/renderer';
 const styles = StyleSheet.create({
   section: {
     marginBottom: 10,
+    fontFamily: 'Helvetica',
   },
   heading: {
     fontSize: 11,
     fontWeight: 'bold',
     marginBottom: 5,
+    fontFamily: 'Helvetica-Bold',
   },
   text: {
     fontSize: 10,
     marginBottom: 3,
     lineHeight: 1.4,
+    fontFamily: 'Helvetica',
   },
 });
 

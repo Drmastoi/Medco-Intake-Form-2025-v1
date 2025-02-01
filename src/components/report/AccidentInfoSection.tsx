@@ -4,16 +4,19 @@ import { formatDate } from '../../utils/dateUtils';
 const styles = StyleSheet.create({
   section: {
     marginBottom: 15,
+    fontFamily: 'Helvetica',
   },
   subtitle: {
     fontSize: 14,
     marginBottom: 8,
     fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
   },
   text: {
     fontSize: 12,
     marginBottom: 5,
     lineHeight: 1.4,
+    fontFamily: 'Helvetica',
   },
 });
 
