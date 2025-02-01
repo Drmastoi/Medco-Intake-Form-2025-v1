@@ -7,8 +7,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useState } from "react";
 
 export function IntakeFormSection1({ form }: { form: any }) {
+  const [showOtherIdField, setShowOtherIdField] = useState(false);
+
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold mb-4">Personal Information</h2>
@@ -46,30 +49,76 @@ export function IntakeFormSection1({ form }: { form: any }) {
         name="idType"
         render={({ field }) => (
           <FormItem className="space-y-3">
-            <FormLabel>ID Type</FormLabel>
+            <FormLabel>ID Type (Select all that apply)</FormLabel>
             <FormControl>
               <div className="flex flex-col space-y-2">
                 <div className="flex items-center space-x-2">
                   <Checkbox
-                    checked={field.value === "1"}
-                    onCheckedChange={() => field.onChange("1")}
+                    checked={field.value?.includes("1")}
+                    onCheckedChange={(checked) => {
+                      const currentValue = field.value || [];
+                      if (checked) {
+                        field.onChange([...currentValue, "1"]);
+                      } else {
+                        field.onChange(currentValue.filter((v: string) => v !== "1"));
+                      }
+                    }}
                   />
                   <label>Driving License</label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Checkbox
-                    checked={field.value === "2"}
-                    onCheckedChange={() => field.onChange("2")}
+                    checked={field.value?.includes("2")}
+                    onCheckedChange={(checked) => {
+                      const currentValue = field.value || [];
+                      if (checked) {
+                        field.onChange([...currentValue, "2"]);
+                      } else {
+                        field.onChange(currentValue.filter((v: string) => v !== "2"));
+                      }
+                    }}
                   />
                   <label>Passport</label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Checkbox
-                    checked={field.value === "3"}
-                    onCheckedChange={() => field.onChange("3")}
+                    checked={field.value?.includes("3")}
+                    onCheckedChange={(checked) => {
+                      const currentValue = field.value || [];
+                      if (checked) {
+                        field.onChange([...currentValue, "3"]);
+                      } else {
+                        field.onChange(currentValue.filter((v: string) => v !== "3"));
+                      }
+                    }}
                   />
                   <label>ID Card</label>
                 </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    checked={field.value?.includes("4")}
+                    onCheckedChange={(checked) => {
+                      const currentValue = field.value || [];
+                      setShowOtherIdField(checked);
+                      if (checked) {
+                        field.onChange([...currentValue, "4"]);
+                      } else {
+                        field.onChange(currentValue.filter((v: string) => v !== "4"));
+                      }
+                    }}
+                  />
+                  <label>Other</label>
+                </div>
+                {showOtherIdField && (
+                  <Input 
+                    placeholder="Please specify other ID type"
+                    className="ml-6 mt-2"
+                    onChange={(e) => {
+                      const currentValue = field.value || [];
+                      field.onChange([...currentValue.filter((v: string) => v !== "other"), e.target.value]);
+                    }}
+                  />
+                )}
               </div>
             </FormControl>
             <FormMessage />
