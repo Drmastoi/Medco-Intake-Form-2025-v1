@@ -43,6 +43,10 @@ const getPrognosis = (severity: string) => {
   }
 };
 
+const isWhiplashInjury = (injuryType: string) => {
+  return ['neck', 'shoulder', 'back'].includes(injuryType.toLowerCase());
+};
+
 export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
   const mechanism = getImpactMechanism(formData.vehiclePosition);
 
@@ -94,28 +98,23 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
         </View>
       )}
 
-      {formData.backPain === "1" && (
+      {formData.hasOtherInjury === "1" && (
         <View>
-          <Text style={styles.subheading}>BACK PAIN</Text>
-          <Text style={styles.text}>Classification: Whiplash injury</Text>
-          <Text style={styles.text}>Location: {
-            formData.backLocation === "1" ? "Upper back" :
-            formData.backLocation === "2" ? "Middle Back" :
-            formData.backLocation === "3" ? "Lower Back" :
-            formData.backLocation === "4" ? "All over back" : "Back"
-          }</Text>
-          <Text style={styles.text}>Causation/Mechanism: Due to motor vehicle collision and {mechanism}</Text>
+          <Text style={styles.subheading}>OTHER INJURY: {formData.injuryName}</Text>
+          <Text style={styles.text}>Classification: {isWhiplashInjury(formData.injuryName) ? "Whiplash injury" : "Non-Whiplash injury"}</Text>
+          <Text style={styles.text}>Causation/Mechanism: Due to sudden jolt and seat belt restriction</Text>
           <Text style={styles.text}>Examination:</Text>
           <Text style={styles.text}>Palpation: {
-            formData.backPainCurrentSeverity === "1" ? "Mild" :
-            formData.backPainCurrentSeverity === "2" ? "Moderate" :
-            formData.backPainCurrentSeverity === "3" ? "Severe" : "Moderate"
-          } tenderness in the affected region</Text>
+            formData.injuryCurrentSeverity === "1" ? "Mild" :
+            formData.injuryCurrentSeverity === "2" ? "Moderate" :
+            formData.injuryCurrentSeverity === "3" ? "Severe" : "Moderate"
+          } tenderness in affected area</Text>
           <Text style={styles.text}>Range of Motion: Limited due to pain</Text>
+          <Text style={styles.text}>Neurological Assessment: normal</Text>
           <Text style={styles.text}>Treatment Recommendations:</Text>
           <Text style={styles.text}>Pain management: Over-the-counter pain medication and ice therapy recommended</Text>
           <Text style={styles.text}>Physiotherapy: Recommended - Number of sessions to be decided by the referred expert</Text>
-          <Text style={styles.text}>Prognosis: From the date of accident: {getPrognosis(formData.backPainCurrentSeverity)}</Text>
+          <Text style={styles.text}>Prognosis: From the date of accident: {getPrognosis(formData.injuryCurrentSeverity)}</Text>
         </View>
       )}
     </View>
