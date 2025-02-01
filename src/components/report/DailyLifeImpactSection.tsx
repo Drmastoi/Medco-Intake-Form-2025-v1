@@ -85,11 +85,6 @@ export const DailyLifeImpactSection = ({ formData }: { formData: any }) => {
           <Text style={styles.text}>No sleep disturbance reported.</Text>
         )}
       </View>
-
-      <View style={styles.subsection}>
-        <Text style={styles.subtitle}>Psychological Effects</Text>
-        <Text style={styles.text}>The claimant continues to drive but is more cautious and vigilant about driving.</Text>
-      </View>
     </View>
   );
 };
