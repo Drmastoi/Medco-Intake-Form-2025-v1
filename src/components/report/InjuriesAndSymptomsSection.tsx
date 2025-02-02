@@ -3,25 +3,16 @@ import { Text, View, StyleSheet } from '@react-pdf/renderer';
 const styles = StyleSheet.create({
   section: {
     marginBottom: 15,
-    fontFamily: 'Helvetica',
   },
-  heading: {
-    fontSize: 14,
-    marginBottom: 10,
-    fontWeight: 'bold',
-    fontFamily: 'Helvetica-Bold',
-  },
-  subheading: {
+  subtitle: {
     fontSize: 12,
     marginBottom: 8,
     fontWeight: 'bold',
-    fontFamily: 'Helvetica-Bold',
   },
   text: {
     fontSize: 10,
     marginBottom: 5,
     lineHeight: 1.4,
-    fontFamily: 'Helvetica',
   },
 });
 
@@ -53,13 +44,24 @@ const getImpactMechanism = (vehiclePosition: string) => {
   }
 };
 
-const getPrognosis = (severity: string) => {
+const getPrognosis = (severity: string, resolveDays: string | undefined) => {
+  if (severity === "4" && resolveDays) {
+    return `${resolveDays} DAYS`;
+  }
+  
   switch (severity) {
     case "1": return "3 MONTHS";
     case "2": return "6 MONTHS";
     case "3": return "9 MONTHS";
     default: return "6 MONTHS";
   }
+};
+
+const getTreatmentRecommendation = (severity: string) => {
+  if (severity === "4") {
+    return "Pain killers if required";
+  }
+  return "Pain management: Over-the-counter pain medication and ice therapy recommended\nPhysiotherapy: Recommended - Number of sessions to be decided by the referred expert";
 };
 
 export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
@@ -82,9 +84,8 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
           <Text style={styles.text}>Range of Motion: Flexion and extension limited due to pain</Text>
           <Text style={styles.text}>Neurological Assessment: normal</Text>
           <Text style={styles.text}>Treatment Recommendations:</Text>
-          <Text style={styles.text}>Pain management: Over-the-counter pain medication and ice therapy recommended</Text>
-          <Text style={styles.text}>Physiotherapy: Recommended - Number of sessions to be decided by the referred expert</Text>
-          <Text style={styles.text}>Prognosis: From the date of accident: {getPrognosis(formData.neckPainCurrentSeverity)}</Text>
+          <Text style={styles.text}>{getTreatmentRecommendation(formData.neckPainCurrentSeverity)}</Text>
+          <Text style={styles.text}>Prognosis: From the date of accident: {getPrognosis(formData.neckPainCurrentSeverity, formData.neckPainResolveDays)}</Text>
         </View>
       )}
 
@@ -101,9 +102,8 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
           <Text style={styles.text}>Range of Motion: Limited due to pain</Text>
           <Text style={styles.text}>Neurological Assessment: normal</Text>
           <Text style={styles.text}>Treatment Recommendations:</Text>
-          <Text style={styles.text}>Pain management: Over-the-counter pain medication and ice therapy recommended</Text>
-          <Text style={styles.text}>Physiotherapy: Recommended - Number of sessions to be decided by the referred expert</Text>
-          <Text style={styles.text}>Prognosis: From the date of accident: {getPrognosis(formData.shoulderPainCurrentSeverity)}</Text>
+          <Text style={styles.text}>{getTreatmentRecommendation(formData.shoulderPainCurrentSeverity)}</Text>
+          <Text style={styles.text}>Prognosis: From the date of accident: {getPrognosis(formData.shoulderPainCurrentSeverity, formData.shoulderPainResolveDays)}</Text>
         </View>
       )}
 
@@ -120,9 +120,8 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
           <Text style={styles.text}>Range of Motion: Limited due to pain</Text>
           <Text style={styles.text}>Neurological Assessment: normal</Text>
           <Text style={styles.text}>Treatment Recommendations:</Text>
-          <Text style={styles.text}>Pain management: Over-the-counter pain medication and ice therapy recommended</Text>
-          <Text style={styles.text}>Physiotherapy: Recommended - Number of sessions to be decided by the referred expert</Text>
-          <Text style={styles.text}>Prognosis: From the date of accident: {getPrognosis(formData.backPainCurrentSeverity)}</Text>
+          <Text style={styles.text}>{getTreatmentRecommendation(formData.backPainCurrentSeverity)}</Text>
+          <Text style={styles.text}>Prognosis: From the date of accident: {getPrognosis(formData.backPainCurrentSeverity, formData.backPainResolveDays)}</Text>
         </View>
       )}
 
@@ -137,7 +136,7 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
           <Text style={styles.text}>Past History: {formData.headachePastHistory || "No history of previous headaches"}</Text>
           <Text style={styles.text}>Examination: Mental State and neurological examination and is normal</Text>
           <Text style={styles.text}>Treatment Recommendation: Self-Resolving condition. Take simple pain killers as and when required</Text>
-          <Text style={styles.text}>Prognosis: From the date of accident: {getPrognosis(formData.headacheCurrentSeverity)}</Text>
+          <Text style={styles.text}>Prognosis: From the date of accident: {getPrognosis(formData.headacheCurrentSeverity, formData.headacheResolveDays)}</Text>
         </View>
       )}
 
@@ -164,7 +163,7 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
             <Text style={styles.text}>- Anxiety has prevented patient from driving for leisure and work</Text>
           )}
           <Text style={styles.text}>Treatment Recommendation: Self-Resolving condition</Text>
-          <Text style={styles.text}>Prognosis: From the date of accident: {getPrognosis(formData.anxietyCurrentSeverity)}</Text>
+          <Text style={styles.text}>Prognosis: From the date of accident: {getPrognosis(formData.anxietyCurrentSeverity, formData.anxietyResolveDays)}</Text>
         </View>
       )}
     </View>
