@@ -8,9 +8,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 export function IntakeFormSection7({ form }: { form: any }) {
   const travelAnxiety = form.watch("travelAnxiety");
+  const hasAnxietyHistory = form.watch("hasAnxietyHistory");
 
   return (
     <div className="space-y-4">
@@ -286,17 +288,50 @@ export function IntakeFormSection7({ form }: { form: any }) {
 
           <FormField
             control={form.control}
-            name="anxietyPastHistory"
+            name="hasAnxietyHistory"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Past Medical History of anxiety before the accident</FormLabel>
+              <FormItem className="space-y-3">
+                <FormLabel>Do you have any past medical history of anxiety before the accident?</FormLabel>
                 <FormControl>
-                  <Textarea placeholder="Enter past medical history" {...field} />
+                  <RadioGroup
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    className="flex flex-col space-y-1"
+                  >
+                    <FormItem className="flex items-center space-x-3 space-y-0">
+                      <FormControl>
+                        <RadioGroupItem value="yes" />
+                      </FormControl>
+                      <FormLabel className="font-normal">Yes</FormLabel>
+                    </FormItem>
+                    <FormItem className="flex items-center space-x-3 space-y-0">
+                      <FormControl>
+                        <RadioGroupItem value="no" />
+                      </FormControl>
+                      <FormLabel className="font-normal">No</FormLabel>
+                    </FormItem>
+                  </RadioGroup>
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
+
+          {hasAnxietyHistory === "yes" && (
+            <FormField
+              control={form.control}
+              name="anxietyPastHistory"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Please describe your past medical history of anxiety</FormLabel>
+                  <FormControl>
+                    <Textarea placeholder="Enter past medical history" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
         </>
       )}
     </div>
