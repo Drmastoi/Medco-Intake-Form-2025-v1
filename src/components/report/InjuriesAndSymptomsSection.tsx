@@ -3,18 +3,18 @@ import { styles } from './reportStyles';
 
 const EntryGroup = ({ label, value }: { label: string; value: string }) => (
   <View style={styles.compactGroup}>
-    <Text style={styles.boldLabel}>{label}:</Text>
+    <Text style={styles.boldLabel}>{label}: </Text>
     <Text style={styles.normalText}>{value}</Text>
   </View>
 );
 
 const ExaminationGroup = ({ title, items }: { title: string; items: { label: string; value: string }[] }) => (
-  <View style={styles.compactGroup}>
+  <View>
     <Text style={styles.boldLabel}>{title}</Text>
     <View style={styles.indentedGroup}>
       {items.map((item, index) => (
         <View key={index} style={styles.compactGroup}>
-          <Text style={styles.boldLabel}>{item.label}:</Text>
+          <Text style={styles.boldLabel}>{item.label}: </Text>
           <Text style={styles.normalText}>{item.value}</Text>
         </View>
       ))}
@@ -79,31 +79,33 @@ const renderInjurySection = (
   <View style={styles.section}>
     <Text style={styles.mainTitle}>{title}</Text>
     
-    <View style={styles.compactGroup}>
-      <EntryGroup label="Onset" value={onset} />
-      <EntryGroup label="Initial Severity" value={initialSeverity} />
-      <EntryGroup label="Current Severity" value={currentSeverity} />
-      <EntryGroup label="Classification" value={classification} />
-      <EntryGroup label="Causation/Mechanism" value={mechanism} />
+    <EntryGroup label="Onset" value={onset} />
+    <EntryGroup label="Initial Severity" value={initialSeverity} />
+    <EntryGroup label="Current Severity" value={currentSeverity} />
+    <EntryGroup label="Classification" value={classification} />
+    <EntryGroup label="Causation/Mechanism" value={mechanism} />
+
+    <View style={styles.sectionGap}>
+      <ExaminationGroup 
+        title="Examination"
+        items={[
+          { label: "Palpation", value: palpation },
+          { label: "Range of Motion", value: rangeOfMotion },
+          { label: "Neurological Assessment", value: neurologicalAssessment }
+        ]}
+      />
     </View>
 
-    <ExaminationGroup 
-      title="Examination"
-      items={[
-        { label: "Palpation", value: palpation },
-        { label: "Range of Motion", value: rangeOfMotion },
-        { label: "Neurological Assessment", value: neurologicalAssessment }
-      ]}
-    />
-
-    <Text style={styles.boldLabel}>Treatment and Prognosis</Text>
-    <View style={styles.indentedGroup}>
-      <Text style={styles.boldLabel}>Treatment</Text>
-      <Text style={styles.normalText}>Pain management: Over-the-counter pain medication and ice therapy recommended</Text>
-      <Text style={styles.boldLabel}>Physiotherapy Recommended</Text>
-      <Text style={styles.normalText}>Number of sessions to be decided by the referred expert</Text>
-      <Text style={styles.boldLabel}>Prognosis</Text>
-      <Text style={styles.normalText}>{prognosis}</Text>
+    <View style={styles.sectionGap}>
+      <Text style={styles.boldLabel}>Treatment and Prognosis</Text>
+      <View style={styles.indentedGroup}>
+        <Text style={styles.boldLabel}>Treatment</Text>
+        <Text style={styles.normalText}>Pain management: Over-the-counter pain medication and ice therapy recommended</Text>
+        <Text style={styles.boldLabel}>Physiotherapy Recommended</Text>
+        <Text style={styles.normalText}>Number of sessions to be decided by the referred expert</Text>
+        <Text style={styles.boldLabel}>Prognosis</Text>
+        <Text style={styles.normalText}>{prognosis}</Text>
+      </View>
     </View>
   </View>
 );
