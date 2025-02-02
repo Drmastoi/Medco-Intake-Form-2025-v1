@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
     fontSize: 10,
     color: '#0066cc',
     marginBottom: 8,
-    fontFamily: 'Helvetica',
+    fontFamily: 'Helvetica-Bold',
   },
   tableRow: {
     flexDirection: 'row',
@@ -71,19 +71,17 @@ export const styles = StyleSheet.create({
     fontSize: 9,
     fontFamily: 'Helvetica',
   },
-
-  // New styles for report entries
   questionLabel: {
     fontSize: 8,
     color: '#666666',
     marginBottom: 2,
-    fontFamily: 'Helvetica',
+    fontFamily: 'Helvetica-Bold',
   },
   answerText: {
     fontSize: 10,
     color: '#000000',
     marginBottom: 6,
-    fontFamily: 'Helvetica-Bold',
+    fontFamily: 'Helvetica',
   },
   sectionHeader: {
     fontSize: 11,
@@ -97,5 +95,21 @@ export const styles = StyleSheet.create({
   },
   indentedGroup: {
     marginLeft: 12,
+  },
+  boldLabel: {
+    fontFamily: 'Helvetica-Bold',
+    fontSize: 10,
+    marginBottom: 2,
+  },
+  normalText: {
+    fontFamily: 'Helvetica',
+    fontSize: 10,
+    marginBottom: 4,
+  },
+  mainTitle: {
+    fontFamily: 'Helvetica-Bold',
+    fontSize: 12,
+    marginBottom: 6,
+    color: '#333333',
   }
 });
