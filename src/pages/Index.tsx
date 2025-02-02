@@ -70,6 +70,22 @@ export default function Index() {
   const [currentSection, setCurrentSection] = useState(1);
   const { toast } = useToast();
   const totalSections = 12;
+
+  const tabNames = [
+    "Personal Info",
+    "Accident Details",
+    "Medical History",
+    "Neck Pain",
+    "Shoulder Pain",
+    "Back Pain",
+    "Headache",
+    "Daily Impact",
+    "Treatment",
+    "Recovery",
+    "Work Status",
+    "Additional Info",
+    "Summary"
+  ];
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -126,14 +142,14 @@ export default function Index() {
       <h1 className="text-2xl font-bold mb-8">Medical Intake Form</h1>
       
       <Tabs.Root value={currentSection.toString()} onValueChange={handleTabChange} className="mb-6">
-        <Tabs.List className="grid grid-cols-7 lg:grid-cols-13 h-auto gap-1 max-w-[70%] mx-auto">
-          {Array.from({ length: totalSections + 1 }, (_, i) => i + 1).map((section) => (
+        <Tabs.List className="grid grid-cols-4 md:grid-cols-7 lg:grid-cols-13 h-auto gap-1 max-w-[90%] mx-auto">
+          {tabNames.map((name, index) => (
             <Tabs.Trigger
-              key={section}
-              value={section.toString()}
-              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-2 py-1 text-xs rounded-md"
+              key={index + 1}
+              value={(index + 1).toString()}
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-2 py-1 text-[10px] md:text-xs rounded-md whitespace-nowrap overflow-hidden text-ellipsis"
             >
-              {section === 13 ? "Summary" : `${section}`}
+              {name}
             </Tabs.Trigger>
           ))}
         </Tabs.List>
