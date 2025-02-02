@@ -130,6 +130,8 @@ export const MedcoReport = ({ formData }: { formData: any }) => (
           ${formData.preventedDriving === "1" ? "The anxiety has prevented them from driving regularly. " : ""}` 
           : "No significant psychological effects have been reported."}
       </Text>
+
+      <AdditionalInformationSection formData={formData} />
       
       <Text 
         style={styles.pageNumber} 
@@ -142,7 +144,6 @@ export const MedcoReport = ({ formData }: { formData: any }) => (
       <MedicalRecordsSection />
       <CaseClassificationSection />
       <DeclarationSection />
-      <AdditionalInformationSection formData={formData} />
       <Text 
         style={styles.pageNumber} 
         render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} 
