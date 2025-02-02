@@ -97,22 +97,22 @@ export const PersonalDetailsSection = ({ formData }: { formData: any }) => {
         
         <View style={styles.row}>
           <Text style={styles.label}>Name of Referring Party:</Text>
-          <Text style={styles.value}>_________________</Text>
+          <Text style={styles.value}>{formData.instructingPartyName || '_________________'}</Text>
         </View>
         
         <View style={styles.row}>
           <Text style={styles.label}>Reference Number:</Text>
-          <Text style={styles.value}>_________________</Text>
+          <Text style={styles.value}>{formData.instructingPartyReference || '_________________'}</Text>
         </View>
         
         <View style={styles.row}>
           <Text style={styles.label}>Name of Solicitor:</Text>
-          <Text style={styles.value}>_________________</Text>
+          <Text style={styles.value}>{formData.solicitorName || '_________________'}</Text>
         </View>
         
         <View style={styles.row}>
           <Text style={styles.label}>Solicitor Reference:</Text>
-          <Text style={styles.value}>_________________</Text>
+          <Text style={styles.value}>{formData.solicitorReference || '_________________'}</Text>
         </View>
         
         <View style={styles.row}>
@@ -127,7 +127,7 @@ export const PersonalDetailsSection = ({ formData }: { formData: any }) => {
         
         <View style={styles.row}>
           <Text style={styles.label}>Examination Location:</Text>
-          <Text style={styles.value}>_________________</Text>
+          <Text style={styles.value}>{formData.examinationLocation || '_________________'}</Text>
         </View>
         
         <View style={styles.row}>

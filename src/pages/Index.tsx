@@ -21,7 +21,14 @@ import { useToast } from "@/hooks/use-toast";
 import * as Tabs from "@radix-ui/react-tabs";
 
 const formSchema = z.object({
-  // Section 1 - Personal Information
+  // Pre-filled fields (sender details)
+  solicitorName: z.string(),
+  solicitorReference: z.string(),
+  instructingPartyName: z.string(),
+  instructingPartyReference: z.string(),
+  examinationLocation: z.string(),
+  
+  // Existing fields
   fullName: z.string().min(2, { message: "Name must be at least 2 characters" }),
   dateOfBirth: z.string(),
   idType: z.enum(["1", "2", "3"]),
@@ -67,11 +74,12 @@ const formSchema = z.object({
 });
 
 export default function Index() {
-  const [currentSection, setCurrentSection] = useState(1);
+  const [currentSection, setCurrentSection] = useState(0); // Start with pre-filled section
   const { toast } = useToast();
-  const totalSections = 12;
+  const totalSections = 13;
 
   const tabNames = [
+    "Pre-filled Details",
     "Personal Info",
     "Accident Details",
     "Neck Pain",
@@ -90,6 +98,14 @@ export default function Index() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      // Pre-filled fields
+      solicitorName: "",
+      solicitorReference: "",
+      instructingPartyName: "",
+      instructingPartyReference: "",
+      examinationLocation: "",
+      
+      // Existing default values
       fullName: "",
       dateOfBirth: "",
       idType: "1",
@@ -142,11 +158,11 @@ export default function Index() {
       <h1 className="text-2xl font-bold mb-8">Medical Intake Form</h1>
       
       <Tabs.Root value={currentSection.toString()} onValueChange={handleTabChange} className="mb-6">
-        <Tabs.List className="grid grid-cols-4 md:grid-cols-7 lg:grid-cols-13 h-auto gap-1 max-w-[90%] mx-auto">
+        <Tabs.List className="grid grid-cols-4 md:grid-cols-7 lg:grid-cols-14 h-auto gap-1 max-w-[90%] mx-auto">
           {tabNames.map((name, index) => (
             <Tabs.Trigger
-              key={index + 1}
-              value={(index + 1).toString()}
+              key={index}
+              value={index.toString()}
               className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-2 py-1 text-[10px] md:text-xs rounded-md whitespace-nowrap overflow-hidden text-ellipsis"
             >
               {name}
@@ -155,20 +171,79 @@ export default function Index() {
         </Tabs.List>
       </Tabs.Root>
       
-      <div className="mb-6">
-        <p className="text-sm text-muted-foreground">
-          Section {currentSection} of {totalSections}
-        </p>
-        <div className="w-full bg-gray-200 h-2 rounded-full mt-2">
-          <div 
-            className="bg-primary h-2 rounded-full transition-all duration-300"
-            style={{ width: `${(currentSection / totalSections) * 100}%` }}
-          />
-        </div>
-      </div>
-      
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          {currentSection === 0 && (
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="solicitorName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Solicitor's Name</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="solicitorReference"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Solicitor's Reference</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="instructingPartyName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Instructing Party Name</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="instructingPartyReference"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Instructing Party Reference</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="examinationLocation"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Examination Location</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+          )}
+          
           {currentSection === 1 && <IntakeFormSection1 form={form} />}
           {currentSection === 2 && <IntakeFormSection2 form={form} />}
           {currentSection === 3 && <IntakeFormSection3 form={form} />}
@@ -187,16 +262,16 @@ export default function Index() {
             <Button 
               type="button" 
               variant="outline"
-              onClick={() => setCurrentSection(prev => Math.max(1, prev - 1))}
-              disabled={currentSection === 1}
+              onClick={() => setCurrentSection(prev => Math.max(0, prev - 1))}
+              disabled={currentSection === 0}
             >
               Previous
             </Button>
             
-            {currentSection < totalSections + 1 ? (
+            {currentSection < totalSections ? (
               <Button 
                 type="button"
-                onClick={() => setCurrentSection(prev => Math.min(totalSections + 1, prev + 1))}
+                onClick={() => setCurrentSection(prev => Math.min(totalSections, prev + 1))}
               >
                 Next
               </Button>
