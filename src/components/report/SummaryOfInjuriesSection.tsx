@@ -228,3 +228,4 @@ export const SummaryOfInjuriesSection = ({ formData }: { formData: any }) => {
       </View>
     </View>
   );
+};
