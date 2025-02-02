@@ -1,7 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { Form } from "@/components/ui/form";
+import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { IntakeFormSection1 } from "@/components/IntakeFormSection1";
 import { IntakeFormSection2 } from "@/components/IntakeFormSection2";
 import { IntakeFormSection3 } from "@/components/IntakeFormSection3";
