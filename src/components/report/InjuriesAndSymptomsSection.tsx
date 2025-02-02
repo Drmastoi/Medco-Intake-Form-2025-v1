@@ -73,7 +73,7 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
     <View style={styles.section}>
       {formData.neckPain === "1" && (
         <View>
-          <Text style={styles.subheading}>NECK PAIN</Text>
+          <Text style={styles.subtitle}>NECK PAIN</Text>
           <Text style={styles.text}>Onset: {getOnsetText(formData.neckPainStart)}</Text>
           <Text style={styles.text}>Initial Severity: {getSeverityText(formData.neckPainInitialSeverity)}</Text>
           <Text style={styles.text}>Current Severity: {getSeverityText(formData.neckPainCurrentSeverity)}</Text>
@@ -91,7 +91,7 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
 
       {formData.shoulderPain === "1" && (
         <View>
-          <Text style={styles.subheading}>SHOULDER PAIN</Text>
+          <Text style={styles.subtitle}>SHOULDER PAIN</Text>
           <Text style={styles.text}>Onset: {getOnsetText(formData.shoulderPainStart)}</Text>
           <Text style={styles.text}>Initial Severity: {getSeverityText(formData.shoulderPainInitialSeverity)}</Text>
           <Text style={styles.text}>Current Severity: {getSeverityText(formData.shoulderPainCurrentSeverity)}</Text>
@@ -109,7 +109,7 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
 
       {formData.backPain === "1" && (
         <View>
-          <Text style={styles.subheading}>BACK PAIN</Text>
+          <Text style={styles.subtitle}>BACK PAIN</Text>
           <Text style={styles.text}>Onset: {getOnsetText(formData.backPainStart)}</Text>
           <Text style={styles.text}>Initial Severity: {getSeverityText(formData.backPainInitialSeverity)}</Text>
           <Text style={styles.text}>Current Severity: {getSeverityText(formData.backPainCurrentSeverity)}</Text>
@@ -127,7 +127,7 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
 
       {formData.headache === "1" && (
         <View>
-          <Text style={styles.subheading}>HEADACHE</Text>
+          <Text style={styles.subtitle}>HEADACHE</Text>
           <Text style={styles.text}>Onset: {getOnsetText(formData.headacheStart)}</Text>
           <Text style={styles.text}>Initial Severity: {getSeverityText(formData.headacheInitialSeverity)}</Text>
           <Text style={styles.text}>Current Severity: {getSeverityText(formData.headacheCurrentSeverity)}</Text>
@@ -142,7 +142,7 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
 
       {formData.travelAnxiety === "1" && (
         <View>
-          <Text style={styles.subheading}>TRAVEL ANXIETY</Text>
+          <Text style={styles.subtitle}>TRAVEL ANXIETY</Text>
           <Text style={styles.text}>Onset: {getOnsetText(formData.anxietyStart)}</Text>
           <Text style={styles.text}>Initial Severity: {getSeverityText(formData.anxietyInitialSeverity)}</Text>
           <Text style={styles.text}>Current Severity: {getSeverityText(formData.anxietyCurrentSeverity)}</Text>
