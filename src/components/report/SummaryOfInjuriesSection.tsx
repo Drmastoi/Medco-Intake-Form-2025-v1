@@ -111,7 +111,7 @@ export const SummaryOfInjuriesSection = ({ formData }: { formData: any }) => {
       onset: getOnsetText(formData.neckPainStart),
       initialSeverity: getSeverityText(formData.neckPainInitialSeverity),
       currentSeverity: getSeverityText(formData.neckPainCurrentSeverity),
-      treatment: "Physiotherapy and pain management",
+      treatment: formData.neckPainCurrentSeverity === "4" ? "Pain killers if required" : "Physiotherapy and pain management",
       prognosis: getPrognosis(formData.neckPainCurrentSeverity),
     });
   }
@@ -122,7 +122,7 @@ export const SummaryOfInjuriesSection = ({ formData }: { formData: any }) => {
       onset: getOnsetText(formData.shoulderPainStart),
       initialSeverity: getSeverityText(formData.shoulderPainInitialSeverity),
       currentSeverity: getSeverityText(formData.shoulderPainCurrentSeverity),
-      treatment: "Physiotherapy and pain management",
+      treatment: formData.shoulderPainCurrentSeverity === "4" ? "Pain killers if required" : "Physiotherapy and pain management",
       prognosis: getPrognosis(formData.shoulderPainCurrentSeverity),
     });
   }
@@ -133,7 +133,7 @@ export const SummaryOfInjuriesSection = ({ formData }: { formData: any }) => {
       onset: getOnsetText(formData.backPainStart),
       initialSeverity: getSeverityText(formData.backPainInitialSeverity),
       currentSeverity: getSeverityText(formData.backPainCurrentSeverity),
-      treatment: "Physiotherapy and pain management",
+      treatment: formData.backPainCurrentSeverity === "4" ? "Pain killers if required" : "Physiotherapy and pain management",
       prognosis: getPrognosis(formData.backPainCurrentSeverity),
     });
   }
