@@ -2,7 +2,7 @@ import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from "@/components/ui/form";
+import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { IntakeFormSection1 } from "@/components/IntakeFormSection1";
 import { IntakeFormSection2 } from "@/components/IntakeFormSection2";
@@ -79,7 +79,7 @@ const formSchema = z.object({
 });
 
 export default function Index() {
-  const [currentSection, setCurrentSection] = useState(0); // Start with pre-filled section
+  const [currentSection, setCurrentSection] = useState(0);
   const { toast } = useToast();
   const totalSections = 13;
 
@@ -213,16 +213,18 @@ export default function Index() {
         </Button>
       </div>
 
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 text-sm">
-        <h2 className="text-base font-semibold text-blue-900 mb-2">Quick Guide</h2>
-        <ul className="space-y-1 text-blue-800">
-          <li>• Complete all sections to help us understand your injury circumstances</li>
-          <li>• Navigate using the tabs above</li>
-          <li>• Progress saves automatically - return anytime using your shared link</li>
-          <li>• Skip uncertain questions for discussion during examination</li>
-          <li>• Use Previous/Next buttons to move between sections</li>
-        </ul>
-      </div>
+      {currentSection === 1 && (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 text-sm">
+          <h2 className="text-base font-semibold text-blue-900 mb-2">Quick Guide</h2>
+          <ul className="space-y-1 text-blue-800">
+            <li>• Complete all sections to help us understand your injury circumstances</li>
+            <li>• Navigate using the tabs above</li>
+            <li>• Progress saves automatically - return anytime using your shared link</li>
+            <li>• Skip uncertain questions for discussion during examination</li>
+            <li>• Use Previous/Next buttons to move between sections</li>
+          </ul>
+        </div>
+      )}
       
       <Tabs.Root value={currentSection.toString()} onValueChange={handleTabChange} className="mb-6">
         <Tabs.List className="grid grid-cols-4 md:grid-cols-7 lg:grid-cols-14 h-auto gap-1 max-w-[90%] mx-auto">
