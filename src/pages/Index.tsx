@@ -74,7 +74,6 @@ export default function Index() {
   const tabNames = [
     "Personal Info",
     "Accident Details",
-    "Medical History",
     "Neck Pain",
     "Shoulder Pain",
     "Back Pain",
