@@ -30,6 +30,8 @@ const formSchema = z.object({
   instructingPartyName: z.string(),
   instructingPartyReference: z.string(),
   examinationLocation: z.string(),
+  medcoReference: z.string(),
+  accompaniedBy: z.string(),
   
   // Existing fields
   fullName: z.string().min(2, { message: "Name must be at least 2 characters" }),
@@ -107,6 +109,8 @@ export default function Index() {
       instructingPartyName: "",
       instructingPartyReference: "",
       examinationLocation: "",
+      medcoReference: "",
+      accompaniedBy: "",
       
       // Existing default values
       fullName: "",
@@ -286,6 +290,32 @@ export default function Index() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Examination Location</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="medcoReference"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Medco Reference</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="accompaniedBy"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Accompanied By</FormLabel>
                       <FormControl>
                         <Input {...field} />
                       </FormControl>
