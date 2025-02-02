@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     lineHeight: 1.4,
     fontWeight: 'bold',
-    display: 'inline',
+    display: 'flex'  // Changed from 'inline' to 'flex'
   },
 });
 
