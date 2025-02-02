@@ -38,11 +38,11 @@ export const AccidentHistorySection = ({ formData }: { formData: any }) => {
 
   const getImpactLocation = (location: string) => {
     switch (location) {
-      case "1": return "rear";
-      case "2": return "front";
-      case "3": return "passenger side";
-      case "4": return "driver side";
-      default: return "unspecified location";
+      case "1": return "from behind";
+      case "2": return "to the front";
+      case "3": return "on the passenger side";
+      case "4": return "on the driver's side";
+      default: return "at an unspecified location";
     }
   };
 
@@ -57,10 +57,10 @@ export const AccidentHistorySection = ({ formData }: { formData: any }) => {
 
   const getDamageLevel = (damage: string) => {
     switch (damage) {
-      case "1": return "mild damage";
-      case "2": return "moderate damage";
+      case "1": return "sustained mild damage";
+      case "2": return "sustained moderate damage";
       case "3": return "was written off";
-      default: return "unspecified damage";
+      default: return "sustained unspecified damage";
     }
   };
 
@@ -76,17 +76,19 @@ export const AccidentHistorySection = ({ formData }: { formData: any }) => {
   return (
     <View style={styles.section}>
       <Text style={styles.paragraph}>
-        {`The incident occurred on ${formatDate(formData.accidentDate)} during the ${getTimeOfDay(formData.accidentTime)}. 
-        The claimant was driving a ${getVehicleType(formData.claimantVehicle)} ${getVehicleLocation(formData.vehicleLocation)} 
-        when their vehicle was impacted on the ${getImpactLocation(formData.impactLocation)}. 
-        As a result of the collision, the claimant's vehicle sustained ${getDamageLevel(formData.vehicleDamage)}.`}
+        {`On ${formatDate(formData.accidentDate)}, during the ${getTimeOfDay(formData.accidentTime)}, 
+        the claimant was involved in a road traffic accident. At the time of the incident, 
+        the claimant was traveling in their ${getVehicleType(formData.claimantVehicle)} 
+        ${getVehicleLocation(formData.vehicleLocation)}. The collision occurred when another 
+        ${getVehicleType(formData.otherVehicle)} impacted the claimant's vehicle 
+        ${getImpactLocation(formData.impactLocation)}.`}
       </Text>
 
       <Text style={styles.paragraph}>
-        {`The other vehicle involved in the incident was a ${getVehicleType(formData.otherVehicle)}. 
-        This collision occurred ${getVehicleLocation(formData.vehicleLocation)}, resulting in 
-        ${formData.vehicleDamage === "3" ? "the claimant's vehicle being written off" : 
-        `${getDamageLevel(formData.vehicleDamage)} to the claimant's vehicle`}.`}
+        {`As a consequence of the impact, the claimant's vehicle ${getDamageLevel(formData.vehicleDamage)}. 
+        The force of the collision was significant enough to cause injury to the claimant, 
+        who subsequently developed various symptoms. The circumstances of the accident suggest 
+        that the impact was unexpected and the claimant had no opportunity to brace for the collision.`}
       </Text>
     </View>
   );
