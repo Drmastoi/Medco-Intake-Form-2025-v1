@@ -20,41 +20,73 @@ const styles = StyleSheet.create({
 });
 
 const formatCheckboxList = (items: string[] = [], otherText?: string) => {
-  if (!items.length) return '';
+  if (!items.length && !otherText) return '';
+  
   const mainItems = items.filter(item => item !== 'other');
-  const formattedList = mainItems.join(', ');
-  return otherText ? `${formattedList}${mainItems.length ? ', and ' : ''}${otherText}` : formattedList;
+  let formattedText = '';
+  
+  if (mainItems.length) {
+    if (mainItems.length === 1) {
+      formattedText = mainItems[0];
+    } else if (mainItems.length === 2) {
+      formattedText = `${mainItems[0]} and ${mainItems[1]}`;
+    } else {
+      const lastItem = mainItems.pop();
+      formattedText = `${mainItems.join(', ')}, and ${lastItem}`;
+    }
+  }
+  
+  if (otherText) {
+    formattedText = formattedText ? `${formattedText}, and ${otherText}` : otherText;
+  }
+  
+  return formattedText;
 };
 
 export const DailyLifeImpactSection = ({ formData }: { formData: any }) => {
-  const formatWorkDifficulties = () => {
+  const formatWorkImpact = () => {
+    const daysOff = formData.daysOffWork ? 
+      `The claimant required ${formData.daysOffWork} days off work following the accident. ` : 
+      "The claimant did not require any time off work. ";
+
+    const lightDuties = formData.daysLightDuties ? 
+      `They subsequently worked on light duties for ${formData.daysLightDuties} days. ` : 
+      "";
+
     const difficulties = formatCheckboxList(formData.workDifficulties, formData.otherWorkDifficulties);
-    if (!difficulties) return "No specific work difficulties reported.";
-    return `The claimant reports difficulties with ${difficulties}.`;
+    const workDifficulties = difficulties ? 
+      `The claimant reports experiencing difficulties at work with ${difficulties}. ` : 
+      "";
+
+    return daysOff + lightDuties + workDifficulties;
   };
 
-  const formatSleepDisturbances = () => {
+  const formatSleepImpact = () => {
     const disturbances = formatCheckboxList(formData.sleepDisturbances, formData.otherSleepDisturbances);
-    if (!disturbances) return "No sleep disturbances reported.";
-    return `The claimant experiences sleep disturbances including ${disturbances}.`;
+    return disturbances ? 
+      `Sleep has been significantly affected. The claimant reports experiencing ${disturbances}. ` : 
+      "";
   };
 
-  const formatDomesticEffects = () => {
+  const formatDomesticImpact = () => {
     const effects = formatCheckboxList(formData.domesticEffects, formData.otherDomesticEffects);
-    if (!effects) return "No effects on domestic activities reported.";
-    return `The claimant's domestic activities are affected, specifically with ${effects}.`;
+    return effects ? 
+      `Daily domestic activities have been impacted. The claimant has difficulty with ${effects}. ` : 
+      "";
   };
 
-  const formatSportLeisureEffects = () => {
+  const formatSportLeisureImpact = () => {
     const effects = formatCheckboxList(formData.sportLeisureEffects, formData.otherSportLeisureEffects);
-    if (!effects) return "No effects on sport and leisure activities reported.";
-    return `The claimant's sport and leisure activities are affected, particularly ${effects}.`;
+    return effects ? 
+      `Sport and leisure activities have been affected. The claimant reports limitations with ${effects}. ` : 
+      "";
   };
 
-  const formatSocialLifeEffects = () => {
+  const formatSocialLifeImpact = () => {
     const effects = formatCheckboxList(formData.socialLifeEffects, formData.otherSocialLifeEffects);
-    if (!effects) return "No effects on social life reported.";
-    return `The claimant's social life is affected, specifically regarding ${effects}.`;
+    return effects ? 
+      `Social activities have been impacted. The claimant experiences difficulties with ${effects}. ` : 
+      "";
   };
 
   return (
@@ -62,43 +94,29 @@ export const DailyLifeImpactSection = ({ formData }: { formData: any }) => {
       <Text style={styles.subtitle}>Impact on Daily Life</Text>
       
       <View style={styles.subsection}>
-        <Text style={styles.text}>
-          {formData.daysOffWork ? 
-            `The claimant took ${formData.daysOffWork} days off work following the accident.` :
-            "The claimant did not take any days off work."}
-        </Text>
-        
-        {formData.daysLightDuties && (
-          <Text style={styles.text}>
-            They were on light duties or reduced hours for ${formData.daysLightDuties} days.
-          </Text>
-        )}
+        <Text style={styles.text}>{formatWorkImpact()}</Text>
       </View>
 
       <View style={styles.subsection}>
-        <Text style={styles.text}>{formatWorkDifficulties()}</Text>
+        <Text style={styles.text}>{formatSleepImpact()}</Text>
       </View>
 
       <View style={styles.subsection}>
-        <Text style={styles.text}>{formatSleepDisturbances()}</Text>
+        <Text style={styles.text}>{formatDomesticImpact()}</Text>
       </View>
 
       <View style={styles.subsection}>
-        <Text style={styles.text}>{formatDomesticEffects()}</Text>
+        <Text style={styles.text}>{formatSportLeisureImpact()}</Text>
       </View>
 
       <View style={styles.subsection}>
-        <Text style={styles.text}>{formatSportLeisureEffects()}</Text>
-      </View>
-
-      <View style={styles.subsection}>
-        <Text style={styles.text}>{formatSocialLifeEffects()}</Text>
+        <Text style={styles.text}>{formatSocialLifeImpact()}</Text>
       </View>
 
       {formData.additionalInformation === "1" && formData.additionalInformationDetails && (
         <View style={styles.subsection}>
           <Text style={styles.text}>
-            Additional Information: {formData.additionalInformationDetails}
+            Additional Impact Information: {formData.additionalInformationDetails}
           </Text>
         </View>
       )}
