@@ -29,7 +29,7 @@ export default {
 					foreground: 'hsl(var(--primary-foreground))'
 				},
 				secondary: {
-					DEFAULT: 'hsl(var(--secondary))',
+					DEFAULT: 'hsl(160 100% 20%)', // Dark green color
 					foreground: 'hsl(var(--secondary-foreground))'
 				},
 				destructive: {
