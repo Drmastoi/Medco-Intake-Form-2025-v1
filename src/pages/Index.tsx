@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import * as Tabs from "@radix-ui/react-tabs";
+import { Share } from "lucide-react";
 
 const formSchema = z.object({
   // Pre-filled fields (sender details)
@@ -154,9 +155,58 @@ export default function Index() {
     setCurrentSection(parseInt(value));
   };
 
+  const generateShareableLink = () => {
+    // Create a URL with pre-filled data as query parameters
+    const formData = form.getValues();
+    const preFillData = {
+      solicitorName: formData.solicitorName,
+      solicitorReference: formData.solicitorReference,
+      instructingPartyName: formData.instructingPartyName,
+      instructingPartyReference: formData.instructingPartyReference,
+      examinationLocation: formData.examinationLocation,
+    };
+    
+    const queryParams = new URLSearchParams(preFillData).toString();
+    const shareableLink = `${window.location.origin}?${queryParams}`;
+    
+    // Copy to clipboard
+    navigator.clipboard.writeText(shareableLink).then(() => {
+      toast({
+        title: "Link copied to clipboard",
+        description: "Share this link with the claimant to fill out the questionnaire.",
+      });
+    });
+  };
+
+  // Add this at the beginning of the component to handle pre-filled data
+  React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const preFillData = {
+      solicitorName: params.get('solicitorName') || '',
+      solicitorReference: params.get('solicitorReference') || '',
+      instructingPartyName: params.get('instructingPartyName') || '',
+      instructingPartyReference: params.get('instructingPartyReference') || '',
+      examinationLocation: params.get('examinationLocation') || '',
+    };
+    
+    if (Object.values(preFillData).some(value => value)) {
+      form.reset(preFillData);
+    }
+  }, []);
+
   return (
     <div className="container mx-auto py-10">
-      <h1 className="text-2xl font-bold mb-8">Medical Intake Form</h1>
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-2xl font-bold">Medical Intake Form</h1>
+        <Button
+          onClick={generateShareableLink}
+          variant="outline"
+          className="flex items-center gap-2"
+        >
+          <Share className="w-4 h-4" />
+          Share with Claimant
+        </Button>
+      </div>
       
       <Tabs.Root value={currentSection.toString()} onValueChange={handleTabChange} className="mb-6">
         <Tabs.List className="grid grid-cols-4 md:grid-cols-7 lg:grid-cols-14 h-auto gap-1 max-w-[90%] mx-auto">
