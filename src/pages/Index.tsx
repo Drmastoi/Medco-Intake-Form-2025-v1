@@ -212,6 +212,32 @@ export default function Index() {
           Share with Claimant
         </Button>
       </div>
+
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
+        <h2 className="text-lg font-semibold text-blue-900 mb-3">Instructions for Completing Your Assessment</h2>
+        <ul className="space-y-2 text-blue-800">
+          <li className="flex items-start gap-2">
+            <span className="font-medium">1.</span>
+            <span>Please complete all sections of this form to the best of your knowledge. This will help us better understand your injury and circumstances.</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="font-medium">2.</span>
+            <span>Use the tabs above to navigate through different sections of the questionnaire.</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="font-medium">3.</span>
+            <span>You can save your progress and return later by using the same link that was shared with you.</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="font-medium">4.</span>
+            <span>If you're unsure about any questions, you can leave them blank and discuss them during your medical examination.</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="font-medium">5.</span>
+            <span>Use the 'Previous' and 'Next' buttons at the bottom of each section to move through the form.</span>
+          </li>
+        </ul>
+      </div>
       
       <Tabs.Root value={currentSection.toString()} onValueChange={handleTabChange} className="mb-6">
         <Tabs.List className="grid grid-cols-4 md:grid-cols-7 lg:grid-cols-14 h-auto gap-1 max-w-[90%] mx-auto">
