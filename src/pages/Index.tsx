@@ -213,29 +213,14 @@ export default function Index() {
         </Button>
       </div>
 
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
-        <h2 className="text-lg font-semibold text-blue-900 mb-3">Instructions for Completing Your Assessment</h2>
-        <ul className="space-y-2 text-blue-800">
-          <li className="flex items-start gap-2">
-            <span className="font-medium">1.</span>
-            <span>Please complete all sections of this form to the best of your knowledge. This will help us better understand your injury and circumstances.</span>
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="font-medium">2.</span>
-            <span>Use the tabs above to navigate through different sections of the questionnaire.</span>
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="font-medium">3.</span>
-            <span>You can save your progress and return later by using the same link that was shared with you.</span>
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="font-medium">4.</span>
-            <span>If you're unsure about any questions, you can leave them blank and discuss them during your medical examination.</span>
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="font-medium">5.</span>
-            <span>Use the 'Previous' and 'Next' buttons at the bottom of each section to move through the form.</span>
-          </li>
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 text-sm">
+        <h2 className="text-base font-semibold text-blue-900 mb-2">Quick Guide</h2>
+        <ul className="space-y-1 text-blue-800">
+          <li>• Complete all sections to help us understand your injury circumstances</li>
+          <li>• Navigate using the tabs above</li>
+          <li>• Progress saves automatically - return anytime using your shared link</li>
+          <li>• Skip uncertain questions for discussion during examination</li>
+          <li>• Use Previous/Next buttons to move between sections</li>
         </ul>
       </div>
       
