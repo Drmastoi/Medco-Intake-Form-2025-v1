@@ -92,7 +92,11 @@ const getSeverityText = (severity: string) => {
   }
 };
 
-const getPrognosis = (severity: string) => {
+const getPrognosis = (severity: string, resolveDays: string | undefined) => {
+  if (severity === "4" && resolveDays) {
+    return `${resolveDays} DAYS`;
+  }
+  
   switch (severity) {
     case "1": return "3 MONTHS";
     case "2": return "6 MONTHS";
@@ -112,7 +116,7 @@ export const SummaryOfInjuriesSection = ({ formData }: { formData: any }) => {
       initialSeverity: getSeverityText(formData.neckPainInitialSeverity),
       currentSeverity: getSeverityText(formData.neckPainCurrentSeverity),
       treatment: formData.neckPainCurrentSeverity === "4" ? "Pain killers if required" : "Physiotherapy and pain management",
-      prognosis: getPrognosis(formData.neckPainCurrentSeverity),
+      prognosis: getPrognosis(formData.neckPainCurrentSeverity, formData.neckPainResolveDays),
     });
   }
 
@@ -123,7 +127,7 @@ export const SummaryOfInjuriesSection = ({ formData }: { formData: any }) => {
       initialSeverity: getSeverityText(formData.shoulderPainInitialSeverity),
       currentSeverity: getSeverityText(formData.shoulderPainCurrentSeverity),
       treatment: formData.shoulderPainCurrentSeverity === "4" ? "Pain killers if required" : "Physiotherapy and pain management",
-      prognosis: getPrognosis(formData.shoulderPainCurrentSeverity),
+      prognosis: getPrognosis(formData.shoulderPainCurrentSeverity, formData.shoulderPainResolveDays),
     });
   }
 
@@ -134,7 +138,7 @@ export const SummaryOfInjuriesSection = ({ formData }: { formData: any }) => {
       initialSeverity: getSeverityText(formData.backPainInitialSeverity),
       currentSeverity: getSeverityText(formData.backPainCurrentSeverity),
       treatment: formData.backPainCurrentSeverity === "4" ? "Pain killers if required" : "Physiotherapy and pain management",
-      prognosis: getPrognosis(formData.backPainCurrentSeverity),
+      prognosis: getPrognosis(formData.backPainCurrentSeverity, formData.backPainResolveDays),
     });
   }
 
@@ -147,8 +151,8 @@ export const SummaryOfInjuriesSection = ({ formData }: { formData: any }) => {
       onset: getOnsetText(formData.headacheStart),
       initialSeverity: getSeverityText(formData.headacheInitialSeverity),
       currentSeverity: getSeverityText(formData.headacheCurrentSeverity),
-      treatment: "Pain management",
-      prognosis: getPrognosis(formData.headacheCurrentSeverity),
+      treatment: formData.headacheCurrentSeverity === "4" ? "Pain killers if required" : "Pain management",
+      prognosis: getPrognosis(formData.headacheCurrentSeverity, formData.headacheResolveDays),
     });
   }
 
@@ -158,8 +162,8 @@ export const SummaryOfInjuriesSection = ({ formData }: { formData: any }) => {
       onset: getOnsetText(formData.anxietyStart),
       initialSeverity: getSeverityText(formData.anxietyInitialSeverity),
       currentSeverity: getSeverityText(formData.anxietyCurrentSeverity),
-      treatment: "Self-management techniques",
-      prognosis: getPrognosis(formData.anxietyCurrentSeverity),
+      treatment: formData.anxietyCurrentSeverity === "4" ? "Pain killers if required" : "Self-management techniques",
+      prognosis: getPrognosis(formData.anxietyCurrentSeverity, formData.anxietyResolveDays),
     });
   }
 
@@ -224,4 +228,3 @@ export const SummaryOfInjuriesSection = ({ formData }: { formData: any }) => {
       </View>
     </View>
   );
-};
