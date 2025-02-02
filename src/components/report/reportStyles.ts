@@ -71,4 +71,31 @@ export const styles = StyleSheet.create({
     fontSize: 9,
     fontFamily: 'Helvetica',
   },
+
+  // New styles for report entries
+  questionLabel: {
+    fontSize: 8,
+    color: '#666666',
+    marginBottom: 2,
+    fontFamily: 'Helvetica',
+  },
+  answerText: {
+    fontSize: 10,
+    color: '#000000',
+    marginBottom: 6,
+    fontFamily: 'Helvetica-Bold',
+  },
+  sectionHeader: {
+    fontSize: 11,
+    color: '#333333',
+    marginTop: 8,
+    marginBottom: 4,
+    fontFamily: 'Helvetica-Bold',
+  },
+  compactGroup: {
+    marginBottom: 8,
+  },
+  indentedGroup: {
+    marginLeft: 12,
+  }
 });
