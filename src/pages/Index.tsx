@@ -79,11 +79,11 @@ export default function Index() {
     "Shoulder Pain",
     "Back Pain",
     "Headache",
-    "Daily Impact",
-    "Treatment",
-    "Recovery",
-    "Work Status",
-    "Additional Info",
+    "Daily Activities",
+    "Medical Treatment",
+    "Recovery Progress",
+    "Employment Status",
+    "Additional Notes",
     "Summary"
   ];
   
