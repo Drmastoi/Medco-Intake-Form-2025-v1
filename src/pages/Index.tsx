@@ -202,7 +202,7 @@ export default function Index() {
   return (
     <div className="container mx-auto py-10">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold">Medical Intake Form</h1>
+        <h1 className="text-2xl font-bold">Personal Injury Assessment Questionnaire</h1>
         <Button
           onClick={generateShareableLink}
           variant="outline"
