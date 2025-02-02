@@ -13,6 +13,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 export function IntakeFormSection7({ form }: { form: any }) {
   const travelAnxiety = form.watch("travelAnxiety");
   const hasAnxietyHistory = form.watch("hasAnxietyHistory");
+  const currentSeverity = form.watch("anxietyCurrentSeverity");
 
   return (
     <div className="space-y-4">
@@ -275,9 +276,15 @@ export function IntakeFormSection7({ form }: { form: any }) {
           <FormField
             control={form.control}
             name="anxietyResolveDays"
+            rules={{
+              required: currentSeverity === "4" ? "Please enter the number of days it took to resolve" : false
+            }}
             render={({ field }) => (
               <FormItem>
-                <FormLabel>If resolved, how many days did it take to resolve?</FormLabel>
+                <FormLabel>
+                  If resolved, how many days did it take to resolve?
+                  {currentSeverity === "4" && <span className="text-red-500 ml-1">*</span>}
+                </FormLabel>
                 <FormControl>
                   <Input type="number" placeholder="Enter number of days" {...field} />
                 </FormControl>
