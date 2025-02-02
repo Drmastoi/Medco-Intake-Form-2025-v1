@@ -71,27 +71,10 @@ export const styles = StyleSheet.create({
     fontSize: 9,
     fontFamily: 'Helvetica',
   },
-  questionLabel: {
-    fontSize: 8,
-    color: '#666666',
-    marginBottom: 2,
-    fontFamily: 'Helvetica-Bold',
-  },
-  answerText: {
-    fontSize: 10,
-    color: '#000000',
-    marginBottom: 6,
-    fontFamily: 'Helvetica',
-  },
-  sectionHeader: {
-    fontSize: 11,
-    color: '#333333',
-    marginTop: 8,
-    marginBottom: 4,
-    fontFamily: 'Helvetica-Bold',
-  },
   compactGroup: {
-    marginBottom: 8,
+    marginBottom: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   indentedGroup: {
     marginLeft: 12,
@@ -99,12 +82,11 @@ export const styles = StyleSheet.create({
   boldLabel: {
     fontFamily: 'Helvetica-Bold',
     fontSize: 10,
-    marginBottom: 2,
+    marginRight: 4,
   },
   normalText: {
     fontFamily: 'Helvetica',
     fontSize: 10,
-    marginBottom: 4,
   },
   mainTitle: {
     fontFamily: 'Helvetica-Bold',

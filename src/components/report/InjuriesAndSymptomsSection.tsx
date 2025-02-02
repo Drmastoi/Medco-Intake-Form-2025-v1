@@ -3,7 +3,7 @@ import { styles } from './reportStyles';
 
 const EntryGroup = ({ label, value }: { label: string; value: string }) => (
   <View style={styles.compactGroup}>
-    <Text style={styles.boldLabel}>{label}</Text>
+    <Text style={styles.boldLabel}>{label}:</Text>
     <Text style={styles.normalText}>{value}</Text>
   </View>
 );
@@ -14,7 +14,7 @@ const ExaminationGroup = ({ title, items }: { title: string; items: { label: str
     <View style={styles.indentedGroup}>
       {items.map((item, index) => (
         <View key={index} style={styles.compactGroup}>
-          <Text style={styles.boldLabel}>{item.label}</Text>
+          <Text style={styles.boldLabel}>{item.label}:</Text>
           <Text style={styles.normalText}>{item.value}</Text>
         </View>
       ))}
@@ -22,93 +22,93 @@ const ExaminationGroup = ({ title, items }: { title: string; items: { label: str
   </View>
 );
 
-export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
-  const getOnsetText = (onset: string) => {
-    switch (onset) {
-      case "1": return "Same day";
-      case "2": return "Next Day";
-      case "3": return "Few days Later";
-      default: return "Not specified";
-    }
-  };
+const getOnsetText = (onset: string) => {
+  switch (onset) {
+    case "1": return "Same day";
+    case "2": return "Next Day";
+    case "3": return "Few days Later";
+    default: return "Not specified";
+  }
+};
 
-  const getSeverityText = (severity: string) => {
-    switch (severity) {
-      case "1": return "Mild";
-      case "2": return "Moderate";
-      case "3": return "Severe";
-      case "4": return "Resolved";
-      default: return "Not specified";
-    }
-  };
+const getSeverityText = (severity: string) => {
+  switch (severity) {
+    case "1": return "Mild";
+    case "2": return "Moderate";
+    case "3": return "Severe";
+    case "4": return "Resolved";
+    default: return "Not specified";
+  }
+};
 
-  const getImpactMechanism = (vehiclePosition: string) => {
-    switch (vehiclePosition) {
-      case "1": return "jolted forward and backward";
-      case "2": return "jolted sideways";
-      case "3": return "jolted backwards and then forward";
-      default: return "experienced impact";
-    }
-  };
+const getImpactMechanism = (vehiclePosition: string) => {
+  switch (vehiclePosition) {
+    case "1": return "jolted forward and backward";
+    case "2": return "jolted sideways";
+    case "3": return "jolted backwards and then forward";
+    default: return "experienced impact";
+  }
+};
 
-  const renderInjurySection = (
-    title: string,
-    {
-      onset,
-      initialSeverity,
-      currentSeverity,
-      classification,
-      mechanism,
-      palpation,
-      rangeOfMotion,
-      neurologicalAssessment,
-      treatment,
-      prognosis
-    }: {
-      onset: string;
-      initialSeverity: string;
-      currentSeverity: string;
-      classification: string;
-      mechanism: string;
-      palpation: string;
-      rangeOfMotion: string;
-      neurologicalAssessment: string;
-      treatment: string;
-      prognosis: string;
-    }
-  ) => (
-    <View style={styles.section}>
-      <Text style={styles.mainTitle}>{title}</Text>
-      
-      <View style={styles.compactGroup}>
-        <EntryGroup label="Onset" value={onset} />
-        <EntryGroup label="Initial Severity" value={initialSeverity} />
-        <EntryGroup label="Current Severity" value={currentSeverity} />
-        <EntryGroup label="Classification" value={classification} />
-        <EntryGroup label="Causation/Mechanism" value={mechanism} />
-      </View>
-
-      <ExaminationGroup 
-        title="Examination"
-        items={[
-          { label: "Palpation", value: palpation },
-          { label: "Range of Motion", value: rangeOfMotion },
-          { label: "Neurological Assessment", value: neurologicalAssessment }
-        ]}
-      />
-
-      <Text style={styles.boldLabel}>Treatment and Prognosis</Text>
-      <View style={styles.indentedGroup}>
-        <Text style={styles.boldLabel}>Treatment</Text>
-        <Text style={styles.normalText}>Pain management: Over-the-counter pain medication and ice therapy recommended</Text>
-        <Text style={styles.boldLabel}>Physiotherapy Recommended</Text>
-        <Text style={styles.normalText}>Number of sessions to be decided by the referred expert</Text>
-        <Text style={styles.boldLabel}>Prognosis</Text>
-        <Text style={styles.normalText}>{prognosis}</Text>
-      </View>
+const renderInjurySection = (
+  title: string,
+  {
+    onset,
+    initialSeverity,
+    currentSeverity,
+    classification,
+    mechanism,
+    palpation,
+    rangeOfMotion,
+    neurologicalAssessment,
+    treatment,
+    prognosis
+  }: {
+    onset: string;
+    initialSeverity: string;
+    currentSeverity: string;
+    classification: string;
+    mechanism: string;
+    palpation: string;
+    rangeOfMotion: string;
+    neurologicalAssessment: string;
+    treatment: string;
+    prognosis: string;
+  }
+) => (
+  <View style={styles.section}>
+    <Text style={styles.mainTitle}>{title}</Text>
+    
+    <View style={styles.compactGroup}>
+      <EntryGroup label="Onset" value={onset} />
+      <EntryGroup label="Initial Severity" value={initialSeverity} />
+      <EntryGroup label="Current Severity" value={currentSeverity} />
+      <EntryGroup label="Classification" value={classification} />
+      <EntryGroup label="Causation/Mechanism" value={mechanism} />
     </View>
-  );
 
+    <ExaminationGroup 
+      title="Examination"
+      items={[
+        { label: "Palpation", value: palpation },
+        { label: "Range of Motion", value: rangeOfMotion },
+        { label: "Neurological Assessment", value: neurologicalAssessment }
+      ]}
+    />
+
+    <Text style={styles.boldLabel}>Treatment and Prognosis</Text>
+    <View style={styles.indentedGroup}>
+      <Text style={styles.boldLabel}>Treatment</Text>
+      <Text style={styles.normalText}>Pain management: Over-the-counter pain medication and ice therapy recommended</Text>
+      <Text style={styles.boldLabel}>Physiotherapy Recommended</Text>
+      <Text style={styles.normalText}>Number of sessions to be decided by the referred expert</Text>
+      <Text style={styles.boldLabel}>Prognosis</Text>
+      <Text style={styles.normalText}>{prognosis}</Text>
+    </View>
+  </View>
+);
+
+export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
   return (
     <View>
       {formData.neckPain === "1" && renderInjurySection(
@@ -122,7 +122,7 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
           palpation: `${getSeverityText(formData.neckPainCurrentSeverity)} tenderness in affected area`,
           rangeOfMotion: "Limited due to pain",
           neurologicalAssessment: "normal",
-          treatment: "Pain management: Over-the-counter pain medication and ice therapy recommended\nPhysiotherapy: Recommended - Number of sessions to be decided by the referred expert",
+          treatment: "Pain management: Over-the-counter pain medication and ice therapy recommended",
           prognosis: `From the date of accident: ${formData.neckPainCurrentSeverity === "4" ? 
             `${formData.neckPainResolveDays} DAYS` : 
             formData.neckPainCurrentSeverity === "1" ? "3 MONTHS" :
@@ -142,7 +142,7 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
           palpation: `${getSeverityText(formData.shoulderPainCurrentSeverity)} tenderness in affected area`,
           rangeOfMotion: "Limited due to pain",
           neurologicalAssessment: "normal",
-          treatment: "Pain management: Over-the-counter pain medication and ice therapy recommended\nPhysiotherapy: Recommended - Number of sessions to be decided by the referred expert",
+          treatment: "Pain management: Over-the-counter pain medication and ice therapy recommended",
           prognosis: `From the date of accident: ${formData.shoulderPainCurrentSeverity === "4" ? 
             `${formData.shoulderPainResolveDays} DAYS` : 
             formData.shoulderPainCurrentSeverity === "1" ? "3 MONTHS" :
@@ -162,7 +162,7 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
           palpation: `${getSeverityText(formData.backPainCurrentSeverity)} tenderness in affected area`,
           rangeOfMotion: "Limited due to pain",
           neurologicalAssessment: "normal",
-          treatment: "Pain management: Over-the-counter pain medication and ice therapy recommended\nPhysiotherapy: Recommended - Number of sessions to be decided by the referred expert",
+          treatment: "Pain management: Over-the-counter pain medication and ice therapy recommended",
           prognosis: `From the date of accident: ${formData.backPainCurrentSeverity === "4" ? 
             `${formData.backPainResolveDays} DAYS` : 
             formData.backPainCurrentSeverity === "1" ? "3 MONTHS" :
