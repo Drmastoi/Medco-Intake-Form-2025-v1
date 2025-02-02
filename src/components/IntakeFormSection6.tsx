@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 export function IntakeFormSection6({ form }: { form: any }) {
   const headache = form.watch("headache");
+  const headacheCurrentSeverity = form.watch("headacheCurrentSeverity");
 
   return (
     <div className="space-y-4">
@@ -154,19 +155,22 @@ export function IntakeFormSection6({ form }: { form: any }) {
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="headacheResolveDays"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>If resolved, how many days did it take to resolve?</FormLabel>
-                <FormControl>
-                  <Input type="number" placeholder="Enter number of days" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          {headacheCurrentSeverity === "4" && (
+            <FormField
+              control={form.control}
+              name="headacheResolveDays"
+              rules={{ required: "This field is required when pain is resolved" }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-medium text-red-500">* If resolved, how many days did it take to resolve?</FormLabel>
+                  <FormControl>
+                    <Input type="number" placeholder="Enter number of days" {...field} required />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
 
           <FormField
             control={form.control}
