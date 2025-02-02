@@ -100,6 +100,12 @@ export function IntakeFormSection2({ form }: { form: any }) {
                   </FormControl>
                   <FormLabel className="font-normal">Back Passenger</FormLabel>
                 </FormItem>
+                <FormItem className="flex items-center space-x-3 space-y-0">
+                  <FormControl>
+                    <RadioGroupItem value="4" />
+                  </FormControl>
+                  <FormLabel className="font-normal">Other</FormLabel>
+                </FormItem>
               </RadioGroup>
             </FormControl>
             <FormMessage />
