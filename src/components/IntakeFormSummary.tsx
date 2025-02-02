@@ -4,19 +4,10 @@ import { BlobProvider } from '@react-pdf/renderer';
 import emailjs from '@emailjs/browser';
 import { useToast } from "@/components/ui/use-toast";
 import { MedcoReport } from './report/MedcoReport';
-import { useState } from 'react';
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 export function IntakeFormSummary({ form }: { form: any }) {
   const { toast } = useToast();
   const formData = form.getValues();
-  
-  const [adminDetails, setAdminDetails] = useState({
-    referenceNumber: '',
-    medcoNumber: '',
-    instructingPartyRef: ''
-  });
 
   const sendEmail = async (pdfUrl: string) => {
     try {
@@ -48,54 +39,8 @@ export function IntakeFormSummary({ form }: { form: any }) {
     }
   };
 
-  const handleInputChange = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAdminDetails(prev => ({
-      ...prev,
-      [field]: e.target.value
-    }));
-  };
-
-  const mergedData = {
-    ...formData,
-    ...adminDetails
-  };
-
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-semibold mb-4">Administrative Details</h2>
-      
-      <div className="grid gap-4 p-4 border rounded-lg bg-gray-50">
-        <div className="space-y-2">
-          <Label htmlFor="referenceNumber">Reference Number</Label>
-          <Input
-            id="referenceNumber"
-            value={adminDetails.referenceNumber}
-            onChange={handleInputChange('referenceNumber')}
-            placeholder="Enter reference number"
-          />
-        </div>
-        
-        <div className="space-y-2">
-          <Label htmlFor="medcoNumber">MEDCO Number</Label>
-          <Input
-            id="medcoNumber"
-            value={adminDetails.medcoNumber}
-            onChange={handleInputChange('medcoNumber')}
-            placeholder="Enter MEDCO number"
-          />
-        </div>
-        
-        <div className="space-y-2">
-          <Label htmlFor="instructingPartyRef">Instructing Party Reference</Label>
-          <Input
-            id="instructingPartyRef"
-            value={adminDetails.instructingPartyRef}
-            onChange={handleInputChange('instructingPartyRef')}
-            placeholder="Enter instructing party reference"
-          />
-        </div>
-      </div>
-
       <h2 className="text-xl font-semibold mb-4">MEDCO Report</h2>
       
       <div className="prose max-w-none">
@@ -105,7 +50,7 @@ export function IntakeFormSummary({ form }: { form: any }) {
       </div>
 
       <div className="flex gap-4 mt-6">
-        <BlobProvider document={<MedcoReport formData={mergedData} />}>
+        <BlobProvider document={<MedcoReport formData={formData} />}>
           {({ url, loading }) => (
             <>
               <Button 
