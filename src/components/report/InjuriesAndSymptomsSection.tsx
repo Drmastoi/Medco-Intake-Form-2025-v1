@@ -14,6 +14,13 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     lineHeight: 1.4,
   },
+  boldLabel: {
+    fontSize: 10,
+    marginBottom: 5,
+    lineHeight: 1.4,
+    fontWeight: 'bold',
+    display: 'inline',
+  },
 });
 
 const getOnsetText = (onset: string) => {
@@ -74,82 +81,217 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
       {formData.neckPain === "1" && (
         <View>
           <Text style={styles.subtitle}>NECK PAIN</Text>
-          <Text style={styles.text}>Onset: {getOnsetText(formData.neckPainStart)}</Text>
-          <Text style={styles.text}>Initial Severity: {getSeverityText(formData.neckPainInitialSeverity)}</Text>
-          <Text style={styles.text}>Current Severity: {getSeverityText(formData.neckPainCurrentSeverity)}</Text>
-          <Text style={styles.text}>Classification: Whiplash injury</Text>
-          <Text style={styles.text}>Causation/Mechanism: {whiplashMechanism}</Text>
-          <Text style={styles.text}>Examination:</Text>
-          <Text style={styles.text}>Palpation: {getSeverityText(formData.neckPainCurrentSeverity)} tenderness in the para cervical muscles</Text>
-          <Text style={styles.text}>Range of Motion: Flexion and extension limited due to pain</Text>
-          <Text style={styles.text}>Neurological Assessment: normal</Text>
-          <Text style={styles.text}>Treatment Recommendations:</Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Onset: </Text>
+            {getOnsetText(formData.neckPainStart)}
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Initial Severity: </Text>
+            {getSeverityText(formData.neckPainInitialSeverity)}
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Current Severity: </Text>
+            {getSeverityText(formData.neckPainCurrentSeverity)}
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Classification: </Text>
+            Whiplash injury
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Causation/Mechanism: </Text>
+            {whiplashMechanism}
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Examination:</Text>
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Palpation: </Text>
+            {getSeverityText(formData.neckPainCurrentSeverity)} tenderness in the para cervical muscles
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Range of Motion: </Text>
+            Flexion and extension limited due to pain
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Neurological Assessment: </Text>
+            normal
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Treatment Recommendations:</Text>
+          </Text>
           <Text style={styles.text}>{getTreatmentRecommendation(formData.neckPainCurrentSeverity)}</Text>
-          <Text style={styles.text}>Prognosis: From the date of accident: {getPrognosis(formData.neckPainCurrentSeverity, formData.neckPainResolveDays)}</Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Prognosis: </Text>
+            From the date of accident: {getPrognosis(formData.neckPainCurrentSeverity, formData.neckPainResolveDays)}
+          </Text>
         </View>
       )}
 
       {formData.shoulderPain === "1" && (
         <View>
           <Text style={styles.subtitle}>SHOULDER PAIN</Text>
-          <Text style={styles.text}>Onset: {getOnsetText(formData.shoulderPainStart)}</Text>
-          <Text style={styles.text}>Initial Severity: {getSeverityText(formData.shoulderPainInitialSeverity)}</Text>
-          <Text style={styles.text}>Current Severity: {getSeverityText(formData.shoulderPainCurrentSeverity)}</Text>
-          <Text style={styles.text}>Classification: Whiplash injury</Text>
-          <Text style={styles.text}>Causation/Mechanism: {whiplashMechanism}</Text>
-          <Text style={styles.text}>Examination:</Text>
-          <Text style={styles.text}>Palpation: {getSeverityText(formData.shoulderPainCurrentSeverity)} tenderness in affected area</Text>
-          <Text style={styles.text}>Range of Motion: Limited due to pain</Text>
-          <Text style={styles.text}>Neurological Assessment: normal</Text>
-          <Text style={styles.text}>Treatment Recommendations:</Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Onset: </Text>
+            {getOnsetText(formData.shoulderPainStart)}
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Initial Severity: </Text>
+            {getSeverityText(formData.shoulderPainInitialSeverity)}
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Current Severity: </Text>
+            {getSeverityText(formData.shoulderPainCurrentSeverity)}
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Classification: </Text>
+            Whiplash injury
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Causation/Mechanism: </Text>
+            {whiplashMechanism}
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Examination:</Text>
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Palpation: </Text>
+            {getSeverityText(formData.shoulderPainCurrentSeverity)} tenderness in affected area
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Range of Motion: </Text>
+            Limited due to pain
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Neurological Assessment: </Text>
+            normal
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Treatment Recommendations:</Text>
+          </Text>
           <Text style={styles.text}>{getTreatmentRecommendation(formData.shoulderPainCurrentSeverity)}</Text>
-          <Text style={styles.text}>Prognosis: From the date of accident: {getPrognosis(formData.shoulderPainCurrentSeverity, formData.shoulderPainResolveDays)}</Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Prognosis: </Text>
+            From the date of accident: {getPrognosis(formData.shoulderPainCurrentSeverity, formData.shoulderPainResolveDays)}
+          </Text>
         </View>
       )}
 
       {formData.backPain === "1" && (
         <View>
           <Text style={styles.subtitle}>BACK PAIN</Text>
-          <Text style={styles.text}>Onset: {getOnsetText(formData.backPainStart)}</Text>
-          <Text style={styles.text}>Initial Severity: {getSeverityText(formData.backPainInitialSeverity)}</Text>
-          <Text style={styles.text}>Current Severity: {getSeverityText(formData.backPainCurrentSeverity)}</Text>
-          <Text style={styles.text}>Classification: Whiplash injury</Text>
-          <Text style={styles.text}>Causation/Mechanism: {whiplashMechanism}</Text>
-          <Text style={styles.text}>Examination:</Text>
-          <Text style={styles.text}>Palpation: {getSeverityText(formData.backPainCurrentSeverity)} tenderness in affected area</Text>
-          <Text style={styles.text}>Range of Motion: Limited due to pain</Text>
-          <Text style={styles.text}>Neurological Assessment: normal</Text>
-          <Text style={styles.text}>Treatment Recommendations:</Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Onset: </Text>
+            {getOnsetText(formData.backPainStart)}
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Initial Severity: </Text>
+            {getSeverityText(formData.backPainInitialSeverity)}
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Current Severity: </Text>
+            {getSeverityText(formData.backPainCurrentSeverity)}
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Classification: </Text>
+            Whiplash injury
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Causation/Mechanism: </Text>
+            {whiplashMechanism}
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Examination:</Text>
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Palpation: </Text>
+            {getSeverityText(formData.backPainCurrentSeverity)} tenderness in affected area
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Range of Motion: </Text>
+            Limited due to pain
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Neurological Assessment: </Text>
+            normal
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Treatment Recommendations:</Text>
+          </Text>
           <Text style={styles.text}>{getTreatmentRecommendation(formData.backPainCurrentSeverity)}</Text>
-          <Text style={styles.text}>Prognosis: From the date of accident: {getPrognosis(formData.backPainCurrentSeverity, formData.backPainResolveDays)}</Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Prognosis: </Text>
+            From the date of accident: {getPrognosis(formData.backPainCurrentSeverity, formData.backPainResolveDays)}
+          </Text>
         </View>
       )}
 
       {formData.headache === "1" && (
         <View>
           <Text style={styles.subtitle}>HEADACHE</Text>
-          <Text style={styles.text}>Onset: {getOnsetText(formData.headacheStart)}</Text>
-          <Text style={styles.text}>Initial Severity: {getSeverityText(formData.headacheInitialSeverity)}</Text>
-          <Text style={styles.text}>Current Severity: {getSeverityText(formData.headacheCurrentSeverity)}</Text>
-          <Text style={styles.text}>Classification: Non-whiplash injury</Text>
-          <Text style={styles.text}>Causation/Mechanism: {nonWhiplashMechanism}</Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Onset: </Text>
+            {getOnsetText(formData.headacheStart)}
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Initial Severity: </Text>
+            {getSeverityText(formData.headacheInitialSeverity)}
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Current Severity: </Text>
+            {getSeverityText(formData.headacheCurrentSeverity)}
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Classification: </Text>
+            Non-whiplash injury
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Causation/Mechanism: </Text>
+            {nonWhiplashMechanism}
+          </Text>
           <Text style={styles.text}>Past History: {formData.headachePastHistory || "No history of previous headaches"}</Text>
-          <Text style={styles.text}>Examination: Mental State and neurological examination and is normal</Text>
-          <Text style={styles.text}>Treatment Recommendation: Self-Resolving condition. Take simple pain killers as and when required</Text>
-          <Text style={styles.text}>Prognosis: From the date of accident: {getPrognosis(formData.headacheCurrentSeverity, formData.headacheResolveDays)}</Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Examination: </Text>
+            Mental State and neurological examination and is normal
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Treatment Recommendations: </Text>
+            Self-Resolving condition. Take simple pain killers as and when required
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Prognosis: </Text>
+            From the date of accident: {getPrognosis(formData.headacheCurrentSeverity, formData.headacheResolveDays)}
+          </Text>
         </View>
       )}
 
       {formData.travelAnxiety === "1" && (
         <View>
           <Text style={styles.subtitle}>TRAVEL ANXIETY</Text>
-          <Text style={styles.text}>Onset: {getOnsetText(formData.anxietyStart)}</Text>
-          <Text style={styles.text}>Initial Severity: {getSeverityText(formData.anxietyInitialSeverity)}</Text>
-          <Text style={styles.text}>Current Severity: {getSeverityText(formData.anxietyCurrentSeverity)}</Text>
-          <Text style={styles.text}>Classification: Non-whiplash injury</Text>
-          <Text style={styles.text}>Causation/Mechanism: {nonWhiplashMechanism}</Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Onset: </Text>
+            {getOnsetText(formData.anxietyStart)}
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Initial Severity: </Text>
+            {getSeverityText(formData.anxietyInitialSeverity)}
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Current Severity: </Text>
+            {getSeverityText(formData.anxietyCurrentSeverity)}
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Classification: </Text>
+            Non-whiplash injury
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Causation/Mechanism: </Text>
+            {nonWhiplashMechanism}
+          </Text>
           <Text style={styles.text}>Past History: {formData.anxietyPastHistory || "No history of previous anxiety"}</Text>
-          <Text style={styles.text}>Examination: Mental State examination is normal</Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Examination: </Text>
+            Mental State examination is normal
+          </Text>
           {formData.currentlyDriving === "2" && (
             <Text style={styles.text}>- Patient has not returned to driving</Text>
           )}
@@ -162,8 +304,14 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
           {formData.preventedDriving === "1" && (
             <Text style={styles.text}>- Anxiety has prevented patient from driving for leisure and work</Text>
           )}
-          <Text style={styles.text}>Treatment Recommendation: Self-Resolving condition</Text>
-          <Text style={styles.text}>Prognosis: From the date of accident: {getPrognosis(formData.anxietyCurrentSeverity, formData.anxietyResolveDays)}</Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Treatment Recommendations: </Text>
+            Self-Resolving condition
+          </Text>
+          <Text style={styles.text}>
+            <Text style={styles.boldLabel}>Prognosis: </Text>
+            From the date of accident: {getPrognosis(formData.anxietyCurrentSeverity, formData.anxietyResolveDays)}
+          </Text>
         </View>
       )}
     </View>
