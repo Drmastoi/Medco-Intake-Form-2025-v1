@@ -22,6 +22,7 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import * as Tabs from "@radix-ui/react-tabs";
 import { Share } from "lucide-react";
+import emailjs from '@emailjs/browser';
 
 const formSchema = z.object({
   // Pre-filled fields (sender details)
@@ -32,12 +33,13 @@ const formSchema = z.object({
   examinationLocation: z.string(),
   medcoReference: z.string(),
   accompaniedBy: z.string(),
+  mobileNumber: z.string(),
+  emailId: z.string().email(),
   
   // Existing fields
   fullName: z.string().min(2, { message: "Name must be at least 2 characters" }),
   dateOfBirth: z.string(),
   idType: z.enum(["1", "2", "3"]),
-  email: z.string().email(),
   address: z.string(),
   occupation: z.string(),
   workType: z.enum(["1", "2"]),
@@ -111,12 +113,13 @@ export default function Index() {
       examinationLocation: "",
       medcoReference: "",
       accompaniedBy: "",
+      mobileNumber: "",
+      emailId: "",
       
       // Existing default values
       fullName: "",
       dateOfBirth: "",
       idType: "1",
-      email: "",
       address: "",
       occupation: "",
       workType: "1",
@@ -160,8 +163,7 @@ export default function Index() {
     setCurrentSection(parseInt(value));
   };
 
-  const generateShareableLink = () => {
-    // Create a URL with pre-filled data as query parameters
+  const generateAndShareLink = async () => {
     const formData = form.getValues();
     const preFillData = {
       solicitorName: formData.solicitorName,
@@ -169,18 +171,39 @@ export default function Index() {
       instructingPartyName: formData.instructingPartyName,
       instructingPartyReference: formData.instructingPartyReference,
       examinationLocation: formData.examinationLocation,
+      mobileNumber: formData.mobileNumber,
+      emailId: formData.emailId,
     };
     
     const queryParams = new URLSearchParams(preFillData).toString();
     const shareableLink = `${window.location.origin}?${queryParams}`;
     
-    // Copy to clipboard
-    navigator.clipboard.writeText(shareableLink).then(() => {
+    try {
+      emailjs.init("YOUR_PUBLIC_KEY");
+
+      const templateParams = {
+        to_email: formData.emailId,
+        message: "Please complete your personal injury assessment questionnaire using the link below:",
+        link: shareableLink,
+      };
+
+      await emailjs.send(
+        "YOUR_SERVICE_ID",
+        "YOUR_TEMPLATE_ID",
+        templateParams
+      );
+
       toast({
-        title: "Link copied to clipboard",
-        description: "Share this link with the claimant to fill out the questionnaire.",
+        title: "Link Shared",
+        description: "The questionnaire link has been sent to the provided email address.",
       });
-    });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to send the email. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   // Add this at the beginning of the component to handle pre-filled data
@@ -205,7 +228,7 @@ export default function Index() {
         <h1 className="text-2xl font-bold">Personal Injury Assessment Questionnaire</h1>
         {currentSection === 0 && (
           <Button
-            onClick={generateShareableLink}
+            onClick={generateAndShareLink}
             variant="outline"
             className="flex items-center gap-2"
           >
@@ -333,6 +356,32 @@ export default function Index() {
                       <FormLabel>Accompanied By</FormLabel>
                       <FormControl>
                         <Input {...field} />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="mobileNumber"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Mobile Number</FormLabel>
+                      <FormControl>
+                        <Input {...field} type="tel" placeholder="Enter mobile number" />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="emailId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email Address</FormLabel>
+                      <FormControl>
+                        <Input {...field} type="email" placeholder="Enter email address" />
                       </FormControl>
                     </FormItem>
                   )}
