@@ -33,8 +33,8 @@ export function PreFilledDetails({ form }: { form: any }) {
       };
 
       await emailjs.send(
-        "service_by7xf4t",
-        "service_by7xf4t",
+        "service_by7xf4t",  // Service ID
+        "template_8g3ixwp", // Template ID - you'll need to create this in EmailJS dashboard
         templateParams
       );
 
@@ -43,6 +43,7 @@ export function PreFilledDetails({ form }: { form: any }) {
         description: "The questionnaire link has been sent to the provided email address.",
       });
     } catch (error) {
+      console.error('EmailJS Error:', error);
       toast({
         title: "Error",
         description: "Failed to send the email. Please try again.",
