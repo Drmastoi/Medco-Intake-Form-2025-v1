@@ -203,14 +203,16 @@ export default function Index() {
     <div className="container mx-auto py-10">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-2xl font-bold">Personal Injury Assessment Questionnaire</h1>
-        <Button
-          onClick={generateShareableLink}
-          variant="outline"
-          className="flex items-center gap-2"
-        >
-          <Share className="w-4 h-4" />
-          Share with Claimant
-        </Button>
+        {currentSection === 0 && (
+          <Button
+            onClick={generateShareableLink}
+            variant="outline"
+            className="flex items-center gap-2"
+          >
+            <Share className="w-4 h-4" />
+            Share with Claimant
+          </Button>
+        )}
       </div>
 
       {currentSection === 1 && (
