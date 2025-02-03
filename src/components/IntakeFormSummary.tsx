@@ -11,7 +11,7 @@ export function IntakeFormSummary({ form }: { form: any }) {
 
   const sendEmail = async (pdfUrl: string) => {
     try {
-      emailjs.init("YOUR_PUBLIC_KEY");
+      emailjs.init("YnnsjqOayi-IRBxy_");
 
       const templateParams = {
         to_email: formData.email || "Not provided",
@@ -21,8 +21,8 @@ export function IntakeFormSummary({ form }: { form: any }) {
       };
 
       await emailjs.send(
-        "YOUR_SERVICE_ID",
-        "YOUR_TEMPLATE_ID",
+        "service_by7xf4t",
+        "template_id",  // Replace with your actual template ID
         templateParams
       );
 

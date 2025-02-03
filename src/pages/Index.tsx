@@ -179,7 +179,7 @@ export default function Index() {
     const shareableLink = `${window.location.origin}?${queryParams}`;
     
     try {
-      emailjs.init("YOUR_PUBLIC_KEY");
+      emailjs.init("YnnsjqOayi-IRBxy_");
 
       const templateParams = {
         to_email: formData.emailId,
@@ -188,8 +188,8 @@ export default function Index() {
       };
 
       await emailjs.send(
-        "YOUR_SERVICE_ID",
-        "YOUR_TEMPLATE_ID",
+        "service_by7xf4t",
+        "service_by7xf4t", // Replace with your actual template ID
         templateParams
       );
 
