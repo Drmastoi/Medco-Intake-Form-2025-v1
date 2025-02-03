@@ -4,9 +4,15 @@ import { Button } from "@/components/ui/button";
 import { Share } from "lucide-react";
 import emailjs from '@emailjs/browser';
 import { useToast } from "@/hooks/use-toast";
+import { useEffect } from "react";
 
 export function PreFilledDetails({ form }: { form: any }) {
   const { toast } = useToast();
+
+  // Initialize EmailJS once when component mounts
+  useEffect(() => {
+    emailjs.init("YnnsjqOayi-IRBxy_");
+  }, []);
 
   const generateAndShareLink = async () => {
     const formData = form.getValues();
@@ -24,20 +30,18 @@ export function PreFilledDetails({ form }: { form: any }) {
     const shareableLink = `${window.location.origin}?${queryParams}`;
     
     try {
-      emailjs.init("YnnsjqOayi-IRBxy_");
-
       const templateParams = {
-        to_email: formData.emailId,
         to_name: formData.solicitorName || "Claimant",
+        to_email: formData.emailId,
         message: "Please complete your personal injury assessment questionnaire using the link below:",
         link: shareableLink,
       };
 
       await emailjs.send(
-        "service_by7xf4t",  // Service ID
-        "template_f1czwos", // Template ID
+        "service_by7xf4t",
+        "template_f1czwos",
         templateParams,
-        "YnnsjqOayi-IRBxy_" // Public Key
+        "YnnsjqOayi-IRBxy_"
       );
 
       toast({
