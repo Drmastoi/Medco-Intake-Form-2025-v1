@@ -28,14 +28,16 @@ export function PreFilledDetails({ form }: { form: any }) {
 
       const templateParams = {
         to_email: formData.emailId,
+        to_name: formData.solicitorName || "Claimant",
         message: "Please complete your personal injury assessment questionnaire using the link below:",
         link: shareableLink,
       };
 
       await emailjs.send(
         "service_by7xf4t",  // Service ID
-        "template_8g3ixwp", // Template ID - you'll need to create this in EmailJS dashboard
-        templateParams
+        "template_8g3ixwp", // Template ID
+        templateParams,
+        "YnnsjqOayi-IRBxy_" // Public Key
       );
 
       toast({
