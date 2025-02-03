@@ -35,7 +35,7 @@ export function PreFilledDetails({ form }: { form: any }) {
 
       await emailjs.send(
         "service_by7xf4t",  // Service ID
-        "template_8g3ixwp", // Template ID
+        "template_f1czwos", // Template ID
         templateParams,
         "YnnsjqOayi-IRBxy_" // Public Key
       );
