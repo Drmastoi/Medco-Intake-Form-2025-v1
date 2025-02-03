@@ -4,16 +4,21 @@ import { BlobProvider } from '@react-pdf/renderer';
 import emailjs from '@emailjs/browser';
 import { useToast } from "@/components/ui/use-toast";
 import { MedcoReport } from './report/MedcoReport';
+import { useEffect } from "react";
 
 export function IntakeFormSummary({ form }: { form: any }) {
   const { toast } = useToast();
   const formData = form.getValues();
 
+  // Initialize EmailJS once when component mounts
+  useEffect(() => {
+    emailjs.init("YnnsjqOayi-IRBxy_");
+  }, []);
+
   const sendEmail = async (pdfUrl: string) => {
     try {
-      emailjs.init("YnnsjqOayi-IRBxy_");
-
       const templateParams = {
+        to_name: formData.fullName || "Client",
         to_email: formData.email || "Not provided",
         cc_email: "drawais@gmail.com",
         message: "Please find attached your MEDCO medical report.",
@@ -22,7 +27,7 @@ export function IntakeFormSummary({ form }: { form: any }) {
 
       await emailjs.send(
         "service_by7xf4t",
-        "template_id",  // Replace with your actual template ID
+        "template_f1czwos",  // Using the same template for now - you should create a new template for PDF reports
         templateParams
       );
 
@@ -31,6 +36,7 @@ export function IntakeFormSummary({ form }: { form: any }) {
         description: "The MEDCO medical report has been sent to your email.",
       });
     } catch (error) {
+      console.error('EmailJS Error:', error);
       toast({
         title: "Error",
         description: "Failed to send the report. Please try again.",
