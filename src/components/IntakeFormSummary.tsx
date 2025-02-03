@@ -27,7 +27,7 @@ export function IntakeFormSummary({ form }: { form: any }) {
 
       await emailjs.send(
         "service_by7xf4t",
-        "template_f1czwos",  // Using the same template for now - you should create a new template for PDF reports
+        "template_medco_report",  // This should be a new template specifically for PDF reports
         templateParams
       );
 
