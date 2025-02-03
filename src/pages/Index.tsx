@@ -2,8 +2,8 @@ import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
+import { PreFilledDetails } from "@/components/PreFilledDetails";
 import { IntakeFormSection1 } from "@/components/IntakeFormSection1";
 import { IntakeFormSection2 } from "@/components/IntakeFormSection2";
 import { IntakeFormSection3 } from "@/components/IntakeFormSection3";
@@ -21,8 +21,6 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import * as Tabs from "@radix-ui/react-tabs";
-import { Share } from "lucide-react";
-import emailjs from '@emailjs/browser';
 
 const formSchema = z.object({
   // Pre-filled fields (sender details)
@@ -163,49 +161,6 @@ export default function Index() {
     setCurrentSection(parseInt(value));
   };
 
-  const generateAndShareLink = async () => {
-    const formData = form.getValues();
-    const preFillData = {
-      solicitorName: formData.solicitorName,
-      solicitorReference: formData.solicitorReference,
-      instructingPartyName: formData.instructingPartyName,
-      instructingPartyReference: formData.instructingPartyReference,
-      examinationLocation: formData.examinationLocation,
-      mobileNumber: formData.mobileNumber,
-      emailId: formData.emailId,
-    };
-    
-    const queryParams = new URLSearchParams(preFillData).toString();
-    const shareableLink = `${window.location.origin}?${queryParams}`;
-    
-    try {
-      emailjs.init("YnnsjqOayi-IRBxy_");
-
-      const templateParams = {
-        to_email: formData.emailId,
-        message: "Please complete your personal injury assessment questionnaire using the link below:",
-        link: shareableLink,
-      };
-
-      await emailjs.send(
-        "service_by7xf4t",
-        "service_by7xf4t", // Replace with your actual template ID
-        templateParams
-      );
-
-      toast({
-        title: "Link Shared",
-        description: "The questionnaire link has been sent to the provided email address.",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to send the email. Please try again.",
-        variant: "destructive",
-      });
-    }
-  };
-
   // Add this at the beginning of the component to handle pre-filled data
   React.useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -224,19 +179,7 @@ export default function Index() {
 
   return (
     <div className="container mx-auto py-10">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold">Personal Injury Assessment Questionnaire</h1>
-        {currentSection === 0 && (
-          <Button
-            onClick={generateAndShareLink}
-            variant="outline"
-            className="flex items-center gap-2"
-          >
-            <Share className="w-4 h-4" />
-            Share with Claimant
-          </Button>
-        )}
-      </div>
+      <h1 className="text-2xl font-bold mb-8">Personal Injury Assessment Questionnaire</h1>
 
       {currentSection === 1 && (
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 text-sm">
@@ -267,129 +210,7 @@ export default function Index() {
       
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          {currentSection === 0 && (
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="solicitorName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Solicitor's Name</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={form.control}
-                  name="solicitorReference"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Solicitor's Reference</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={form.control}
-                  name="instructingPartyName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Instructing Party Name</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={form.control}
-                  name="instructingPartyReference"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Instructing Party Reference</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={form.control}
-                  name="examinationLocation"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Examination Location</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="medcoReference"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Medco Reference</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="accompaniedBy"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Accompanied By</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="mobileNumber"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Mobile Number</FormLabel>
-                      <FormControl>
-                        <Input {...field} type="tel" placeholder="Enter mobile number" />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="emailId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email Address</FormLabel>
-                      <FormControl>
-                        <Input {...field} type="email" placeholder="Enter email address" />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </div>
-          )}
-          
+          {currentSection === 0 && <PreFilledDetails form={form} />}
           {currentSection === 1 && <IntakeFormSection1 form={form} />}
           {currentSection === 2 && <IntakeFormSection2 form={form} />}
           {currentSection === 3 && <IntakeFormSection3 form={form} />}
