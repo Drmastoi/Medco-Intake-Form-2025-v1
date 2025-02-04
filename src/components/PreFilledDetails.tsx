@@ -9,7 +9,6 @@ import { useEffect } from "react";
 export function PreFilledDetails({ form }: { form: any }) {
   const { toast } = useToast();
 
-  // Initialize EmailJS once when component mounts
   useEffect(() => {
     emailjs.init("YnnsjqOayi-IRBxy_");
   }, []);
@@ -31,9 +30,23 @@ export function PreFilledDetails({ form }: { form: any }) {
     
     try {
       const templateParams = {
-        to_name: formData.solicitorName || "Claimant",
+        to_name: formData.solicitorName || "Valued Client",
         to_email: formData.emailId,
-        message: "Please complete your personal injury assessment questionnaire using the link below:",
+        message: `
+Dear ${formData.solicitorName || "Valued Client"},
+
+I hope this email finds you well. As part of your personal injury assessment process, we have prepared a detailed questionnaire for you to complete.
+
+Please click on the link below to access your personalized questionnaire:
+${shareableLink}
+
+This questionnaire is an essential part of your assessment, and your thorough responses will help us better understand your situation.
+
+If you have any questions or need assistance while completing the questionnaire, please don't hesitate to contact us.
+
+Best regards,
+Your Medical Assessment Team
+        `,
         link: shareableLink,
       };
 

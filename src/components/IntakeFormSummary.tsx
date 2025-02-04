@@ -10,7 +10,6 @@ export function IntakeFormSummary({ form }: { form: any }) {
   const { toast } = useToast();
   const formData = form.getValues();
 
-  // Initialize EmailJS once when component mounts
   useEffect(() => {
     emailjs.init("YnnsjqOayi-IRBxy_");
   }, []);
@@ -18,10 +17,24 @@ export function IntakeFormSummary({ form }: { form: any }) {
   const sendEmail = async (pdfUrl: string) => {
     try {
       const templateParams = {
-        to_name: formData.fullName || "Client",
-        to_email: formData.email || "Not provided",
+        to_name: formData.fullName || "Valued Client",
+        to_email: formData.emailId || formData.email,
         cc_email: "drawais@gmail.com",
-        message: "Please find attached your MEDCO medical report.",
+        message: `
+Dear ${formData.fullName || "Valued Client"},
+
+Thank you for completing your personal injury assessment questionnaire. Please find attached your MEDCO medical report for your review.
+
+The report contains a comprehensive assessment based on the information you provided. Please review it carefully and let us know if you have any questions or if any clarification is needed.
+
+You can access your report using the link below:
+${pdfUrl}
+
+If you need any assistance or have questions about the report, please don't hesitate to contact us.
+
+Best regards,
+Your Medical Assessment Team
+        `,
         pdf_url: pdfUrl,
       };
 
