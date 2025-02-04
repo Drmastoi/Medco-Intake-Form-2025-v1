@@ -39,9 +39,8 @@ export function PreFilledDetails({ form }: { form: any }) {
 
       await emailjs.send(
         "service_by7xf4t",
-        "template_f1czwos",
-        templateParams,
-        "YnnsjqOayi-IRBxy_"
+        "template_a1j2wij",
+        templateParams
       );
 
       toast({
