@@ -25,12 +25,14 @@ export function IntakeFormSummary({ form }: { form: any }) {
         pdf_url: pdfUrl,
       };
 
-      await emailjs.send(
+      const response = await emailjs.send(
         "service_by7xf4t",
         "template_a1j2wij",
         templateParams,
         "YnnsjqOayi-IRBxy_"
       );
+      
+      console.log('EmailJS Response:', response);
 
       toast({
         title: "Report Sent",
