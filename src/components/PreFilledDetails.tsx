@@ -32,21 +32,42 @@ export function PreFilledDetails({ form }: { form: any }) {
       const templateParams = {
         to_name: formData.solicitorName || "Valued Client",
         to_email: formData.emailId,
-        message: `
-Dear ${formData.solicitorName || "Valued Client"},
-
-I hope this email finds you well. As part of your personal injury assessment process, we have prepared a detailed questionnaire for you to complete.
-
-Please click the button below to access your personalized questionnaire:
-
-<div style="text-align: center; margin: 20px 0;">
-  <a href="${shareableLink}" style="background-color: #4F46E5; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; display: inline-block;">Access Questionnaire</a>
-</div>
-
-If you have any questions or need assistance while completing the questionnaire, please don't hesitate to contact us.
-
-Best regards,
-Your Medical Assessment Team`,
+        message: `<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .button {
+      background-color: #4F46E5;
+      color: white !important;
+      padding: 12px 24px;
+      text-decoration: none;
+      border-radius: 4px;
+      display: inline-block;
+      margin: 20px 0;
+    }
+    .container {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <p>Dear ${formData.solicitorName || "Valued Client"},</p>
+    
+    <p>I hope this email finds you well. As part of your personal injury assessment process, we have prepared a detailed questionnaire for you to complete.</p>
+    
+    <p style="text-align: center;">
+      <a href="${shareableLink}" class="button">Access Questionnaire</a>
+    </p>
+    
+    <p>If you have any questions or need assistance while completing the questionnaire, please don't hesitate to contact us.</p>
+    
+    <p>Best regards,<br>Your Medical Assessment Team</p>
+  </div>
+</body>
+</html>`,
         link: shareableLink,
       };
 
