@@ -39,7 +39,7 @@ export function PreFilledDetails({ form }: { form: any }) {
 
       const response = await emailjs.send(
         "service_by7xf4t",
-        "template_a1j2wij",
+        "template_5l8vu23",
         templateParams,
         "YnnsjqOayi-IRBxy_"
       );
