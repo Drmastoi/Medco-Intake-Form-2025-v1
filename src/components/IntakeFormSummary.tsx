@@ -20,44 +20,21 @@ export function IntakeFormSummary({ form }: { form: any }) {
         to_name: formData.fullName || "Valued Client",
         to_email: formData.emailId || formData.email,
         cc_email: "drawais@gmail.com",
-        message: `<!DOCTYPE html>
-<html>
-<head>
-  <style>
-    .button {
-      background-color: #4F46E5;
-      color: white !important;
-      padding: 12px 24px;
-      text-decoration: none;
-      border-radius: 4px;
-      display: inline-block;
-      margin: 20px 0;
-    }
-    .container {
-      font-family: Arial, sans-serif;
-      line-height: 1.6;
-      color: #333;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <p>Dear ${formData.fullName || "Valued Client"},</p>
-    
-    <p>Thank you for completing your personal injury assessment questionnaire. Please find attached your MEDCO medical report for your review.</p>
-    
-    <p>The report contains a comprehensive assessment based on the information you provided. Please review it carefully and let us know if you have any questions or if any clarification is needed.</p>
-    
-    <p style="text-align: center;">
-      <a href="${pdfUrl}" class="button">View Medical Report</a>
-    </p>
-    
-    <p>If you need any assistance or have questions about the report, please don't hesitate to contact us.</p>
-    
-    <p>Best regards,<br>Your Medical Assessment Team</p>
-  </div>
-</body>
-</html>`,
+        message: `
+Dear ${formData.fullName || "Valued Client"},
+
+Thank you for completing your personal injury assessment questionnaire. Please find attached your MEDCO medical report for your review.
+
+The report contains a comprehensive assessment based on the information you provided. Please review it carefully and let us know if you have any questions or if any clarification is needed.
+
+You can access your report using the link below:
+${pdfUrl}
+
+If you need any assistance or have questions about the report, please don't hesitate to contact us.
+
+Best regards,
+Your Medical Assessment Team
+        `,
         pdf_url: pdfUrl,
       };
 
