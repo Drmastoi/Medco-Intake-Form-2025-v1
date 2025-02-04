@@ -37,16 +37,16 @@ Dear ${formData.solicitorName || "Valued Client"},
 
 I hope this email finds you well. As part of your personal injury assessment process, we have prepared a detailed questionnaire for you to complete.
 
-Please click on the link below to access your personalized questionnaire:
-${shareableLink}
+Please click the button below to access your personalized questionnaire:
 
-This questionnaire is an essential part of your assessment, and your thorough responses will help us better understand your situation.
+<div style="text-align: center; margin: 20px 0;">
+  <a href="${shareableLink}" style="background-color: #4F46E5; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; display: inline-block;">Access Questionnaire</a>
+</div>
 
 If you have any questions or need assistance while completing the questionnaire, please don't hesitate to contact us.
 
 Best regards,
-Your Medical Assessment Team
-        `,
+Your Medical Assessment Team`,
         link: shareableLink,
       };
 

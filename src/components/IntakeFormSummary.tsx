@@ -27,14 +27,14 @@ Thank you for completing your personal injury assessment questionnaire. Please f
 
 The report contains a comprehensive assessment based on the information you provided. Please review it carefully and let us know if you have any questions or if any clarification is needed.
 
-You can access your report using the link below:
-${pdfUrl}
+<div style="text-align: center; margin: 20px 0;">
+  <a href="${pdfUrl}" style="background-color: #4F46E5; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; display: inline-block;">View Medical Report</a>
+</div>
 
 If you need any assistance or have questions about the report, please don't hesitate to contact us.
 
 Best regards,
-Your Medical Assessment Team
-        `,
+Your Medical Assessment Team`,
         pdf_url: pdfUrl,
       };
 
