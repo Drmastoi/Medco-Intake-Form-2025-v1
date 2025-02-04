@@ -40,7 +40,8 @@ export function PreFilledDetails({ form }: { form: any }) {
       await emailjs.send(
         "service_by7xf4t",
         "template_a1j2wij",
-        templateParams
+        templateParams,
+        "YnnsjqOayi-IRBxy_"
       );
 
       toast({
