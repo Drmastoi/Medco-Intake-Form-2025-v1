@@ -15,18 +15,35 @@ export function PreFilledDetails({ form }: { form: any }) {
 
   const generateAndShareLink = async () => {
     const formData = form.getValues();
+    
+    // Include all pre-filled fields in the URL
     const preFillData = {
-      solicitorName: formData.solicitorName,
-      solicitorReference: formData.solicitorReference,
-      instructingPartyName: formData.instructingPartyName,
-      instructingPartyReference: formData.instructingPartyReference,
-      examinationLocation: formData.examinationLocation,
-      mobileNumber: formData.mobileNumber,
-      emailId: formData.emailId,
+      solicitorName: formData.solicitorName || '',
+      solicitorReference: formData.solicitorReference || '',
+      instructingPartyName: formData.instructingPartyName || '',
+      instructingPartyReference: formData.instructingPartyReference || '',
+      examinationLocation: formData.examinationLocation || '',
+      medcoReference: formData.medcoReference || '',
+      accompaniedBy: formData.accompaniedBy || '',
+      mobileNumber: formData.mobileNumber || '',
+      emailId: formData.emailId || '',
+      fullName: formData.fullName || '',
+      dateOfBirth: formData.dateOfBirth || '',
+      occupation: formData.occupation || '',
+      workType: formData.workType || '',
+      livingWith: formData.livingWith || '',
+      childrenCount: formData.childrenCount || '',
     };
     
-    const queryParams = new URLSearchParams(preFillData).toString();
-    const shareableLink = `${window.location.origin}?${queryParams}`;
+    // Convert the data object to URL parameters
+    const queryParams = new URLSearchParams();
+    Object.entries(preFillData).forEach(([key, value]) => {
+      if (value) {
+        queryParams.append(key, value.toString());
+      }
+    });
+    
+    const shareableLink = `${window.location.origin}?${queryParams.toString()}`;
     
     try {
       const templateParams = {
@@ -37,10 +54,9 @@ Dear ${formData.solicitorName || "Valued Client"},
 
 I hope this email finds you well. As part of your personal injury assessment process, we have prepared a detailed questionnaire for you to complete.
 
-Please click on the link below to access your personalized questionnaire:
-${shareableLink}
+Please click on the link below to access your personalized questionnaire. The form will be pre-filled with the information we already have:
 
-This questionnaire is an essential part of your assessment, and your thorough responses will help us better understand your situation.
+${shareableLink}
 
 If you have any questions or need assistance while completing the questionnaire, please don't hesitate to contact us.
 
@@ -208,3 +224,6 @@ Your Medical Assessment Team
     </div>
   );
 }
+```
+
+Note: The PreFilledDetails.tsx file is getting quite long. After implementing these changes, you might want to consider refactoring it into smaller components.
