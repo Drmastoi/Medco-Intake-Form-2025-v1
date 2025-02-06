@@ -2,20 +2,20 @@ import { Text, View } from '@react-pdf/renderer';
 import { styles } from './reportStyles';
 
 const EntryGroup = ({ label, value }: { label: string; value: string }) => (
-  <View style={styles.compactGroup}>
-    <Text style={styles.boldLabel}>{label}: </Text>
-    <Text style={styles.normalText}>{value}</Text>
+  <View style={{ ...styles.compactGroup, marginBottom: 2 }}>
+    <Text style={{ ...styles.boldLabel, fontSize: 9 }}>{label}: </Text>
+    <Text style={{ ...styles.normalText, fontSize: 9 }}>{value}</Text>
   </View>
 );
 
 const ExaminationGroup = ({ title, items }: { title: string; items: { label: string; value: string }[] }) => (
-  <View>
-    <Text style={styles.boldLabel}>{title}</Text>
-    <View style={styles.indentedGroup}>
+  <View style={{ marginBottom: 5 }}>
+    <Text style={{ ...styles.boldLabel, fontSize: 9, marginBottom: 2 }}>{title}</Text>
+    <View style={{ ...styles.indentedGroup, marginLeft: 8 }}>
       {items.map((item, index) => (
-        <View key={index} style={styles.compactGroup}>
-          <Text style={styles.boldLabel}>{item.label}: </Text>
-          <Text style={styles.normalText}>{item.value}</Text>
+        <View key={index} style={{ ...styles.compactGroup, marginBottom: 1 }}>
+          <Text style={{ ...styles.boldLabel, fontSize: 9 }}>{item.label}: </Text>
+          <Text style={{ ...styles.normalText, fontSize: 9 }}>{item.value}</Text>
         </View>
       ))}
     </View>
@@ -76,35 +76,36 @@ const renderInjurySection = (
     prognosis: string;
   }
 ) => (
-  <View style={styles.section}>
-    <Text style={styles.mainTitle}>{title}</Text>
+  <View style={{ ...styles.section, marginBottom: 8 }}>
+    <Text style={{ ...styles.mainTitle, fontSize: 10, marginBottom: 4 }}>{title}</Text>
     
-    <EntryGroup label="Onset" value={onset} />
-    <EntryGroup label="Initial Severity" value={initialSeverity} />
-    <EntryGroup label="Current Severity" value={currentSeverity} />
-    <EntryGroup label="Classification" value={classification} />
-    <EntryGroup label="Causation/Mechanism" value={mechanism} />
-
-    <View style={styles.sectionGap}>
-      <ExaminationGroup 
-        title="Examination"
-        items={[
-          { label: "Palpation", value: palpation },
-          { label: "Range of Motion", value: rangeOfMotion },
-          { label: "Neurological Assessment", value: neurologicalAssessment }
-        ]}
-      />
+    <View style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 15 }}>
+      <View style={{ flex: 1, minWidth: '45%' }}>
+        <EntryGroup label="Onset" value={onset} />
+        <EntryGroup label="Initial Severity" value={initialSeverity} />
+        <EntryGroup label="Current Severity" value={currentSeverity} />
+        <EntryGroup label="Classification" value={classification} />
+      </View>
+      
+      <View style={{ flex: 1, minWidth: '45%' }}>
+        <EntryGroup label="Mechanism" value={mechanism} />
+        <ExaminationGroup 
+          title="Examination"
+          items={[
+            { label: "Palpation", value: palpation },
+            { label: "Range of Motion", value: rangeOfMotion },
+            { label: "Neurological", value: neurologicalAssessment }
+          ]}
+        />
+      </View>
     </View>
 
-    <View style={styles.sectionGap}>
-      <Text style={styles.boldLabel}>Treatment and Prognosis</Text>
-      <View style={styles.indentedGroup}>
-        <Text style={styles.boldLabel}>Treatment</Text>
-        <Text style={styles.normalText}>Pain management: Over-the-counter pain medication and ice therapy recommended</Text>
-        <Text style={styles.boldLabel}>Physiotherapy Recommended</Text>
-        <Text style={styles.normalText}>Number of sessions to be decided by the referred expert</Text>
-        <Text style={styles.boldLabel}>Prognosis</Text>
-        <Text style={styles.normalText}>{prognosis}</Text>
+    <View style={{ marginTop: 4 }}>
+      <Text style={{ ...styles.boldLabel, fontSize: 9 }}>Treatment and Prognosis</Text>
+      <View style={{ ...styles.indentedGroup, marginLeft: 8 }}>
+        <Text style={{ ...styles.normalText, fontSize: 9 }}>Pain management: {treatment}</Text>
+        <Text style={{ ...styles.boldLabel, fontSize: 9, marginTop: 2 }}>Prognosis: </Text>
+        <Text style={{ ...styles.normalText, fontSize: 9 }}>{prognosis}</Text>
       </View>
     </View>
   </View>
@@ -124,7 +125,7 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
           palpation: `${getSeverityText(formData.neckPainCurrentSeverity)} tenderness in affected area`,
           rangeOfMotion: "Limited due to pain",
           neurologicalAssessment: "normal",
-          treatment: "Pain management: Over-the-counter pain medication and ice therapy recommended",
+          treatment: "Over-the-counter pain medication and ice therapy recommended",
           prognosis: `From the date of accident: ${formData.neckPainCurrentSeverity === "4" ? 
             `${formData.neckPainResolveDays} DAYS` : 
             formData.neckPainCurrentSeverity === "1" ? "3 MONTHS" :
@@ -144,7 +145,7 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
           palpation: `${getSeverityText(formData.shoulderPainCurrentSeverity)} tenderness in affected area`,
           rangeOfMotion: "Limited due to pain",
           neurologicalAssessment: "normal",
-          treatment: "Pain management: Over-the-counter pain medication and ice therapy recommended",
+          treatment: "Over-the-counter pain medication and ice therapy recommended",
           prognosis: `From the date of accident: ${formData.shoulderPainCurrentSeverity === "4" ? 
             `${formData.shoulderPainResolveDays} DAYS` : 
             formData.shoulderPainCurrentSeverity === "1" ? "3 MONTHS" :
@@ -164,7 +165,7 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
           palpation: `${getSeverityText(formData.backPainCurrentSeverity)} tenderness in affected area`,
           rangeOfMotion: "Limited due to pain",
           neurologicalAssessment: "normal",
-          treatment: "Pain management: Over-the-counter pain medication and ice therapy recommended",
+          treatment: "Over-the-counter pain medication and ice therapy recommended",
           prognosis: `From the date of accident: ${formData.backPainCurrentSeverity === "4" ? 
             `${formData.backPainResolveDays} DAYS` : 
             formData.backPainCurrentSeverity === "1" ? "3 MONTHS" :

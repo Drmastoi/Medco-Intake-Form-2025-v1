@@ -1,17 +1,19 @@
+
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
 import { format } from 'date-fns';
 
 const styles = StyleSheet.create({
   section: {
-    marginBottom: 15,
+    marginBottom: 10,
   },
   text: {
     fontSize: 10,
-    marginBottom: 5,
-    lineHeight: 1.4,
+    marginBottom: 3,
+    lineHeight: 1.3,
   },
   paragraph: {
-    marginBottom: 10,
+    marginBottom: 8,
+    textAlign: 'justify',
   },
 });
 
