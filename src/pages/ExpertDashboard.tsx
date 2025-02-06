@@ -6,7 +6,7 @@ import { ReviewDialog } from "@/components/dashboard/ReviewDialog";
 
 interface Report {
   id: string;
-  profiles?: { full_name: string };
+  profiles?: { full_name: string } | null;
   created_at: string;
   status: string;
   storage_path: string;
@@ -25,7 +25,7 @@ export default function ExpertDashboard() {
 
   const fetchReports = async () => {
     try {
-      const { data: reports, error } = await supabase
+      const { data: reportsData, error } = await supabase
         .from('reports')
         .select(`
           *,
@@ -36,7 +36,17 @@ export default function ExpertDashboard() {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setReports(reports || []);
+
+      // Transform the data to match our Report interface
+      const transformedReports: Report[] = (reportsData || []).map(report => ({
+        id: report.id,
+        profiles: report.profiles,
+        created_at: report.created_at,
+        status: report.status || '',
+        storage_path: report.storage_path
+      }));
+
+      setReports(transformedReports);
     } catch (error) {
       console.error('Error fetching reports:', error);
       toast({

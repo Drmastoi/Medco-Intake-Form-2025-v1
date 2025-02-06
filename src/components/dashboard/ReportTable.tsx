@@ -6,7 +6,7 @@ import { useToast } from "@/components/ui/use-toast";
 
 interface Report {
   id: string;
-  profiles?: { full_name: string };
+  profiles?: { full_name: string } | null;
   created_at: string;
   status: string;
   storage_path: string;
