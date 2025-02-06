@@ -4,12 +4,21 @@ import { BlobProvider } from '@react-pdf/renderer';
 import emailjs from '@emailjs/browser';
 import { useToast } from "@/components/ui/use-toast";
 import { MedcoReport } from './report/MedcoReport';
-import { useEffect } from "react";
-import { Eye, Send, Download } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Eye, Send, Download, Star } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 export function IntakeFormSummary({ form }: { form: any }) {
   const { toast } = useToast();
   const formData = form.getValues();
+  const [showRatingDialog, setShowRatingDialog] = useState(false);
+  const [rating, setRating] = useState(0);
 
   useEffect(() => {
     emailjs.init("YnnsjqOayi-IRBxy_");
@@ -19,7 +28,7 @@ export function IntakeFormSummary({ form }: { form: any }) {
     try {
       const templateParams = {
         to_name: "Medical Expert",
-        to_email: "drawais@gmail.com", // Medical expert's email
+        to_email: "drawais@gmail.com",
         message: `
 Dear Medical Expert,
 
@@ -49,6 +58,9 @@ Medical Assessment Team
         title: "Report Sent",
         description: "The MEDCO medical report has been sent to the medical expert for review.",
       });
+
+      // Show the rating dialog after successful send
+      setShowRatingDialog(true);
     } catch (error) {
       console.error('EmailJS Error:', error);
       toast({
@@ -57,6 +69,14 @@ Medical Assessment Team
         variant: "destructive",
       });
     }
+  };
+
+  const handleRatingSubmit = () => {
+    toast({
+      title: "Thank you for your feedback!",
+      description: "Your rating has been submitted successfully.",
+    });
+    setShowRatingDialog(false);
   };
 
   return (
@@ -120,6 +140,40 @@ Medical Assessment Team
           </BlobProvider>
         </div>
       </div>
+
+      <Dialog open={showRatingDialog} onOpenChange={setShowRatingDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Thank You for Completing Your Assessment</DialogTitle>
+            <DialogDescription className="space-y-4">
+              <p>Your report has been successfully submitted to our medical expert for review.</p>
+              <p>Please remember to attend your medical appointment as scheduled.</p>
+              <div className="mt-4">
+                <p className="mb-2">How would you rate your experience?</p>
+                <div className="flex gap-2 justify-center">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      onClick={() => setRating(star)}
+                      className={`p-2 hover:scale-110 transition-transform ${
+                        rating >= star ? 'text-yellow-400' : 'text-gray-300'
+                      }`}
+                    >
+                      <Star className="w-8 h-8 fill-current" />
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <Button 
+                onClick={handleRatingSubmit}
+                className="w-full mt-4"
+              >
+                Submit Rating
+              </Button>
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
