@@ -6,6 +6,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { MedcoReport } from './report/MedcoReport';
 import { useEffect, useState } from "react";
 import { Eye, Send, Download, Star } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import {
   Dialog,
   DialogContent,
@@ -19,13 +20,56 @@ export function IntakeFormSummary({ form }: { form: any }) {
   const formData = form.getValues();
   const [showRatingDialog, setShowRatingDialog] = useState(false);
   const [rating, setRating] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
     emailjs.init("YnnsjqOayi-IRBxy_");
   }, []);
 
+  const uploadToStorage = async (pdfBlob: Blob, fileName: string) => {
+    try {
+      const { data: userData } = await supabase.auth.getUser();
+      if (!userData.user) throw new Error('Not authenticated');
+
+      const filePath = `${userData.user.id}/${fileName}`;
+      
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('medical_reports')
+        .upload(filePath, pdfBlob, {
+          contentType: 'application/pdf',
+          upsert: false
+        });
+
+      if (uploadError) throw uploadError;
+
+      const { error: dbError } = await supabase
+        .from('reports')
+        .insert({
+          patient_id: userData.user.id,
+          original_filename: fileName,
+          storage_path: filePath,
+          version: 1,
+          status: 'pending_review'
+        });
+
+      if (dbError) throw dbError;
+
+      return filePath;
+    } catch (error) {
+      console.error('Upload error:', error);
+      throw error;
+    }
+  };
+
   const sendToMedicalExpert = async (pdfUrl: string) => {
     try {
+      setIsUploading(true);
+      const response = await fetch(pdfUrl);
+      const pdfBlob = await response.blob();
+      const fileName = `MEDCO_Report_${formData.fullName}_${new Date().toISOString()}.pdf`;
+      
+      await uploadToStorage(pdfBlob, fileName);
+
       const templateParams = {
         to_name: "Medical Expert",
         to_email: "drawais@gmail.com",
@@ -34,40 +78,35 @@ Dear Medical Expert,
 
 A new MEDCO medical report has been generated for review. This report is for patient ${formData.fullName || "Unknown"}.
 
-You can access the report using the link below:
-${pdfUrl}
-
-Please review the report and provide your assessment. If you need any additional information or clarification, please don't hesitate to contact us.
+Please review the report in the medical expert dashboard. If you need any additional information or clarification, please don't hesitate to contact us.
 
 Best regards,
 Medical Assessment Team
         `,
-        pdf_url: pdfUrl,
       };
 
-      const response = await emailjs.send(
+      await emailjs.send(
         "service_by7xf4t",
         "template_5l8vu23",
         templateParams,
         "YnnsjqOayi-IRBxy_"
       );
       
-      console.log('EmailJS Response:', response);
-
       toast({
-        title: "Report Sent",
-        description: "The MEDCO medical report has been sent to the medical expert for review.",
+        title: "Report Submitted",
+        description: "The MEDCO medical report has been uploaded and sent for review.",
       });
 
-      // Show the rating dialog after successful send
       setShowRatingDialog(true);
     } catch (error) {
-      console.error('EmailJS Error:', error);
+      console.error('Error:', error);
       toast({
         title: "Error",
-        description: "Failed to send the report. Please try again.",
+        description: "Failed to submit the report. Please try again.",
         variant: "destructive",
       });
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -124,7 +163,7 @@ Medical Assessment Team
                 </Button>
 
                 <Button 
-                  disabled={loading}
+                  disabled={loading || isUploading}
                   onClick={() => {
                     if (url) {
                       sendToMedicalExpert(url);
@@ -133,7 +172,7 @@ Medical Assessment Team
                   className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600"
                 >
                   <Send className="w-4 h-4" />
-                  {loading ? "Generating..." : "Send to Medical Expert"}
+                  {isUploading ? "Uploading..." : loading ? "Generating..." : "Submit for Review"}
                 </Button>
               </>
             )}

@@ -9,7 +9,66 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          created_at: string
+          full_name: string | null
+          id: string
+          role: Database["public"]["Enums"]["user_role"] | null
+        }
+        Insert: {
+          created_at?: string
+          full_name?: string | null
+          id: string
+          role?: Database["public"]["Enums"]["user_role"] | null
+        }
+        Update: {
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["user_role"] | null
+        }
+        Relationships: []
+      }
+      reports: {
+        Row: {
+          comments: string | null
+          created_at: string
+          id: string
+          original_filename: string
+          patient_id: string | null
+          reviewed_by: string | null
+          status: string | null
+          storage_path: string
+          updated_at: string
+          version: number | null
+        }
+        Insert: {
+          comments?: string | null
+          created_at?: string
+          id?: string
+          original_filename: string
+          patient_id?: string | null
+          reviewed_by?: string | null
+          status?: string | null
+          storage_path: string
+          updated_at?: string
+          version?: number | null
+        }
+        Update: {
+          comments?: string | null
+          created_at?: string
+          id?: string
+          original_filename?: string
+          patient_id?: string | null
+          reviewed_by?: string | null
+          status?: string | null
+          storage_path?: string
+          updated_at?: string
+          version?: number | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -18,7 +77,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      user_role: "medical_expert" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
