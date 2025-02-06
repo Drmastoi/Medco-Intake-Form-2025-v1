@@ -5,6 +5,7 @@ import emailjs from '@emailjs/browser';
 import { useToast } from "@/components/ui/use-toast";
 import { MedcoReport } from './report/MedcoReport';
 import { useEffect } from "react";
+import { Eye, Send, Download } from "lucide-react";
 
 export function IntakeFormSummary({ form }: { form: any }) {
   const { toast } = useToast();
@@ -14,12 +15,55 @@ export function IntakeFormSummary({ form }: { form: any }) {
     emailjs.init("YnnsjqOayi-IRBxy_");
   }, []);
 
-  const sendEmail = async (pdfUrl: string) => {
+  const sendToMedicalExpert = async (pdfUrl: string) => {
+    try {
+      const templateParams = {
+        to_name: "Medical Expert",
+        to_email: "drawais@gmail.com", // Medical expert's email
+        message: `
+Dear Medical Expert,
+
+A new MEDCO medical report has been generated for review. This report is for patient ${formData.fullName || "Unknown"}.
+
+You can access the report using the link below:
+${pdfUrl}
+
+Please review the report and provide your assessment. If you need any additional information or clarification, please don't hesitate to contact us.
+
+Best regards,
+Medical Assessment Team
+        `,
+        pdf_url: pdfUrl,
+      };
+
+      const response = await emailjs.send(
+        "service_by7xf4t",
+        "template_5l8vu23",
+        templateParams,
+        "YnnsjqOayi-IRBxy_"
+      );
+      
+      console.log('EmailJS Response:', response);
+
+      toast({
+        title: "Report Sent",
+        description: "The MEDCO medical report has been sent to the medical expert for review.",
+      });
+    } catch (error) {
+      console.error('EmailJS Error:', error);
+      toast({
+        title: "Error",
+        description: "Failed to send the report. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const sendToClaimant = async (pdfUrl: string) => {
     try {
       const templateParams = {
         to_name: formData.fullName || "Valued Client",
         to_email: formData.emailId || formData.email,
-        cc_email: "drawais@gmail.com",
         message: `
 Dear ${formData.fullName || "Valued Client"},
 
@@ -62,43 +106,79 @@ Your Medical Assessment Team
   };
 
   return (
-    <div className="space-y-4">
-      <h2 className="text-xl font-semibold mb-4">MEDCO Report</h2>
-      
-      <div className="prose max-w-none">
-        <p className="text-sm text-muted-foreground mb-4">
-          This report follows the MEDCO format requirements. You can preview, download, or email the report using the buttons below.
-        </p>
-      </div>
+    <div className="space-y-6">
+      <div className="bg-white p-6 rounded-lg shadow-sm border">
+        <h2 className="text-2xl font-semibold mb-4">MEDCO Report Summary</h2>
+        
+        <div className="prose max-w-none mb-6">
+          <p className="text-sm text-muted-foreground">
+            This report follows the MEDCO format requirements. You can preview, download, 
+            or send the report using the options below.
+          </p>
+        </div>
 
-      <div className="flex gap-4 mt-6">
-        <BlobProvider document={<MedcoReport formData={formData} />}>
-          {({ url, loading }) => (
-            <>
-              <Button 
-                disabled={loading}
-                onClick={() => {
-                  if (url) {
-                    window.open(url, '_blank');
-                  }
-                }}
-              >
-                {loading ? "Generating PDF..." : "Download MEDCO Report"}
-              </Button>
+        <div className="flex flex-wrap gap-4">
+          <BlobProvider document={<MedcoReport formData={formData} />}>
+            {({ url, loading }) => (
+              <>
+                <Button 
+                  disabled={loading}
+                  onClick={() => {
+                    if (url) {
+                      window.open(url, '_blank');
+                    }
+                  }}
+                  variant="outline"
+                  className="flex items-center gap-2"
+                >
+                  <Eye className="w-4 h-4" />
+                  {loading ? "Loading Preview..." : "Preview Report"}
+                </Button>
 
-              <Button 
-                disabled={loading}
-                onClick={() => {
-                  if (url) {
-                    sendEmail(url);
-                  }
-                }}
-              >
-                {loading ? "Generating..." : "Email Report"}
-              </Button>
-            </>
-          )}
-        </BlobProvider>
+                <Button 
+                  disabled={loading}
+                  onClick={() => {
+                    if (url) {
+                      window.open(url, '_blank');
+                    }
+                  }}
+                  variant="outline"
+                  className="flex items-center gap-2"
+                >
+                  <Download className="w-4 h-4" />
+                  {loading ? "Generating..." : "Download Report"}
+                </Button>
+
+                <Button 
+                  disabled={loading}
+                  onClick={() => {
+                    if (url) {
+                      sendToClaimant(url);
+                    }
+                  }}
+                  className="flex items-center gap-2"
+                >
+                  <Send className="w-4 h-4" />
+                  {loading ? "Generating..." : "Send to Claimant"}
+                </Button>
+
+                <Button 
+                  disabled={loading}
+                  onClick={() => {
+                    if (url) {
+                      sendToMedicalExpert(url);
+                    }
+                  }}
+                  variant="secondary"
+                  className="flex items-center gap-2"
+                >
+                  <Send className="w-4 h-4" />
+                  {loading ? "Generating..." : "Send to Medical Expert"}
+                </Button>
+              </>
+            )}
+          </BlobProvider>
+        </div>
       </div>
     </div>
   );
