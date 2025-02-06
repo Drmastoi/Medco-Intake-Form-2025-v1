@@ -21,6 +21,7 @@ export function IntakeFormSummary({ form }: { form: any }) {
   const [showRatingDialog, setShowRatingDialog] = useState(false);
   const [rating, setRating] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
+  const [referenceNumber, setReferenceNumber] = useState("");
 
   useEffect(() => {
     emailjs.init("YnnsjqOayi-IRBxy_");
@@ -28,10 +29,7 @@ export function IntakeFormSummary({ form }: { form: any }) {
 
   const uploadToStorage = async (pdfBlob: Blob, fileName: string) => {
     try {
-      const { data: userData } = await supabase.auth.getUser();
-      if (!userData.user) throw new Error('Not authenticated');
-
-      const filePath = `${userData.user.id}/${fileName}`;
+      const filePath = `anonymous/${fileName}`;
       
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from('medical_reports')
@@ -42,14 +40,18 @@ export function IntakeFormSummary({ form }: { form: any }) {
 
       if (uploadError) throw uploadError;
 
+      // Generate a unique reference number
+      const ref = `REF-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      setReferenceNumber(ref);
+
       const { error: dbError } = await supabase
         .from('reports')
         .insert({
-          patient_id: userData.user.id,
           original_filename: fileName,
           storage_path: filePath,
           version: 1,
-          status: 'pending_review'
+          status: 'pending_review',
+          patient_id: null // This is now allowed as per our updated schema
         });
 
       if (dbError) throw dbError;
@@ -66,7 +68,7 @@ export function IntakeFormSummary({ form }: { form: any }) {
       setIsUploading(true);
       const response = await fetch(pdfUrl);
       const pdfBlob = await response.blob();
-      const fileName = `MEDCO_Report_${formData.fullName}_${new Date().toISOString()}.pdf`;
+      const fileName = `MEDCO_Report_${formData.fullName || 'Anonymous'}_${new Date().toISOString()}.pdf`;
       
       await uploadToStorage(pdfBlob, fileName);
 
@@ -76,7 +78,8 @@ export function IntakeFormSummary({ form }: { form: any }) {
         message: `
 Dear Medical Expert,
 
-A new MEDCO medical report has been generated for review. This report is for patient ${formData.fullName || "Unknown"}.
+A new MEDCO medical report has been generated for review. This report is for patient ${formData.fullName || "Anonymous"}.
+Reference Number: ${referenceNumber}
 
 Please review the report in the medical expert dashboard. If you need any additional information or clarification, please don't hesitate to contact us.
 
@@ -93,8 +96,8 @@ Medical Assessment Team
       );
       
       toast({
-        title: "Report Submitted",
-        description: "The MEDCO medical report has been uploaded and sent for review.",
+        title: "Report Submitted Successfully",
+        description: `Your report has been submitted. Please save your reference number: ${referenceNumber}`,
       });
 
       setShowRatingDialog(true);
@@ -113,7 +116,7 @@ Medical Assessment Team
   const handleRatingSubmit = () => {
     toast({
       title: "Thank you for your feedback!",
-      description: "Your rating has been submitted successfully.",
+      description: `Your rating has been submitted successfully. Reference Number: ${referenceNumber}`,
     });
     setShowRatingDialog(false);
   };
@@ -186,7 +189,8 @@ Medical Assessment Team
             <DialogTitle>Thank You for Completing Your Assessment</DialogTitle>
             <DialogDescription className="space-y-4">
               <p>Your report has been successfully submitted to our medical expert for review.</p>
-              <p>Please remember to attend your medical appointment as scheduled.</p>
+              <p className="font-semibold text-primary">Your Reference Number: {referenceNumber}</p>
+              <p>Please save this reference number for future correspondence.</p>
               <div className="mt-4">
                 <p className="mb-2">How would you rate your experience?</p>
                 <div className="flex gap-2 justify-center">
