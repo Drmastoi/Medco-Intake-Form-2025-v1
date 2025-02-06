@@ -40,7 +40,6 @@ export default function ExpertDashboard() {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-
       setReports(reportsData || []);
     } catch (error) {
       console.error('Error fetching reports:', error);
