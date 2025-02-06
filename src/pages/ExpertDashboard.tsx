@@ -1,30 +1,21 @@
 import { useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Button } from "@/components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import { Textarea } from "@/components/ui/textarea";
-import { Eye, CheckCircle, XCircle } from "lucide-react";
+import { ReportTable } from "@/components/dashboard/ReportTable";
+import { ReviewDialog } from "@/components/dashboard/ReviewDialog";
+
+interface Report {
+  id: string;
+  profiles?: { full_name: string };
+  created_at: string;
+  status: string;
+  storage_path: string;
+}
 
 export default function ExpertDashboard() {
-  const [reports, setReports] = useState<any[]>([]);
+  const [reports, setReports] = useState<Report[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedReport, setSelectedReport] = useState<any>(null);
+  const [selectedReport, setSelectedReport] = useState<Report | null>(null);
   const [comments, setComments] = useState("");
   const { toast } = useToast();
 
@@ -58,29 +49,9 @@ export default function ExpertDashboard() {
     }
   };
 
-  const viewReport = async (report: any) => {
-    try {
-      const { data } = await supabase
-        .storage
-        .from('medical_reports')
-        .getPublicUrl(report.storage_path);
+  const updateReportStatus = async (status: 'approved' | 'rejected') => {
+    if (!selectedReport) return;
 
-      if (data?.publicUrl) {
-        window.open(data.publicUrl, '_blank');
-      } else {
-        throw new Error('Failed to get public URL');
-      }
-    } catch (error) {
-      console.error('Error viewing report:', error);
-      toast({
-        title: "Error",
-        description: "Failed to open report",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const updateReportStatus = async (report: any, status: 'approved' | 'rejected') => {
     try {
       const { data: userData } = await supabase.auth.getUser();
       if (!userData.user) throw new Error('Not authenticated');
@@ -93,7 +64,7 @@ export default function ExpertDashboard() {
           comments: comments,
           updated_at: new Date().toISOString()
         })
-        .eq('id', report.id);
+        .eq('id', selectedReport.id);
 
       if (error) throw error;
 
@@ -120,102 +91,21 @@ export default function ExpertDashboard() {
       <h1 className="text-2xl font-bold mb-8">Medical Expert Dashboard</h1>
 
       <div className="bg-white rounded-lg shadow">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Patient Name</TableHead>
-              <TableHead>Date Submitted</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {reports.map((report) => (
-              <TableRow key={report.id}>
-                <TableCell>{report.profiles?.full_name || 'Unknown'}</TableCell>
-                <TableCell>
-                  {new Date(report.created_at).toLocaleDateString()}
-                </TableCell>
-                <TableCell>
-                  <span className={`px-2 py-1 rounded-full text-sm ${
-                    report.status === 'approved' ? 'bg-green-100 text-green-800' :
-                    report.status === 'rejected' ? 'bg-red-100 text-red-800' :
-                    'bg-yellow-100 text-yellow-800'
-                  }`}>
-                    {report.status}
-                  </span>
-                </TableCell>
-                <TableCell>
-                  <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => viewReport(report)}
-                    >
-                      <Eye className="w-4 h-4" />
-                    </Button>
-                    {report.status === 'pending_review' && (
-                      <>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="text-green-600"
-                          onClick={() => setSelectedReport(report)}
-                        >
-                          <CheckCircle className="w-4 h-4" />
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="text-red-600"
-                          onClick={() => setSelectedReport(report)}
-                        >
-                          <XCircle className="w-4 h-4" />
-                        </Button>
-                      </>
-                    )}
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <ReportTable
+          reports={reports}
+          onReviewReport={setSelectedReport}
+          onRefetch={fetchReports}
+        />
       </div>
 
-      <Dialog open={!!selectedReport} onOpenChange={() => setSelectedReport(null)}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Review Report</DialogTitle>
-            <DialogDescription>
-              Add your comments and approve or reject the report.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="py-4">
-            <Textarea
-              placeholder="Enter your comments here..."
-              value={comments}
-              onChange={(e) => setComments(e.target.value)}
-              className="min-h-[100px]"
-            />
-          </div>
-          <DialogFooter className="flex gap-2">
-            <Button
-              variant="outline"
-              onClick={() => updateReportStatus(selectedReport, 'approved')}
-              className="flex-1"
-            >
-              Approve
-            </Button>
-            <Button
-              variant="destructive"
-              onClick={() => updateReportStatus(selectedReport, 'rejected')}
-              className="flex-1"
-            >
-              Reject
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <ReviewDialog
+        isOpen={!!selectedReport}
+        onClose={() => setSelectedReport(null)}
+        onApprove={() => updateReportStatus('approved')}
+        onReject={() => updateReportStatus('rejected')}
+        comments={comments}
+        onCommentsChange={setComments}
+      />
     </div>
   );
 }
