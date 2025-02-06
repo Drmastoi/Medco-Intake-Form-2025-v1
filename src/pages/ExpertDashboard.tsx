@@ -33,7 +33,7 @@ export default function ExpertDashboard() {
           created_at,
           status,
           storage_path,
-          profiles:patient_id (
+          profiles!reports_patient_id_fkey (
             full_name
           )
         `)
