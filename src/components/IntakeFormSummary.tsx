@@ -59,52 +59,6 @@ Medical Assessment Team
     }
   };
 
-  const sendToClaimant = async (pdfUrl: string) => {
-    try {
-      const templateParams = {
-        to_name: formData.fullName || "Valued Client",
-        to_email: formData.emailId || formData.email,
-        message: `
-Dear ${formData.fullName || "Valued Client"},
-
-Thank you for completing your personal injury assessment questionnaire. Please find attached your MEDCO medical report for your review.
-
-The report contains a comprehensive assessment based on the information you provided. Please review it carefully and let us know if you have any questions or if any clarification is needed.
-
-You can access your report using the link below:
-${pdfUrl}
-
-If you need any assistance or have questions about the report, please don't hesitate to contact us.
-
-Best regards,
-Your Medical Assessment Team
-        `,
-        pdf_url: pdfUrl,
-      };
-
-      const response = await emailjs.send(
-        "service_by7xf4t",
-        "template_5l8vu23",
-        templateParams,
-        "YnnsjqOayi-IRBxy_"
-      );
-      
-      console.log('EmailJS Response:', response);
-
-      toast({
-        title: "Report Sent",
-        description: "The MEDCO medical report has been sent to your email.",
-      });
-    } catch (error) {
-      console.error('EmailJS Error:', error);
-      toast({
-        title: "Error",
-        description: "Failed to send the report. Please try again.",
-        variant: "destructive",
-      });
-    }
-  };
-
   return (
     <div className="space-y-6">
       <div className="bg-white p-6 rounded-lg shadow-sm border">
@@ -153,24 +107,10 @@ Your Medical Assessment Team
                   disabled={loading}
                   onClick={() => {
                     if (url) {
-                      sendToClaimant(url);
-                    }
-                  }}
-                  className="flex items-center gap-2"
-                >
-                  <Send className="w-4 h-4" />
-                  {loading ? "Generating..." : "Send to Claimant"}
-                </Button>
-
-                <Button 
-                  disabled={loading}
-                  onClick={() => {
-                    if (url) {
                       sendToMedicalExpert(url);
                     }
                   }}
-                  variant="secondary"
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600"
                 >
                   <Send className="w-4 h-4" />
                   {loading ? "Generating..." : "Send to Medical Expert"}

@@ -232,15 +232,13 @@ export default function Index() {
               Previous
             </Button>
             
-            {currentSection < totalSections - 1 ? (
+            {currentSection < totalSections - 1 && (
               <Button 
                 type="button"
                 onClick={() => setCurrentSection(prev => Math.min(totalSections - 1, prev + 1))}
               >
                 Next
               </Button>
-            ) : (
-              <Button type="submit">Submit</Button>
             )}
           </div>
         </form>
