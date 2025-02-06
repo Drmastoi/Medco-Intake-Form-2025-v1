@@ -10,7 +10,7 @@ interface IntakeFormNavigationProps {
 
 export function IntakeFormNavigation({ currentSection, onTabChange, tabNames }: IntakeFormNavigationProps) {
   return (
-    <div className="overflow-x-auto no-scrollbar -mx-4 px-4 mb-6">
+    <div className="overflow-x-auto no-scrollbar -mx-3 px-3 mb-4">
       <Tabs.Root value={currentSection.toString()} onValueChange={onTabChange}>
         <Tabs.List className="inline-flex min-w-full space-x-1 border-b border-gray-200 pb-1 no-scrollbar">
           {tabNames.map((name, index) => (
@@ -18,7 +18,7 @@ export function IntakeFormNavigation({ currentSection, onTabChange, tabNames }: 
               key={index}
               value={index.toString()}
               className={cn(
-                "px-3 py-2 text-sm whitespace-nowrap rounded-t-lg transition-colors",
+                "px-2 py-1.5 text-xs whitespace-normal rounded-t-lg transition-colors",
                 "hover:bg-gray-100",
                 "data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
               )}
