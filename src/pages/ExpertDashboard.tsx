@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -6,7 +7,7 @@ import { ReviewDialog } from "@/components/dashboard/ReviewDialog";
 
 interface Report {
   id: string;
-  profiles?: { full_name: string } | null;
+  profiles?: { full_name: string | null } | null;
   created_at: string;
   status: string;
   storage_path: string;
@@ -28,7 +29,10 @@ export default function ExpertDashboard() {
       const { data: reportsData, error } = await supabase
         .from('reports')
         .select(`
-          *,
+          id,
+          created_at,
+          status,
+          storage_path,
           profiles:patient_id (
             full_name
           )
