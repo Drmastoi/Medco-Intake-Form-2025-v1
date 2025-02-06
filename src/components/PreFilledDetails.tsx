@@ -224,6 +224,3 @@ Your Medical Assessment Team
     </div>
   );
 }
-```
-
-Note: The PreFilledDetails.tsx file is getting quite long. After implementing these changes, you might want to consider refactoring it into smaller components.
