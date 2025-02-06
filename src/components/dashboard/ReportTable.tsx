@@ -1,3 +1,4 @@
+
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Eye, CheckCircle, XCircle } from "lucide-react";
@@ -6,7 +7,7 @@ import { useToast } from "@/components/ui/use-toast";
 
 interface Report {
   id: string;
-  profiles?: { full_name: string } | null;
+  profiles?: { full_name: string | null } | null;
   created_at: string;
   status: string;
   storage_path: string;
@@ -56,7 +57,7 @@ export function ReportTable({ reports, onReviewReport, onRefetch }: ReportTableP
       <TableBody>
         {reports.map((report) => (
           <TableRow key={report.id}>
-            <TableCell>{report.profiles?.full_name || 'Unknown'}</TableCell>
+            <TableCell>{report.profiles?.full_name || 'Anonymous'}</TableCell>
             <TableCell>
               {new Date(report.created_at).toLocaleDateString()}
             </TableCell>
