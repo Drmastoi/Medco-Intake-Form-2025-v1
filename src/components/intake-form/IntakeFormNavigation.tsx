@@ -10,7 +10,7 @@ interface IntakeFormNavigationProps {
 
 export function IntakeFormNavigation({ currentSection, onTabChange, tabNames }: IntakeFormNavigationProps) {
   return (
-    <div className="overflow-x-auto scrollbar-none -mx-4 px-4 mb-6">
+    <div className="overflow-x-auto no-scrollbar -mx-4 px-4 mb-6">
       <Tabs.Root value={currentSection.toString()} onValueChange={onTabChange}>
         <Tabs.List className="inline-flex min-w-full space-x-1 border-b border-gray-200 pb-1 no-scrollbar">
           {tabNames.map((name, index) => (
