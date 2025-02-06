@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Form } from "@/components/ui/form";
 import { PreFilledDetails } from "@/components/PreFilledDetails";
-import { IntakeFormSection1 } from "@/components/IntakeFormSection1";
 import { IntakeFormSection2 } from "@/components/IntakeFormSection2";
 import { IntakeFormSection3 } from "@/components/IntakeFormSection3";
 import { IntakeFormSection4 } from "@/components/IntakeFormSection4";
@@ -41,7 +40,7 @@ const formSchema = z.object({
   address: z.string(),
   occupation: z.string(),
   workType: z.enum(["1", "2"]),
-  livingWith: z.enum(["1", "2", "3", "4", "5"]),
+  livingWith: z.enum(["1", "2", "3", "4", "5", "6"]),
   childrenCount: z.string(),
   
   // Section 2 - Accident Information
@@ -84,7 +83,6 @@ export default function Index() {
   const totalSections = 13;
 
   const tabNames = [
-    "Pre-filled Details",
     "Personal Info",
     "Accident Details",
     "Neck Pain",
@@ -181,7 +179,7 @@ export default function Index() {
     <div className="container mx-auto py-10">
       <h1 className="text-2xl font-bold mb-8">Personal Injury Assessment Questionnaire</h1>
 
-      {currentSection === 1 && (
+      {currentSection === 0 && (
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 text-sm">
           <h2 className="text-base font-semibold text-blue-900 mb-2">Quick Guide</h2>
           <ul className="space-y-1 text-blue-800">
@@ -195,7 +193,7 @@ export default function Index() {
       )}
       
       <Tabs.Root value={currentSection.toString()} onValueChange={handleTabChange} className="mb-6">
-        <Tabs.List className="grid grid-cols-4 md:grid-cols-7 lg:grid-cols-14 h-auto gap-1 max-w-[90%] mx-auto">
+        <Tabs.List className="grid grid-cols-4 md:grid-cols-7 lg:grid-cols-13 h-auto gap-1 max-w-[90%] mx-auto">
           {tabNames.map((name, index) => (
             <Tabs.Trigger
               key={index}
@@ -211,19 +209,18 @@ export default function Index() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           {currentSection === 0 && <PreFilledDetails form={form} />}
-          {currentSection === 1 && <IntakeFormSection1 form={form} />}
-          {currentSection === 2 && <IntakeFormSection2 form={form} />}
-          {currentSection === 3 && <IntakeFormSection3 form={form} />}
-          {currentSection === 4 && <IntakeFormSection4 form={form} />}
-          {currentSection === 5 && <IntakeFormSection5 form={form} />}
-          {currentSection === 6 && <IntakeFormSection6 form={form} />}
-          {currentSection === 7 && <IntakeFormSection7 form={form} />}
-          {currentSection === 8 && <IntakeFormSection8 form={form} />}
-          {currentSection === 9 && <IntakeFormSection9 form={form} />}
-          {currentSection === 10 && <IntakeFormSection10 form={form} />}
-          {currentSection === 11 && <IntakeFormSection11 form={form} />}
-          {currentSection === 12 && <IntakeFormSection12 form={form} />}
-          {currentSection === 13 && <IntakeFormSummary form={form} />}
+          {currentSection === 1 && <IntakeFormSection2 form={form} />}
+          {currentSection === 2 && <IntakeFormSection3 form={form} />}
+          {currentSection === 3 && <IntakeFormSection4 form={form} />}
+          {currentSection === 4 && <IntakeFormSection5 form={form} />}
+          {currentSection === 5 && <IntakeFormSection6 form={form} />}
+          {currentSection === 6 && <IntakeFormSection7 form={form} />}
+          {currentSection === 7 && <IntakeFormSection8 form={form} />}
+          {currentSection === 8 && <IntakeFormSection9 form={form} />}
+          {currentSection === 9 && <IntakeFormSection10 form={form} />}
+          {currentSection === 10 && <IntakeFormSection11 form={form} />}
+          {currentSection === 11 && <IntakeFormSection12 form={form} />}
+          {currentSection === 12 && <IntakeFormSummary form={form} />}
           
           <div className="flex justify-between">
             <Button 
@@ -235,10 +232,10 @@ export default function Index() {
               Previous
             </Button>
             
-            {currentSection < totalSections ? (
+            {currentSection < totalSections - 1 ? (
               <Button 
                 type="button"
-                onClick={() => setCurrentSection(prev => Math.min(totalSections, prev + 1))}
+                onClick={() => setCurrentSection(prev => Math.min(totalSections - 1, prev + 1))}
               >
                 Next
               </Button>
