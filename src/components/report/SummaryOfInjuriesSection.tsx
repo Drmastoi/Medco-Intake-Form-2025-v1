@@ -1,4 +1,3 @@
-
 import { Text, View } from '@react-pdf/renderer';
 import { styles } from './reportStyles';
 import { InjuriesTable } from './InjuriesTable';
@@ -20,7 +19,7 @@ export const SummaryOfInjuriesSection = ({ formData }: { formData: any }) => {
         />
 
         {nonWhiplashInjuries.length > 0 && (
-          <View style={{ marginTop: 10 }}>
+          <View style={{ marginTop: 15 }}>
             <InjuriesTable 
               title="Non-Whiplash Injuries:"
               injuries={nonWhiplashInjuries}
