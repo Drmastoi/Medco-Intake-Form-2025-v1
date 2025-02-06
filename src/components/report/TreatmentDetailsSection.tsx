@@ -36,13 +36,27 @@ export const TreatmentDetailsSection = ({ formData }: { formData: any }) => (
             `The claimant visited their GP on ${formData.gpDate || "the specified date"}.` :
             "The claimant did not visit their GP after the accident."}
         </Text>
-      </View>
-      <View style={styles.column}>
         <Text style={styles.text}>
           {formData.physiotherapy === "1" ? 
             `The claimant received physiotherapy treatment. Number of sessions: ${formData.physiotherapySessions || "not specified"}.` :
             "The claimant did not receive physiotherapy treatment."}
         </Text>
+      </View>
+      <View style={styles.column}>
+        <Text style={styles.text}>
+          {formData.bruising === "1" ? 
+            `The claimant experienced bruising following the accident. ${
+              formData.bruisingLocation ? `Location: ${formData.bruisingLocation}.` : ''
+            } ${
+              formData.bruisingDuration ? `Duration: ${formData.bruisingDuration} days.` : ''
+            }` :
+            "The claimant did not experience any bruising from the accident."}
+        </Text>
+        {formData.bruisingNotes && (
+          <Text style={styles.text}>
+            Additional notes on bruising: {formData.bruisingNotes}
+          </Text>
+        )}
       </View>
     </View>
   </View>
