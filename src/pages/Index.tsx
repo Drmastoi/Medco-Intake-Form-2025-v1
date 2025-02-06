@@ -1,3 +1,4 @@
+
 import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -263,9 +264,9 @@ export default function Index() {
         </div>
       )}
       
-      <div className="overflow-x-auto -mx-4 px-4 mb-6 scrollbar-none">
+      <div className="overflow-x-auto scrollbar-none -mx-4 px-4 mb-6">
         <Tabs.Root value={currentSection.toString()} onValueChange={handleTabChange}>
-          <Tabs.List className="inline-flex min-w-full space-x-1 border-b border-gray-200 pb-1">
+          <Tabs.List className="inline-flex min-w-full space-x-1 border-b border-gray-200 pb-1 no-scrollbar">
             {tabNames.map((name, index) => (
               <Tabs.Trigger
                 key={index}
