@@ -60,13 +60,16 @@ export default function ExpertDashboard() {
 
   const viewReport = async (report: any) => {
     try {
-      const { data: { publicUrl }, error } = await supabase
+      const { data } = await supabase
         .storage
         .from('medical_reports')
         .getPublicUrl(report.storage_path);
 
-      if (error) throw error;
-      window.open(publicUrl, '_blank');
+      if (data?.publicUrl) {
+        window.open(data.publicUrl, '_blank');
+      } else {
+        throw new Error('Failed to get public URL');
+      }
     } catch (error) {
       console.error('Error viewing report:', error);
       toast({
