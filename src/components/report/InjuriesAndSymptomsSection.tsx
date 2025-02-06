@@ -1,3 +1,4 @@
+
 import { Text, View } from '@react-pdf/renderer';
 import { styles } from './reportStyles';
 
@@ -52,6 +53,7 @@ const getImpactMechanism = (vehiclePosition: string) => {
 
 const renderInjurySection = (
   title: string,
+  injuryNumber: number,
   {
     onset,
     initialSeverity,
@@ -77,7 +79,7 @@ const renderInjurySection = (
   }
 ) => (
   <View style={styles.section}>
-    <Text style={styles.mainTitle}>{title}</Text>
+    <Text style={styles.mainTitle}>{injuryNumber}. {title}</Text>
     
     <EntryGroup label="Onset" value={onset} />
     <EntryGroup label="Initial Severity" value={initialSeverity} />
@@ -111,10 +113,13 @@ const renderInjurySection = (
 );
 
 export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
+  let injuryCount = 0;
+
   return (
     <View>
       {formData.neckPain === "1" && renderInjurySection(
         "NECK PAIN",
+        ++injuryCount,
         {
           onset: getOnsetText(formData.neckPainStart),
           initialSeverity: getSeverityText(formData.neckPainInitialSeverity),
@@ -135,6 +140,7 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
 
       {formData.shoulderPain === "1" && renderInjurySection(
         "SHOULDER PAIN",
+        ++injuryCount,
         {
           onset: getOnsetText(formData.shoulderPainStart),
           initialSeverity: getSeverityText(formData.shoulderPainInitialSeverity),
@@ -155,6 +161,7 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
 
       {formData.backPain === "1" && renderInjurySection(
         "BACK PAIN",
+        ++injuryCount,
         {
           onset: getOnsetText(formData.backPainStart),
           initialSeverity: getSeverityText(formData.backPainInitialSeverity),
@@ -175,6 +182,7 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
 
       {formData.headache === "1" && renderInjurySection(
         "HEADACHE",
+        ++injuryCount,
         {
           onset: getOnsetText(formData.headacheStart),
           initialSeverity: getSeverityText(formData.headacheInitialSeverity),
@@ -195,6 +203,7 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
 
       {formData.travelAnxiety === "1" && renderInjurySection(
         "TRAVEL ANXIETY",
+        ++injuryCount,
         {
           onset: getOnsetText(formData.anxietyStart),
           initialSeverity: getSeverityText(formData.anxietyInitialSeverity),
