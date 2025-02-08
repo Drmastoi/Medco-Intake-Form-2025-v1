@@ -15,6 +15,7 @@ interface SendReportRequest {
   pdfBase64: string;
   patientName: string;
   referenceNumber: string;
+  isClaimantCopy?: boolean;
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -24,7 +25,7 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { to, pdfBase64, patientName, referenceNumber }: SendReportRequest = await req.json();
+    const { to, pdfBase64, patientName, referenceNumber, isClaimantCopy }: SendReportRequest = await req.json();
 
     console.log("Sending report email to:", to);
 
@@ -33,14 +34,21 @@ const handler = async (req: Request): Promise<Response> => {
       to: [to],
       subject: `MEDCO Report - Reference: ${referenceNumber}`,
       html: `
-        <h1>MEDCO Medical Report</h1>
-        <p>Please find attached the medical report for patient: ${patientName}</p>
+        <h1>MEDCO ${isClaimantCopy ? 'Summary' : 'Medical'} Report</h1>
+        <p>Please find attached the ${isClaimantCopy ? 'summary' : 'medical'} report for patient: ${patientName}</p>
         <p>Reference Number: ${referenceNumber}</p>
+        ${isClaimantCopy ? `
+        <p>A full copy of your medical report has been sent to our medical expert for review.</p>
+        <p>Please save your reference number for future correspondence.</p>
+        ` : `
+        <p>This is a full medical report for your review.</p>
+        <p>Please assess and provide your expert opinion on the case.</p>
+        `}
         <p>Best regards,<br>Medical Assessment Team</p>
       `,
       attachments: [
         {
-          filename: `MEDCO_Report_${patientName}_${referenceNumber}.pdf`,
+          filename: `MEDCO_${isClaimantCopy ? 'Summary' : 'Medical'}_Report_${patientName}_${referenceNumber}.pdf`,
           content: pdfBase64,
         },
       ],

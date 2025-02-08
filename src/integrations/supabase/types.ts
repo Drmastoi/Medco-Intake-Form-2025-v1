@@ -9,6 +9,38 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      claimant_signatures: {
+        Row: {
+          claimant_name: string
+          confirmed: boolean | null
+          id: string
+          report_id: string | null
+          signature_date: string | null
+        }
+        Insert: {
+          claimant_name: string
+          confirmed?: boolean | null
+          id?: string
+          report_id?: string | null
+          signature_date?: string | null
+        }
+        Update: {
+          claimant_name?: string
+          confirmed?: boolean | null
+          id?: string
+          report_id?: string | null
+          signature_date?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "claimant_signatures_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       form_submissions: {
         Row: {
           accident_date: string | null
@@ -173,36 +205,42 @@ export type Database = {
       }
       reports: {
         Row: {
+          claimant_email: string | null
           comments: string | null
           created_at: string
           id: string
           original_filename: string
           patient_id: string | null
           reviewed_by: string | null
+          signature_status: string | null
           status: string | null
           storage_path: string
           updated_at: string
           version: number | null
         }
         Insert: {
+          claimant_email?: string | null
           comments?: string | null
           created_at?: string
           id?: string
           original_filename: string
           patient_id?: string | null
           reviewed_by?: string | null
+          signature_status?: string | null
           status?: string | null
           storage_path: string
           updated_at?: string
           version?: number | null
         }
         Update: {
+          claimant_email?: string | null
           comments?: string | null
           created_at?: string
           id?: string
           original_filename?: string
           patient_id?: string | null
           reviewed_by?: string | null
+          signature_status?: string | null
           status?: string | null
           storage_path?: string
           updated_at?: string

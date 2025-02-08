@@ -1,13 +1,8 @@
 
 import { Form } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
-import { BlobProvider } from '@react-pdf/renderer';
-import emailjs from '@emailjs/browser';
 import { useToast } from "@/components/ui/use-toast";
-import { MedcoReport } from './report/MedcoReport';
-import { useEffect, useState } from "react";
-import { Eye, Send, Download, Star } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { useState } from "react";
+import { ClaimantSummaryReport } from './ClaimantSummaryReport';
 import {
   Dialog,
   DialogContent,
@@ -15,217 +10,37 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Star } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export function IntakeFormSummary({ form }: { form: any }) {
   const { toast } = useToast();
-  const formData = form.getValues();
   const [showRatingDialog, setShowRatingDialog] = useState(false);
   const [rating, setRating] = useState(0);
-  const [isUploading, setIsUploading] = useState(false);
-  const [referenceNumber, setReferenceNumber] = useState("");
-  const [recipientEmail, setRecipientEmail] = useState("");
 
-  useEffect(() => {
-    emailjs.init("YnnsjqOayi-IRBxy_");
-  }, []);
-
-  const uploadToStorage = async (pdfBlob: Blob, fileName: string) => {
-    try {
-      const filePath = `anonymous/${fileName}`;
-      
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from('medical_reports')
-        .upload(filePath, pdfBlob, {
-          contentType: 'application/pdf',
-          upsert: false
-        });
-
-      if (uploadError) throw uploadError;
-
-      // Generate a unique reference number
-      const ref = `REF-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-      setReferenceNumber(ref);
-
-      const { error: dbError } = await supabase
-        .from('reports')
-        .insert({
-          original_filename: fileName,
-          storage_path: filePath,
-          version: 1,
-          status: 'pending_review',
-          patient_id: null
-        });
-
-      if (dbError) throw dbError;
-
-      return filePath;
-    } catch (error) {
-      console.error('Upload error:', error);
-      throw error;
-    }
-  };
-
-  const sendToMedicalExpert = async (pdfUrl: string) => {
-    try {
-      setIsUploading(true);
-      const response = await fetch(pdfUrl);
-      const pdfBlob = await response.blob();
-      const fileName = `MEDCO_Report_${formData.fullName || 'Anonymous'}_${new Date().toISOString()}.pdf`;
-      
-      await uploadToStorage(pdfBlob, fileName);
-
-      // Convert PDF blob to base64
-      const reader = new FileReader();
-      reader.readAsDataURL(pdfBlob);
-      reader.onloadend = async () => {
-        const base64data = reader.result?.toString().split(',')[1];
-        
-        // Send email with PDF attachment
-        const { error } = await supabase.functions.invoke('send-report', {
-          body: {
-            to: recipientEmail,
-            pdfBase64: base64data,
-            patientName: formData.fullName || 'Anonymous',
-            referenceNumber
-          }
-        });
-
-        if (error) throw error;
-      };
-
-      const templateParams = {
-        to_name: "Medical Expert",
-        to_email: "drawais@gmail.com",
-        message: `
-Dear Medical Expert,
-
-A new MEDCO medical report has been generated for review. This report is for patient ${formData.fullName || "Anonymous"}.
-Reference Number: ${referenceNumber}
-
-Please review the report in the medical expert dashboard. If you need any additional information or clarification, please don't hesitate to contact us.
-
-Best regards,
-Medical Assessment Team
-        `,
-      };
-
-      await emailjs.send(
-        "service_by7xf4t",
-        "template_5l8vu23",
-        templateParams,
-        "YnnsjqOayi-IRBxy_"
-      );
-      
-      toast({
-        title: "Report Submitted Successfully",
-        description: `Your report has been submitted and sent to ${recipientEmail}. Please save your reference number: ${referenceNumber}`,
-      });
-
-      setShowRatingDialog(true);
-    } catch (error) {
-      console.error('Error:', error);
-      toast({
-        title: "Error",
-        description: "Failed to submit the report. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsUploading(false);
-    }
+  const handleSubmitComplete = () => {
+    setShowRatingDialog(true);
   };
 
   const handleRatingSubmit = () => {
     toast({
       title: "Thank you for your feedback!",
-      description: `Your rating has been submitted successfully. Reference Number: ${referenceNumber}`,
+      description: "Your rating has been submitted successfully.",
     });
     setShowRatingDialog(false);
   };
 
   return (
     <div className="space-y-6">
-      <div className="bg-white p-6 rounded-lg shadow-sm border">
-        <h2 className="text-2xl font-semibold mb-4">MEDCO Report Summary</h2>
-        
-        <div className="prose max-w-none mb-6">
-          <p className="text-sm text-muted-foreground">
-            This report follows the MEDCO format requirements. You can preview, download, 
-            or send the report using the options below.
-          </p>
-        </div>
-
-        <div className="mb-6">
-          <Label htmlFor="recipientEmail">Your Email Address</Label>
-          <Input
-            id="recipientEmail"
-            type="email"
-            placeholder="Enter your email address"
-            value={recipientEmail}
-            onChange={(e) => setRecipientEmail(e.target.value)}
-            className="max-w-md"
-          />
-        </div>
-
-        <div className="flex flex-wrap gap-4">
-          <BlobProvider document={<MedcoReport formData={formData} />}>
-            {({ url, loading }) => (
-              <>
-                <Button 
-                  disabled={loading}
-                  onClick={() => {
-                    if (url) {
-                      window.open(url, '_blank');
-                    }
-                  }}
-                  variant="outline"
-                  className="flex items-center gap-2"
-                >
-                  <Eye className="w-4 h-4" />
-                  {loading ? "Loading Preview..." : "Preview Report"}
-                </Button>
-
-                <Button 
-                  disabled={loading}
-                  onClick={() => {
-                    if (url) {
-                      window.open(url, '_blank');
-                    }
-                  }}
-                  variant="outline"
-                  className="flex items-center gap-2"
-                >
-                  <Download className="w-4 h-4" />
-                  {loading ? "Generating..." : "Download Report"}
-                </Button>
-
-                <Button 
-                  disabled={loading || isUploading || !recipientEmail}
-                  onClick={() => {
-                    if (url) {
-                      sendToMedicalExpert(url);
-                    }
-                  }}
-                  className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600"
-                >
-                  <Send className="w-4 h-4" />
-                  {isUploading ? "Uploading..." : loading ? "Generating..." : "Submit for Review"}
-                </Button>
-              </>
-            )}
-          </BlobProvider>
-        </div>
-      </div>
+      <ClaimantSummaryReport form={form} onSubmit={handleSubmitComplete} />
 
       <Dialog open={showRatingDialog} onOpenChange={setShowRatingDialog}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>Thank You for Completing Your Assessment</DialogTitle>
             <DialogDescription className="space-y-4">
-              <p>Your report has been successfully submitted to our medical expert for review.</p>
-              <p className="font-semibold text-primary">Your Reference Number: {referenceNumber}</p>
-              <p>Please save this reference number for future correspondence.</p>
+              <p>Your report has been successfully submitted for review.</p>
+              <p>A summary copy has been sent to your email address, and a full medical report has been sent to our expert for review.</p>
               <div className="mt-4">
                 <p className="mb-2">How would you rate your experience?</p>
                 <div className="flex gap-2 justify-center">
