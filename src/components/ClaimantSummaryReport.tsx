@@ -56,7 +56,7 @@ export function ClaimantSummaryReport({ form, onSubmit }: { form: any; onSubmit:
       // Generate reference number
       const referenceNumber = `REF-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
-      // Create report record
+      // Create report record without checking for authentication
       const { data: reportData, error: reportError } = await supabase
         .from('reports')
         .insert({
@@ -69,9 +69,12 @@ export function ClaimantSummaryReport({ form, onSubmit }: { form: any; onSubmit:
         .select()
         .single();
 
-      if (reportError) throw reportError;
+      if (reportError) {
+        console.error('Report creation error:', reportError);
+        throw new Error('Failed to create report');
+      }
 
-      // Add signature record
+      // Add signature record without checking for authentication
       const { error: signatureError } = await supabase
         .from('claimant_signatures')
         .insert({
@@ -80,7 +83,10 @@ export function ClaimantSummaryReport({ form, onSubmit }: { form: any; onSubmit:
           confirmed: true
         });
 
-      if (signatureError) throw signatureError;
+      if (signatureError) {
+        console.error('Signature creation error:', signatureError);
+        throw new Error('Failed to save signature');
+      }
 
       // Send emails with PDFs
       const { error: emailError } = await supabase.functions.invoke('send-report', {
@@ -93,7 +99,10 @@ export function ClaimantSummaryReport({ form, onSubmit }: { form: any; onSubmit:
         }
       });
 
-      if (emailError) throw emailError;
+      if (emailError) {
+        console.error('Email error:', emailError);
+        throw new Error('Failed to send email to claimant');
+      }
 
       // Send full report to doctor
       const { error: doctorEmailError } = await supabase.functions.invoke('send-report', {
@@ -106,7 +115,10 @@ export function ClaimantSummaryReport({ form, onSubmit }: { form: any; onSubmit:
         }
       });
 
-      if (doctorEmailError) throw doctorEmailError;
+      if (doctorEmailError) {
+        console.error('Doctor email error:', doctorEmailError);
+        throw new Error('Failed to send email to doctor');
+      }
 
       toast({
         title: "Report Submitted Successfully",
