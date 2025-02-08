@@ -1,5 +1,5 @@
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,7 +13,9 @@ export function ClaimantSummaryReport({ form, onSubmit }: { form: any; onSubmit:
   const [signature, setSignature] = useState("");
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const formData = form.getValues();
+  
+  // Memoize form data to prevent regeneration on every render
+  const formData = useMemo(() => form.getValues(), [form]);
 
   const handleSubmit = useCallback(async (pdfUrl: string, fullReportUrl: string) => {
     if (!signature.trim()) {
@@ -124,8 +126,9 @@ export function ClaimantSummaryReport({ form, onSubmit }: { form: any; onSubmit:
     }
   }, [signature, formData, toast, onSubmit]);
 
-  const ClaimantPDFDocument = useCallback(() => <ClaimantReportPDF formData={formData} />, [formData]);
-  const MedcoPDFDocument = useCallback(() => <MedcoReport formData={formData} />, [formData]);
+  // Memoize PDF components to prevent recreation on every render
+  const ClaimantPDFDocument = useMemo(() => <ClaimantReportPDF formData={formData} />, [formData]);
+  const MedcoPDFDocument = useMemo(() => <MedcoReport formData={formData} />, [formData]);
 
   return (
     <div className="space-y-6">
@@ -139,9 +142,9 @@ export function ClaimantSummaryReport({ form, onSubmit }: { form: any; onSubmit:
         </div>
 
         <div className="space-y-6">
-          <BlobProvider document={<ClaimantPDFDocument />}>
+          <BlobProvider document={ClaimantPDFDocument}>
             {({ url: claimantUrl, loading: claimantLoading }) => (
-              <BlobProvider document={<MedcoPDFDocument />}>
+              <BlobProvider document={MedcoPDFDocument}>
                 {({ url: fullUrl, loading: fullLoading }) => (
                   <>
                     <Button 
