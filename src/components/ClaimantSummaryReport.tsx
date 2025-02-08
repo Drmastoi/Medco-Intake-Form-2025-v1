@@ -1,142 +1,19 @@
 
-import { useState, useCallback, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import { BlobProvider } from '@react-pdf/renderer';
-import { supabase } from "@/integrations/supabase/client";
 import { MedcoReport } from './report/ReportPDF';
 import { ClaimantReportPDF } from './report/ClaimantReportPDF';
+import { SignatureInput } from './report/SignatureInput';
+import { useReportSubmission } from '@/hooks/useReportSubmission';
 
 export function ClaimantSummaryReport({ form, onSubmit }: { form: any; onSubmit: () => void }) {
   const [signature, setSignature] = useState("");
-  const { toast } = useToast();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { isSubmitting, handleSubmit } = useReportSubmission(onSubmit);
   
   // Memoize form data to prevent regeneration on every render
   const formData = useMemo(() => form.getValues(), [form]);
-
-  const handleSubmit = useCallback(async (pdfUrl: string, fullReportUrl: string) => {
-    if (!signature.trim()) {
-      toast({
-        title: "Signature Required",
-        description: "Please enter your name as a signature to confirm the report.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsSubmitting(true);
-    try {
-      // Convert PDFs to blobs
-      const [pdfResponse, fullPdfResponse] = await Promise.all([
-        fetch(pdfUrl),
-        fetch(fullReportUrl)
-      ]);
-      const [pdfBlob, fullPdfBlob] = await Promise.all([
-        pdfResponse.blob(),
-        fullPdfResponse.blob()
-      ]);
-
-      // Convert blobs to base64
-      const [pdfBase64, fullPdfBase64] = await Promise.all([
-        new Promise((resolve) => {
-          const reader = new FileReader();
-          reader.onloadend = () => resolve(reader.result?.toString().split(',')[1]);
-          reader.readAsDataURL(pdfBlob);
-        }),
-        new Promise((resolve) => {
-          const reader = new FileReader();
-          reader.onloadend = () => resolve(reader.result?.toString().split(',')[1]);
-          reader.readAsDataURL(fullPdfBlob);
-        })
-      ]);
-
-      // Generate reference number
-      const referenceNumber = `REF-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-
-      // Create report record without checking for authentication
-      const { data: reportData, error: reportError } = await supabase
-        .from('reports')
-        .insert({
-          original_filename: `MEDCO_Report_${formData.fullName || 'Anonymous'}_${referenceNumber}.pdf`,
-          storage_path: `anonymous/${referenceNumber}`,
-          status: 'pending_review',
-          signature_status: 'signed',
-          claimant_email: formData.email
-        })
-        .select()
-        .single();
-
-      if (reportError) {
-        console.error('Report creation error:', reportError);
-        throw new Error('Failed to create report');
-      }
-
-      // Add signature record without checking for authentication
-      const { error: signatureError } = await supabase
-        .from('claimant_signatures')
-        .insert({
-          report_id: reportData.id,
-          claimant_name: signature,
-          confirmed: true
-        });
-
-      if (signatureError) {
-        console.error('Signature creation error:', signatureError);
-        throw new Error('Failed to save signature');
-      }
-
-      // Send emails with PDFs
-      const { error: emailError } = await supabase.functions.invoke('send-report', {
-        body: {
-          to: formData.email,
-          pdfBase64: pdfBase64,
-          patientName: formData.fullName || 'Anonymous',
-          referenceNumber,
-          isClaimantCopy: true
-        }
-      });
-
-      if (emailError) {
-        console.error('Email error:', emailError);
-        throw new Error('Failed to send email to claimant');
-      }
-
-      // Send full report to doctor
-      const { error: doctorEmailError } = await supabase.functions.invoke('send-report', {
-        body: {
-          to: 'drawais@gmail.com',
-          pdfBase64: fullPdfBase64,
-          patientName: formData.fullName || 'Anonymous',
-          referenceNumber,
-          isClaimantCopy: false
-        }
-      });
-
-      if (doctorEmailError) {
-        console.error('Doctor email error:', doctorEmailError);
-        throw new Error('Failed to send email to doctor');
-      }
-
-      toast({
-        title: "Report Submitted Successfully",
-        description: "Your report has been submitted and sent to the specified email addresses.",
-      });
-
-      onSubmit();
-    } catch (error) {
-      console.error('Error:', error);
-      toast({
-        title: "Error",
-        description: "Failed to submit the report. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  }, [signature, formData, toast, onSubmit]);
 
   // Memoize PDF components to prevent recreation on every render
   const ClaimantPDFDocument = useMemo(() => <ClaimantReportPDF formData={formData} />, [formData]);
@@ -177,21 +54,15 @@ export function ClaimantSummaryReport({ form, onSubmit }: { form: any; onSubmit:
                           I confirm I have entered all information about my accident and injuries to the best of my knowledge.
                         </p>
 
-                        <div className="space-y-2">
-                          <Label htmlFor="signature">Sign by typing your full name *</Label>
-                          <Input
-                            id="signature"
-                            value={signature}
-                            onChange={(e) => setSignature(e.target.value)}
-                            placeholder="Type your full name here"
-                            required
-                          />
-                        </div>
+                        <SignatureInput 
+                          signature={signature}
+                          setSignature={setSignature}
+                        />
 
                         <Button
                           onClick={() => {
                             if (claimantUrl && fullUrl) {
-                              handleSubmit(claimantUrl, fullUrl);
+                              handleSubmit(signature, formData, claimantUrl, fullUrl);
                             }
                           }}
                           disabled={isSubmitting || claimantLoading || fullLoading || !signature.trim()}
