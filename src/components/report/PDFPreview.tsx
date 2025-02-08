@@ -1,4 +1,5 @@
 
+import { useMemo } from 'react';
 import { BlobProvider } from '@react-pdf/renderer';
 import { Button } from "@/components/ui/button";
 import { SignatureInput } from './SignatureInput';
@@ -20,11 +21,15 @@ export function PDFPreview({
   isSubmitting, 
   onSubmit 
 }: PDFPreviewProps) {
+  // Memoize the PDF documents to prevent unnecessary re-renders
+  const claimantDocument = useMemo(() => <ClaimantReportPDF formData={formData} />, [formData]);
+  const fullDocument = useMemo(() => <MedcoReport formData={formData} />, [formData]);
+
   return (
     <div className="space-y-6">
-      <BlobProvider document={<ClaimantReportPDF formData={formData} />}>
+      <BlobProvider document={claimantDocument}>
         {({ url: claimantUrl, loading: claimantLoading }) => (
-          <BlobProvider document={<MedcoReport formData={formData} />}>
+          <BlobProvider document={fullDocument}>
             {({ url: fullUrl, loading: fullLoading }) => (
               <>
                 <Button 
