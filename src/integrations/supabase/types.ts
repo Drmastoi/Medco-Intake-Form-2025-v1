@@ -268,7 +268,12 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      can_access_report: {
+        Args: {
+          report_row: unknown
+        }
+        Returns: boolean
+      }
     }
     Enums: {
       user_role: "medical_expert" | "user"
