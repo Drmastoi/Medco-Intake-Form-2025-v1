@@ -1,4 +1,5 @@
-import { useState } from "react";
+
+import { useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,7 +15,7 @@ export function ClaimantSummaryReport({ form, onSubmit }: { form: any; onSubmit:
   const [isSubmitting, setIsSubmitting] = useState(false);
   const formData = form.getValues();
 
-  const handleSubmit = async (pdfUrl: string, fullReportUrl: string) => {
+  const handleSubmit = useCallback(async (pdfUrl: string, fullReportUrl: string) => {
     if (!signature.trim()) {
       toast({
         title: "Signature Required",
@@ -121,7 +122,10 @@ export function ClaimantSummaryReport({ form, onSubmit }: { form: any; onSubmit:
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }, [signature, formData, toast, onSubmit]);
+
+  const ClaimantPDFDocument = useCallback(() => <ClaimantReportPDF formData={formData} />, [formData]);
+  const MedcoPDFDocument = useCallback(() => <MedcoReport formData={formData} />, [formData]);
 
   return (
     <div className="space-y-6">
@@ -135,9 +139,9 @@ export function ClaimantSummaryReport({ form, onSubmit }: { form: any; onSubmit:
         </div>
 
         <div className="space-y-6">
-          <BlobProvider document={<ClaimantReportPDF formData={formData} />}>
+          <BlobProvider document={<ClaimantPDFDocument />}>
             {({ url: claimantUrl, loading: claimantLoading }) => (
-              <BlobProvider document={<MedcoReport formData={formData} />}>
+              <BlobProvider document={<MedcoPDFDocument />}>
                 {({ url: fullUrl, loading: fullLoading }) => (
                   <>
                     <Button 
