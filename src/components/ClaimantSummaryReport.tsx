@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import { BlobProvider } from '@react-pdf/renderer';
 import { supabase } from "@/integrations/supabase/client";
-import { ReportPDF } from './report/ReportPDF';
+import { MedcoReport } from './report/ReportPDF';
 import { ClaimantReportPDF } from './report/ClaimantReportPDF';
 
 export function ClaimantSummaryReport({ form, onSubmit }: { form: any; onSubmit: () => void }) {
@@ -138,7 +137,7 @@ export function ClaimantSummaryReport({ form, onSubmit }: { form: any; onSubmit:
         <div className="space-y-6">
           <BlobProvider document={<ClaimantReportPDF formData={formData} />}>
             {({ url: claimantUrl, loading: claimantLoading }) => (
-              <BlobProvider document={<ReportPDF formData={formData} />}>
+              <BlobProvider document={<MedcoReport formData={formData} />}>
                 {({ url: fullUrl, loading: fullLoading }) => (
                   <>
                     <Button 
