@@ -28,35 +28,31 @@ export function ReviewDialog({
 }: ReviewDialogProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>
+      <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Review Report</DialogTitle>
           <DialogDescription>
-            Add your comments and approve or reject the report.
+            Please review the report and provide any necessary comments.
           </DialogDescription>
         </DialogHeader>
-        <div className="py-4">
+        <div className="grid gap-4 py-4">
           <Textarea
-            placeholder="Enter your comments here..."
+            id="comments"
+            placeholder="Enter your review comments here..."
             value={comments}
             onChange={(e) => onCommentsChange(e.target.value)}
             className="min-h-[100px]"
           />
         </div>
-        <DialogFooter className="flex gap-2">
-          <Button
-            variant="outline"
-            onClick={onApprove}
-            className="flex-1"
-          >
-            Approve
+        <DialogFooter>
+          <Button variant="outline" onClick={onClose}>
+            Cancel
           </Button>
-          <Button
-            variant="destructive"
-            onClick={onReject}
-            className="flex-1"
-          >
+          <Button variant="destructive" onClick={onReject}>
             Reject
+          </Button>
+          <Button onClick={onApprove}>
+            Approve
           </Button>
         </DialogFooter>
       </DialogContent>
