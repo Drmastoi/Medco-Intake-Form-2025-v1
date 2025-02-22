@@ -41,6 +41,39 @@ export type Database = {
           },
         ]
       }
+      diseases: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          risk_factors: string[] | null
+          symptoms: string[] | null
+          treatments: string[] | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          risk_factors?: string[] | null
+          symptoms?: string[] | null
+          treatments?: string[] | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          risk_factors?: string[] | null
+          symptoms?: string[] | null
+          treatments?: string[] | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       form_submissions: {
         Row: {
           accident_date: string | null
@@ -179,6 +212,48 @@ export type Database = {
           user_id?: string | null
           vehicle_position?: string | null
           work_type?: string | null
+        }
+        Relationships: []
+      }
+      medical_notes: {
+        Row: {
+          acute_problem: string
+          assessment: string | null
+          created_at: string
+          diagnosis: string | null
+          follow_up: string | null
+          history: string | null
+          id: string
+          investigation: string | null
+          safety_netting: string | null
+          treatment: string | null
+          updated_at: string
+        }
+        Insert: {
+          acute_problem: string
+          assessment?: string | null
+          created_at?: string
+          diagnosis?: string | null
+          follow_up?: string | null
+          history?: string | null
+          id?: string
+          investigation?: string | null
+          safety_netting?: string | null
+          treatment?: string | null
+          updated_at?: string
+        }
+        Update: {
+          acute_problem?: string
+          assessment?: string | null
+          created_at?: string
+          diagnosis?: string | null
+          follow_up?: string | null
+          history?: string | null
+          id?: string
+          investigation?: string | null
+          safety_netting?: string | null
+          treatment?: string | null
+          updated_at?: string
         }
         Relationships: []
       }
