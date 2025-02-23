@@ -7,8 +7,8 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   subtitle: {
-    fontSize: 14,
-    marginBottom: 8,
+    fontSize: 12,
+    marginBottom: 10,
     fontWeight: 'bold',
   },
   text: {
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     lineHeight: 1.4,
   },
   sectionTitle: {
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: 'bold',
     marginTop: 10,
     marginBottom: 5,
