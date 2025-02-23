@@ -7,22 +7,22 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   title: {
-    fontSize: 14,
+    fontSize: 10,
     marginBottom: 10,
     fontWeight: 'bold',
   },
   subtitle: {
-    fontSize: 14,
+    fontSize: 10,
     marginBottom: 10,
     fontWeight: 'bold',
   },
   text: {
-    fontSize: 12,
+    fontSize: 10,
     marginBottom: 5,
     lineHeight: 1.4,
   },
   sectionTitle: {
-    fontSize: 14,
+    fontSize: 10,
     fontWeight: 'bold',
     marginTop: 10,
     marginBottom: 5,
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   },
   bulletPoint: {
     marginLeft: 10,
-    fontSize: 12,
+    fontSize: 10,
     lineHeight: 1.4,
   }
 });
