@@ -43,20 +43,28 @@ export function PreFilledDetails({ form }: { form: any }) {
       // For now, we'll simulate extraction with a timeout
       await new Promise(resolve => setTimeout(resolve, 1500));
       
-      // Mock extraction of data
+      // Mock extraction of data - ensuring all required fields are included
       const mockExtractedData = {
         fullName: "John Smith",
         dateOfBirth: "1985-06-15",
-        solicitorName: "Johnson & Partners",
-        solicitorReference: "REF-2023-4589",
-        instructingPartyName: "ABC Insurance Ltd",
-        instructingPartyReference: "INS-2023-785",
-        medcoReference: "MED-2023-78945",
+        address: "123 Main Street, London, W1 1AA",
+        idType: "1", // Driving License
+        accompaniedBy: "Spouse - Jane Smith",
+        accidentDate: "2023-08-10",
+        instructingPartyName: "ABC Insurance Ltd", // Name of Referring Party
+        instructingPartyReference: "INS-2023-785", // Reference Number/Our reference
+        solicitorName: "Johnson & Partners", // Name of referring Solicitor
+        solicitorReference: "REF-2023-4589", // Solicitor Reference number
+        medcoReference: "MED-2023-78945", // Medco Reference number
       };
       
       // Update form with extracted data
       form.setValue("fullName", mockExtractedData.fullName);
       form.setValue("dateOfBirth", mockExtractedData.dateOfBirth);
+      form.setValue("address", mockExtractedData.address);
+      form.setValue("idType", mockExtractedData.idType);
+      form.setValue("accompaniedBy", mockExtractedData.accompaniedBy);
+      form.setValue("accidentDate", mockExtractedData.accidentDate);
       form.setValue("solicitorName", mockExtractedData.solicitorName);
       form.setValue("solicitorReference", mockExtractedData.solicitorReference);
       form.setValue("instructingPartyName", mockExtractedData.instructingPartyName);
@@ -95,10 +103,12 @@ export function PreFilledDetails({ form }: { form: any }) {
       fullName: formData.fullName || '',
       dateOfBirth: formData.dateOfBirth || '',
       idType: formData.idType || '',
+      address: formData.address || '',
       occupation: formData.occupation || '',
       workType: formData.workType || '',
       livingWith: formData.livingWith || '',
       childrenCount: formData.childrenCount || '',
+      accidentDate: formData.accidentDate || '',
     };
     
     const queryParams = new URLSearchParams();
@@ -224,6 +234,19 @@ Your Medical Assessment Team
 
         <FormField
           control={form.control}
+          name="address"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Address</FormLabel>
+              <FormControl>
+                <Textarea placeholder="Enter your address" {...field} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
           name="idType"
           render={({ field }) => (
             <FormItem className="space-y-3">
@@ -282,6 +305,19 @@ Your Medical Assessment Team
               <FormLabel>Occupation</FormLabel>
               <FormControl>
                 <Input placeholder="Enter your occupation" {...field} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="accidentDate"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Date of Accident</FormLabel>
+              <FormControl>
+                <Input type="date" {...field} />
               </FormControl>
             </FormItem>
           )}

@@ -1,3 +1,4 @@
+
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
 import { formatDate } from '../../utils/dateUtils';
 
@@ -87,7 +88,7 @@ export const PersonalDetailsSection = ({ formData }: { formData: any }) => {
         
         <View style={styles.row}>
           <Text style={styles.label}>Accompanied By:</Text>
-          <Text style={styles.value}>_________________</Text>
+          <Text style={styles.value}>{formData.accompaniedBy || '_________________'}</Text>
         </View>
         
         <View style={styles.row}>
@@ -122,7 +123,7 @@ export const PersonalDetailsSection = ({ formData }: { formData: any }) => {
         
         <View style={styles.row}>
           <Text style={styles.label}>Medco Ref:</Text>
-          <Text style={styles.value}>_________________</Text>
+          <Text style={styles.value}>{formData.medcoReference || '_________________'}</Text>
         </View>
         
         <View style={styles.row}>
