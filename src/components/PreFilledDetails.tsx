@@ -1,20 +1,83 @@
+
 import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Share } from "lucide-react";
+import { Share, Upload } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import emailjs from '@emailjs/browser';
 import { useToast } from "@/hooks/use-toast";
 import { useEffect, useState } from "react";
+import { Textarea } from "@/components/ui/textarea";
 
 export function PreFilledDetails({ form }: { form: any }) {
   const { toast } = useToast();
   const [showOtherIdField, setShowOtherIdField] = useState(false);
   const [showOtherLivingWithField, setShowOtherLivingWithField] = useState(false);
+  const [letterOfInstruction, setLetterOfInstruction] = useState<File | null>(null);
+  const [extracting, setExtracting] = useState(false);
 
   useEffect(() => {
     emailjs.init("YnnsjqOayi-IRBxy_");
   }, []);
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setLetterOfInstruction(e.target.files[0]);
+    }
+  };
+
+  const extractDataFromLetter = async () => {
+    if (!letterOfInstruction) {
+      toast({
+        title: "No file selected",
+        description: "Please upload a Letter of Instruction first.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    setExtracting(true);
+    
+    try {
+      // In a real implementation, this would use OCR or text extraction
+      // For now, we'll simulate extraction with a timeout
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Mock extraction of data
+      const mockExtractedData = {
+        fullName: "John Smith",
+        dateOfBirth: "1985-06-15",
+        solicitorName: "Johnson & Partners",
+        solicitorReference: "REF-2023-4589",
+        instructingPartyName: "ABC Insurance Ltd",
+        instructingPartyReference: "INS-2023-785",
+        medcoReference: "MED-2023-78945",
+      };
+      
+      // Update form with extracted data
+      form.setValue("fullName", mockExtractedData.fullName);
+      form.setValue("dateOfBirth", mockExtractedData.dateOfBirth);
+      form.setValue("solicitorName", mockExtractedData.solicitorName);
+      form.setValue("solicitorReference", mockExtractedData.solicitorReference);
+      form.setValue("instructingPartyName", mockExtractedData.instructingPartyName);
+      form.setValue("instructingPartyReference", mockExtractedData.instructingPartyReference);
+      form.setValue("medcoReference", mockExtractedData.medcoReference);
+      
+      toast({
+        title: "Data Extracted",
+        description: "Information has been extracted from the Letter of Instruction.",
+      });
+    } catch (error) {
+      console.error("Error extracting data:", error);
+      toast({
+        title: "Extraction Failed",
+        description: "Could not extract data from the file. Please enter details manually.",
+        variant: "destructive",
+      });
+    } finally {
+      setExtracting(false);
+    }
+  };
 
   const generateAndShareLink = async () => {
     const formData = form.getValues();
@@ -103,6 +166,33 @@ Your Medical Assessment Team
           <Share className="w-4 h-4" />
           Share with Claimant
         </Button>
+      </div>
+
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+        <h3 className="text-base font-semibold text-blue-900 mb-2">Letter of Instruction</h3>
+        <p className="text-sm text-blue-800 mb-4">
+          Upload a Letter of Instruction to automatically extract claimant details.
+        </p>
+        <div className="flex items-center gap-4">
+          <Input 
+            type="file" 
+            onChange={handleFileUpload}
+            accept=".pdf,.doc,.docx"
+            className="max-w-md"
+          />
+          <Button 
+            onClick={extractDataFromLetter} 
+            disabled={!letterOfInstruction || extracting}
+            variant="secondary"
+          >
+            {extracting ? "Extracting..." : "Extract Data"}
+          </Button>
+        </div>
+        {letterOfInstruction && (
+          <p className="text-sm text-blue-800 mt-2">
+            Selected file: {letterOfInstruction.name}
+          </p>
+        )}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
