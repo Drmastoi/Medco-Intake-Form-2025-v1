@@ -17,6 +17,7 @@ interface InjurySectionProps {
   neurologicalAssessment: string;
   treatment: string;
   prognosis: string;
+  isLongTerm?: boolean;
 }
 
 export const InjurySection = ({
@@ -31,7 +32,8 @@ export const InjurySection = ({
   rangeOfMotion,
   neurologicalAssessment,
   treatment,
-  prognosis
+  prognosis,
+  isLongTerm = false
 }: InjurySectionProps) => (
   <View style={styles.section}>
     <Text style={styles.mainTitle}>{injuryNumber}. {title}</Text>
@@ -62,6 +64,11 @@ export const InjurySection = ({
         <Text style={styles.normalText}>Number of sessions to be decided by the referred expert</Text>
         <Text style={styles.boldLabel}>Prognosis</Text>
         <Text style={styles.normalText}>{prognosis}</Text>
+        {isLongTerm && (
+          <Text style={[styles.normalText, { fontStyle: 'italic' }]}>
+            The claimant's prolonged prognosis is attributable to the absence of physiotherapy and the extent of their injuries.
+          </Text>
+        )}
       </View>
     </View>
   </View>

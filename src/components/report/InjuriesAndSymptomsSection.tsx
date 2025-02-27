@@ -1,10 +1,34 @@
 
-import { View } from '@react-pdf/renderer';
+import { View, Text } from '@react-pdf/renderer';
 import { InjurySection } from './injuryReport/InjurySection';
 import { getOnsetText, getSeverityText, getImpactMechanism } from '../../utils/injuryTextUtils';
 
 export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
   let injuryCount = 0;
+
+  // Helper function to check if the prognosis is 9 months or more
+  const isLongTermPrognosis = (severityValue: string) => {
+    return severityValue === "3"; // Severity 3 corresponds to 9 months prognosis
+  };
+
+  // Helper function to get prognosis text with additional note for long-term cases
+  const getPrognosisText = (severityValue: string, resolveDays?: string) => {
+    let prognosis = "";
+    
+    if (severityValue === "4" && resolveDays) {
+      prognosis = `${resolveDays} DAYS`;
+    } else if (severityValue === "1") {
+      prognosis = "3 MONTHS";
+    } else if (severityValue === "2") {
+      prognosis = "6 MONTHS";
+    } else if (severityValue === "3") {
+      prognosis = "9 MONTHS";
+    } else {
+      prognosis = "6 MONTHS";
+    }
+    
+    return prognosis;
+  };
 
   return (
     <View>
@@ -21,11 +45,8 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
           rangeOfMotion="Limited due to pain"
           neurologicalAssessment="normal"
           treatment="Pain management: Over-the-counter pain medication and ice therapy recommended"
-          prognosis={`From the date of accident: ${formData.neckPainCurrentSeverity === "4" ? 
-            `${formData.neckPainResolveDays} DAYS` : 
-            formData.neckPainCurrentSeverity === "1" ? "3 MONTHS" :
-            formData.neckPainCurrentSeverity === "2" ? "6 MONTHS" :
-            formData.neckPainCurrentSeverity === "3" ? "9 MONTHS" : "6 MONTHS"}`}
+          prognosis={`From the date of accident: ${getPrognosisText(formData.neckPainCurrentSeverity, formData.neckPainResolveDays)}`}
+          isLongTerm={isLongTermPrognosis(formData.neckPainCurrentSeverity)}
         />
       )}
 
@@ -42,11 +63,8 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
           rangeOfMotion="Limited due to pain"
           neurologicalAssessment="normal"
           treatment="Pain management: Over-the-counter pain medication and ice therapy recommended"
-          prognosis={`From the date of accident: ${formData.shoulderPainCurrentSeverity === "4" ? 
-            `${formData.shoulderPainResolveDays} DAYS` : 
-            formData.shoulderPainCurrentSeverity === "1" ? "3 MONTHS" :
-            formData.shoulderPainCurrentSeverity === "2" ? "6 MONTHS" :
-            formData.shoulderPainCurrentSeverity === "3" ? "9 MONTHS" : "6 MONTHS"}`}
+          prognosis={`From the date of accident: ${getPrognosisText(formData.shoulderPainCurrentSeverity, formData.shoulderPainResolveDays)}`}
+          isLongTerm={isLongTermPrognosis(formData.shoulderPainCurrentSeverity)}
         />
       )}
 
@@ -63,11 +81,8 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
           rangeOfMotion="Limited due to pain"
           neurologicalAssessment="normal"
           treatment="Pain management: Over-the-counter pain medication and ice therapy recommended"
-          prognosis={`From the date of accident: ${formData.backPainCurrentSeverity === "4" ? 
-            `${formData.backPainResolveDays} DAYS` : 
-            formData.backPainCurrentSeverity === "1" ? "3 MONTHS" :
-            formData.backPainCurrentSeverity === "2" ? "6 MONTHS" :
-            formData.backPainCurrentSeverity === "3" ? "9 MONTHS" : "6 MONTHS"}`}
+          prognosis={`From the date of accident: ${getPrognosisText(formData.backPainCurrentSeverity, formData.backPainResolveDays)}`}
+          isLongTerm={isLongTermPrognosis(formData.backPainCurrentSeverity)}
         />
       )}
 
@@ -84,11 +99,8 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
           rangeOfMotion="Not applicable"
           neurologicalAssessment="normal"
           treatment="Self-Resolving condition. Take simple pain killers as and when required"
-          prognosis={`From the date of accident: ${formData.headacheCurrentSeverity === "4" ? 
-            `${formData.headacheResolveDays} DAYS` : 
-            formData.headacheCurrentSeverity === "1" ? "3 MONTHS" :
-            formData.headacheCurrentSeverity === "2" ? "6 MONTHS" :
-            formData.headacheCurrentSeverity === "3" ? "9 MONTHS" : "6 MONTHS"}`}
+          prognosis={`From the date of accident: ${getPrognosisText(formData.headacheCurrentSeverity, formData.headacheResolveDays)}`}
+          isLongTerm={isLongTermPrognosis(formData.headacheCurrentSeverity)}
         />
       )}
 
@@ -105,13 +117,14 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
           rangeOfMotion="Not applicable"
           neurologicalAssessment="normal"
           treatment="Self-Resolving condition"
-          prognosis={`From the date of accident: ${formData.anxietyCurrentSeverity === "4" ? 
-            `${formData.anxietyResolveDays} DAYS` : 
-            formData.anxietyCurrentSeverity === "1" ? "3 MONTHS" :
-            formData.anxietyCurrentSeverity === "2" ? "6 MONTHS" :
-            formData.anxietyCurrentSeverity === "3" ? "9 MONTHS" : "6 MONTHS"}`}
+          prognosis={`From the date of accident: ${getPrognosisText(formData.anxietyCurrentSeverity, formData.anxietyResolveDays)}`}
+          isLongTerm={isLongTermPrognosis(formData.anxietyCurrentSeverity)}
         />
       )}
+      
+      <Text style={{ fontSize: 10, fontStyle: 'italic', marginTop: 15, marginBottom: 5 }}>
+        I have acknowledged the Letter of Instruction and I confirm there were no other injuries suffered by the client as told to me during the examination after direct questioning.
+      </Text>
     </View>
   );
 };

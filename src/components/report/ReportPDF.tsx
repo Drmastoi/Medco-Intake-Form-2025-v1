@@ -1,5 +1,5 @@
 
-import { Document, Page, Text, StyleSheet } from '@react-pdf/renderer';
+import { Document, Page, Text, StyleSheet, View } from '@react-pdf/renderer';
 import { PersonalDetailsSection } from './PersonalDetailsSection';
 import { SummaryOfInjuriesSection } from './SummaryOfInjuriesSection';
 import { TreatmentDetailsSection } from './TreatmentDetailsSection';
@@ -56,6 +56,12 @@ const styles = StyleSheet.create({
   },
   section: {
     marginBottom: 15,
+  },
+  acknowledgment: {
+    fontSize: 10,
+    fontStyle: 'italic',
+    marginTop: 15,
+    marginBottom: 5,
   }
 });
 
@@ -108,6 +114,10 @@ export const MedcoReport = ({ formData }: { formData: any }) => (
     <Page size="A4" style={styles.page}>
       <Text style={styles.subtitle}>Section 4: Injuries and Symptoms</Text>
       <InjuriesAndSymptomsSection formData={formData} />
+      
+      <Text style={styles.acknowledgment}>
+        I have acknowledged the Letter of Instruction and I confirm there were no other injuries suffered by the client as told to me during the examination after direct questioning.
+      </Text>
       
       <Text style={styles.subtitle}>Section 5: Employment Position/Education</Text>
       <Text style={styles.text}>
