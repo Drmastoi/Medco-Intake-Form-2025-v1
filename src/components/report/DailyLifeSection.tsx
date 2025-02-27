@@ -41,6 +41,12 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     lineHeight: 1.4,
     marginTop: 2,
+  },
+  conclusionText: {
+    fontSize: 10,
+    fontStyle: 'italic',
+    marginTop: 15,
+    marginBottom: 5,
   }
 });
 
@@ -236,5 +242,9 @@ export const DailyLifeSection = ({ formData }: { formData: any }) => (
         <Text style={styles.bulletPoint}>• {formData.additionalInformationDetails}</Text>
       </View>
     )}
+
+    <Text style={styles.conclusionText}>
+      I have acknowledged the Letter of Instruction and I confirm there were no other injuries suffered by the client as told to me during the examination after direct questioning.
+    </Text>
   </View>
 );
