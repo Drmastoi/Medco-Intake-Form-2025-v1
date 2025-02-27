@@ -34,6 +34,13 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: 10,
     lineHeight: 1.4,
+  },
+  explanationText: {
+    marginLeft: 10,
+    fontSize: 10,
+    fontStyle: 'italic',
+    lineHeight: 1.4,
+    marginTop: 2,
   }
 });
 
@@ -113,6 +120,11 @@ const getPainSeverity = (value: string) => {
   return severities[value] || value;
 };
 
+// Helper function to check if prognosis is 9 months or more
+const isLongTermPrognosis = (severityValue: string) => {
+  return severityValue === "3"; // Severity 3 corresponds to 9 months prognosis
+};
+
 export const DailyLifeSection = ({ formData }: { formData: any }) => (
   <View style={styles.section}>
     <Text style={styles.title}>COMPREHENSIVE INJURY AND IMPACT SUMMARY</Text>
@@ -126,6 +138,9 @@ export const DailyLifeSection = ({ formData }: { formData: any }) => (
           <Text style={styles.bulletPoint}>  - Current Severity: {getPainSeverity(formData.neckPainCurrentSeverity)}</Text>
           {formData.neckPainCurrentSeverity === "4" && (
             <Text style={styles.bulletPoint}>  - Resolved after: {formData.neckPainResolveDays} days</Text>
+          )}
+          {isLongTermPrognosis(formData.neckPainCurrentSeverity) && (
+            <Text style={styles.explanationText}>The claimant's prolonged prognosis is attributable to the absence of physiotherapy and the extent of their injuries.</Text>
           )}
         </View>
       )}
@@ -142,6 +157,9 @@ export const DailyLifeSection = ({ formData }: { formData: any }) => (
           {formData.shoulderPainCurrentSeverity === "4" && (
             <Text style={styles.bulletPoint}>  - Resolved after: {formData.shoulderPainResolveDays} days</Text>
           )}
+          {isLongTermPrognosis(formData.shoulderPainCurrentSeverity) && (
+            <Text style={styles.explanationText}>The claimant's prolonged prognosis is attributable to the absence of physiotherapy and the extent of their injuries.</Text>
+          )}
         </View>
       )}
       {formData.backPain === "1" && (
@@ -152,6 +170,9 @@ export const DailyLifeSection = ({ formData }: { formData: any }) => (
           {formData.backPainCurrentSeverity === "4" && (
             <Text style={styles.bulletPoint}>  - Resolved after: {formData.backPainResolveDays} days</Text>
           )}
+          {isLongTermPrognosis(formData.backPainCurrentSeverity) && (
+            <Text style={styles.explanationText}>The claimant's prolonged prognosis is attributable to the absence of physiotherapy and the extent of their injuries.</Text>
+          )}
         </View>
       )}
       {formData.headache === "1" && (
@@ -161,6 +182,9 @@ export const DailyLifeSection = ({ formData }: { formData: any }) => (
           <Text style={styles.bulletPoint}>  - Current Severity: {getPainSeverity(formData.headacheCurrentSeverity)}</Text>
           {formData.headacheCurrentSeverity === "4" && (
             <Text style={styles.bulletPoint}>  - Resolved after: {formData.headacheResolveDays} days</Text>
+          )}
+          {isLongTermPrognosis(formData.headacheCurrentSeverity) && (
+            <Text style={styles.explanationText}>The claimant's prolonged prognosis is attributable to the absence of physiotherapy and the extent of their injuries.</Text>
           )}
         </View>
       )}
@@ -175,6 +199,9 @@ export const DailyLifeSection = ({ formData }: { formData: any }) => (
           <Text style={styles.bulletPoint}>  - Current Severity: {getPainSeverity(formData.anxietyCurrentSeverity)}</Text>
           {formData.anxietyCurrentSeverity === "4" && (
             <Text style={styles.bulletPoint}>  - Resolved after: {formData.anxietyResolveDays} days</Text>
+          )}
+          {isLongTermPrognosis(formData.anxietyCurrentSeverity) && (
+            <Text style={styles.explanationText}>The claimant's prolonged prognosis is attributable to the absence of physiotherapy and the extent of their injuries.</Text>
           )}
         </View>
       )}
