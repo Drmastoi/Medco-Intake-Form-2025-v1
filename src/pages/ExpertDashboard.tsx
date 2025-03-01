@@ -40,6 +40,8 @@ export default function ExpertDashboard() {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
+      
+      console.log("Fetched reports:", data);
       setReports(data as Report[] || []);
     } catch (error) {
       console.error('Error fetching reports:', error);
@@ -69,7 +71,15 @@ export default function ExpertDashboard() {
         <h1 className="text-2xl font-bold mb-8">Medical Expert Dashboard</h1>
         
         {isLoading ? (
-          <div className="text-center">Loading reports...</div>
+          <div className="text-center py-10">
+            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
+            <p className="mt-4 text-muted-foreground">Loading reports...</p>
+          </div>
+        ) : reports.length === 0 ? (
+          <div className="text-center py-10 bg-gray-50 rounded-lg">
+            <p className="text-lg text-muted-foreground">No reports found</p>
+            <p className="text-sm text-muted-foreground mt-2">Reports will appear here once they are submitted</p>
+          </div>
         ) : (
           <ReportTable 
             reports={reports} 
