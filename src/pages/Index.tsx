@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -20,7 +19,6 @@ import { IntakeFormSummary } from "@/components/IntakeFormSummary";
 import { IntakeFormNavigation } from "@/components/intake-form/IntakeFormNavigation";
 import { formSchema, type FormSchema } from "@/schemas/intakeFormSchema";
 import { useFormSubmission } from "@/components/intake-form/useFormSubmission";
-import { MainNavigation } from "@/components/layout/MainNavigation";
 
 export default function Index() {
   const [currentSection, setCurrentSection] = useState(0);
@@ -115,66 +113,63 @@ export default function Index() {
   }, [form]);
 
   return (
-    <>
-      <MainNavigation />
-      <div className="container mx-auto py-10 px-4">
-        <h1 className="text-2xl font-bold mb-8">Personal Injury Assessment Questionnaire</h1>
+    <div className="container mx-auto py-10 px-4">
+      <h1 className="text-2xl font-bold mb-8">Personal Injury Assessment Questionnaire</h1>
 
-        {currentSection === 0 && (
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 text-sm">
-            <h2 className="text-base font-semibold text-blue-900 mb-2">Quick Guide</h2>
-            <p className="text-blue-800">
-              Complete all sections to report your injuries and circumstances. Click summary to generate report and send it to medical expert and download a copy for your records.
-            </p>
+      {currentSection === 0 && (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 text-sm">
+          <h2 className="text-base font-semibold text-blue-900 mb-2">Quick Guide</h2>
+          <p className="text-blue-800">
+            Complete all sections to report your injuries and circumstances. Click summary to generate report and send it to medical expert and download a copy for your records.
+          </p>
+        </div>
+      )}
+      
+      <IntakeFormNavigation 
+        currentSection={currentSection}
+        onTabChange={handleTabChange}
+        tabNames={tabNames}
+      />
+      
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+          <div className="grid grid-cols-1 gap-6">
+            {currentSection === 0 && <PreFilledDetails form={form} />}
+            {currentSection === 1 && <IntakeFormSection2 form={form} />}
+            {currentSection === 2 && <IntakeFormSection3 form={form} />}
+            {currentSection === 3 && <IntakeFormSection4 form={form} />}
+            {currentSection === 4 && <IntakeFormSection5 form={form} />}
+            {currentSection === 5 && <IntakeFormSection6 form={form} />}
+            {currentSection === 6 && <IntakeFormSection7 form={form} />}
+            {currentSection === 7 && <IntakeFormSection8 form={form} />}
+            {currentSection === 8 && <IntakeFormSection9 form={form} />}
+            {currentSection === 9 && <IntakeFormSection10 form={form} />}
+            {currentSection === 10 && <IntakeFormSection11 form={form} />}
+            {currentSection === 11 && <IntakeFormSection12 form={form} />}
+            {currentSection === 12 && <IntakeFormSummary form={form} />}
           </div>
-        )}
-        
-        <IntakeFormNavigation 
-          currentSection={currentSection}
-          onTabChange={handleTabChange}
-          tabNames={tabNames}
-        />
-        
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
-            <div className="grid grid-cols-1 gap-6">
-              {currentSection === 0 && <PreFilledDetails form={form} />}
-              {currentSection === 1 && <IntakeFormSection2 form={form} />}
-              {currentSection === 2 && <IntakeFormSection3 form={form} />}
-              {currentSection === 3 && <IntakeFormSection4 form={form} />}
-              {currentSection === 4 && <IntakeFormSection5 form={form} />}
-              {currentSection === 5 && <IntakeFormSection6 form={form} />}
-              {currentSection === 6 && <IntakeFormSection7 form={form} />}
-              {currentSection === 7 && <IntakeFormSection8 form={form} />}
-              {currentSection === 8 && <IntakeFormSection9 form={form} />}
-              {currentSection === 9 && <IntakeFormSection10 form={form} />}
-              {currentSection === 10 && <IntakeFormSection11 form={form} />}
-              {currentSection === 11 && <IntakeFormSection12 form={form} />}
-              {currentSection === 12 && <IntakeFormSummary form={form} />}
-            </div>
+          
+          <div className="flex justify-between">
+            <Button 
+              type="button" 
+              variant="outline"
+              onClick={() => setCurrentSection(prev => Math.max(0, prev - 1))}
+              disabled={currentSection === 0}
+            >
+              Previous
+            </Button>
             
-            <div className="flex justify-between">
+            {currentSection < totalSections - 1 && (
               <Button 
-                type="button" 
-                variant="outline"
-                onClick={() => setCurrentSection(prev => Math.max(0, prev - 1))}
-                disabled={currentSection === 0}
+                type="button"
+                onClick={() => setCurrentSection(prev => Math.min(totalSections - 1, prev + 1))}
               >
-                Previous
+                Next
               </Button>
-              
-              {currentSection < totalSections - 1 && (
-                <Button 
-                  type="button"
-                  onClick={() => setCurrentSection(prev => Math.min(totalSections - 1, prev + 1))}
-                >
-                  Next
-                </Button>
-              )}
-            </div>
-          </form>
-        </Form>
-      </div>
-    </>
+            )}
+          </div>
+        </form>
+      </Form>
+    </div>
   );
 }

@@ -1,10 +1,9 @@
 
-import React, { useState, useEffect } from "react";
-import { ReviewDialog } from "@/components/dashboard/ReviewDialog";
-import { ReportTable } from "@/components/dashboard/ReportTable";
-import { supabase } from "@/integrations/supabase/client";
+import { useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
-import { MainNavigation } from "@/components/layout/MainNavigation";
+import { supabase } from "@/integrations/supabase/client";
+import { ReportTable } from "@/components/dashboard/ReportTable";
+import { ReviewDialog } from "@/components/dashboard/ReviewDialog";
 
 interface Report {
   id: string;
@@ -12,89 +11,115 @@ interface Report {
   created_at: string;
   status: string;
   storage_path: string;
-  // Add other fields as needed
-  claimant_email?: string | null;
-  comments?: string | null;
-  original_filename: string;
-  patient_id?: string | null;
-  reviewed_by?: string | null;
-  signature_status?: string | null;
-  updated_at?: string;
-  version?: number | null;
 }
 
 export default function ExpertDashboard() {
   const [reports, setReports] = useState<Report[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedReport, setSelectedReport] = useState<Report | null>(null);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [comments, setComments] = useState("");
   const { toast } = useToast();
-
-  const fetchReports = async () => {
-    setIsLoading(true);
-    try {
-      // Specify which relation to use with profiles (using patient_id relationship)
-      const { data, error } = await supabase
-        .from('reports')
-        .select('*, profiles!reports_patient_id_fkey(*)')
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      
-      console.log("Fetched reports:", data);
-      setReports(data as Report[] || []);
-    } catch (error) {
-      console.error('Error fetching reports:', error);
-      toast({
-        title: "Error",
-        description: "Failed to load reports",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   useEffect(() => {
     fetchReports();
   }, []);
 
-  const handleReviewReport = (report: Report) => {
-    setSelectedReport(report);
-    setIsDialogOpen(true);
+  const fetchReports = async () => {
+    try {
+      const { data: reportsData, error } = await supabase
+        .from('reports')
+        .select(`
+          id,
+          created_at,
+          status,
+          storage_path,
+          profiles!reports_patient_id_fkey (
+            full_name
+          )
+        `)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      // Transform the data to match the Report interface
+      const transformedReports: Report[] = (reportsData || []).map(report => ({
+        id: report.id,
+        created_at: report.created_at,
+        status: report.status,
+        storage_path: report.storage_path,
+        profiles: report.profiles
+      }));
+
+      setReports(transformedReports);
+    } catch (error) {
+      console.error('Error fetching reports:', error);
+      toast({
+        title: "Error",
+        description: "Failed to fetch reports",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updateReportStatus = async (status: 'approved' | 'rejected') => {
+    if (!selectedReport) return;
+
+    try {
+      const { data: userData } = await supabase.auth.getUser();
+      if (!userData.user) throw new Error('Not authenticated');
+
+      const { error } = await supabase
+        .from('reports')
+        .update({
+          status,
+          reviewed_by: userData.user.id,
+          comments: comments,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', selectedReport.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: `Report ${status} successfully`,
+      });
+
+      setSelectedReport(null);
+      setComments("");
+      fetchReports();
+    } catch (error) {
+      console.error('Error updating report:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update report status",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
-    <>
-      <MainNavigation />
-      <div className="container mx-auto py-10 px-4">
-        <h1 className="text-2xl font-bold mb-8">Medical Expert Dashboard</h1>
-        
-        {isLoading ? (
-          <div className="text-center py-10">
-            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
-            <p className="mt-4 text-muted-foreground">Loading reports...</p>
-          </div>
-        ) : reports.length === 0 ? (
-          <div className="text-center py-10 bg-gray-50 rounded-lg">
-            <p className="text-lg text-muted-foreground">No reports found</p>
-            <p className="text-sm text-muted-foreground mt-2">Reports will appear here once they are submitted</p>
-          </div>
-        ) : (
-          <ReportTable 
-            reports={reports} 
-            onReviewReport={handleReviewReport}
-            onRefetch={fetchReports}
-          />
-        )}
+    <div className="container mx-auto py-10">
+      <h1 className="text-2xl font-bold mb-8">Medical Expert Dashboard</h1>
 
-        <ReviewDialog 
-          isOpen={isDialogOpen} 
-          onOpenChange={setIsDialogOpen}
-          report={selectedReport}
-          onReviewComplete={fetchReports}
+      <div className="bg-white rounded-lg shadow">
+        <ReportTable
+          reports={reports}
+          onReviewReport={setSelectedReport}
+          onRefetch={fetchReports}
         />
       </div>
-    </>
+
+      <ReviewDialog
+        isOpen={!!selectedReport}
+        onClose={() => setSelectedReport(null)}
+        onApprove={() => updateReportStatus('approved')}
+        onReject={() => updateReportStatus('rejected')}
+        comments={comments}
+        onCommentsChange={setComments}
+      />
+    </div>
   );
 }
