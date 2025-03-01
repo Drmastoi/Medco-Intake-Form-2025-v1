@@ -1,3 +1,4 @@
+
 import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -101,6 +102,8 @@ Your Medical Assessment Team
 
       // Save the questionnaire tracking record
       try {
+        const { data: userData } = await supabase.auth.getUser();
+        
         const { error } = await supabase
           .from('questionnaire_tracking')
           .insert({
@@ -108,10 +111,14 @@ Your Medical Assessment Team
             recipient_name: formData.fullName || null,
             sent_date: new Date().toISOString(),
             questionnaire_link: shareableLink,
-            completed: false
+            completed: false,
+            recipient_id: userData?.user?.id || null
           });
           
-        if (error) throw error;
+        if (error) {
+          console.error('Failed to save questionnaire tracking:', error);
+          throw error;
+        }
       } catch (dbError) {
         console.error('Failed to save questionnaire tracking:', dbError);
         // Don't stop execution if the tracking fails

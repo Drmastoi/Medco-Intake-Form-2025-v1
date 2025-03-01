@@ -12,6 +12,15 @@ interface Report {
   created_at: string;
   status: string;
   storage_path: string;
+  // Add other fields as needed
+  claimant_email?: string | null;
+  comments?: string | null;
+  original_filename: string;
+  patient_id?: string | null;
+  reviewed_by?: string | null;
+  signature_status?: string | null;
+  updated_at?: string;
+  version?: number | null;
 }
 
 export default function ExpertDashboard() {
@@ -69,7 +78,7 @@ export default function ExpertDashboard() {
         )}
 
         <ReviewDialog 
-          open={isDialogOpen} 
+          isOpen={isDialogOpen} 
           onOpenChange={setIsDialogOpen}
           report={selectedReport}
           onReviewComplete={fetchReports}

@@ -3,9 +3,11 @@ import React, { useState, useEffect } from "react";
 import { QuestionnaireDashboard } from "@/components/dashboard/QuestionnaireDashboard";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
+import { MainNavigation } from "@/components/layout/MainNavigation";
+import { QuestionnaireTracking } from "@/types/questionnaire";
 
 export default function Dashboard() {
-  const [questionnaires, setQuestionnaires] = useState<any[]>([]);
+  const [questionnaires, setQuestionnaires] = useState<QuestionnaireTracking[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
 
@@ -101,15 +103,18 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="container mx-auto py-10 px-4">
-      <h1 className="text-2xl font-bold mb-8">Questionnaire Dashboard</h1>
-      <QuestionnaireDashboard 
-        questionnaires={questionnaires}
-        isLoading={isLoading}
-        onStatusChange={handleStatusChange}
-        onSendReminder={handleSendReminder}
-        onRefresh={fetchQuestionnaires}
-      />
-    </div>
+    <>
+      <MainNavigation />
+      <div className="container mx-auto py-10 px-4">
+        <h1 className="text-2xl font-bold mb-8">Questionnaire Dashboard</h1>
+        <QuestionnaireDashboard 
+          questionnaires={questionnaires}
+          isLoading={isLoading}
+          onStatusChange={handleStatusChange}
+          onSendReminder={handleSendReminder}
+          onRefresh={fetchQuestionnaires}
+        />
+      </div>
+    </>
   );
 }
