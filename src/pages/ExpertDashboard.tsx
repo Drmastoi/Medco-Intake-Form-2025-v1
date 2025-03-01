@@ -39,7 +39,7 @@ export default function ExpertDashboard() {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setReports(data || []);
+      setReports(data as Report[] || []);
     } catch (error) {
       console.error('Error fetching reports:', error);
       toast({

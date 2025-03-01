@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
-import { PDFPreview } from "@/components/report/PDFPreview";
+import { PDFReportViewer } from "@/components/report/PDFReportViewer";
 
 interface ReviewDialogProps {
   isOpen: boolean;
@@ -23,12 +23,12 @@ export function ReviewDialog({ isOpen, onOpenChange, report, onReviewComplete }:
   const { toast } = useToast();
   
   // Reset form when dialog opens with a new report
-  useState(() => {
+  useEffect(() => {
     if (report) {
       setStatus(report.status || 'pending_review');
       setComments(report.comments || '');
     }
-  });
+  }, [report]);
 
   const handleSubmitReview = async () => {
     if (!report) return;
@@ -124,7 +124,7 @@ export function ReviewDialog({ isOpen, onOpenChange, report, onReviewComplete }:
           </div>
           
           <div className="border rounded-lg overflow-hidden">
-            <PDFPreview filePath={report.storage_path} />
+            <PDFReportViewer storagePath={report.storage_path} />
           </div>
         </div>
         
