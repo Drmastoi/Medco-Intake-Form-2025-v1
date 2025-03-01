@@ -1,3 +1,4 @@
+
 import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -175,6 +176,33 @@ Your Medical Assessment Team
           <Share className="w-4 h-4" />
           Share with Claimant
         </Button>
+      </div>
+
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+        <h3 className="text-base font-semibold text-blue-900 mb-2">Letter of Instruction</h3>
+        <p className="text-sm text-blue-800 mb-4">
+          Upload a Letter of Instruction to automatically extract claimant details.
+        </p>
+        <div className="flex items-center gap-4">
+          <Input 
+            type="file" 
+            onChange={handleFileUpload}
+            accept=".pdf,.doc,.docx"
+            className="max-w-md"
+          />
+          <Button 
+            onClick={extractDataFromLetter} 
+            disabled={!letterOfInstruction || extracting}
+            variant="secondary"
+          >
+            {extracting ? "Extracting..." : "Extract Data"}
+          </Button>
+        </div>
+        {letterOfInstruction && (
+          <p className="text-sm text-blue-800 mt-2">
+            Selected file: {letterOfInstruction.name}
+          </p>
+        )}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
