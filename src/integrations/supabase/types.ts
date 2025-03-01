@@ -278,6 +278,56 @@ export type Database = {
         }
         Relationships: []
       }
+      questionnaire_tracking: {
+        Row: {
+          completed: boolean
+          completed_date: string | null
+          created_at: string
+          id: string
+          last_reminder_date: string | null
+          questionnaire_link: string
+          recipient_email: string
+          recipient_id: string | null
+          recipient_name: string | null
+          sent_date: string
+          updated_at: string
+        }
+        Insert: {
+          completed?: boolean
+          completed_date?: string | null
+          created_at?: string
+          id?: string
+          last_reminder_date?: string | null
+          questionnaire_link: string
+          recipient_email: string
+          recipient_id?: string | null
+          recipient_name?: string | null
+          sent_date?: string
+          updated_at?: string
+        }
+        Update: {
+          completed?: boolean
+          completed_date?: string | null
+          created_at?: string
+          id?: string
+          last_reminder_date?: string | null
+          questionnaire_link?: string
+          recipient_email?: string
+          recipient_id?: string | null
+          recipient_name?: string | null
+          sent_date?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "questionnaire_tracking_recipient_id_fkey"
+            columns: ["recipient_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       reports: {
         Row: {
           claimant_email: string | null
