@@ -33,9 +33,10 @@ export default function ExpertDashboard() {
   const fetchReports = async () => {
     setIsLoading(true);
     try {
+      // Specify which relation to use with profiles (using patient_id relationship)
       const { data, error } = await supabase
         .from('reports')
-        .select('*, profiles(*)')
+        .select('*, profiles!reports_patient_id_fkey(*)')
         .order('created_at', { ascending: false });
 
       if (error) throw error;
