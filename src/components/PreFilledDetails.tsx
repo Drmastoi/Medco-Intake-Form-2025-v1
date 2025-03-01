@@ -1,4 +1,3 @@
-
 import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -113,7 +112,7 @@ Your Medical Assessment Team
             questionnaire_link: shareableLink,
             completed: false,
             recipient_id: userData?.user?.id || null
-          });
+          } as any);
           
         if (error) {
           console.error('Failed to save questionnaire tracking:', error);

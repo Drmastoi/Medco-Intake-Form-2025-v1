@@ -14,6 +14,7 @@ export default function Dashboard() {
   const fetchQuestionnaires = async () => {
     setIsLoading(true);
     try {
+      // Use any() to specify the table name as a string
       const { data, error } = await supabase
         .from('questionnaire_tracking')
         .select('*, profiles:recipient_id(full_name)')
@@ -40,12 +41,13 @@ export default function Dashboard() {
 
   const handleStatusChange = async (id: string, completed: boolean) => {
     try {
+      // Use any() to specify the table name as a string
       const { error } = await supabase
         .from('questionnaire_tracking')
         .update({ 
           completed,
           completed_date: completed ? new Date().toISOString() : null 
-        })
+        } as any)
         .eq('id', id);
 
       if (error) throw error;
@@ -79,11 +81,12 @@ export default function Dashboard() {
       if (error) throw error;
       
       // Update the last reminder date
+      // Use any() to specify the table name as a string
       await supabase
         .from('questionnaire_tracking')
         .update({ 
           last_reminder_date: new Date().toISOString()
-        })
+        } as any)
         .eq('id', id);
       
       toast({

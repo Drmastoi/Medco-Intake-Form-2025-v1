@@ -124,7 +124,7 @@ export function ReviewDialog({ isOpen, onOpenChange, report, onReviewComplete }:
           </div>
           
           <div className="border rounded-lg overflow-hidden">
-            <PDFPreview pdfPath={report.storage_path} />
+            <PDFPreview filePath={report.storage_path} />
           </div>
         </div>
         

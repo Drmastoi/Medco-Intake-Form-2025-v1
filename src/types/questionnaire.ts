@@ -11,4 +11,5 @@ export interface QuestionnaireTracking {
   recipient_id: string | null;
   created_at: string;
   updated_at: string;
+  profiles?: { full_name: string | null } | null;
 }
