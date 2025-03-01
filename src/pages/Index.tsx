@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Form } from "@/components/ui/form";
@@ -96,20 +96,29 @@ export default function Index() {
     setCurrentSection(parseInt(value));
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const preFillData = {
-      solicitorName: params.get('solicitorName') || '',
-      solicitorReference: params.get('solicitorReference') || '',
-      instructingPartyName: params.get('instructingPartyName') || '',
-      instructingPartyReference: params.get('instructingPartyReference') || '',
-      examinationLocation: params.get('examinationLocation') || '',
-    };
+    const fields = [
+      'solicitorName', 'solicitorReference', 'instructingPartyName', 'instructingPartyReference',
+      'examinationLocation', 'medcoReference', 'accompaniedBy', 'mobileNumber', 'emailId',
+      'fullName', 'dateOfBirth', 'idType', 'address', 'occupation', 'workType', 'livingWith',
+      'childrenCount', 'accidentDate'
+    ];
     
-    if (Object.values(preFillData).some(value => value)) {
+    const preFillData: Record<string, string> = {};
+    
+    fields.forEach(field => {
+      const value = params.get(field);
+      if (value) {
+        preFillData[field] = value;
+      }
+    });
+    
+    if (Object.keys(preFillData).length > 0) {
+      console.log("Prefilling form with data:", preFillData);
       form.reset(preFillData);
     }
-  }, []);
+  }, [form]);
 
   return (
     <div className="container mx-auto py-10 px-4">

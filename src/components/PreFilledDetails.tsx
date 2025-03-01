@@ -1,3 +1,4 @@
+
 import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -12,50 +13,60 @@ export function PreFilledDetails({ form }: { form: any }) {
   const { toast } = useToast();
   const [showOtherIdField, setShowOtherIdField] = useState(false);
   const [showOtherLivingWithField, setShowOtherLivingWithField] = useState(false);
+  const [isSending, setIsSending] = useState(false);
 
   useEffect(() => {
     emailjs.init("YnnsjqOayi-IRBxy_");
-  }, []);
+    
+    // Set field values for 'Other' options
+    const idTypeValue = form.getValues("idType");
+    if (idTypeValue === "4" || idTypeValue?.startsWith("Other:")) {
+      setShowOtherIdField(true);
+    }
+    
+    const livingWithValue = form.getValues("livingWith");
+    if (livingWithValue === "6" || livingWithValue?.startsWith("Other:")) {
+      setShowOtherLivingWithField(true);
+    }
+  }, [form]);
 
   const generateAndShareLink = async () => {
-    const formData = form.getValues();
-    
-    const preFillData = {
-      solicitorName: formData.solicitorName || '',
-      solicitorReference: formData.solicitorReference || '',
-      instructingPartyName: formData.instructingPartyName || '',
-      instructingPartyReference: formData.instructingPartyReference || '',
-      examinationLocation: formData.examinationLocation || '',
-      medcoReference: formData.medcoReference || '',
-      accompaniedBy: formData.accompaniedBy || '',
-      mobileNumber: formData.mobileNumber || '',
-      emailId: formData.emailId || '',
-      fullName: formData.fullName || '',
-      dateOfBirth: formData.dateOfBirth || '',
-      idType: formData.idType || '',
-      address: formData.address || '',
-      occupation: formData.occupation || '',
-      workType: formData.workType || '',
-      livingWith: formData.livingWith || '',
-      childrenCount: formData.childrenCount || '',
-      accidentDate: formData.accidentDate || '',
-    };
-    
-    const queryParams = new URLSearchParams();
-    Object.entries(preFillData).forEach(([key, value]) => {
-      if (value) {
-        queryParams.append(key, value.toString());
-      }
-    });
-    
-    const shareableLink = `${window.location.origin}?${queryParams.toString()}`;
-    
+    setIsSending(true);
     try {
+      const formData = form.getValues();
+      console.log("Form data for sharing:", formData);
+      
+      const preFillData: Record<string, string> = {};
+      
+      // Include all relevant fields
+      const fieldsToInclude = [
+        'solicitorName', 'solicitorReference', 'instructingPartyName', 'instructingPartyReference',
+        'examinationLocation', 'medcoReference', 'accompaniedBy', 'mobileNumber', 'emailId',
+        'fullName', 'dateOfBirth', 'idType', 'address', 'occupation', 'workType', 'livingWith',
+        'childrenCount', 'accidentDate'
+      ];
+      
+      fieldsToInclude.forEach(field => {
+        if (formData[field]) {
+          preFillData[field] = formData[field].toString();
+        }
+      });
+      
+      const queryParams = new URLSearchParams();
+      Object.entries(preFillData).forEach(([key, value]) => {
+        if (value) {
+          queryParams.append(key, value);
+        }
+      });
+      
+      const shareableLink = `${window.location.origin}?${queryParams.toString()}`;
+      console.log("Generated shareable link:", shareableLink);
+      
       const templateParams = {
-        to_name: formData.solicitorName || "Valued Client",
+        to_name: formData.solicitorName || formData.fullName || "Valued Client",
         to_email: formData.emailId,
         message: `
-Dear ${formData.solicitorName || "Valued Client"},
+Dear ${formData.solicitorName || formData.fullName || "Valued Client"},
 
 I hope this email finds you well. As part of your personal injury assessment process, we have prepared a detailed questionnaire for you to complete.
 
@@ -91,6 +102,8 @@ Your Medical Assessment Team
         description: "Failed to send the email. Please try again.",
         variant: "destructive",
       });
+    } finally {
+      setIsSending(false);
     }
   };
 
@@ -102,9 +115,10 @@ Your Medical Assessment Team
           onClick={generateAndShareLink}
           variant="outline"
           className="flex items-center gap-2"
+          disabled={isSending}
         >
           <Share className="w-4 h-4" />
-          Share with Claimant
+          {isSending ? "Sending..." : "Share with Claimant"}
         </Button>
       </div>
 
