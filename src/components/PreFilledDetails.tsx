@@ -14,6 +14,7 @@ export function PreFilledDetails({ form }: { form: any }) {
   const [showOtherIdField, setShowOtherIdField] = useState(false);
   const [showOtherLivingWithField, setShowOtherLivingWithField] = useState(false);
   const [isSending, setIsSending] = useState(false);
+  const [recipientEmail, setRecipientEmail] = useState("");
 
   useEffect(() => {
     emailjs.init("YnnsjqOayi-IRBxy_");
@@ -36,19 +37,26 @@ export function PreFilledDetails({ form }: { form: any }) {
       const formData = form.getValues();
       console.log("Form data for sharing:", formData);
       
+      // Get recipient email - use the recipient email field instead of the form's email
+      const emailToSendTo = recipientEmail || formData.emailId;
+      
+      if (!emailToSendTo) {
+        toast({
+          title: "Error",
+          description: "Please enter a recipient email address",
+          variant: "destructive",
+        });
+        setIsSending(false);
+        return;
+      }
+      
       const preFillData: Record<string, string> = {};
       
-      // Include all relevant fields
-      const fieldsToInclude = [
-        'solicitorName', 'solicitorReference', 'instructingPartyName', 'instructingPartyReference',
-        'examinationLocation', 'medcoReference', 'accompaniedBy', 'mobileNumber', 'emailId',
-        'fullName', 'dateOfBirth', 'idType', 'address', 'occupation', 'workType', 'livingWith',
-        'childrenCount', 'accidentDate'
-      ];
-      
-      fieldsToInclude.forEach(field => {
-        if (formData[field]) {
-          preFillData[field] = formData[field].toString();
+      // Include all relevant fields from the form
+      Object.entries(formData).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== "") {
+          // Convert to string and add to preFillData
+          preFillData[key] = String(value);
         }
       });
       
@@ -63,10 +71,10 @@ export function PreFilledDetails({ form }: { form: any }) {
       console.log("Generated shareable link:", shareableLink);
       
       const templateParams = {
-        to_name: formData.solicitorName || formData.fullName || "Valued Client",
-        to_email: formData.emailId,
+        to_name: formData.fullName || "Valued Client",
+        to_email: emailToSendTo,
         message: `
-Dear ${formData.solicitorName || formData.fullName || "Valued Client"},
+Dear ${formData.fullName || "Valued Client"},
 
 I hope this email finds you well. As part of your personal injury assessment process, we have prepared a detailed questionnaire for you to complete.
 
@@ -93,8 +101,11 @@ Your Medical Assessment Team
 
       toast({
         title: "Link Shared",
-        description: "The questionnaire link has been sent to the provided email address.",
+        description: `The questionnaire link has been sent to ${emailToSendTo}`,
       });
+      
+      // Clear recipient email field after successful send
+      setRecipientEmail("");
     } catch (error) {
       console.error('EmailJS Error:', error);
       toast({
@@ -109,17 +120,27 @@ Your Medical Assessment Team
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <h2 className="text-xl font-semibold">Personal Information & Pre-filled Details</h2>
-        <Button
-          onClick={generateAndShareLink}
-          variant="outline"
-          className="flex items-center gap-2"
-          disabled={isSending}
-        >
-          <Share className="w-4 h-4" />
-          {isSending ? "Sending..." : "Share with Claimant"}
-        </Button>
+        
+        <div className="flex flex-col md:flex-row items-end gap-2">
+          <Input
+            placeholder="Enter recipient email"
+            value={recipientEmail}
+            onChange={(e) => setRecipientEmail(e.target.value)}
+            className="w-full md:w-64"
+            type="email"
+          />
+          <Button
+            onClick={generateAndShareLink}
+            variant="outline"
+            className="flex items-center gap-2 whitespace-nowrap"
+            disabled={isSending}
+          >
+            <Share className="w-4 h-4" />
+            {isSending ? "Sending..." : "Share with Claimant"}
+          </Button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

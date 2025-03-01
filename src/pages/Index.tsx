@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -98,19 +97,12 @@ export default function Index() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const fields = [
-      'solicitorName', 'solicitorReference', 'instructingPartyName', 'instructingPartyReference',
-      'examinationLocation', 'medcoReference', 'accompaniedBy', 'mobileNumber', 'emailId',
-      'fullName', 'dateOfBirth', 'idType', 'address', 'occupation', 'workType', 'livingWith',
-      'childrenCount', 'accidentDate'
-    ];
     
     const preFillData: Record<string, string> = {};
     
-    fields.forEach(field => {
-      const value = params.get(field);
+    params.forEach((value, key) => {
       if (value) {
-        preFillData[field] = value;
+        preFillData[key] = value;
       }
     });
     
