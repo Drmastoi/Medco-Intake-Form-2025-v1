@@ -1,4 +1,3 @@
-
 import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -8,6 +7,7 @@ import emailjs from '@emailjs/browser';
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect } from "react";
 import { Textarea } from "@/components/ui/textarea";
+import { supabase } from "@/integrations/supabase/client";
 
 export function PreFilledDetails({ form }: { form: any }) {
   const { toast } = useToast();
@@ -98,6 +98,30 @@ Your Medical Assessment Team
       );
       
       console.log('EmailJS Response:', response);
+
+      // Save the questionnaire tracking record
+      try {
+        const { data: userData } = await supabase.auth.getUser();
+        
+        const { error } = await supabase
+          .from('questionnaire_tracking')
+          .insert({
+            recipient_email: emailToSendTo,
+            recipient_name: formData.fullName || null,
+            sent_date: new Date().toISOString(),
+            questionnaire_link: shareableLink,
+            completed: false,
+            recipient_id: userData?.user?.id || null
+          } as any);
+          
+        if (error) {
+          console.error('Failed to save questionnaire tracking:', error);
+          throw error;
+        }
+      } catch (dbError) {
+        console.error('Failed to save questionnaire tracking:', dbError);
+        // Don't stop execution if the tracking fails
+      }
 
       toast({
         title: "Link Shared",

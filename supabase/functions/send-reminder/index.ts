@@ -1,95 +1,74 @@
 
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.33.1'
+import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import { Resend } from "npm:resend@2.0.0";
 
-// Define CORS headers
+const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
+
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type",
+};
+
+interface ReminderEmailRequest {
+  to: string;
+  name: string;
+  link: string;
 }
 
-Deno.serve(async (req) => {
+const handler = async (req: Request): Promise<Response> => {
   // Handle CORS preflight requests
-  if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders })
+  if (req.method === "OPTIONS") {
+    return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const supabaseUrl = Deno.env.get('SUPABASE_URL') || ''
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || ''
-    const supabase = createClient(supabaseUrl, supabaseKey)
+    const { to, name, link }: ReminderEmailRequest = await req.json();
 
-    const { claimantId, email, name, link } = await req.json()
-
-    if (!claimantId || !email || !link) {
+    if (!to || !link) {
       return new Response(
-        JSON.stringify({ error: 'Required parameters missing' }),
-        { 
-          status: 400, 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        JSON.stringify({ error: "Email address and link are required" }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
         }
-      )
+      );
     }
 
-    // Update the last reminder date
-    const { error: updateError } = await supabase
-      .from('questionnaire_tracking')
-      .update({ last_reminder_date: new Date().toISOString() })
-      .eq('id', claimantId)
+    const emailResponse = await resend.emails.send({
+      from: "Medical Assessment <onboarding@resend.dev>",
+      to: [to],
+      subject: "Reminder: Please Complete Your Medical Assessment Questionnaire",
+      html: `
+        <h2>Reminder: Your Medical Assessment Questionnaire</h2>
+        <p>Dear ${name},</p>
+        <p>This is a friendly reminder to complete your medical assessment questionnaire that was sent to you earlier.</p>
+        <p>Your input is important for your injury assessment and treatment planning.</p>
+        <p><a href="${link}" style="display: inline-block; background-color: #4F46E5; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; margin-top: 10px;">Complete Questionnaire</a></p>
+        <p>If you've already completed the questionnaire, please disregard this reminder.</p>
+        <p>Best regards,<br>Your Medical Assessment Team</p>
+      `,
+    });
 
-    if (updateError) {
-      console.error('Error updating reminder date:', updateError)
-      throw updateError
-    }
+    console.log("Reminder email sent successfully:", emailResponse);
 
-    // You would typically use a service like Resend here
-    // For this example, we'll simulate a successful email send
-    console.log(`Sending reminder email to ${name} <${email}> with link: ${link}`)
-    
-    // If you have Resend API key set up:
-    const resendApiKey = Deno.env.get('RESEND_API_KEY')
-    if (resendApiKey) {
-      const resendResponse = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${resendApiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          from: 'onboarding@resend.dev',
-          to: email,
-          subject: 'Reminder: Please Complete Your Questionnaire',
-          html: `
-            <div>
-              <p>Dear ${name},</p>
-              <p>This is a friendly reminder to complete your medical assessment questionnaire that was previously sent to you.</p>
-              <p>You can access your personalized questionnaire by clicking on the link below:</p>
-              <p><a href="${link}">Complete Your Questionnaire</a></p>
-              <p>If you have any questions or need assistance, please don't hesitate to contact us.</p>
-              <p>Best regards,<br>Medical Assessment Team</p>
-            </div>
-          `,
-        }),
-      })
-      
-      const resendData = await resendResponse.json()
-      console.log('Resend API response:', resendData)
-    }
-
-    return new Response(
-      JSON.stringify({ success: true }),
-      { 
-        status: 200, 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-      }
-    )
-  } catch (error) {
-    console.error('Error processing request:', error)
+    return new Response(JSON.stringify(emailResponse), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+        ...corsHeaders,
+      },
+    });
+  } catch (error: any) {
+    console.error("Error in send-reminder function:", error);
     return new Response(
       JSON.stringify({ error: error.message }),
-      { 
-        status: 500, 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
       }
-    )
+    );
   }
-})
+};
+
+serve(handler);
