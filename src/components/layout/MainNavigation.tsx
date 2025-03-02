@@ -3,8 +3,7 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { 
   Home, 
-  ClipboardList, 
-  FileCheck,
+  ClipboardList,
   Menu,
   X
 } from "lucide-react";
@@ -27,12 +26,6 @@ export function MainNavigation() {
       href: "/dashboard",
       icon: <ClipboardList className="w-5 h-5 mr-2" />,
       active: location.pathname === "/dashboard",
-    },
-    {
-      name: "Expert Dashboard",
-      href: "/expert-dashboard",
-      icon: <FileCheck className="w-5 h-5 mr-2" />,
-      active: location.pathname === "/expert-dashboard",
     },
   ];
 
