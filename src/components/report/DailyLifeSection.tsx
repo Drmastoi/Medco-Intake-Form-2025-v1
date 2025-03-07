@@ -1,4 +1,3 @@
-
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
 import { formatDate } from '../../utils/dateUtils';
 
@@ -126,9 +125,8 @@ const getPainSeverity = (value: string) => {
   return severities[value] || value;
 };
 
-// Helper function to check if prognosis is 9 months or more
 const isLongTermPrognosis = (severityValue: string) => {
-  return severityValue === "3"; // Severity 3 corresponds to 9 months prognosis
+  return severityValue === "3";
 };
 
 export const DailyLifeSection = ({ formData }: { formData: any }) => (
@@ -242,9 +240,5 @@ export const DailyLifeSection = ({ formData }: { formData: any }) => (
         <Text style={styles.bulletPoint}>• {formData.additionalInformationDetails}</Text>
       </View>
     )}
-
-    <Text style={styles.conclusionText}>
-      I have acknowledged the Letter of Instruction and I confirm there were no other injuries suffered by the client as told to me during the examination after direct questioning.
-    </Text>
   </View>
 );
