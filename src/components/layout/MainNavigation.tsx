@@ -2,6 +2,9 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { 
+  Home, 
+  ClipboardList, 
+  FileCheck,
   Menu,
   X
 } from "lucide-react";
@@ -12,7 +15,26 @@ export function MainNavigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const location = useLocation();
 
-  const navigationItems = [];
+  const navigationItems = [
+    {
+      name: "Form",
+      href: "/",
+      icon: <Home className="w-5 h-5 mr-2" />,
+      active: location.pathname === "/",
+    },
+    {
+      name: "Questionnaires",
+      href: "/dashboard",
+      icon: <ClipboardList className="w-5 h-5 mr-2" />,
+      active: location.pathname === "/dashboard",
+    },
+    {
+      name: "Expert Dashboard",
+      href: "/expert-dashboard",
+      icon: <FileCheck className="w-5 h-5 mr-2" />,
+      active: location.pathname === "/expert-dashboard",
+    },
+  ];
 
   return (
     <nav className="bg-white shadow">

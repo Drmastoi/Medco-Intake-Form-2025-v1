@@ -1,15 +1,16 @@
 
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Index from "./pages/Index";
+import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
-import Home from "./pages/Home";
 import { Toaster } from "@/components/ui/toaster";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/index" element={<Navigate to="/" replace />} />
+        <Route path="/" element={<Index />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Toaster />
