@@ -21,6 +21,7 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import * as Tabs from "@radix-ui/react-tabs";
 import { supabase } from "@/integrations/supabase/client";
+import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
   // Pre-filled fields (sender details)
@@ -262,23 +263,29 @@ export default function Index() {
         </div>
       )}
       
-      <Tabs.Root value={currentSection.toString()} onValueChange={handleTabChange} className="mb-6">
-        <Tabs.List className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 xl:grid-cols-13 gap-1 max-w-full mx-auto overflow-x-auto">
-          {tabNames.map((name, index) => (
-            <Tabs.Trigger
-              key={index}
-              value={index.toString()}
-              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-2 py-1 text-[10px] md:text-xs rounded-md whitespace-nowrap overflow-hidden text-ellipsis"
-            >
-              {name}
-            </Tabs.Trigger>
-          ))}
-        </Tabs.List>
-      </Tabs.Root>
+      <div className="overflow-x-auto -mx-4 px-4 mb-6 scrollbar-none">
+        <Tabs.Root value={currentSection.toString()} onValueChange={handleTabChange}>
+          <Tabs.List className="inline-flex min-w-full space-x-1 border-b border-gray-200 pb-1">
+            {tabNames.map((name, index) => (
+              <Tabs.Trigger
+                key={index}
+                value={index.toString()}
+                className={cn(
+                  "px-3 py-2 text-sm whitespace-nowrap rounded-t-lg transition-colors",
+                  "hover:bg-gray-100",
+                  "data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                )}
+              >
+                {name}
+              </Tabs.Trigger>
+            ))}
+          </Tabs.List>
+        </Tabs.Root>
+      </div>
       
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-6">
             {currentSection === 0 && <PreFilledDetails form={form} />}
             {currentSection === 1 && <IntakeFormSection2 form={form} />}
             {currentSection === 2 && <IntakeFormSection3 form={form} />}
