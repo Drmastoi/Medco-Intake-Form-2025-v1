@@ -6,9 +6,14 @@ const styles = StyleSheet.create({
   section: {
     marginBottom: 15,
   },
+  title: {
+    fontSize: 14,
+    marginBottom: 10,
+    fontWeight: 'bold',
+  },
   subtitle: {
     fontSize: 14,
-    marginBottom: 8,
+    marginBottom: 10,
     fontWeight: 'bold',
   },
   text: {
@@ -17,7 +22,7 @@ const styles = StyleSheet.create({
     lineHeight: 1.4,
   },
   sectionTitle: {
-    fontSize: 13,
+    fontSize: 14,
     fontWeight: 'bold',
     marginTop: 10,
     marginBottom: 5,
@@ -28,6 +33,7 @@ const styles = StyleSheet.create({
   bulletPoint: {
     marginLeft: 10,
     fontSize: 12,
+    lineHeight: 1.4,
   }
 });
 
@@ -109,83 +115,97 @@ const getPainSeverity = (value: string) => {
 
 export const DailyLifeSection = ({ formData }: { formData: any }) => (
   <View style={styles.section}>
-    <Text style={styles.subtitle}>Accident Information Summary</Text>
+    <Text style={styles.title}>COMPREHENSIVE INJURY AND IMPACT SUMMARY</Text>
 
     <View style={styles.paragraph}>
-      <Text style={styles.sectionTitle}>Date and Time</Text>
-      <Text style={styles.bulletPoint}>• Date of Accident: {formatDate(formData.accidentDate)}</Text>
-      <Text style={styles.bulletPoint}>• Time of Day: {getTimeOfDay(formData.accidentTime)}</Text>
-    </View>
-
-    <View style={styles.paragraph}>
-      <Text style={styles.sectionTitle}>Vehicle Details</Text>
-      <Text style={styles.bulletPoint}>• Claimant's Position: {getVehiclePosition(formData.claimantPosition)}</Text>
-      <Text style={styles.bulletPoint}>• Claimant's Vehicle Type: {getVehicleType(formData.claimantVehicle)}</Text>
-      <Text style={styles.bulletPoint}>• Other Vehicle Type: {getVehicleType(formData.otherVehicle)}</Text>
-      <Text style={styles.bulletPoint}>• Vehicle Status: {getVehicleStatus(formData.vehicleStatus)}</Text>
-      <Text style={styles.bulletPoint}>• Impact Location: {getImpactLocation(formData.impactLocation)}</Text>
-      <Text style={styles.bulletPoint}>• Vehicle Damage Level: {getDamageLevel(formData.vehicleDamage)}</Text>
-    </View>
-
-    <View style={styles.paragraph}>
-      <Text style={styles.sectionTitle}>Injury Details</Text>
+      <Text style={styles.sectionTitle}>Major Injuries Reported:</Text>
       {formData.neckPain === "1" && (
         <View>
-          <Text style={styles.bulletPoint}>• Neck Pain: Yes</Text>
+          <Text style={styles.bulletPoint}>• Neck Pain</Text>
           <Text style={styles.bulletPoint}>  - Initial Severity: {getPainSeverity(formData.neckPainInitialSeverity)}</Text>
           <Text style={styles.bulletPoint}>  - Current Severity: {getPainSeverity(formData.neckPainCurrentSeverity)}</Text>
           {formData.neckPainCurrentSeverity === "4" && (
-            <Text style={styles.bulletPoint}>  - Days to Resolve: {formData.neckPainResolveDays}</Text>
+            <Text style={styles.bulletPoint}>  - Resolved after: {formData.neckPainResolveDays} days</Text>
+          )}
+        </View>
+      )}
+      {formData.shoulderPain === "1" && (
+        <View>
+          <Text style={styles.bulletPoint}>• Shoulder Pain</Text>
+          <Text style={styles.bulletPoint}>  - Side Affected: {
+            formData.shoulderSide === "1" ? "Left" :
+            formData.shoulderSide === "2" ? "Right" :
+            formData.shoulderSide === "3" ? "Both" : "Not specified"
+          }</Text>
+          <Text style={styles.bulletPoint}>  - Initial Severity: {getPainSeverity(formData.shoulderPainInitialSeverity)}</Text>
+          <Text style={styles.bulletPoint}>  - Current Severity: {getPainSeverity(formData.shoulderPainCurrentSeverity)}</Text>
+          {formData.shoulderPainCurrentSeverity === "4" && (
+            <Text style={styles.bulletPoint}>  - Resolved after: {formData.shoulderPainResolveDays} days</Text>
+          )}
+        </View>
+      )}
+      {formData.backPain === "1" && (
+        <View>
+          <Text style={styles.bulletPoint}>• Back Pain</Text>
+          <Text style={styles.bulletPoint}>  - Initial Severity: {getPainSeverity(formData.backPainInitialSeverity)}</Text>
+          <Text style={styles.bulletPoint}>  - Current Severity: {getPainSeverity(formData.backPainCurrentSeverity)}</Text>
+          {formData.backPainCurrentSeverity === "4" && (
+            <Text style={styles.bulletPoint}>  - Resolved after: {formData.backPainResolveDays} days</Text>
+          )}
+        </View>
+      )}
+      {formData.headache === "1" && (
+        <View>
+          <Text style={styles.bulletPoint}>• Headaches</Text>
+          <Text style={styles.bulletPoint}>  - Initial Severity: {getPainSeverity(formData.headacheInitialSeverity)}</Text>
+          <Text style={styles.bulletPoint}>  - Current Severity: {getPainSeverity(formData.headacheCurrentSeverity)}</Text>
+          {formData.headacheCurrentSeverity === "4" && (
+            <Text style={styles.bulletPoint}>  - Resolved after: {formData.headacheResolveDays} days</Text>
           )}
         </View>
       )}
     </View>
 
     <View style={styles.paragraph}>
-      <Text style={styles.sectionTitle}>Treatment Information</Text>
-      {formData.sceneOfAccidentTreatment === "1" && (
+      <Text style={styles.sectionTitle}>Psychological Impacts:</Text>
+      {formData.travelAnxiety === "1" && (
         <View>
-          <Text style={styles.bulletPoint}>• Received treatment at scene: Yes</Text>
-          <Text style={styles.bulletPoint}>  - Treatments received: {formatList(formData.sceneOfAccidentTreatmentTypes)}</Text>
-        </View>
-      )}
-      {formData.wentToAE === "1" && (
-        <View>
-          <Text style={styles.bulletPoint}>• Visited A&E: Yes</Text>
-          <Text style={styles.bulletPoint}>  - Hospital: {formData.hospitalName}</Text>
-          <Text style={styles.bulletPoint}>  - Treatments received: {formatList(formData.hospitalTreatment)}</Text>
-        </View>
-      )}
-      {formData.wentToWalkInGP === "1" && (
-        <View>
-          <Text style={styles.bulletPoint}>• Visited Walk-in/GP: Yes</Text>
-          <Text style={styles.bulletPoint}>  - Days after accident: {formData.daysBeforeGPVisit}</Text>
+          <Text style={styles.bulletPoint}>• Travel Anxiety Present</Text>
+          <Text style={styles.bulletPoint}>  - Initial Severity: {getPainSeverity(formData.anxietyInitialSeverity)}</Text>
+          <Text style={styles.bulletPoint}>  - Current Severity: {getPainSeverity(formData.anxietyCurrentSeverity)}</Text>
+          {formData.anxietyCurrentSeverity === "4" && (
+            <Text style={styles.bulletPoint}>  - Resolved after: {formData.anxietyResolveDays} days</Text>
+          )}
         </View>
       )}
     </View>
 
     <View style={styles.paragraph}>
-      <Text style={styles.sectionTitle}>Impact on Daily Life</Text>
+      <Text style={styles.sectionTitle}>Impact on Daily Activities:</Text>
+      {formData.effectOnDomesticLiving === "1" && (
+        <Text style={styles.bulletPoint}>• Domestic activities affected: {formatList(formData.domesticEffects, formData.otherDomesticEffects)}</Text>
+      )}
+      {formData.sleepDisturbance === "1" && (
+        <Text style={styles.bulletPoint}>• Sleep disturbances: {formatList(formData.sleepDisturbances, formData.otherSleepDisturbances)}</Text>
+      )}
+    </View>
+
+    <View style={styles.paragraph}>
+      <Text style={styles.sectionTitle}>Impact on Work:</Text>
       {formData.daysOffWork > 0 && (
-        <Text style={styles.bulletPoint}>• Days off work: {formData.daysOffWork}</Text>
+        <Text style={styles.bulletPoint}>• Total days off work: {formData.daysOffWork}</Text>
       )}
       {formData.daysLightDuties > 0 && (
         <Text style={styles.bulletPoint}>• Days on light duties: {formData.daysLightDuties}</Text>
       )}
       {formData.workDifficulties?.length > 0 && (
-        <Text style={styles.bulletPoint}>• Work difficulties: {formatList(formData.workDifficulties, formData.otherWorkDifficulties)}</Text>
-      )}
-      {formData.sleepDisturbance === "1" && (
-        <Text style={styles.bulletPoint}>• Sleep disturbances: {formatList(formData.sleepDisturbances, formData.otherSleepDisturbances)}</Text>
-      )}
-      {formData.effectOnDomesticLiving === "1" && (
-        <Text style={styles.bulletPoint}>• Domestic activities affected: {formatList(formData.domesticEffects, formData.otherDomesticEffects)}</Text>
+        <Text style={styles.bulletPoint}>• Specific work difficulties: {formatList(formData.workDifficulties, formData.otherWorkDifficulties)}</Text>
       )}
     </View>
 
     {formData.additionalInformation === "1" && (
       <View style={styles.paragraph}>
-        <Text style={styles.sectionTitle}>Additional Information</Text>
+        <Text style={styles.sectionTitle}>Additional Information:</Text>
         <Text style={styles.bulletPoint}>• {formData.additionalInformationDetails}</Text>
       </View>
     )}

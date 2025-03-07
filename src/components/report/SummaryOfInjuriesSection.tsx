@@ -1,3 +1,4 @@
+
 import { Text, View } from '@react-pdf/renderer';
 import { styles } from './reportStyles';
 import { InjuriesTable } from './InjuriesTable';
@@ -10,10 +11,10 @@ export const SummaryOfInjuriesSection = ({ formData }: { formData: any }) => {
   return (
     <View style={styles.section}>
       <View style={styles.table}>
-        <Text style={styles.tableTitle}>SUMMARY OF INJURIES:</Text>
+        <Text style={styles.tableTitle}>SUMMARY OF INJURIES AND IMPACTS:</Text>
         
         <InjuriesTable 
-          title="Whiplash Injuries:"
+          title="Whiplash Related Injuries:"
           injuries={whiplashInjuries}
           classification={() => "Whiplash"}
         />
@@ -21,7 +22,7 @@ export const SummaryOfInjuriesSection = ({ formData }: { formData: any }) => {
         {nonWhiplashInjuries.length > 0 && (
           <View style={{ marginTop: 15 }}>
             <InjuriesTable 
-              title="Non-Whiplash Injuries:"
+              title="Other Injuries and Impacts:"
               injuries={nonWhiplashInjuries}
               classification={(injury) => injury.injury === "Headache" ? "WAD" : "Psychological"}
             />
