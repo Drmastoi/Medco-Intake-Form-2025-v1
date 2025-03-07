@@ -16,6 +16,8 @@ interface SendReportRequest {
   patientName: string;
   referenceNumber: string;
   isClaimantCopy?: boolean;
+  signature?: string;
+  signatureDate?: string;
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -25,9 +27,20 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { to, pdfBase64, patientName, referenceNumber, isClaimantCopy }: SendReportRequest = await req.json();
+    const { 
+      to, 
+      pdfBase64, 
+      patientName, 
+      referenceNumber, 
+      isClaimantCopy,
+      signature,
+      signatureDate
+    }: SendReportRequest = await req.json();
 
     console.log("Sending report email to:", to);
+
+    // Format the signature date if provided
+    const formattedDate = signatureDate ? new Date(signatureDate).toLocaleString('en-GB') : 'Not provided';
 
     const emailResponse = await resend.emails.send({
       from: "MEDCO Reports <onboarding@resend.dev>",
@@ -40,9 +53,11 @@ const handler = async (req: Request): Promise<Response> => {
         ${isClaimantCopy ? `
         <p>A full copy of your medical report has been sent to our medical expert for review.</p>
         <p>Please save your reference number for future correspondence.</p>
+        ${signature ? `<p>Confirmed and signed by: ${signature} on ${formattedDate}</p>` : ''}
         ` : `
         <p>This is a full medical report for your review.</p>
         <p>Please assess and provide your expert opinion on the case.</p>
+        ${signature ? `<p>Patient signature: ${signature} on ${formattedDate}</p>` : ''}
         `}
         <p>Best regards,<br>Medical Assessment Team</p>
       `,

@@ -1,5 +1,5 @@
 
-import { Document, Page, Text, StyleSheet } from '@react-pdf/renderer';
+import { Document, Page, Text, StyleSheet, View } from '@react-pdf/renderer';
 import { PersonalDetailsSection } from './PersonalDetailsSection';
 import { AccidentHistorySection } from './AccidentHistorySection';
 import { DailyLifeSection } from './DailyLifeSection';
@@ -49,10 +49,33 @@ const styles = StyleSheet.create({
   },
   section: {
     marginBottom: 15,
-  }
+  },
+  signatureSection: {
+    marginTop: 20,
+    borderTop: 1,
+    paddingTop: 10,
+  },
+  signatureText: {
+    fontSize: 10,
+    marginBottom: 4,
+    fontFamily: 'Helvetica',
+  },
+  signatureLine: {
+    borderBottom: 1,
+    width: '60%',
+    marginBottom: 10,
+  },
 });
 
-export const ClaimantReportPDF = ({ formData }: { formData: any }) => (
+export const ClaimantReportPDF = ({ 
+  formData, 
+  signature, 
+  signatureDate 
+}: { 
+  formData: any; 
+  signature?: string;
+  signatureDate?: string;
+}) => (
   <Document>
     <Page size="A4" style={styles.page}>
       <Text style={styles.title}>CLAIMANT SUMMARY REPORT</Text>
@@ -81,6 +104,24 @@ export const ClaimantReportPDF = ({ formData }: { formData: any }) => (
       <Text style={styles.text}>
         Report Date: {formatDate(new Date().toISOString())}
       </Text>
+      
+      {/* Signature Section */}
+      <View style={styles.signatureSection}>
+        <Text style={styles.signatureText}>Claimant Signature:</Text>
+        {signature ? (
+          <Text style={styles.signatureText}>{signature}</Text>
+        ) : (
+          <View style={styles.signatureLine} />
+        )}
+        
+        <Text style={styles.signatureText}>
+          Date and Time: {signatureDate ? formatDate(signatureDate) + ' ' + new Date(signatureDate).toLocaleTimeString() : '_________________'}
+        </Text>
+        
+        <Text style={styles.text} style={{marginTop: 10}}>
+          By signing above, I confirm my agreement with the submission of this report.
+        </Text>
+      </View>
       
       <Text 
         style={styles.pageNumber} 

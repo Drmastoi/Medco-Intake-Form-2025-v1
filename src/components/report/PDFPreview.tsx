@@ -21,9 +21,25 @@ export function PDFPreview({
   isSubmitting, 
   onSubmit 
 }: PDFPreviewProps) {
+  // Get current date and time for signature timestamp
+  const signatureDate = useMemo(() => new Date().toISOString(), [signature]);
+  
   // Memoize the PDF documents to prevent unnecessary re-renders
-  const claimantDocument = useMemo(() => <ClaimantReportPDF formData={formData} />, [formData]);
-  const fullDocument = useMemo(() => <MedcoReport formData={formData} />, [formData]);
+  const claimantDocument = useMemo(() => (
+    <ClaimantReportPDF 
+      formData={formData} 
+      signature={signature} 
+      signatureDate={signatureDate}
+    />
+  ), [formData, signature, signatureDate]);
+  
+  const fullDocument = useMemo(() => (
+    <MedcoReport 
+      formData={formData} 
+      signature={signature} 
+      signatureDate={signatureDate}
+    />
+  ), [formData, signature, signatureDate]);
 
   return (
     <div className="space-y-6">
