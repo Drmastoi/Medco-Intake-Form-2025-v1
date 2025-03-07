@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -20,12 +19,14 @@ import { IntakeFormSummary } from "@/components/IntakeFormSummary";
 import { IntakeFormNavigation } from "@/components/intake-form/IntakeFormNavigation";
 import { formSchema, type FormSchema } from "@/schemas/intakeFormSchema";
 import { useFormSubmission } from "@/components/intake-form/useFormSubmission";
+import { PrefilledDetailsSection } from "@/components/PrefilledDetailsSection";
 
 export default function Index() {
   const [currentSection, setCurrentSection] = useState(0);
-  const totalSections = 13;
+  const totalSections = 14;
 
   const tabNames = [
+    "Prefilled Details",
     "Personal Info",
     "Accident Details",
     "Neck Pain",
@@ -54,6 +55,8 @@ export default function Index() {
       accompaniedBy: "",
       mobileNumber: "",
       emailId: "",
+      dateOfExamination: new Date().toISOString().split('T')[0],
+      dateOfReport: new Date().toISOString().split('T')[0],
       
       // Existing default values
       fullName: "",
@@ -104,6 +107,10 @@ export default function Index() {
       instructingPartyName: params.get('instructingPartyName') || '',
       instructingPartyReference: params.get('instructingPartyReference') || '',
       examinationLocation: params.get('examinationLocation') || '',
+      dateOfExamination: params.get('dateOfExamination') || new Date().toISOString().split('T')[0],
+      dateOfReport: params.get('dateOfReport') || new Date().toISOString().split('T')[0],
+      medcoReference: params.get('medcoReference') || '',
+      emailId: params.get('emailId') || '',
     };
     
     if (Object.values(preFillData).some(value => value)) {
@@ -117,7 +124,16 @@ export default function Index() {
 
       {currentSection === 0 && (
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 text-sm">
-          <h2 className="text-base font-semibold text-blue-900 mb-2">Quick Guide</h2>
+          <h2 className="text-base font-semibold text-blue-900 mb-2">Expert Workflow Guide</h2>
+          <p className="text-blue-800">
+            Fill in the prefilled details section and share with the claimant. The claimant will complete the rest of the form and then generate a summary report.
+          </p>
+        </div>
+      )}
+      
+      {currentSection === 1 && (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 text-sm">
+          <h2 className="text-base font-semibold text-blue-900 mb-2">Claimant Guide</h2>
           <p className="text-blue-800">
             Complete all sections to report your injuries and circumstances. Click summary to generate report and send it to medical expert and download a copy for your records.
           </p>
@@ -133,19 +149,20 @@ export default function Index() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
           <div className="grid grid-cols-1 gap-6">
-            {currentSection === 0 && <PreFilledDetails form={form} />}
-            {currentSection === 1 && <IntakeFormSection2 form={form} />}
-            {currentSection === 2 && <IntakeFormSection3 form={form} />}
-            {currentSection === 3 && <IntakeFormSection4 form={form} />}
-            {currentSection === 4 && <IntakeFormSection5 form={form} />}
-            {currentSection === 5 && <IntakeFormSection6 form={form} />}
-            {currentSection === 6 && <IntakeFormSection7 form={form} />}
-            {currentSection === 7 && <IntakeFormSection8 form={form} />}
-            {currentSection === 8 && <IntakeFormSection9 form={form} />}
-            {currentSection === 9 && <IntakeFormSection10 form={form} />}
-            {currentSection === 10 && <IntakeFormSection11 form={form} />}
-            {currentSection === 11 && <IntakeFormSection12 form={form} />}
-            {currentSection === 12 && <IntakeFormSummary form={form} />}
+            {currentSection === 0 && <PrefilledDetailsSection form={form} />}
+            {currentSection === 1 && <PreFilledDetails form={form} />}
+            {currentSection === 2 && <IntakeFormSection2 form={form} />}
+            {currentSection === 3 && <IntakeFormSection3 form={form} />}
+            {currentSection === 4 && <IntakeFormSection4 form={form} />}
+            {currentSection === 5 && <IntakeFormSection5 form={form} />}
+            {currentSection === 6 && <IntakeFormSection6 form={form} />}
+            {currentSection === 7 && <IntakeFormSection7 form={form} />}
+            {currentSection === 8 && <IntakeFormSection8 form={form} />}
+            {currentSection === 9 && <IntakeFormSection9 form={form} />}
+            {currentSection === 10 && <IntakeFormSection10 form={form} />}
+            {currentSection === 11 && <IntakeFormSection11 form={form} />}
+            {currentSection === 12 && <IntakeFormSection12 form={form} />}
+            {currentSection === 13 && <IntakeFormSummary form={form} />}
           </div>
           
           <div className="flex justify-between">

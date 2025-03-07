@@ -1,3 +1,4 @@
+
 import * as z from "zod";
 
 export const formSchema = z.object({
@@ -7,6 +8,8 @@ export const formSchema = z.object({
   instructingPartyName: z.string(),
   instructingPartyReference: z.string(),
   examinationLocation: z.string(),
+  dateOfExamination: z.string(),
+  dateOfReport: z.string(),
   medcoReference: z.string(),
   accompaniedBy: z.string(),
   mobileNumber: z.string(),
