@@ -1,4 +1,3 @@
-
 import {
   FormControl,
   FormField,
@@ -8,13 +7,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import { HeadacheStart } from "./headache/HeadacheStart";
-import { HeadacheSeverity } from "./headache/HeadacheSeverity";
-import { HeadacheHistory } from "./headache/HeadacheHistory";
+import { Textarea } from "@/components/ui/textarea";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 export function IntakeFormSection6({ form }: { form: any }) {
   const headache = form.watch("headache");
   const headacheCurrentSeverity = form.watch("headacheCurrentSeverity");
+  const hasHeadacheHistory = form.watch("hasHeadacheHistory");
 
   return (
     <div className="space-y-4">
@@ -42,45 +41,201 @@ export function IntakeFormSection6({ form }: { form: any }) {
       />
 
       {headache === "1" && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-4">
-            <HeadacheStart form={form} />
-            <HeadacheSeverity 
-              form={form}
-              name="headacheInitialSeverity"
-              label="Initial Severity of pain"
-            />
-          </div>
-
-          <div className="space-y-4">
-            <HeadacheSeverity 
-              form={form}
-              name="headacheCurrentSeverity"
-              label="Current Severity of pain"
-              includeResolved={true}
-            />
-
-            {headacheCurrentSeverity === "4" && (
-              <FormField
-                control={form.control}
-                name="headacheResolveDays"
-                rules={{ required: "This field is required when pain is resolved" }}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-medium text-red-500">* If resolved, how many days did it take to resolve?</FormLabel>
-                    <FormControl>
-                      <Input type="number" placeholder="Enter number of days" {...field} required />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+        <>
+          <FormField
+            control={form.control}
+            name="headacheStart"
+            render={({ field }) => (
+              <FormItem className="space-y-3">
+                <FormLabel>When did this pain start?</FormLabel>
+                <FormControl>
+                  <div className="flex flex-col space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "1"}
+                        onCheckedChange={() => field.onChange("1")}
+                      />
+                      <label>Same day</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "2"}
+                        onCheckedChange={() => field.onChange("2")}
+                      />
+                      <label>Next Day</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "3"}
+                        onCheckedChange={() => field.onChange("3")}
+                      />
+                      <label>Few days Later</label>
+                    </div>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
-          </div>
-        </div>
+          />
+
+          <FormField
+            control={form.control}
+            name="headacheInitialSeverity"
+            render={({ field }) => (
+              <FormItem className="space-y-3">
+                <FormLabel>Initial Severity of pain</FormLabel>
+                <FormControl>
+                  <div className="flex flex-col space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "1"}
+                        onCheckedChange={() => field.onChange("1")}
+                      />
+                      <label>Mild</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "2"}
+                        onCheckedChange={() => field.onChange("2")}
+                      />
+                      <label>Moderate</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "3"}
+                        onCheckedChange={() => field.onChange("3")}
+                      />
+                      <label>Severe</label>
+                    </div>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="headacheCurrentSeverity"
+            render={({ field }) => (
+              <FormItem className="space-y-3">
+                <FormLabel>Current Severity of pain</FormLabel>
+                <FormControl>
+                  <div className="flex flex-col space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "1"}
+                        onCheckedChange={() => field.onChange("1")}
+                      />
+                      <label>Mild</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "2"}
+                        onCheckedChange={() => field.onChange("2")}
+                      />
+                      <label>Moderate</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "3"}
+                        onCheckedChange={() => field.onChange("3")}
+                      />
+                      <label>Severe</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value === "4"}
+                        onCheckedChange={() => field.onChange("4")}
+                      />
+                      <label>Resolved</label>
+                    </div>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {headacheCurrentSeverity === "4" && (
+            <FormField
+              control={form.control}
+              name="headacheResolveDays"
+              rules={{ required: "This field is required when pain is resolved" }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-medium text-red-500">* If resolved, how many days did it take to resolve?</FormLabel>
+                  <FormControl>
+                    <Input type="number" placeholder="Enter number of days" {...field} required />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
+
+          <FormField
+            control={form.control}
+            name="headachePastHistory"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Past Medical History of headache before the accident</FormLabel>
+                <FormControl>
+                  <Textarea placeholder="Enter past medical history" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </>
       )}
 
-      <HeadacheHistory form={form} />
+      <FormField
+        control={form.control}
+        name="hasHeadacheHistory"
+        render={({ field }) => (
+          <FormItem className="space-y-3">
+            <FormLabel>Do you have any past medical history of headache before the accident?</FormLabel>
+            <FormControl>
+              <RadioGroup
+                onValueChange={field.onChange}
+                defaultValue={field.value}
+                className="flex flex-col space-y-1"
+              >
+                <FormItem className="flex items-center space-x-3 space-y-0">
+                  <FormControl>
+                    <RadioGroupItem value="yes" />
+                  </FormControl>
+                  <FormLabel className="font-normal">Yes</FormLabel>
+                </FormItem>
+                <FormItem className="flex items-center space-x-3 space-y-0">
+                  <FormControl>
+                    <RadioGroupItem value="no" />
+                  </FormControl>
+                  <FormLabel className="font-normal">No</FormLabel>
+                </FormItem>
+              </RadioGroup>
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      {hasHeadacheHistory === "yes" && (
+        <FormField
+          control={form.control}
+          name="headachePastHistory"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Please describe your past medical history of headache</FormLabel>
+              <FormControl>
+                <Textarea placeholder="Enter past medical history" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      )}
     </div>
   );
 }

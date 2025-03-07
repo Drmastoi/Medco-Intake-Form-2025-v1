@@ -55,62 +55,54 @@ export function ReportTable({ reports, onReviewReport, onRefetch }: ReportTableP
         </TableRow>
       </TableHeader>
       <TableBody>
-        {reports.length === 0 ? (
-          <TableRow>
-            <TableCell colSpan={4} className="text-center py-8 text-muted-foreground">
-              No reports found
+        {reports.map((report) => (
+          <TableRow key={report.id}>
+            <TableCell>{report.profiles?.full_name || 'Anonymous'}</TableCell>
+            <TableCell>
+              {new Date(report.created_at).toLocaleDateString()}
+            </TableCell>
+            <TableCell>
+              <span className={`px-2 py-1 rounded-full text-sm ${
+                report.status === 'approved' ? 'bg-green-100 text-green-800' :
+                report.status === 'rejected' ? 'bg-red-100 text-red-800' :
+                'bg-yellow-100 text-yellow-800'
+              }`}>
+                {report.status}
+              </span>
+            </TableCell>
+            <TableCell>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => viewReport(report)}
+                >
+                  <Eye className="w-4 h-4" />
+                </Button>
+                {report.status === 'pending_review' && (
+                  <>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="text-green-600"
+                      onClick={() => onReviewReport(report)}
+                    >
+                      <CheckCircle className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="text-red-600"
+                      onClick={() => onReviewReport(report)}
+                    >
+                      <XCircle className="w-4 h-4" />
+                    </Button>
+                  </>
+                )}
+              </div>
             </TableCell>
           </TableRow>
-        ) : (
-          reports.map((report) => (
-            <TableRow key={report.id}>
-              <TableCell>{report.profiles?.full_name || 'Anonymous'}</TableCell>
-              <TableCell>
-                {new Date(report.created_at).toLocaleDateString()}
-              </TableCell>
-              <TableCell>
-                <span className={`px-2 py-1 rounded-full text-sm ${
-                  report.status === 'approved' ? 'bg-green-100 text-green-800' :
-                  report.status === 'rejected' ? 'bg-red-100 text-red-800' :
-                  'bg-yellow-100 text-yellow-800'
-                }`}>
-                  {report.status}
-                </span>
-              </TableCell>
-              <TableCell>
-                <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => viewReport(report)}
-                  >
-                    <Eye className="w-4 h-4" />
-                  </Button>
-                  {report.status === 'pending_review' && (
-                    <>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="text-green-600"
-                        onClick={() => onReviewReport(report)}
-                      >
-                        <CheckCircle className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="text-red-600"
-                        onClick={() => onReviewReport(report)}
-                      >
-                        <XCircle className="w-4 h-4" />
-                      </Button>
-                    </>
-                  )}
-                </div>
-              </TableCell>
-            </TableRow>
-          ))
-        )}
+        ))}
       </TableBody>
     </Table>
   );

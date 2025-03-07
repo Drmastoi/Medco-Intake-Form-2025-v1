@@ -5,76 +5,54 @@ import { Share } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import emailjs from '@emailjs/browser';
 import { useToast } from "@/hooks/use-toast";
-import { useState, useEffect } from "react";
-import { Textarea } from "@/components/ui/textarea";
-import { supabase } from "@/integrations/supabase/client";
+import { useEffect, useState } from "react";
 
 export function PreFilledDetails({ form }: { form: any }) {
   const { toast } = useToast();
   const [showOtherIdField, setShowOtherIdField] = useState(false);
   const [showOtherLivingWithField, setShowOtherLivingWithField] = useState(false);
-  const [isSending, setIsSending] = useState(false);
-  const [recipientEmail, setRecipientEmail] = useState("");
 
   useEffect(() => {
     emailjs.init("YnnsjqOayi-IRBxy_");
-    
-    // Set field values for 'Other' options
-    const idTypeValue = form.getValues("idType");
-    if (idTypeValue === "4" || idTypeValue?.startsWith("Other:")) {
-      setShowOtherIdField(true);
-    }
-    
-    const livingWithValue = form.getValues("livingWith");
-    if (livingWithValue === "6" || livingWithValue?.startsWith("Other:")) {
-      setShowOtherLivingWithField(true);
-    }
-  }, [form]);
+  }, []);
 
   const generateAndShareLink = async () => {
-    setIsSending(true);
-    try {
-      const formData = form.getValues();
-      console.log("Form data for sharing:", formData);
-      
-      // Get recipient email - use the recipient email field instead of the form's email
-      const emailToSendTo = recipientEmail || formData.emailId;
-      
-      if (!emailToSendTo) {
-        toast({
-          title: "Error",
-          description: "Please enter a recipient email address",
-          variant: "destructive",
-        });
-        setIsSending(false);
-        return;
+    const formData = form.getValues();
+    
+    const preFillData = {
+      solicitorName: formData.solicitorName || '',
+      solicitorReference: formData.solicitorReference || '',
+      instructingPartyName: formData.instructingPartyName || '',
+      instructingPartyReference: formData.instructingPartyReference || '',
+      examinationLocation: formData.examinationLocation || '',
+      medcoReference: formData.medcoReference || '',
+      accompaniedBy: formData.accompaniedBy || '',
+      mobileNumber: formData.mobileNumber || '',
+      emailId: formData.emailId || '',
+      fullName: formData.fullName || '',
+      dateOfBirth: formData.dateOfBirth || '',
+      idType: formData.idType || '',
+      occupation: formData.occupation || '',
+      workType: formData.workType || '',
+      livingWith: formData.livingWith || '',
+      childrenCount: formData.childrenCount || '',
+    };
+    
+    const queryParams = new URLSearchParams();
+    Object.entries(preFillData).forEach(([key, value]) => {
+      if (value) {
+        queryParams.append(key, value.toString());
       }
-      
-      const preFillData: Record<string, string> = {};
-      
-      // Include all relevant fields from the form
-      Object.entries(formData).forEach(([key, value]) => {
-        if (value !== undefined && value !== null && value !== "") {
-          // Convert to string and add to preFillData
-          preFillData[key] = String(value);
-        }
-      });
-      
-      const queryParams = new URLSearchParams();
-      Object.entries(preFillData).forEach(([key, value]) => {
-        if (value) {
-          queryParams.append(key, value);
-        }
-      });
-      
-      const shareableLink = `${window.location.origin}?${queryParams.toString()}`;
-      console.log("Generated shareable link:", shareableLink);
-      
+    });
+    
+    const shareableLink = `${window.location.origin}?${queryParams.toString()}`;
+    
+    try {
       const templateParams = {
-        to_name: formData.fullName || "Valued Client",
-        to_email: emailToSendTo,
+        to_name: formData.solicitorName || "Valued Client",
+        to_email: formData.emailId,
         message: `
-Dear ${formData.fullName || "Valued Client"},
+Dear ${formData.solicitorName || "Valued Client"},
 
 I hope this email finds you well. As part of your personal injury assessment process, we have prepared a detailed questionnaire for you to complete.
 
@@ -99,37 +77,10 @@ Your Medical Assessment Team
       
       console.log('EmailJS Response:', response);
 
-      // Save the questionnaire tracking record
-      try {
-        const { data: userData } = await supabase.auth.getUser();
-        
-        const { error } = await supabase
-          .from('questionnaire_tracking')
-          .insert({
-            recipient_email: emailToSendTo,
-            recipient_name: formData.fullName || null,
-            sent_date: new Date().toISOString(),
-            questionnaire_link: shareableLink,
-            completed: false,
-            recipient_id: userData?.user?.id || null
-          } as any);
-          
-        if (error) {
-          console.error('Failed to save questionnaire tracking:', error);
-          throw error;
-        }
-      } catch (dbError) {
-        console.error('Failed to save questionnaire tracking:', dbError);
-        // Don't stop execution if the tracking fails
-      }
-
       toast({
         title: "Link Shared",
-        description: `The questionnaire link has been sent to ${emailToSendTo}`,
+        description: "The questionnaire link has been sent to the provided email address.",
       });
-      
-      // Clear recipient email field after successful send
-      setRecipientEmail("");
     } catch (error) {
       console.error('EmailJS Error:', error);
       toast({
@@ -137,34 +88,21 @@ Your Medical Assessment Team
         description: "Failed to send the email. Please try again.",
         variant: "destructive",
       });
-    } finally {
-      setIsSending(false);
     }
   };
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+      <div className="flex justify-between items-center mb-8">
         <h2 className="text-xl font-semibold">Personal Information & Pre-filled Details</h2>
-        
-        <div className="flex flex-col md:flex-row items-end gap-2">
-          <Input
-            placeholder="Enter recipient email"
-            value={recipientEmail}
-            onChange={(e) => setRecipientEmail(e.target.value)}
-            className="w-full md:w-64"
-            type="email"
-          />
-          <Button
-            onClick={generateAndShareLink}
-            variant="outline"
-            className="flex items-center gap-2 whitespace-nowrap"
-            disabled={isSending}
-          >
-            <Share className="w-4 h-4" />
-            {isSending ? "Sending..." : "Share with Claimant"}
-          </Button>
-        </div>
+        <Button
+          onClick={generateAndShareLink}
+          variant="outline"
+          className="flex items-center gap-2"
+        >
+          <Share className="w-4 h-4" />
+          Share with Claimant
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -189,19 +127,6 @@ Your Medical Assessment Team
               <FormLabel>Date of Birth</FormLabel>
               <FormControl>
                 <Input type="date" {...field} />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="address"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Address</FormLabel>
-              <FormControl>
-                <Textarea placeholder="Enter your address" {...field} />
               </FormControl>
             </FormItem>
           )}
@@ -267,19 +192,6 @@ Your Medical Assessment Team
               <FormLabel>Occupation</FormLabel>
               <FormControl>
                 <Input placeholder="Enter your occupation" {...field} />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="accidentDate"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Date of Accident</FormLabel>
-              <FormControl>
-                <Input type="date" {...field} />
               </FormControl>
             </FormItem>
           )}

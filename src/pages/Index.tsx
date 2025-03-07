@@ -1,9 +1,8 @@
-
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import * as z from "zod";
 import { Form } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
 import { PreFilledDetails } from "@/components/PreFilledDetails";
 import { IntakeFormSection2 } from "@/components/IntakeFormSection2";
 import { IntakeFormSection3 } from "@/components/IntakeFormSection3";
@@ -17,13 +16,70 @@ import { IntakeFormSection10 } from "@/components/IntakeFormSection10";
 import { IntakeFormSection11 } from "@/components/IntakeFormSection11";
 import { IntakeFormSection12 } from "@/components/IntakeFormSection12";
 import { IntakeFormSummary } from "@/components/IntakeFormSummary";
-import { IntakeFormNavigation } from "@/components/intake-form/IntakeFormNavigation";
-import { formSchema, type FormSchema } from "@/schemas/intakeFormSchema";
-import { useFormSubmission } from "@/components/intake-form/useFormSubmission";
-import { MainNavigation } from "@/components/layout/MainNavigation";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+import * as Tabs from "@radix-ui/react-tabs";
+
+const formSchema = z.object({
+  // Pre-filled fields (sender details)
+  solicitorName: z.string(),
+  solicitorReference: z.string(),
+  instructingPartyName: z.string(),
+  instructingPartyReference: z.string(),
+  examinationLocation: z.string(),
+  medcoReference: z.string(),
+  accompaniedBy: z.string(),
+  mobileNumber: z.string(),
+  emailId: z.string().email(),
+  
+  // Existing fields
+  fullName: z.string().min(2, { message: "Name must be at least 2 characters" }),
+  dateOfBirth: z.string(),
+  idType: z.enum(["1", "2", "3"]),
+  address: z.string(),
+  occupation: z.string(),
+  workType: z.enum(["1", "2"]),
+  livingWith: z.enum(["1", "2", "3", "4", "5", "6"]),
+  childrenCount: z.string(),
+  
+  // Section 2 - Accident Information
+  accidentDate: z.string(),
+  accidentTime: z.enum(["1", "2", "3", "4"]),
+  vehiclePosition: z.enum(["1", "2", "3"]),
+  
+  // Section 3 - Medical Information
+  neckPain: z.enum(["1", "2"]),
+  additionalInfo: z.string().optional(),
+  
+  // Section 4 - Shoulder Pain Information
+  shoulderPain: z.enum(["1", "2"]),
+  shoulderSide: z.enum(["1", "2", "3"]),
+  shoulderPainStart: z.enum(["1", "2", "3"]),
+  shoulderPainInitialSeverity: z.enum(["1", "2", "3"]),
+  shoulderPainCurrentSeverity: z.enum(["1", "2", "3", "4"]),
+  shoulderPainResolveDays: z.string().optional(),
+
+  // Section 5 - Back Pain Information
+  backPain: z.enum(["1", "2"]),
+  backLocation: z.enum(["1", "2", "3", "4"]),
+  backPainStart: z.enum(["1", "2", "3"]),
+  backPainInitialSeverity: z.enum(["1", "2", "3"]),
+  backPainCurrentSeverity: z.enum(["1", "2", "3", "4"]),
+  backPainResolveDays: z.string().optional(),
+
+  // Section 6 - Headache Information
+  headache: z.enum(["1", "2"]),
+  headacheStart: z.enum(["1", "2", "3"]),
+  headacheInitialSeverity: z.enum(["1", "2", "3"]),
+  headacheCurrentSeverity: z.enum(["1", "2", "3", "4"]),
+  headacheResolveDays: z.string().optional(),
+  headachePastHistory: z.string().optional(),
+});
 
 export default function Index() {
   const [currentSection, setCurrentSection] = useState(0);
+  const { toast } = useToast();
   const totalSections = 13;
 
   const tabNames = [
@@ -39,10 +95,10 @@ export default function Index() {
     "Treatment",
     "Impact on Lifestyle",
     "Past Medical History",
-    "Summary Report"
+    "Summary"
   ];
   
-  const form = useForm<FormSchema>({
+  const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       // Pre-filled fields
@@ -91,90 +147,102 @@ export default function Index() {
     },
   });
 
-  const { handleSubmit } = useFormSubmission();
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    toast({
+      title: "Form submitted",
+      description: "Your intake form has been submitted successfully.",
+    });
+    console.log(values);
+  }
 
   const handleTabChange = (value: string) => {
     setCurrentSection(parseInt(value));
   };
 
-  useEffect(() => {
+  // Add this at the beginning of the component to handle pre-filled data
+  React.useEffect(() => {
     const params = new URLSearchParams(window.location.search);
+    const preFillData = {
+      solicitorName: params.get('solicitorName') || '',
+      solicitorReference: params.get('solicitorReference') || '',
+      instructingPartyName: params.get('instructingPartyName') || '',
+      instructingPartyReference: params.get('instructingPartyReference') || '',
+      examinationLocation: params.get('examinationLocation') || '',
+    };
     
-    const preFillData: Record<string, string> = {};
-    
-    params.forEach((value, key) => {
-      if (value) {
-        preFillData[key] = value;
-      }
-    });
-    
-    if (Object.keys(preFillData).length > 0) {
-      console.log("Prefilling form with data:", preFillData);
+    if (Object.values(preFillData).some(value => value)) {
       form.reset(preFillData);
     }
-  }, [form]);
+  }, []);
 
   return (
-    <>
-      <MainNavigation />
-      <div className="container mx-auto py-10 px-4">
-        <h1 className="text-2xl font-bold mb-8">Personal Injury Assessment Questionnaire</h1>
+    <div className="container mx-auto py-10">
+      <h1 className="text-2xl font-bold mb-8">Personal Injury Assessment Questionnaire</h1>
 
-        {currentSection === 0 && (
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 text-sm">
-            <h2 className="text-base font-semibold text-blue-900 mb-2">Quick Guide</h2>
-            <p className="text-blue-800">
-              Complete all sections to report your injuries and circumstances. Click summary to generate report and send it to medical expert and download a copy for your records.
-            </p>
-          </div>
-        )}
-        
-        <IntakeFormNavigation 
-          currentSection={currentSection}
-          onTabChange={handleTabChange}
-          tabNames={tabNames}
-        />
-        
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
-            <div className="grid grid-cols-1 gap-6">
-              {currentSection === 0 && <PreFilledDetails form={form} />}
-              {currentSection === 1 && <IntakeFormSection2 form={form} />}
-              {currentSection === 2 && <IntakeFormSection3 form={form} />}
-              {currentSection === 3 && <IntakeFormSection4 form={form} />}
-              {currentSection === 4 && <IntakeFormSection5 form={form} />}
-              {currentSection === 5 && <IntakeFormSection6 form={form} />}
-              {currentSection === 6 && <IntakeFormSection7 form={form} />}
-              {currentSection === 7 && <IntakeFormSection8 form={form} />}
-              {currentSection === 8 && <IntakeFormSection9 form={form} />}
-              {currentSection === 9 && <IntakeFormSection10 form={form} />}
-              {currentSection === 10 && <IntakeFormSection11 form={form} />}
-              {currentSection === 11 && <IntakeFormSection12 form={form} />}
-              {currentSection === 12 && <IntakeFormSummary form={form} />}
-            </div>
+      {currentSection === 0 && (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 text-sm">
+          <h2 className="text-base font-semibold text-blue-900 mb-2">Quick Guide</h2>
+          <ul className="space-y-1 text-blue-800">
+            <li>• Complete all sections to help us understand your injury circumstances</li>
+            <li>• Navigate using the tabs above</li>
+            <li>• Progress saves automatically - return anytime using your shared link</li>
+            <li>• Skip uncertain questions for discussion during examination</li>
+            <li>• Use Previous/Next buttons to move between sections</li>
+          </ul>
+        </div>
+      )}
+      
+      <Tabs.Root value={currentSection.toString()} onValueChange={handleTabChange} className="mb-6">
+        <Tabs.List className="grid grid-cols-4 md:grid-cols-7 lg:grid-cols-13 h-auto gap-1 max-w-[90%] mx-auto">
+          {tabNames.map((name, index) => (
+            <Tabs.Trigger
+              key={index}
+              value={index.toString()}
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-2 py-1 text-[10px] md:text-xs rounded-md whitespace-nowrap overflow-hidden text-ellipsis"
+            >
+              {name}
+            </Tabs.Trigger>
+          ))}
+        </Tabs.List>
+      </Tabs.Root>
+      
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          {currentSection === 0 && <PreFilledDetails form={form} />}
+          {currentSection === 1 && <IntakeFormSection2 form={form} />}
+          {currentSection === 2 && <IntakeFormSection3 form={form} />}
+          {currentSection === 3 && <IntakeFormSection4 form={form} />}
+          {currentSection === 4 && <IntakeFormSection5 form={form} />}
+          {currentSection === 5 && <IntakeFormSection6 form={form} />}
+          {currentSection === 6 && <IntakeFormSection7 form={form} />}
+          {currentSection === 7 && <IntakeFormSection8 form={form} />}
+          {currentSection === 8 && <IntakeFormSection9 form={form} />}
+          {currentSection === 9 && <IntakeFormSection10 form={form} />}
+          {currentSection === 10 && <IntakeFormSection11 form={form} />}
+          {currentSection === 11 && <IntakeFormSection12 form={form} />}
+          {currentSection === 12 && <IntakeFormSummary form={form} />}
+          
+          <div className="flex justify-between">
+            <Button 
+              type="button" 
+              variant="outline"
+              onClick={() => setCurrentSection(prev => Math.max(0, prev - 1))}
+              disabled={currentSection === 0}
+            >
+              Previous
+            </Button>
             
-            <div className="flex justify-between">
+            {currentSection < totalSections - 1 && (
               <Button 
-                type="button" 
-                variant="outline"
-                onClick={() => setCurrentSection(prev => Math.max(0, prev - 1))}
-                disabled={currentSection === 0}
+                type="button"
+                onClick={() => setCurrentSection(prev => Math.min(totalSections - 1, prev + 1))}
               >
-                Previous
+                Next
               </Button>
-              
-              {currentSection < totalSections - 1 && (
-                <Button 
-                  type="button"
-                  onClick={() => setCurrentSection(prev => Math.min(totalSections - 1, prev + 1))}
-                >
-                  Next
-                </Button>
-              )}
-            </div>
-          </form>
-        </Form>
-      </div>
-    </>
+            )}
+          </div>
+        </form>
+      </Form>
+    </div>
   );
 }

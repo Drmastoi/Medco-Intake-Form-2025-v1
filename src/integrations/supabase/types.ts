@@ -9,254 +9,6 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      claimant_signatures: {
-        Row: {
-          claimant_name: string
-          confirmed: boolean | null
-          id: string
-          report_id: string | null
-          signature_date: string | null
-        }
-        Insert: {
-          claimant_name: string
-          confirmed?: boolean | null
-          id?: string
-          report_id?: string | null
-          signature_date?: string | null
-        }
-        Update: {
-          claimant_name?: string
-          confirmed?: boolean | null
-          id?: string
-          report_id?: string | null
-          signature_date?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "claimant_signatures_report_id_fkey"
-            columns: ["report_id"]
-            isOneToOne: false
-            referencedRelation: "reports"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      diseases: {
-        Row: {
-          created_at: string
-          description: string | null
-          id: string
-          name: string
-          risk_factors: string[] | null
-          symptoms: string[] | null
-          treatments: string[] | null
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          description?: string | null
-          id?: string
-          name: string
-          risk_factors?: string[] | null
-          symptoms?: string[] | null
-          treatments?: string[] | null
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          description?: string | null
-          id?: string
-          name?: string
-          risk_factors?: string[] | null
-          symptoms?: string[] | null
-          treatments?: string[] | null
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      form_submissions: {
-        Row: {
-          accident_date: string | null
-          accident_time: string | null
-          accompanied_by: string | null
-          additional_info: string | null
-          address: string | null
-          back_location: string | null
-          back_pain: string | null
-          back_pain_current_severity: string | null
-          back_pain_initial_severity: string | null
-          back_pain_resolve_days: number | null
-          back_pain_start: string | null
-          children_count: number | null
-          created_at: string
-          date_of_birth: string | null
-          email_id: string | null
-          examination_location: string | null
-          full_name: string | null
-          headache: string | null
-          headache_current_severity: string | null
-          headache_initial_severity: string | null
-          headache_past_history: string | null
-          headache_resolve_days: number | null
-          headache_start: string | null
-          id: string
-          id_type: string | null
-          instructing_party_name: string | null
-          instructing_party_reference: string | null
-          living_with: string | null
-          medco_reference: string | null
-          mobile_number: string | null
-          neck_pain: string | null
-          occupation: string | null
-          shoulder_pain: string | null
-          shoulder_pain_current_severity: string | null
-          shoulder_pain_initial_severity: string | null
-          shoulder_pain_resolve_days: number | null
-          shoulder_pain_start: string | null
-          shoulder_side: string | null
-          solicitor_name: string | null
-          solicitor_reference: string | null
-          updated_at: string
-          user_id: string | null
-          vehicle_position: string | null
-          work_type: string | null
-        }
-        Insert: {
-          accident_date?: string | null
-          accident_time?: string | null
-          accompanied_by?: string | null
-          additional_info?: string | null
-          address?: string | null
-          back_location?: string | null
-          back_pain?: string | null
-          back_pain_current_severity?: string | null
-          back_pain_initial_severity?: string | null
-          back_pain_resolve_days?: number | null
-          back_pain_start?: string | null
-          children_count?: number | null
-          created_at?: string
-          date_of_birth?: string | null
-          email_id?: string | null
-          examination_location?: string | null
-          full_name?: string | null
-          headache?: string | null
-          headache_current_severity?: string | null
-          headache_initial_severity?: string | null
-          headache_past_history?: string | null
-          headache_resolve_days?: number | null
-          headache_start?: string | null
-          id?: string
-          id_type?: string | null
-          instructing_party_name?: string | null
-          instructing_party_reference?: string | null
-          living_with?: string | null
-          medco_reference?: string | null
-          mobile_number?: string | null
-          neck_pain?: string | null
-          occupation?: string | null
-          shoulder_pain?: string | null
-          shoulder_pain_current_severity?: string | null
-          shoulder_pain_initial_severity?: string | null
-          shoulder_pain_resolve_days?: number | null
-          shoulder_pain_start?: string | null
-          shoulder_side?: string | null
-          solicitor_name?: string | null
-          solicitor_reference?: string | null
-          updated_at?: string
-          user_id?: string | null
-          vehicle_position?: string | null
-          work_type?: string | null
-        }
-        Update: {
-          accident_date?: string | null
-          accident_time?: string | null
-          accompanied_by?: string | null
-          additional_info?: string | null
-          address?: string | null
-          back_location?: string | null
-          back_pain?: string | null
-          back_pain_current_severity?: string | null
-          back_pain_initial_severity?: string | null
-          back_pain_resolve_days?: number | null
-          back_pain_start?: string | null
-          children_count?: number | null
-          created_at?: string
-          date_of_birth?: string | null
-          email_id?: string | null
-          examination_location?: string | null
-          full_name?: string | null
-          headache?: string | null
-          headache_current_severity?: string | null
-          headache_initial_severity?: string | null
-          headache_past_history?: string | null
-          headache_resolve_days?: number | null
-          headache_start?: string | null
-          id?: string
-          id_type?: string | null
-          instructing_party_name?: string | null
-          instructing_party_reference?: string | null
-          living_with?: string | null
-          medco_reference?: string | null
-          mobile_number?: string | null
-          neck_pain?: string | null
-          occupation?: string | null
-          shoulder_pain?: string | null
-          shoulder_pain_current_severity?: string | null
-          shoulder_pain_initial_severity?: string | null
-          shoulder_pain_resolve_days?: number | null
-          shoulder_pain_start?: string | null
-          shoulder_side?: string | null
-          solicitor_name?: string | null
-          solicitor_reference?: string | null
-          updated_at?: string
-          user_id?: string | null
-          vehicle_position?: string | null
-          work_type?: string | null
-        }
-        Relationships: []
-      }
-      medical_notes: {
-        Row: {
-          acute_problem: string
-          assessment: string | null
-          created_at: string
-          diagnosis: string | null
-          follow_up: string | null
-          history: string | null
-          id: string
-          investigation: string | null
-          safety_netting: string | null
-          treatment: string | null
-          updated_at: string
-        }
-        Insert: {
-          acute_problem: string
-          assessment?: string | null
-          created_at?: string
-          diagnosis?: string | null
-          follow_up?: string | null
-          history?: string | null
-          id?: string
-          investigation?: string | null
-          safety_netting?: string | null
-          treatment?: string | null
-          updated_at?: string
-        }
-        Update: {
-          acute_problem?: string
-          assessment?: string | null
-          created_at?: string
-          diagnosis?: string | null
-          follow_up?: string | null
-          history?: string | null
-          id?: string
-          investigation?: string | null
-          safety_netting?: string | null
-          treatment?: string | null
-          updated_at?: string
-        }
-        Relationships: []
-      }
       profiles: {
         Row: {
           created_at: string
@@ -278,94 +30,38 @@ export type Database = {
         }
         Relationships: []
       }
-      questionnaire_tracking: {
-        Row: {
-          completed: boolean
-          completed_date: string | null
-          created_at: string
-          id: string
-          last_reminder_date: string | null
-          questionnaire_link: string
-          recipient_email: string
-          recipient_id: string | null
-          recipient_name: string | null
-          sent_date: string
-          updated_at: string
-        }
-        Insert: {
-          completed?: boolean
-          completed_date?: string | null
-          created_at?: string
-          id?: string
-          last_reminder_date?: string | null
-          questionnaire_link: string
-          recipient_email: string
-          recipient_id?: string | null
-          recipient_name?: string | null
-          sent_date?: string
-          updated_at?: string
-        }
-        Update: {
-          completed?: boolean
-          completed_date?: string | null
-          created_at?: string
-          id?: string
-          last_reminder_date?: string | null
-          questionnaire_link?: string
-          recipient_email?: string
-          recipient_id?: string | null
-          recipient_name?: string | null
-          sent_date?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "questionnaire_tracking_recipient_id_fkey"
-            columns: ["recipient_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       reports: {
         Row: {
-          claimant_email: string | null
           comments: string | null
           created_at: string
           id: string
           original_filename: string
           patient_id: string | null
           reviewed_by: string | null
-          signature_status: string | null
           status: string | null
           storage_path: string
           updated_at: string
           version: number | null
         }
         Insert: {
-          claimant_email?: string | null
           comments?: string | null
           created_at?: string
           id?: string
           original_filename: string
           patient_id?: string | null
           reviewed_by?: string | null
-          signature_status?: string | null
           status?: string | null
           storage_path: string
           updated_at?: string
           version?: number | null
         }
         Update: {
-          claimant_email?: string | null
           comments?: string | null
           created_at?: string
           id?: string
           original_filename?: string
           patient_id?: string | null
           reviewed_by?: string | null
-          signature_status?: string | null
           status?: string | null
           storage_path?: string
           updated_at?: string
@@ -393,12 +89,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      can_access_report: {
-        Args: {
-          report_row: unknown
-        }
-        Returns: boolean
-      }
+      [_ in never]: never
     }
     Enums: {
       user_role: "medical_expert" | "user"

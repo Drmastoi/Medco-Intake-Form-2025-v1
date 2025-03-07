@@ -1,4 +1,3 @@
-
 import { StyleSheet } from '@react-pdf/renderer';
 
 export const styles = StyleSheet.create({
@@ -33,6 +32,7 @@ export const styles = StyleSheet.create({
   sectionGap: {
     marginTop: 8,
   },
+  // Adding the missing table-related styles
   table: {
     display: 'flex',
     width: 'auto',
@@ -50,10 +50,9 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     borderBottomColor: '#000',
     borderBottomWidth: 1,
-    alignItems: 'stretch', // Changed from 'center' to 'stretch'
-    minHeight: 30, // Increased minimum height
+    alignItems: 'center',
+    minHeight: 24,
     fontFamily: 'Helvetica',
-    fontSize: 9, // Reduced font size slightly
   },
   tableHeader: {
     backgroundColor: '#f0f0f0',
@@ -63,36 +62,25 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     height: 24,
     fontFamily: 'Helvetica-Bold',
-    fontSize: 9, // Reduced font size for consistency
+    fontSize: 10,
   },
   indexCell: {
-    width: '4%', // Reduced width
+    width: '5%',
     borderRightColor: '#000',
     borderRightWidth: 1,
-    paddingLeft: 2,
-    paddingRight: 2,
-    paddingTop: 4,
-    paddingBottom: 4,
+    paddingLeft: 4,
   },
   cell: {
-    width: '12%', // Adjusted width
+    width: '13%',
     borderRightColor: '#000',
     borderRightWidth: 1,
-    paddingLeft: 2,
-    paddingRight: 2,
-    paddingTop: 4,
-    paddingBottom: 4,
-    display: 'flex',
-    flexWrap: 'wrap', // Enable text wrapping
+    paddingLeft: 4,
   },
   classificationCell: {
-    width: '24%', // Increased width for classification
+    width: '17%',
     borderRightColor: '#000',
     borderRightWidth: 1,
-    paddingLeft: 2,
-    paddingRight: 2,
-    paddingTop: 4,
-    paddingBottom: 4,
+    paddingLeft: 4,
   },
   subTitle: {
     fontSize: 12,

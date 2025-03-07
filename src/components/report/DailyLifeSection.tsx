@@ -1,53 +1,22 @@
-
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
-import { formatDate } from '../../utils/dateUtils';
 
 const styles = StyleSheet.create({
   section: {
     marginBottom: 15,
   },
-  title: {
-    fontSize: 10,
-    marginBottom: 10,
-    fontWeight: 'bold',
-  },
   subtitle: {
-    fontSize: 10,
-    marginBottom: 10,
+    fontSize: 14,
+    marginBottom: 8,
     fontWeight: 'bold',
   },
   text: {
-    fontSize: 10,
+    fontSize: 12,
     marginBottom: 5,
     lineHeight: 1.4,
-  },
-  sectionTitle: {
-    fontSize: 10,
-    fontWeight: 'bold',
-    marginTop: 10,
-    marginBottom: 5,
   },
   paragraph: {
     marginBottom: 10,
   },
-  bulletPoint: {
-    marginLeft: 10,
-    fontSize: 10,
-    lineHeight: 1.4,
-  },
-  explanationText: {
-    marginLeft: 10,
-    fontSize: 10,
-    fontStyle: 'italic',
-    lineHeight: 1.4,
-    marginTop: 2,
-  },
-  conclusionText: {
-    fontSize: 10,
-    fontStyle: 'italic',
-    marginTop: 15,
-    marginBottom: 5,
-  }
 });
 
 const formatList = (items: string[] = [], otherText?: string) => {
@@ -57,194 +26,59 @@ const formatList = (items: string[] = [], otherText?: string) => {
   return otherText ? `${formattedList}${mainItems.length ? ', and ' : ''}${otherText}` : formattedList;
 };
 
-const getVehiclePosition = (value: string) => {
-  const positions: { [key: string]: string } = {
-    "1": "Driver",
-    "2": "Front Passenger",
-    "3": "Back Passenger",
-    "4": "Other"
-  };
-  return positions[value] || value;
-};
-
-const getTimeOfDay = (value: string) => {
-  const times: { [key: string]: string } = {
-    "1": "Morning",
-    "2": "Afternoon",
-    "3": "Evening",
-    "4": "Night"
-  };
-  return times[value] || value;
-};
-
-const getVehicleType = (value: string) => {
-  const types: { [key: string]: string } = {
-    "1": "Car",
-    "2": "Van",
-    "3": "Bus",
-    "4": "Other"
-  };
-  return types[value] || value;
-};
-
-const getVehicleStatus = (value: string) => {
-  const statuses: { [key: string]: string } = {
-    "1": "Moving",
-    "2": "Stationary",
-    "3": "Parked",
-    "4": "Other"
-  };
-  return statuses[value] || value;
-};
-
-const getImpactLocation = (value: string) => {
-  const locations: { [key: string]: string } = {
-    "1": "Rear",
-    "2": "Front",
-    "3": "Passenger Side",
-    "4": "Driver Side"
-  };
-  return locations[value] || value;
-};
-
-const getDamageLevel = (value: string) => {
-  const levels: { [key: string]: string } = {
-    "1": "Mild Damage",
-    "2": "Moderate Damage",
-    "3": "Written Off"
-  };
-  return levels[value] || value;
-};
-
-const getPainSeverity = (value: string) => {
-  const severities: { [key: string]: string } = {
-    "1": "Mild",
-    "2": "Moderate",
-    "3": "Severe",
-    "4": "Resolved"
-  };
-  return severities[value] || value;
-};
-
-// Helper function to check if prognosis is 9 months or more
-const isLongTermPrognosis = (severityValue: string) => {
-  return severityValue === "3"; // Severity 3 corresponds to 9 months prognosis
-};
-
 export const DailyLifeSection = ({ formData }: { formData: any }) => (
   <View style={styles.section}>
-    <Text style={styles.title}>COMPREHENSIVE INJURY AND IMPACT SUMMARY</Text>
+    <Text style={styles.subtitle}>Impact on Daily Life</Text>
 
     <View style={styles.paragraph}>
-      <Text style={styles.sectionTitle}>Major Injuries Reported:</Text>
-      {formData.neckPain === "1" && (
-        <View>
-          <Text style={styles.bulletPoint}>• Neck Pain</Text>
-          <Text style={styles.bulletPoint}>  - Initial Severity: {getPainSeverity(formData.neckPainInitialSeverity)}</Text>
-          <Text style={styles.bulletPoint}>  - Current Severity: {getPainSeverity(formData.neckPainCurrentSeverity)}</Text>
-          {formData.neckPainCurrentSeverity === "4" && (
-            <Text style={styles.bulletPoint}>  - Resolved after: {formData.neckPainResolveDays} days</Text>
-          )}
-          {isLongTermPrognosis(formData.neckPainCurrentSeverity) && (
-            <Text style={styles.explanationText}>The claimant's prolonged prognosis is attributable to the absence of physiotherapy and the extent of their injuries.</Text>
-          )}
-        </View>
-      )}
-      {formData.shoulderPain === "1" && (
-        <View>
-          <Text style={styles.bulletPoint}>• Shoulder Pain</Text>
-          <Text style={styles.bulletPoint}>  - Side Affected: {
-            formData.shoulderSide === "1" ? "Left" :
-            formData.shoulderSide === "2" ? "Right" :
-            formData.shoulderSide === "3" ? "Both" : "Not specified"
-          }</Text>
-          <Text style={styles.bulletPoint}>  - Initial Severity: {getPainSeverity(formData.shoulderPainInitialSeverity)}</Text>
-          <Text style={styles.bulletPoint}>  - Current Severity: {getPainSeverity(formData.shoulderPainCurrentSeverity)}</Text>
-          {formData.shoulderPainCurrentSeverity === "4" && (
-            <Text style={styles.bulletPoint}>  - Resolved after: {formData.shoulderPainResolveDays} days</Text>
-          )}
-          {isLongTermPrognosis(formData.shoulderPainCurrentSeverity) && (
-            <Text style={styles.explanationText}>The claimant's prolonged prognosis is attributable to the absence of physiotherapy and the extent of their injuries.</Text>
-          )}
-        </View>
-      )}
-      {formData.backPain === "1" && (
-        <View>
-          <Text style={styles.bulletPoint}>• Back Pain</Text>
-          <Text style={styles.bulletPoint}>  - Initial Severity: {getPainSeverity(formData.backPainInitialSeverity)}</Text>
-          <Text style={styles.bulletPoint}>  - Current Severity: {getPainSeverity(formData.backPainCurrentSeverity)}</Text>
-          {formData.backPainCurrentSeverity === "4" && (
-            <Text style={styles.bulletPoint}>  - Resolved after: {formData.backPainResolveDays} days</Text>
-          )}
-          {isLongTermPrognosis(formData.backPainCurrentSeverity) && (
-            <Text style={styles.explanationText}>The claimant's prolonged prognosis is attributable to the absence of physiotherapy and the extent of their injuries.</Text>
-          )}
-        </View>
-      )}
-      {formData.headache === "1" && (
-        <View>
-          <Text style={styles.bulletPoint}>• Headaches</Text>
-          <Text style={styles.bulletPoint}>  - Initial Severity: {getPainSeverity(formData.headacheInitialSeverity)}</Text>
-          <Text style={styles.bulletPoint}>  - Current Severity: {getPainSeverity(formData.headacheCurrentSeverity)}</Text>
-          {formData.headacheCurrentSeverity === "4" && (
-            <Text style={styles.bulletPoint}>  - Resolved after: {formData.headacheResolveDays} days</Text>
-          )}
-          {isLongTermPrognosis(formData.headacheCurrentSeverity) && (
-            <Text style={styles.explanationText}>The claimant's prolonged prognosis is attributable to the absence of physiotherapy and the extent of their injuries.</Text>
-          )}
-        </View>
-      )}
+      <Text style={styles.text}>
+        {formData.daysOffWork ? 
+          `Following the accident, the claimant required ${formData.daysOffWork} days off work. ` :
+          "The claimant did not require any time off work. "}
+        {formData.daysLightDuties ? 
+          `They subsequently worked on light duties for ${formData.daysLightDuties} days. ` :
+          ""}
+      </Text>
     </View>
 
-    <View style={styles.paragraph}>
-      <Text style={styles.sectionTitle}>Psychological Impacts:</Text>
-      {formData.travelAnxiety === "1" && (
-        <View>
-          <Text style={styles.bulletPoint}>• Travel Anxiety Present</Text>
-          <Text style={styles.bulletPoint}>  - Initial Severity: {getPainSeverity(formData.anxietyInitialSeverity)}</Text>
-          <Text style={styles.bulletPoint}>  - Current Severity: {getPainSeverity(formData.anxietyCurrentSeverity)}</Text>
-          {formData.anxietyCurrentSeverity === "4" && (
-            <Text style={styles.bulletPoint}>  - Resolved after: {formData.anxietyResolveDays} days</Text>
-          )}
-          {isLongTermPrognosis(formData.anxietyCurrentSeverity) && (
-            <Text style={styles.explanationText}>The claimant's prolonged prognosis is attributable to the absence of physiotherapy and the extent of their injuries.</Text>
-          )}
-        </View>
-      )}
-    </View>
-
-    <View style={styles.paragraph}>
-      <Text style={styles.sectionTitle}>Impact on Daily Activities:</Text>
-      {formData.effectOnDomesticLiving === "1" && (
-        <Text style={styles.bulletPoint}>• Domestic activities affected: {formatList(formData.domesticEffects, formData.otherDomesticEffects)}</Text>
-      )}
-      {formData.sleepDisturbance === "1" && (
-        <Text style={styles.bulletPoint}>• Sleep disturbances: {formatList(formData.sleepDisturbances, formData.otherSleepDisturbances)}</Text>
-      )}
-    </View>
-
-    <View style={styles.paragraph}>
-      <Text style={styles.sectionTitle}>Impact on Work:</Text>
-      {formData.daysOffWork > 0 && (
-        <Text style={styles.bulletPoint}>• Total days off work: {formData.daysOffWork}</Text>
-      )}
-      {formData.daysLightDuties > 0 && (
-        <Text style={styles.bulletPoint}>• Days on light duties: {formData.daysLightDuties}</Text>
-      )}
-      {formData.workDifficulties?.length > 0 && (
-        <Text style={styles.bulletPoint}>• Specific work difficulties: {formatList(formData.workDifficulties, formData.otherWorkDifficulties)}</Text>
-      )}
-    </View>
-
-    {formData.additionalInformation === "1" && (
+    {formData.workDifficulties?.length > 0 && (
       <View style={styles.paragraph}>
-        <Text style={styles.sectionTitle}>Additional Information:</Text>
-        <Text style={styles.bulletPoint}>• {formData.additionalInformationDetails}</Text>
+        <Text style={styles.text}>
+          The claimant reports experiencing difficulties at work with: {formatList(formData.workDifficulties, formData.otherWorkDifficulties)}.
+        </Text>
       </View>
     )}
 
-    <Text style={styles.conclusionText}>
-      I have acknowledged the Letter of Instruction and I confirm there were no other injuries suffered by the client as told to me during the examination after direct questioning.
-    </Text>
+    {formData.sleepDisturbance === "1" && (
+      <View style={styles.paragraph}>
+        <Text style={styles.text}>
+          Sleep has been significantly affected. The claimant reports: {formatList(formData.sleepDisturbances, formData.otherSleepDisturbances)}.
+        </Text>
+      </View>
+    )}
+
+    {formData.effectOnDomesticLiving === "1" && (
+      <View style={styles.paragraph}>
+        <Text style={styles.text}>
+          Daily domestic activities have been impacted, particularly: {formatList(formData.domesticEffects, formData.otherDomesticEffects)}.
+        </Text>
+      </View>
+    )}
+
+    {formData.effectOnSportLeisure === "1" && (
+      <View style={styles.paragraph}>
+        <Text style={styles.text}>
+          Sport and leisure activities have been affected, specifically: {formatList(formData.sportLeisureEffects, formData.otherSportLeisureEffects)}.
+        </Text>
+      </View>
+    )}
+
+    {formData.effectOnSocialLife === "1" && (
+      <View style={styles.paragraph}>
+        <Text style={styles.text}>
+          Social activities have been impacted, particularly: {formatList(formData.socialLifeEffects, formData.otherSocialLifeEffects)}.
+        </Text>
+      </View>
+    )}
   </View>
 );

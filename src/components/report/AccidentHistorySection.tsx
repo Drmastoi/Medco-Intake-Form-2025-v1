@@ -1,4 +1,3 @@
-
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
 import { format } from 'date-fns';
 
@@ -6,10 +5,12 @@ const styles = StyleSheet.create({
   section: {
     marginBottom: 15,
   },
-  paragraph: {
+  text: {
     fontSize: 10,
+    marginBottom: 5,
     lineHeight: 1.4,
-    textAlign: 'justify',
+  },
+  paragraph: {
     marginBottom: 10,
   },
 });
@@ -75,7 +76,19 @@ export const AccidentHistorySection = ({ formData }: { formData: any }) => {
   return (
     <View style={styles.section}>
       <Text style={styles.paragraph}>
-        {`On ${formatDate(formData.accidentDate)}, during the ${getTimeOfDay(formData.accidentTime)}, the claimant was involved in a road traffic accident while traveling in their ${getVehicleType(formData.claimantVehicle)} ${getVehicleLocation(formData.vehicleLocation)}. The collision occurred when another ${getVehicleType(formData.otherVehicle)} impacted the claimant's vehicle ${getImpactLocation(formData.impactLocation)}. As a consequence of the impact, the claimant's vehicle ${getDamageLevel(formData.vehicleDamage)}. The force of the collision was significant enough to cause injury to the claimant, who subsequently developed various symptoms. The circumstances of the accident suggest that the impact was unexpected and the claimant had no opportunity to brace for the collision.`}
+        {`On ${formatDate(formData.accidentDate)}, during the ${getTimeOfDay(formData.accidentTime)}, 
+        the claimant was involved in a road traffic accident. At the time of the incident, 
+        the claimant was traveling in their ${getVehicleType(formData.claimantVehicle)} 
+        ${getVehicleLocation(formData.vehicleLocation)}. The collision occurred when another 
+        ${getVehicleType(formData.otherVehicle)} impacted the claimant's vehicle 
+        ${getImpactLocation(formData.impactLocation)}.`}
+      </Text>
+
+      <Text style={styles.paragraph}>
+        {`As a consequence of the impact, the claimant's vehicle ${getDamageLevel(formData.vehicleDamage)}. 
+        The force of the collision was significant enough to cause injury to the claimant, 
+        who subsequently developed various symptoms. The circumstances of the accident suggest 
+        that the impact was unexpected and the claimant had no opportunity to brace for the collision.`}
       </Text>
     </View>
   );
