@@ -230,7 +230,6 @@ export default function Index() {
     setCurrentSection(parseInt(value));
   };
 
-  // Add this at the beginning of the component to handle pre-filled data
   React.useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const preFillData = {
@@ -247,7 +246,7 @@ export default function Index() {
   }, []);
 
   return (
-    <div className="container mx-auto py-10">
+    <div className="container mx-auto py-10 px-4">
       <h1 className="text-2xl font-bold mb-8">Personal Injury Assessment Questionnaire</h1>
 
       {currentSection === 0 && (
@@ -264,7 +263,7 @@ export default function Index() {
       )}
       
       <Tabs.Root value={currentSection.toString()} onValueChange={handleTabChange} className="mb-6">
-        <Tabs.List className="grid grid-cols-4 md:grid-cols-7 lg:grid-cols-13 h-auto gap-1 max-w-[90%] mx-auto">
+        <Tabs.List className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 xl:grid-cols-13 gap-1 max-w-full mx-auto overflow-x-auto">
           {tabNames.map((name, index) => (
             <Tabs.Trigger
               key={index}
@@ -279,19 +278,21 @@ export default function Index() {
       
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          {currentSection === 0 && <PreFilledDetails form={form} />}
-          {currentSection === 1 && <IntakeFormSection2 form={form} />}
-          {currentSection === 2 && <IntakeFormSection3 form={form} />}
-          {currentSection === 3 && <IntakeFormSection4 form={form} />}
-          {currentSection === 4 && <IntakeFormSection5 form={form} />}
-          {currentSection === 5 && <IntakeFormSection6 form={form} />}
-          {currentSection === 6 && <IntakeFormSection7 form={form} />}
-          {currentSection === 7 && <IntakeFormSection8 form={form} />}
-          {currentSection === 8 && <IntakeFormSection9 form={form} />}
-          {currentSection === 9 && <IntakeFormSection10 form={form} />}
-          {currentSection === 10 && <IntakeFormSection11 form={form} />}
-          {currentSection === 11 && <IntakeFormSection12 form={form} />}
-          {currentSection === 12 && <IntakeFormSummary form={form} />}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {currentSection === 0 && <PreFilledDetails form={form} />}
+            {currentSection === 1 && <IntakeFormSection2 form={form} />}
+            {currentSection === 2 && <IntakeFormSection3 form={form} />}
+            {currentSection === 3 && <IntakeFormSection4 form={form} />}
+            {currentSection === 4 && <IntakeFormSection5 form={form} />}
+            {currentSection === 5 && <IntakeFormSection6 form={form} />}
+            {currentSection === 6 && <IntakeFormSection7 form={form} />}
+            {currentSection === 7 && <IntakeFormSection8 form={form} />}
+            {currentSection === 8 && <IntakeFormSection9 form={form} />}
+            {currentSection === 9 && <IntakeFormSection10 form={form} />}
+            {currentSection === 10 && <IntakeFormSection11 form={form} />}
+            {currentSection === 11 && <IntakeFormSection12 form={form} />}
+            {currentSection === 12 && <IntakeFormSummary form={form} />}
+          </div>
           
           <div className="flex justify-between">
             <Button 
