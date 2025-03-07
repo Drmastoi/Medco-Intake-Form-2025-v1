@@ -18,7 +18,7 @@ export function IntakeFormNavigation({ currentSection, onTabChange, tabNames }: 
               key={index}
               value={index.toString()}
               className={cn(
-                "px-2 py-1.5 text-xs whitespace-normal rounded-t-lg transition-colors",
+                "px-2 py-1.5 text-xs font-bold whitespace-normal rounded-t-lg transition-colors",
                 "hover:bg-gray-100",
                 "data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
               )}

@@ -1,3 +1,4 @@
+
 import { Document, Page, Text, StyleSheet } from '@react-pdf/renderer';
 import { PersonalDetailsSection } from './PersonalDetailsSection';
 import { SummaryOfInjuriesSection } from './SummaryOfInjuriesSection';
@@ -45,6 +46,14 @@ const styles = StyleSheet.create({
     fontSize: 8,
     fontFamily: 'Helvetica',
   },
+  footer: {
+    position: 'absolute',
+    bottom: 10,
+    left: 30,
+    fontSize: 6,
+    color: '#666666',
+    fontFamily: 'Helvetica',
+  },
   section: {
     marginBottom: 15,
   }
@@ -60,6 +69,9 @@ export const MedcoReport = ({ formData }: { formData: any }) => (
         render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} 
         fixed 
       />
+      <Text style={styles.footer} fixed>
+        {formData.fullName || 'Anonymous'}
+      </Text>
     </Page>
     
     <Page size="A4" style={styles.page}>
@@ -88,6 +100,9 @@ export const MedcoReport = ({ formData }: { formData: any }) => (
         render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} 
         fixed 
       />
+      <Text style={styles.footer} fixed>
+        {formData.fullName || 'Anonymous'}
+      </Text>
     </Page>
     
     <Page size="A4" style={styles.page}>
@@ -138,6 +153,9 @@ export const MedcoReport = ({ formData }: { formData: any }) => (
         render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} 
         fixed 
       />
+      <Text style={styles.footer} fixed>
+        {formData.fullName || 'Anonymous'}
+      </Text>
     </Page>
 
     <Page size="A4" style={styles.page}>
@@ -149,6 +167,9 @@ export const MedcoReport = ({ formData }: { formData: any }) => (
         render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} 
         fixed 
       />
+      <Text style={styles.footer} fixed>
+        {formData.fullName || 'Anonymous'}
+      </Text>
     </Page>
   </Document>
 );

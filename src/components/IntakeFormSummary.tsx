@@ -1,3 +1,4 @@
+
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { BlobProvider } from '@react-pdf/renderer';
@@ -14,6 +15,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export function IntakeFormSummary({ form }: { form: any }) {
   const { toast } = useToast();
@@ -22,6 +25,7 @@ export function IntakeFormSummary({ form }: { form: any }) {
   const [rating, setRating] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
   const [referenceNumber, setReferenceNumber] = useState("");
+  const [recipientEmail, setRecipientEmail] = useState("");
 
   useEffect(() => {
     emailjs.init("YnnsjqOayi-IRBxy_");
@@ -51,7 +55,7 @@ export function IntakeFormSummary({ form }: { form: any }) {
           storage_path: filePath,
           version: 1,
           status: 'pending_review',
-          patient_id: null // This is now allowed as per our updated schema
+          patient_id: null
         });
 
       if (dbError) throw dbError;
@@ -71,6 +75,25 @@ export function IntakeFormSummary({ form }: { form: any }) {
       const fileName = `MEDCO_Report_${formData.fullName || 'Anonymous'}_${new Date().toISOString()}.pdf`;
       
       await uploadToStorage(pdfBlob, fileName);
+
+      // Convert PDF blob to base64
+      const reader = new FileReader();
+      reader.readAsDataURL(pdfBlob);
+      reader.onloadend = async () => {
+        const base64data = reader.result?.toString().split(',')[1];
+        
+        // Send email with PDF attachment
+        const { error } = await supabase.functions.invoke('send-report', {
+          body: {
+            to: recipientEmail,
+            pdfBase64: base64data,
+            patientName: formData.fullName || 'Anonymous',
+            referenceNumber
+          }
+        });
+
+        if (error) throw error;
+      };
 
       const templateParams = {
         to_name: "Medical Expert",
@@ -97,7 +120,7 @@ Medical Assessment Team
       
       toast({
         title: "Report Submitted Successfully",
-        description: `Your report has been submitted. Please save your reference number: ${referenceNumber}`,
+        description: `Your report has been submitted and sent to ${recipientEmail}. Please save your reference number: ${referenceNumber}`,
       });
 
       setShowRatingDialog(true);
@@ -133,6 +156,18 @@ Medical Assessment Team
           </p>
         </div>
 
+        <div className="mb-6">
+          <Label htmlFor="recipientEmail">Your Email Address</Label>
+          <Input
+            id="recipientEmail"
+            type="email"
+            placeholder="Enter your email address"
+            value={recipientEmail}
+            onChange={(e) => setRecipientEmail(e.target.value)}
+            className="max-w-md"
+          />
+        </div>
+
         <div className="flex flex-wrap gap-4">
           <BlobProvider document={<MedcoReport formData={formData} />}>
             {({ url, loading }) => (
@@ -166,7 +201,7 @@ Medical Assessment Team
                 </Button>
 
                 <Button 
-                  disabled={loading || isUploading}
+                  disabled={loading || isUploading || !recipientEmail}
                   onClick={() => {
                     if (url) {
                       sendToMedicalExpert(url);
