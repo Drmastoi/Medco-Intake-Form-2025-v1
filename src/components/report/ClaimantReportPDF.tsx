@@ -65,6 +65,11 @@ const styles = StyleSheet.create({
     width: '60%',
     marginBottom: 10,
   },
+  noteText: {
+    marginTop: 10,
+    fontSize: 10,
+    fontFamily: 'Helvetica',
+  }
 });
 
 export const ClaimantReportPDF = ({ 
@@ -118,7 +123,7 @@ export const ClaimantReportPDF = ({
           Date and Time: {signatureDate ? formatDate(signatureDate) + ' ' + new Date(signatureDate).toLocaleTimeString() : '_________________'}
         </Text>
         
-        <Text style={styles.text} style={{marginTop: 10}}>
+        <Text style={styles.noteText}>
           By signing above, I confirm my agreement with the submission of this report.
         </Text>
       </View>
