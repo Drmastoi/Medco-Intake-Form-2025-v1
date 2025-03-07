@@ -1,6 +1,5 @@
 
 import { Document, Page, Text, StyleSheet, View } from '@react-pdf/renderer';
-import { PersonalDetailsSection } from './PersonalDetailsSection';
 import { AccidentHistorySection } from './AccidentHistorySection';
 import { DailyLifeSection } from './DailyLifeSection';
 import { formatDate } from '../../utils/dateUtils';
@@ -84,18 +83,7 @@ export const ClaimantReportPDF = ({
   <Document>
     <Page size="A4" style={styles.page}>
       <Text style={styles.title}>CLAIMANT SUMMARY REPORT</Text>
-      <PersonalDetailsSection formData={formData} />
-      <Text 
-        style={styles.pageNumber} 
-        render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} 
-        fixed 
-      />
-      <Text style={styles.footer} fixed>
-        {formData.fullName || 'Anonymous'} - Summary Report
-      </Text>
-    </Page>
-    
-    <Page size="A4" style={styles.page}>
+      
       <Text style={styles.subtitle}>Accident History</Text>
       <AccidentHistorySection formData={formData} />
       

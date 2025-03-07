@@ -1,6 +1,6 @@
 
 import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
-import { styles } from './reportStyles';
+import { styles as importedStyles } from './reportStyles';
 import { PersonalInfoSection } from './PersonalInfoSection';
 import { AccidentInfoSection } from './AccidentInfoSection';
 import { InjuriesSection } from './InjuriesSection';
@@ -16,7 +16,20 @@ import { formatDate } from '../../utils/dateUtils';
 
 // Create local styles extending the imported styles
 const localStyles = StyleSheet.create({
-  ...styles,
+  ...importedStyles,
+  // Add additional styles needed for this component
+  page: {
+    padding: 30,
+    fontSize: 10,
+    fontFamily: 'Helvetica',
+  },
+  title: {
+    fontSize: 14,
+    marginBottom: 10,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    fontFamily: 'Helvetica-Bold',
+  },
   signatureSection: {
     marginTop: 20,
     borderTop: 1,
@@ -25,6 +38,29 @@ const localStyles = StyleSheet.create({
   signatureText: {
     fontSize: 10,
     marginBottom: 4,
+    fontFamily: 'Helvetica',
+  },
+  text: {
+    fontSize: 10,
+    marginBottom: 5,
+    lineHeight: 1.4,
+    fontFamily: 'Helvetica',
+  },
+  pageNumber: {
+    position: 'absolute',
+    bottom: 20,
+    left: 0,
+    right: 0,
+    textAlign: 'center',
+    fontSize: 8,
+    fontFamily: 'Helvetica',
+  },
+  footer: {
+    position: 'absolute',
+    bottom: 10,
+    left: 30,
+    fontSize: 6,
+    color: '#666666',
     fontFamily: 'Helvetica',
   },
 });
@@ -74,7 +110,7 @@ export const MedcoReport = ({
       </Page>
 
       <Page size="A4" style={localStyles.page}>
-        <CaseClassificationSection formData={formData} />
+        <CaseClassificationSection />
         <AdditionalInformationSection formData={formData} />
         
         <DeclarationSection formData={formData} />
