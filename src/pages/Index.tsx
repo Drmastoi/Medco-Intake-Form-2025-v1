@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -118,13 +117,9 @@ export default function Index() {
       {currentSection === 0 && (
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 text-sm">
           <h2 className="text-base font-semibold text-blue-900 mb-2">Quick Guide</h2>
-          <ul className="space-y-1 text-blue-800">
-            <li>• Complete all sections to help us understand your injury circumstances</li>
-            <li>• Navigate using the tabs above</li>
-            <li>• Progress saves automatically - return anytime using your shared link</li>
-            <li>• Skip uncertain questions for discussion during examination</li>
-            <li>• Use Previous/Next buttons to move between sections</li>
-          </ul>
+          <p className="text-blue-800">
+            Complete all sections to report your injuries and circumstances. Click summary to generate report and send it to medical expert and download a copy for your records.
+          </p>
         </div>
       )}
       
