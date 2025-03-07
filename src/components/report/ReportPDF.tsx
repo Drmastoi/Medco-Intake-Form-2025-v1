@@ -113,7 +113,7 @@ export const MedcoReport = ({
         <CaseClassificationSection />
         <AdditionalInformationSection formData={formData} />
         
-        <DeclarationSection formData={formData} />
+        <DeclarationSection />
         
         {/* Claimant Signature Section */}
         <View style={localStyles.signatureSection}>
