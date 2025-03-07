@@ -9,6 +9,147 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      form_submissions: {
+        Row: {
+          accident_date: string | null
+          accident_time: string | null
+          accompanied_by: string | null
+          additional_info: string | null
+          address: string | null
+          back_location: string | null
+          back_pain: string | null
+          back_pain_current_severity: string | null
+          back_pain_initial_severity: string | null
+          back_pain_resolve_days: number | null
+          back_pain_start: string | null
+          children_count: number | null
+          created_at: string
+          date_of_birth: string | null
+          email_id: string | null
+          examination_location: string | null
+          full_name: string | null
+          headache: string | null
+          headache_current_severity: string | null
+          headache_initial_severity: string | null
+          headache_past_history: string | null
+          headache_resolve_days: number | null
+          headache_start: string | null
+          id: string
+          id_type: string | null
+          instructing_party_name: string | null
+          instructing_party_reference: string | null
+          living_with: string | null
+          medco_reference: string | null
+          mobile_number: string | null
+          neck_pain: string | null
+          occupation: string | null
+          shoulder_pain: string | null
+          shoulder_pain_current_severity: string | null
+          shoulder_pain_initial_severity: string | null
+          shoulder_pain_resolve_days: number | null
+          shoulder_pain_start: string | null
+          shoulder_side: string | null
+          solicitor_name: string | null
+          solicitor_reference: string | null
+          updated_at: string
+          user_id: string | null
+          vehicle_position: string | null
+          work_type: string | null
+        }
+        Insert: {
+          accident_date?: string | null
+          accident_time?: string | null
+          accompanied_by?: string | null
+          additional_info?: string | null
+          address?: string | null
+          back_location?: string | null
+          back_pain?: string | null
+          back_pain_current_severity?: string | null
+          back_pain_initial_severity?: string | null
+          back_pain_resolve_days?: number | null
+          back_pain_start?: string | null
+          children_count?: number | null
+          created_at?: string
+          date_of_birth?: string | null
+          email_id?: string | null
+          examination_location?: string | null
+          full_name?: string | null
+          headache?: string | null
+          headache_current_severity?: string | null
+          headache_initial_severity?: string | null
+          headache_past_history?: string | null
+          headache_resolve_days?: number | null
+          headache_start?: string | null
+          id?: string
+          id_type?: string | null
+          instructing_party_name?: string | null
+          instructing_party_reference?: string | null
+          living_with?: string | null
+          medco_reference?: string | null
+          mobile_number?: string | null
+          neck_pain?: string | null
+          occupation?: string | null
+          shoulder_pain?: string | null
+          shoulder_pain_current_severity?: string | null
+          shoulder_pain_initial_severity?: string | null
+          shoulder_pain_resolve_days?: number | null
+          shoulder_pain_start?: string | null
+          shoulder_side?: string | null
+          solicitor_name?: string | null
+          solicitor_reference?: string | null
+          updated_at?: string
+          user_id?: string | null
+          vehicle_position?: string | null
+          work_type?: string | null
+        }
+        Update: {
+          accident_date?: string | null
+          accident_time?: string | null
+          accompanied_by?: string | null
+          additional_info?: string | null
+          address?: string | null
+          back_location?: string | null
+          back_pain?: string | null
+          back_pain_current_severity?: string | null
+          back_pain_initial_severity?: string | null
+          back_pain_resolve_days?: number | null
+          back_pain_start?: string | null
+          children_count?: number | null
+          created_at?: string
+          date_of_birth?: string | null
+          email_id?: string | null
+          examination_location?: string | null
+          full_name?: string | null
+          headache?: string | null
+          headache_current_severity?: string | null
+          headache_initial_severity?: string | null
+          headache_past_history?: string | null
+          headache_resolve_days?: number | null
+          headache_start?: string | null
+          id?: string
+          id_type?: string | null
+          instructing_party_name?: string | null
+          instructing_party_reference?: string | null
+          living_with?: string | null
+          medco_reference?: string | null
+          mobile_number?: string | null
+          neck_pain?: string | null
+          occupation?: string | null
+          shoulder_pain?: string | null
+          shoulder_pain_current_severity?: string | null
+          shoulder_pain_initial_severity?: string | null
+          shoulder_pain_resolve_days?: number | null
+          shoulder_pain_start?: string | null
+          shoulder_side?: string | null
+          solicitor_name?: string | null
+          solicitor_reference?: string | null
+          updated_at?: string
+          user_id?: string | null
+          vehicle_position?: string | null
+          work_type?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string

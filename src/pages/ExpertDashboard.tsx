@@ -33,14 +33,24 @@ export default function ExpertDashboard() {
           created_at,
           status,
           storage_path,
-          profiles:patient_id (
+          profiles!reports_patient_id_fkey (
             full_name
           )
         `)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setReports(reportsData || []);
+
+      // Transform the data to match the Report interface
+      const transformedReports: Report[] = (reportsData || []).map(report => ({
+        id: report.id,
+        created_at: report.created_at,
+        status: report.status,
+        storage_path: report.storage_path,
+        profiles: report.profiles
+      }));
+
+      setReports(transformedReports);
     } catch (error) {
       console.error('Error fetching reports:', error);
       toast({
