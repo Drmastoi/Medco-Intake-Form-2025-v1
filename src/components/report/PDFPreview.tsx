@@ -12,6 +12,7 @@ interface PDFPreviewProps {
   setSignature: (value: string) => void;
   isSubmitting: boolean;
   onSubmit: (claimantUrl: string, fullUrl: string) => void;
+  previewMode?: 'claimant' | 'expert';
 }
 
 export function PDFPreview({ 
@@ -19,7 +20,8 @@ export function PDFPreview({
   signature, 
   setSignature, 
   isSubmitting, 
-  onSubmit 
+  onSubmit,
+  previewMode = 'claimant'
 }: PDFPreviewProps) {
   // Get current date and time for signature timestamp
   const signatureDate = useMemo(() => new Date().toISOString(), [signature]);
@@ -49,15 +51,18 @@ export function PDFPreview({
             {({ url: fullUrl, loading: fullLoading }) => (
               <>
                 <Button 
-                  disabled={claimantLoading}
+                  disabled={claimantLoading || fullLoading}
                   onClick={() => {
-                    if (claimantUrl) {
+                    if (previewMode === 'claimant' && claimantUrl) {
                       window.open(claimantUrl, '_blank');
+                    } else if (previewMode === 'expert' && fullUrl) {
+                      window.open(fullUrl, '_blank');
                     }
                   }}
                   variant="outline"
+                  className="mb-2"
                 >
-                  Preview Summary Report
+                  Preview {previewMode === 'expert' ? 'Full Medical Report' : 'Summary Report'}
                 </Button>
 
                 <div className="mt-8 border-t pt-6">

@@ -90,6 +90,7 @@ export function IntakeFormContainer() {
       anxietyResolveDays: "",
       anxietyPastHistory: "",
       anxietyDuration: "",
+      hasAnxietyHistory: "no",
     },
   });
 
@@ -101,20 +102,44 @@ export function IntakeFormContainer() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const preFillData = {
-      solicitorName: params.get('solicitorName') || '',
-      solicitorReference: params.get('solicitorReference') || '',
-      instructingPartyName: params.get('instructingPartyName') || '',
-      instructingPartyReference: params.get('instructingPartyReference') || '',
-      examinationLocation: params.get('examinationLocation') || '',
-      dateOfExamination: params.get('dateOfExamination') || new Date().toISOString().split('T')[0],
-      dateOfReport: params.get('dateOfReport') || new Date().toISOString().split('T')[0],
-      medcoReference: params.get('medcoReference') || '',
-      emailId: params.get('emailId') || '',
-    };
     
-    if (Object.values(preFillData).some(value => value)) {
-      form.reset(preFillData);
+    if (params.toString()) {
+      console.log("Found URL parameters for prefilling:", params.toString());
+      
+      const preFillData: Record<string, any> = {};
+      
+      params.forEach((value, key) => {
+        if (value) {
+          preFillData[key] = value;
+          console.log(`Setting parameter ${key} to ${value}`);
+        }
+      });
+      
+      if (preFillData.dateOfExamination) {
+        try {
+          const date = new Date(preFillData.dateOfExamination);
+          preFillData.dateOfExamination = date.toISOString().split('T')[0];
+        } catch (e) {
+          console.error("Error parsing dateOfExamination:", e);
+        }
+      }
+      
+      if (preFillData.dateOfReport) {
+        try {
+          const date = new Date(preFillData.dateOfReport);
+          preFillData.dateOfReport = date.toISOString().split('T')[0];
+        } catch (e) {
+          console.error("Error parsing dateOfReport:", e);
+        }
+      }
+      
+      if (Object.keys(preFillData).length > 0) {
+        const currentValues = form.getValues();
+        const mergedValues = {...currentValues, ...preFillData};
+        form.reset(mergedValues);
+        
+        console.log("Form reset with prefilled data:", mergedValues);
+      }
     }
   }, []);
 

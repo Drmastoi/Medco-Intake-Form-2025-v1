@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Share } from "lucide-react";
 import emailjs from '@emailjs/browser';
 import { useToast } from "@/hooks/use-toast";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface ShareLinkButtonProps {
   form: any;
@@ -11,6 +11,7 @@ interface ShareLinkButtonProps {
 
 export function ShareLinkButton({ form }: ShareLinkButtonProps) {
   const { toast } = useToast();
+  const [isSending, setIsSending] = useState(false);
 
   useEffect(() => {
     emailjs.init("YnnsjqOayi-IRBxy_");
@@ -18,6 +19,17 @@ export function ShareLinkButton({ form }: ShareLinkButtonProps) {
 
   const generateAndShareLink = async () => {
     const formData = form.getValues();
+    
+    if (!formData.emailId) {
+      toast({
+        title: "Missing Email",
+        description: "Please enter the claimant's email address before sharing.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    setIsSending(true);
     
     const preFillData = {
       solicitorName: formData.solicitorName || '',
@@ -39,6 +51,9 @@ export function ShareLinkButton({ form }: ShareLinkButtonProps) {
     });
     
     const shareableLink = `${window.location.origin}?${queryParams.toString()}`;
+    
+    console.log("Shareable link generated:", shareableLink);
+    console.log("Email will be sent to:", formData.emailId);
     
     try {
       const templateParams = {
@@ -81,6 +96,8 @@ Your Medical Assessment Team
         description: "Failed to send the email. Please try again.",
         variant: "destructive",
       });
+    } finally {
+      setIsSending(false);
     }
   };
 
@@ -89,9 +106,10 @@ Your Medical Assessment Team
       onClick={generateAndShareLink}
       variant="outline"
       className="flex items-center gap-2"
+      disabled={isSending}
     >
       <Share className="w-4 h-4" />
-      Share with Claimant
+      {isSending ? "Sending..." : "Share with Claimant"}
     </Button>
   );
 }
