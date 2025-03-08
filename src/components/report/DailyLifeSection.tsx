@@ -1,3 +1,4 @@
+
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
 import { formatDate } from '../../utils/dateUtils';
 
@@ -129,6 +130,43 @@ const isLongTermPrognosis = (severityValue: string) => {
   return severityValue === "3";
 };
 
+const getTravelAnxietySymptomLabel = (id: string) => {
+  const labels: { [key: string]: string } = {
+    "cautious-driver": "Being a more cautious driver",
+    "frequent-mirror-checking": "Looking in the mirror more frequently",
+    "avoid-accident-road": "Avoiding the road where the accident happened",
+    "avoid-passenger": "Avoiding being a passenger in a car",
+    "avoid-driving": "Avoiding driving a car",
+    "panic-attacks": "Getting panic attacks when in a car",
+    "passenger-anxiety": "Anxiety when traveling as a passenger",
+    "busy-road-anxiety": "Anxiety on busy roads or highways",
+  };
+  return labels[id] || id;
+};
+
+const formatTravelAnxietySymptoms = (symptoms: string[] = [], otherSymptom?: string) => {
+  if (!symptoms.length) return '';
+  
+  const mainSymptoms = symptoms.filter(s => s !== 'other');
+  const formattedSymptoms = mainSymptoms.map(s => getTravelAnxietySymptomLabel(s));
+  
+  let resultText = '';
+  if (formattedSymptoms.length === 1) {
+    resultText = formattedSymptoms[0];
+  } else if (formattedSymptoms.length === 2) {
+    resultText = `${formattedSymptoms[0]} and ${formattedSymptoms[1]}`;
+  } else if (formattedSymptoms.length > 2) {
+    const lastSymptom = formattedSymptoms.pop();
+    resultText = `${formattedSymptoms.join(', ')}, and ${lastSymptom}`;
+  }
+  
+  if (otherSymptom && symptoms.includes('other')) {
+    resultText = resultText ? `${resultText}, and ${otherSymptom}` : otherSymptom;
+  }
+  
+  return resultText;
+};
+
 export const DailyLifeSection = ({ formData }: { formData: any }) => (
   <View style={styles.section}>
     <Text style={styles.title}>COMPREHENSIVE INJURY AND IMPACT SUMMARY</Text>
@@ -203,6 +241,9 @@ export const DailyLifeSection = ({ formData }: { formData: any }) => (
           <Text style={styles.bulletPoint}>  - Current Severity: {getPainSeverity(formData.anxietyCurrentSeverity)}</Text>
           {formData.anxietyCurrentSeverity === "4" && (
             <Text style={styles.bulletPoint}>  - Resolved after: {formData.anxietyResolveDays} days</Text>
+          )}
+          {formData.travelAnxietySymptoms && formData.travelAnxietySymptoms.length > 0 && (
+            <Text style={styles.bulletPoint}>  - Reported Symptoms: {formatTravelAnxietySymptoms(formData.travelAnxietySymptoms, formData.otherTravelAnxietySymptom)}</Text>
           )}
           {isLongTermPrognosis(formData.anxietyCurrentSeverity) && (
             <Text style={styles.explanationText}>The claimant's prolonged prognosis is attributable to the absence of physiotherapy and the extent of their injuries.</Text>

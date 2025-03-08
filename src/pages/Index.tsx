@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -90,14 +91,24 @@ export default function Index() {
       headacheCurrentSeverity: "1",
       headacheResolveDays: "",
       headachePastHistory: "",
+      
+      // New travel anxiety fields
+      travelAnxiety: "1",
+      travelAnxietySymptoms: [],
+      otherTravelAnxietySymptom: "",
+      currentlyDriving: "1",
+      moreCautious: "1",
+      checkingMirrors: "1",
+      preventedDriving: "1",
+      anxietyInitialSeverity: "1",
+      anxietyCurrentSeverity: "1",
+      anxietyResolveDays: "",
+      anxietyPastHistory: "",
+      anxietyDuration: "",
     },
   });
 
   const { handleSubmit } = useFormSubmission();
-
-  const handleTabChange = (value: string) => {
-    setCurrentSection(parseInt(value));
-  };
 
   React.useEffect(() => {
     const params = new URLSearchParams(window.location.search);

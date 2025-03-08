@@ -1,3 +1,4 @@
+
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
@@ -34,7 +35,24 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 10,
   },
+  symptomList: {
+    marginLeft: 10,
+  }
 });
+
+const getTravelAnxietySymptomLabel = (id: string) => {
+  const labels: { [key: string]: string } = {
+    "cautious-driver": "Being a more cautious driver",
+    "frequent-mirror-checking": "Looking in the mirror more frequently",
+    "avoid-accident-road": "Avoiding the road where the accident happened",
+    "avoid-passenger": "Avoiding being a passenger in a car",
+    "avoid-driving": "Avoiding driving a car",
+    "panic-attacks": "Getting panic attacks when in a car",
+    "passenger-anxiety": "Anxiety when traveling as a passenger",
+    "busy-road-anxiety": "Anxiety on busy roads or highways",
+  };
+  return labels[id] || id;
+};
 
 export const ClinicalExaminationSection = ({ formData }: { formData: any }) => (
   <View style={styles.section}>
@@ -129,6 +147,22 @@ export const ClinicalExaminationSection = ({ formData }: { formData: any }) => (
         <Text style={styles.text}>Checking Mirrors More: {formData.checkingMirrors === "1" ? "Yes" : "No"}</Text>
         <Text style={styles.text}>Prevented from Driving: {formData.preventedDriving === "1" ? "Yes" : "No"}</Text>
         <Text style={styles.text}>Duration of Anxiety: {formData.anxietyDuration || "_______"} days</Text>
+        
+        {formData.travelAnxietySymptoms && formData.travelAnxietySymptoms.length > 0 && (
+          <>
+            <Text style={styles.text}>Travel Anxiety Symptoms:</Text>
+            <View style={styles.symptomList}>
+              {formData.travelAnxietySymptoms.map((symptom: string, index: number) => (
+                symptom !== 'other' ? (
+                  <Text key={index} style={styles.text}>• {getTravelAnxietySymptomLabel(symptom)}</Text>
+                ) : null
+              ))}
+              {formData.travelAnxietySymptoms.includes('other') && formData.otherTravelAnxietySymptom && (
+                <Text style={styles.text}>• {formData.otherTravelAnxietySymptom}</Text>
+              )}
+            </View>
+          </>
+        )}
       </>
     )}
   </View>

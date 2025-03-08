@@ -57,6 +57,22 @@ export const formSchema = z.object({
   headacheCurrentSeverity: z.enum(["1", "2", "3", "4"]),
   headacheResolveDays: z.string().optional(),
   headachePastHistory: z.string().optional(),
+  
+  // Section 7 - Travel Anxiety Information
+  travelAnxiety: z.enum(["1", "2"]),
+  currentlyDriving: z.enum(["1", "2"]).optional(),
+  moreCautious: z.enum(["1", "2"]).optional(),
+  checkingMirrors: z.enum(["1", "2"]).optional(),
+  preventedDriving: z.enum(["1", "2"]).optional(),
+  anxietyInitialSeverity: z.enum(["1", "2", "3"]).optional(),
+  anxietyCurrentSeverity: z.enum(["1", "2", "3", "4"]).optional(),
+  anxietyResolveDays: z.string().optional(),
+  anxietyPastHistory: z.string().optional(),
+  anxietyDuration: z.string().optional(),
+  
+  // New travel anxiety symptom fields
+  travelAnxietySymptoms: z.array(z.string()).optional(),
+  otherTravelAnxietySymptom: z.string().optional(),
 });
 
 export type FormSchema = z.infer<typeof formSchema>;

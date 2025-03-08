@@ -62,7 +62,19 @@ export function useFormSubmission() {
             headache_initial_severity: values.headacheInitialSeverity,
             headache_current_severity: values.headacheCurrentSeverity,
             headache_resolve_days: values.headacheResolveDays ? parseInt(values.headacheResolveDays) : null,
-            headache_past_history: values.headachePastHistory
+            headache_past_history: values.headachePastHistory,
+            travel_anxiety: values.travelAnxiety,
+            travel_anxiety_symptoms: values.travelAnxietySymptoms,
+            other_travel_anxiety_symptom: values.otherTravelAnxietySymptom,
+            currently_driving: values.currentlyDriving,
+            more_cautious: values.moreCautious,
+            checking_mirrors: values.checkingMirrors,
+            prevented_driving: values.preventedDriving,
+            anxiety_initial_severity: values.anxietyInitialSeverity,
+            anxiety_current_severity: values.anxietyCurrentSeverity,
+            anxiety_resolve_days: values.anxietyResolveDays ? parseInt(values.anxietyResolveDays) : null,
+            anxiety_past_history: values.anxietyPastHistory,
+            anxiety_duration: values.anxietyDuration
           }
         ]);
 

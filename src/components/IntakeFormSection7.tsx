@@ -4,6 +4,7 @@ import { DrivingQuestions } from "./travel-anxiety/DrivingQuestions";
 import { AnxietyTiming } from "./travel-anxiety/AnxietyTiming";
 import { AnxietySeverity } from "./travel-anxiety/AnxietySeverity";
 import { AnxietyHistory } from "./travel-anxiety/AnxietyHistory";
+import { TravelAnxietySymptoms } from "./travel-anxiety/TravelAnxietySymptoms";
 
 export function IntakeFormSection7({ form }: { form: any }) {
   const travelAnxiety = form.watch("travelAnxiety");
@@ -15,12 +16,16 @@ export function IntakeFormSection7({ form }: { form: any }) {
       <TravelAnxietyInitial form={form} />
 
       {travelAnxiety === "1" && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <DrivingQuestions form={form} />
-          <div className="space-y-4">
-            <AnxietyTiming form={form} />
+        <>
+          <TravelAnxietySymptoms form={form} />
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <DrivingQuestions form={form} />
+            <div className="space-y-4">
+              <AnxietyTiming form={form} />
+            </div>
           </div>
-        </div>
+        </>
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
