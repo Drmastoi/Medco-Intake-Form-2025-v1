@@ -110,6 +110,11 @@ export default function Index() {
 
   const { handleSubmit } = useFormSubmission();
 
+  // Add the missing handleTabChange function
+  const handleTabChange = (value: string) => {
+    setCurrentSection(parseInt(value));
+  };
+
   React.useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const preFillData = {
