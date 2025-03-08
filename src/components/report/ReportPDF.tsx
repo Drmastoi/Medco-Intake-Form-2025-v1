@@ -1,4 +1,4 @@
-
+<lov-code>
 import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 import { styles as importedStyles } from './reportStyles';
 import { PersonalInfoSection } from './PersonalInfoSection';
@@ -245,13 +245,8 @@ export const MedcoReport = ({
           </View>
         </View>
 
-        <Text style={localStyles.pageNumber} render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} fixed />
-        <Text style={localStyles.footer} fixed>{formData.fullName || 'Anonymous'} report dated {new Date().toLocaleDateString()} | Medical Report | CID {Math.floor(Math.random() * 1000000)}</Text>
-      </Page>
-
-      <Page size="A4" style={localStyles.page}>
-        {/* Section 3: Instruction Details */}
-        <View>
+        {/* Section 3: Instruction Details - Moved to first page */}
+        <View style={localStyles.subsection}>
           <Text style={localStyles.sectionHeader}>Section 3 - Instruction Details</Text>
           
           <View style={localStyles.fieldRow}>
@@ -277,7 +272,7 @@ export const MedcoReport = ({
           </View>
         </View>
         
-        {/* Section 4: Appointment Details */}
+        {/* Section 4: Appointment Details - Moved to first page */}
         <View style={localStyles.subsection}>
           <Text style={localStyles.sectionHeader}>Section 4 - Appointment Details</Text>
           
@@ -304,8 +299,13 @@ export const MedcoReport = ({
           </View>
         </View>
 
-        {/* Section 5: Statement of Instruction */}
-        <View style={localStyles.subsection}>
+        <Text style={localStyles.pageNumber} render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} fixed />
+        <Text style={localStyles.footer} fixed>{formData.fullName || 'Anonymous'} report dated {new Date().toLocaleDateString()} | Medical Report | CID {Math.floor(Math.random() * 1000000)}</Text>
+      </Page>
+
+      <Page size="A4" style={localStyles.page}>
+        {/* Section 5: Statement of Instruction - Moved to second page */}
+        <View>
           <Text style={localStyles.sectionHeader}>Section 5 - Statement of Instruction</Text>
           
           <Text style={localStyles.text}>
@@ -317,13 +317,8 @@ export const MedcoReport = ({
           </Text>
         </View>
 
-        <Text style={localStyles.pageNumber} render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} fixed />
-        <Text style={localStyles.footer} fixed>{formData.fullName || 'Anonymous'} report dated {new Date().toLocaleDateString()} | Medical Report | CID {Math.floor(Math.random() * 1000000)}</Text>
-      </Page>
-
-      <Page size="A4" style={localStyles.page}>
         {/* Section 6: Summary of Injuries */}
-        <View>
+        <View style={localStyles.subsection}>
           <Text style={localStyles.sectionHeader}>Section 6 - Summary of Injuries</Text>
           
           <View style={localStyles.tableContainer}>
@@ -729,290 +724,3 @@ export const MedcoReport = ({
                   <View style={localStyles.fieldColumn}>
                     <Text style={localStyles.fieldLabel}>Examination</Text>
                   </View>
-                </View>
-                
-                <View style={localStyles.fieldRow}>
-                  <View style={localStyles.fieldColumn}>
-                    <Text style={localStyles.fieldLabel}>Observation</Text>
-                    <Text style={localStyles.text}>Normal</Text>
-                  </View>
-                </View>
-                
-                <View style={localStyles.fieldRow}>
-                  <View style={localStyles.fieldColumn}>
-                    <Text style={localStyles.fieldLabel}>Movements</Text>
-                    <Text style={localStyles.text}>
-                      Flexion, Extension | {formData.neckPainCurrentSeverity === "3" ? "Restricted (70%)" : "Normal"} | {formData.neckPainCurrentSeverity === "3" ? "Extremes Painful" : "No Pain"}
-                      Left Lateral Flexion, Right Lateral Flexion | {formData.neckPainCurrentSeverity === "3" ? "Restricted (80%)" : "Normal"} | {formData.neckPainCurrentSeverity === "3" ? "Mild Pain" : "No Pain"}
-                    </Text>
-                  </View>
-                </View>
-                
-                <View style={localStyles.fieldRow}>
-                  <View style={localStyles.fieldColumn}>
-                    <Text style={localStyles.fieldLabel}>Neurovascular Deficit</Text>
-                    <Text style={localStyles.text}>No neurovascular deficits noted</Text>
-                  </View>
-                </View>
-              </View>
-            </>
-          )}
-          
-          {formData.backPain === "1" && (
-            <>
-              <View style={localStyles.grayBackground}>
-                <Text style={{ fontSize: 12, fontWeight: 'bold', marginBottom: 5, marginTop: 10 }}>14.3 Physical Examination</Text>
-              </View>
-              
-              <Text style={{ fontSize: 12, fontWeight: 'bold', marginTop: 10, marginBottom: 5 }}>Back</Text>
-              <View style={localStyles.grayBackground}>
-                <View style={localStyles.fieldRow}>
-                  <View style={localStyles.fieldColumn}>
-                    <Text style={localStyles.fieldLabel}>Examination</Text>
-                  </View>
-                </View>
-                
-                <View style={localStyles.fieldRow}>
-                  <View style={localStyles.fieldColumn}>
-                    <Text style={localStyles.fieldLabel}>Observation</Text>
-                    <Text style={localStyles.text}>Normal</Text>
-                  </View>
-                </View>
-                
-                <View style={localStyles.fieldRow}>
-                  <View style={localStyles.fieldColumn}>
-                    <Text style={localStyles.fieldLabel}>Tenderness</Text>
-                    <Text style={localStyles.text}>
-                      {formData.backLocation === "1" ? "Para Thoracic" : 
-                       formData.backLocation === "2" ? "Para Thoracic / Lumbar" : 
-                       formData.backLocation === "3" ? "Para Lumbar" : "Para Thoracic / Lumbar"}
-                    </Text>
-                  </View>
-                </View>
-                
-                <View style={localStyles.fieldRow}>
-                  <View style={localStyles.fieldColumn}>
-                    <Text style={localStyles.fieldLabel}>Movements</Text>
-                    <Text style={localStyles.text}>
-                      Flexion, Left Lateral Flexion, Right Lateral Flexion | {formData.backPainCurrentSeverity === "3" ? "Restricted (70%)" : "Normal"} | {formData.backPainCurrentSeverity === "3" ? "Painful" : "No Pain"}
-                    </Text>
-                  </View>
-                </View>
-                
-                <View style={localStyles.fieldRow}>
-                  <View style={localStyles.fieldColumn}>
-                    <Text style={localStyles.fieldLabel}>Special Tests</Text>
-                    <Text style={localStyles.text}>
-                      Straight Leg raise | Right side | Normal
-                      Straight Leg raise | Left side | {formData.backPainCurrentSeverity === "3" ? "Positive" : "Normal"}
-                    </Text>
-                  </View>
-                </View>
-                
-                <View style={localStyles.fieldRow}>
-                  <View style={localStyles.fieldColumn}>
-                    <Text style={localStyles.fieldLabel}>Neurovascular Deficit</Text>
-                    <Text style={localStyles.text}>No neurovascular deficits noted</Text>
-                  </View>
-                </View>
-              </View>
-            </>
-          )}
-        </View>
-
-        <Text style={localStyles.pageNumber} render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} fixed />
-        <Text style={localStyles.footer} fixed>{formData.fullName || 'Anonymous'} report dated {new Date().toLocaleDateString()} | Medical Report | CID {Math.floor(Math.random() * 1000000)}</Text>
-      </Page>
-      
-      <Page size="A4" style={localStyles.page}>
-        {/* Section 15: Employment */}
-        <View>
-          <Text style={localStyles.sectionHeader}>Section 15 - Employment</Text>
-          
-          <View style={localStyles.grayBackground}>
-            <Text style={{ fontSize: 12, fontWeight: 'bold', marginBottom: 5 }}>15.1 Employment</Text>
-          </View>
-          
-          <Text style={{ fontSize: 12, fontWeight: 'bold', marginTop: 10, marginBottom: 5 }}>{formData.occupation || 'Employment'}</Text>
-          <View style={localStyles.grayBackground}>
-            <View style={localStyles.fieldRow}>
-              <View style={localStyles.fieldColumn}>
-                <Text style={localStyles.fieldLabel}>Employment Status</Text>
-                <Text style={localStyles.text}>
-                  Employed as {formData.occupation || 'a worker'} ({formData.workType === "1" ? "Full Time" : formData.workType === "2" ? "Part Time" : "Unknown"}) at the time of the accident.
-                </Text>
-              </View>
-            </View>
-            
-            <View style={localStyles.fieldRow}>
-              <View style={localStyles.fieldColumn}>
-                <Text style={localStyles.fieldLabel}>Time off</Text>
-                <Text style={localStyles.text}>
-                  {formData.daysOffWork ? `Taken ${formData.daysOffWork} days off due to the index accident.` : "Not taken time off due to the index accident."}
-                </Text>
-              </View>
-            </View>
-            
-            <View style={localStyles.fieldRow}>
-              <View style={localStyles.fieldColumn}>
-                <Text style={localStyles.fieldLabel}>Restrictions</Text>
-                <Text style={localStyles.text}>
-                  {formData.daysLightDuties ? 
-                    `The Claimant experienced restrictions due to the index accident, which include Light Duties for ${formData.daysLightDuties} days.` : 
-                    "The Claimant did not report any work restrictions due to the index accident."}
-                </Text>
-              </View>
-            </View>
-            
-            <View style={localStyles.fieldRow}>
-              <View style={localStyles.fieldColumn}>
-                <Text style={localStyles.fieldLabel}>Opinion on Restrictions</Text>
-                <Text style={localStyles.text}>In my opinion, the work restrictions are consistent and attributable to the index accident.</Text>
-              </View>
-            </View>
-            
-            <View style={localStyles.fieldRow}>
-              <View style={localStyles.fieldColumn}>
-                <Text style={localStyles.fieldLabel}>Current status</Text>
-                <Text style={localStyles.text}>The status has not changed since the accident.</Text>
-              </View>
-            </View>
-          </View>
-        </View>
-        
-        {/* Section 16: Home & Lifestyle */}
-        <View style={localStyles.subsection}>
-          <Text style={localStyles.sectionHeader}>Section 16 - Home & Lifestyle</Text>
-          
-          <Text style={{ fontSize: 12, fontWeight: 'bold', marginTop: 10, marginBottom: 5 }}>Home & Lifestyle</Text>
-          <View style={localStyles.grayBackground}>
-            <View style={localStyles.fieldRow}>
-              <View style={localStyles.fieldColumn}>
-                <Text style={localStyles.fieldLabel}>Living</Text>
-                <Text style={localStyles.text}>
-                  The Claimant lives in a {formData.housingType || "House"} with {
-                    formData.livingWith === "1" ? "Wife" :
-                    formData.livingWith === "2" ? "Husband" :
-                    formData.livingWith === "3" ? "Partner" :
-                    formData.livingWith === "4" ? "Parents" :
-                    formData.livingWith === "5" ? "Alone" : "Family"
-                  }.
-                </Text>
-              </View>
-            </View>
-            
-            <View style={localStyles.fieldRow}>
-              <View style={localStyles.fieldColumn}>
-                <Text style={localStyles.fieldLabel}>Activities</Text>
-                <Text style={localStyles.text}>
-                  <Text style={{fontWeight: 'bold'}}>Home</Text>{'\n'}
-                  The Claimant experiences the following restrictions - 
-                  {formData.domesticEffects && formData.domesticEffects.length > 0 ? 
-                    formData.domesticEffects.join(', ') : 
-                    "Sleep | Housework | Cleaning | Washing"}.{'\n'}
-                  The restrictions are moderate and Intermittent.{'\n'}
-                  {formData.livingWith !== "5" ? "Assistance was received by the Claimant for the restrictions from Family." : ""}
-                  {formData.livingWith !== "5" ? "Received assistance, which was unpaid." : ""}
-                  
-                  {'\n\n'}<Text style={{fontWeight: 'bold'}}>Sports</Text>{'\n'}
-                  {formData.sportLeisureEffects && formData.sportLeisureEffects.length > 0 ? 
-                    `The Claimant experiences the following activities (${formData.sportLeisureEffects.join(', ')}) being affected due to the index accident.` : 
-                    "The Claimant did not report any sports activities being affected."}
-                  {formData.sportLeisureEffects && formData.sportLeisureEffects.length > 0 ? 
-                    "\nThe restrictions are moderate and Intermittent.\nMissed Activities - Sports sessions" : ""}
-                  
-                  {'\n\n'}<Text style={{fontWeight: 'bold'}}>Social</Text>{'\n'}
-                  {formData.socialLifeEffects && formData.socialLifeEffects.length > 0 ? 
-                    `The Claimant's social activities which were affected as a result of the index accident: ${formData.socialLifeEffects.join(', ')}` : 
-                    "The Claimant did not report any social activities being affected."}
-                  
-                  {formData.travelAnxiety === "1" ? '\n\nExperienced Travel restrictions due to the symptoms - Driving anxiety.' : ''}
-                </Text>
-              </View>
-            </View>
-            
-            <View style={localStyles.fieldRow}>
-              <View style={localStyles.fieldColumn}>
-                <Text style={localStyles.fieldLabel}>Opinion</Text>
-                <Text style={localStyles.text}>In my opinion, the restrictions are consistent and attributable to the index accident.</Text>
-              </View>
-            </View>
-          </View>
-        </View>
-
-        <Text style={localStyles.pageNumber} render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} fixed />
-        <Text style={localStyles.footer} fixed>{formData.fullName || 'Anonymous'} report dated {new Date().toLocaleDateString()} | Medical Report | CID {Math.floor(Math.random() * 1000000)}</Text>
-      </Page>
-      
-      <Page size="A4" style={localStyles.page}>
-        {/* Section 19: Case Declaration */}
-        <View>
-          <Text style={localStyles.sectionHeader}>Section 19 - Case Declaration</Text>
-          
-          <Text style={localStyles.text}>I have not provided treatment for the claimant.</Text>
-          <Text style={localStyles.text}>I am not associated with any person who has provided treatment.</Text>
-          <Text style={localStyles.text}>I have not recommended a particular treatment provider.</Text>
-        </View>
-        
-        {/* Section 20: References */}
-        <View style={localStyles.subsection}>
-          <Text style={localStyles.sectionHeader}>Section 20 - References</Text>
-          
-          <Text style={localStyles.text}>Whiplash. 1966 abstract. Brussels 15-16 November 1996:1-67.</Text>
-          <Text style={localStyles.text}>The Quebec whiplash associated disorders cohort study. Spine 1995 : 85 vol.20 (supple B): 12 -39.</Text>
-          <Text style={localStyles.text}>Galasko CSB, Murray PM Pitcher M, et al. neck sprains after road traffic accidents: a modern epidemic injury 1993:24:155-7.</Text>
-          <Text style={localStyles.text}>Carette S. Whiplash injury and chronic neck pain. N Engl. J med 1994; 330:1083-4.</Text>
-          <Text style={localStyles.text}>Post traumatic stress disorder http://www.nhsdirect.nhs.uk/articles/article.aspx?articleId=293.Accessed at 24-April-2008.</Text>
-        </View>
-        
-        {/* Section 21: Declaration */}
-        <View style={localStyles.subsection}>
-          <Text style={localStyles.sectionHeader}>Section 21 - Declaration</Text>
-          
-          <Text style={localStyles.text}>I understand that my overriding duty is to the court, both in preparing reports and in giving oral evidence. I have complied and will continue to comply with that duty.</Text>
-          <Text style={localStyles.text}>I am aware of the requirements of Part 35 and practice direction 35, the protocol for instructing experts to give evidence in civil claims and the practice direction on pre-action conduct.</Text>
-          <Text style={localStyles.text}>I have set out in my report that I understand from those instructing me to be the questions in respect of which my opinions as an expert are required.</Text>
-          <Text style={localStyles.text}>I have done my best, in preparing this report, to be accurate and complete. I have mentioned all matters, which I regard as relevant to the opinions I have expressed. All of the matters on which I have expressed an opinion lie within my field of expertise.</Text>
-        </View>
-        
-        {/* Section 22: Statement of Truth */}
-        <View style={localStyles.subsection}>
-          <Text style={localStyles.sectionHeader}>Section 22 - Statement of Truth</Text>
-          
-          <Text style={localStyles.text}>I confirm that I have made clear which facts and matters referred to in this report are within my own knowledge and which are not. Those that are within my own knowledge I confirm to be true. The opinions I have expressed represent my true and complete professional opinions on the matters to which they refer.</Text>
-          <Text style={localStyles.text}>I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.</Text>
-        </View>
-        
-        {/* Section 23: Training and Accreditations */}
-        <View style={localStyles.subsection}>
-          <Text style={localStyles.sectionHeader}>Section 23 - Training and Accreditations</Text>
-          
-          <Text style={localStyles.text}>Attended MedCo Training 2024 Jan.</Text>
-        </View>
-        
-        {/* Section 24: Signed and Dated */}
-        <View style={localStyles.subsection}>
-          <Text style={localStyles.sectionHeader}>Section 24 - Signed and Dated</Text>
-          
-          <View style={{ marginTop: 20, marginBottom: 20 }}>
-            {signature ? (
-              <Text style={localStyles.text}>{signature}</Text>
-            ) : (
-              <Text style={localStyles.text}>________________________</Text>
-            )}
-            
-            <Text style={localStyles.text}>
-              (Electronically signed) {new Date().toLocaleDateString()} Dr.Awais Iqbal, MBBS,{'\n'}
-              MRCGP, General Practice, Consultant GMC - 6138189 MedCo{'\n'}
-              - DME 8094
-            </Text>
-          </View>
-        </View>
-
-        <Text style={localStyles.pageNumber} render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} fixed />
-        <Text style={localStyles.footer} fixed>{formData.fullName || 'Anonymous'} report dated {new Date().toLocaleDateString()} | Medical Report | CID {Math.floor(Math.random() * 1000000)}</Text>
-      </Page>
-
-    </Document>
-  );
-};
