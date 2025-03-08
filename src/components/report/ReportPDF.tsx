@@ -4,8 +4,6 @@ import { styles as importedStyles } from './reportStyles';
 import { formatDate } from '../../utils/dateUtils';
 import { ClaimantDetailsSection } from './sections/ClaimantDetailsSection';
 import { ExpertDetailsSection } from './sections/ExpertDetailsSection';
-import { InstructionDetailsSection } from './sections/InstructionDetailsSection';
-import { AppointmentDetailsSection } from './sections/AppointmentDetailsSection';
 import { StatementOfInstructionSection } from './sections/StatementOfInstructionSection';
 import { SummaryOfInjuriesTableSection } from './sections/SummaryOfInjuriesTableSection';
 import { AccidentDetailsSection } from './sections/AccidentDetailsSection';
@@ -141,7 +139,7 @@ export const MedcoReport = ({
   const PageFooter = ({ name }: { name: string }) => (
     <>
       <Text style={localStyles.pageNumber} render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} fixed />
-      <Text style={localStyles.footer} fixed>{name || 'Anonymous'} report dated {new Date().toLocaleDateString()} | Medical Report | CID {Math.floor(Math.random() * 1000000)}</Text>
+      <Text style={localStyles.footer} fixed>{name || 'Anonymous'} report dated {formData.dateOfReport ? formatDate(formData.dateOfReport) : formatDate(new Date().toISOString())} | Medical Report | CID {Math.floor(Math.random() * 1000000)}</Text>
     </>
   );
 
@@ -150,50 +148,51 @@ export const MedcoReport = ({
       <Page size="A4" style={localStyles.page}>
         <Text style={localStyles.title}>Expert Medical Report</Text>
         
-        {/* Section 1: Claimant Details */}
-        <ClaimantDetailsSection formData={formData} styles={localStyles} />
+        {/* First page combines claimant details with instruction information */}
+        <View style={{ flexDirection: 'row', marginBottom: 15 }}>
+          <View style={{ flex: 1, marginRight: 10 }}>
+            {/* Section 1: Claimant Details - takes 50% of the width */}
+            <ClaimantDetailsSection formData={formData} styles={localStyles} />
+          </View>
+          
+          <View style={{ flex: 1 }}>
+            {/* Section 2: Expert Details - takes 50% of the width */}
+            <ExpertDetailsSection styles={localStyles} />
+          </View>
+        </View>
         
-        {/* Section 2: Expert Details */}
-        <ExpertDetailsSection styles={localStyles} />
-
-        {/* Section 3: Instruction Details */}
-        <InstructionDetailsSection formData={formData} styles={localStyles} />
+        {/* Section 3: Statement of Instruction with solicitor details */}
+        <StatementOfInstructionSection styles={localStyles} formData={formData} />
         
-        {/* Section 4: Appointment Details */}
-        <AppointmentDetailsSection formData={formData} styles={localStyles} />
-
         <PageFooter name={formData.fullName} />
       </Page>
 
       <Page size="A4" style={localStyles.page}>
-        {/* Section 5: Statement of Instruction */}
-        <StatementOfInstructionSection styles={localStyles} />
-
-        {/* Section 6: Summary of Injuries */}
+        {/* Section 4: Summary of Injuries */}
         <SummaryOfInjuriesTableSection formData={formData} styles={localStyles} />
         
-        {/* Section 7: Accident Details */}
+        {/* Section 5: Accident Details */}
         <AccidentDetailsSection formData={formData} styles={localStyles} />
 
         <PageFooter name={formData.fullName} />
       </Page>
 
       <Page size="A4" style={localStyles.page}>
-        {/* Section 8: Past Medical History */}
+        {/* Section 6: Past Medical History */}
         <PastMedicalHistorySection formData={formData} styles={localStyles} />
 
         <PageFooter name={formData.fullName} />
       </Page>
 
       <Page size="A4" style={localStyles.page}>
-        {/* Section 9: Injuries / Symptoms */}
+        {/* Section 7: Injuries / Symptoms */}
         <InjuriesSymptomsSection formData={formData} styles={localStyles} />
 
         <PageFooter name={formData.fullName} />
       </Page>
       
       <Page size="A4" style={localStyles.page}>
-        {/* Section 14: Examination */}
+        {/* Section 8: Examination */}
         <ExaminationSection formData={formData} styles={localStyles} />
 
         <PageFooter name={formData.fullName} />

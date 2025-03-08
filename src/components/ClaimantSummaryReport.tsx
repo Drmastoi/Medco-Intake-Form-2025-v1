@@ -26,7 +26,7 @@ export function ClaimantSummaryReport({ form, onSubmit }: { form: any; onSubmit:
           <TabsContent value="claimant" className="mt-4">
             <div className="prose max-w-none mb-6">
               <p className="text-sm text-muted-foreground">
-                This is the summary report that will be sent to you. It excludes clinical examination details and medical recommendations.
+                This is the summary report that will be sent to you. It includes your case details and excludes clinical examination details and medical recommendations.
               </p>
             </div>
           </TabsContent>
@@ -34,7 +34,7 @@ export function ClaimantSummaryReport({ form, onSubmit }: { form: any; onSubmit:
           <TabsContent value="expert" className="mt-4">
             <div className="prose max-w-none mb-6">
               <p className="text-sm text-muted-foreground">
-                This is the full medical report that will be sent to the medical expert. It includes all clinical findings and recommendations.
+                This is the full medical report that will be sent to the medical expert. It includes case details, all clinical findings and recommendations.
               </p>
             </div>
           </TabsContent>
