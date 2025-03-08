@@ -18,52 +18,52 @@ const localStyles = StyleSheet.create({
   ...importedStyles,
   // Add additional styles needed for this component
   page: {
-    padding: 20, // Reduced padding
-    fontSize: 9, // Smaller base font size
+    padding: 15, // Further reduced padding
+    fontSize: 8, // Smaller base font size
     fontFamily: 'Helvetica',
   },
   title: {
-    fontSize: 16, // Reduced font size
-    marginBottom: 15,
+    fontSize: 14, // Reduced font size
+    marginBottom: 10,
     fontWeight: 'bold',
     textAlign: 'center',
     fontFamily: 'Helvetica-Bold',
   },
   signatureSection: {
-    marginTop: 15, // Reduced margin
+    marginTop: 10, // Reduced margin
     borderTop: 1,
-    paddingTop: 8,
+    paddingTop: 6,
   },
   signatureText: {
-    fontSize: 9,
-    marginBottom: 3, // Reduced margin
+    fontSize: 8,
+    marginBottom: 2, // Reduced margin
     fontFamily: 'Helvetica',
   },
   text: {
-    fontSize: 9,
-    marginBottom: 4, // Reduced margin
-    lineHeight: 1.3, // Reduced line height
+    fontSize: 8,
+    marginBottom: 3, // Reduced margin
+    lineHeight: 1.2, // Reduced line height
     fontFamily: 'Helvetica',
   },
   compactText: {
-    fontSize: 9,
-    marginBottom: 4,
-    lineHeight: 1.3,
+    fontSize: 8,
+    marginBottom: 3,
+    lineHeight: 1.2,
     fontFamily: 'Helvetica',
   },
   pageNumber: {
     position: 'absolute',
-    bottom: 10, // Reduced bottom position
+    bottom: 8, // Reduced bottom position
     left: 0,
     right: 0,
     textAlign: 'center',
-    fontSize: 8,
+    fontSize: 7,
     fontFamily: 'Helvetica',
   },
   footer: {
     position: 'absolute',
-    bottom: 5, // Reduced bottom position
-    left: 20,
+    bottom: 3, // Reduced bottom position
+    left: 15,
     fontSize: 6,
     color: '#666666',
     fontFamily: 'Helvetica',
@@ -71,89 +71,117 @@ const localStyles = StyleSheet.create({
   sectionHeader: {
     backgroundColor: '#000000',
     color: '#FFFFFF',
-    padding: 6, // Reduced padding
-    marginBottom: 8,
-    fontSize: 11, // Reduced font size
+    padding: 4, // Reduced padding
+    marginBottom: 6,
+    fontSize: 9, // Reduced font size
     fontWeight: 'bold',
     fontFamily: 'Helvetica-Bold',
   },
   fieldRow: {
     flexDirection: 'row',
-    marginBottom: 8,
+    marginBottom: 6,
   },
   compactFieldRow: {
     flexDirection: 'row',
-    marginBottom: 6, // Reduced margin
+    marginBottom: 4, // Reduced margin
   },
   fieldColumn: {
     flex: 1,
-    marginRight: 8, // Reduced margin
+    marginRight: 5, // Reduced margin
   },
   fieldLabel: {
-    fontSize: 9,
-    marginBottom: 2, // Reduced margin
+    fontSize: 8,
+    marginBottom: 1, // Reduced margin
     fontFamily: 'Helvetica',
   },
   compactFieldLabel: {
-    fontSize: 8,
-    marginBottom: 2,
+    fontSize: 7,
+    marginBottom: 1,
     fontFamily: 'Helvetica',
     fontWeight: 'bold',
   },
   fieldValue: {
-    fontSize: 9,
-    padding: 4, // Reduced padding
-    border: '1px solid #CCCCCC',
-    minHeight: 16, // Reduced height
-    fontFamily: 'Helvetica',
-    backgroundColor: '#FFFFFF',
-  },
-  compactFieldValue: {
-    fontSize: 9,
+    fontSize: 8,
     padding: 3, // Reduced padding
     border: '1px solid #CCCCCC',
     minHeight: 14, // Reduced height
     fontFamily: 'Helvetica',
     backgroundColor: '#FFFFFF',
   },
+  compactFieldValue: {
+    fontSize: 8,
+    padding: 2, // Reduced padding
+    border: '1px solid #CCCCCC',
+    minHeight: 12, // Reduced height
+    fontFamily: 'Helvetica',
+    backgroundColor: '#FFFFFF',
+  },
   subsection: {
-    marginTop: 8, // Reduced margin
-    marginBottom: 10, // Reduced margin
+    marginTop: 6, // Reduced margin
+    marginBottom: 6, // Reduced margin
   },
   compactSection: {
-    marginTop: 6,
-    marginBottom: 8,
+    marginTop: 4,
+    marginBottom: 6,
   },
   tableHeader: {
     backgroundColor: '#EEEEEE',
     flexDirection: 'row',
-    padding: 4, // Reduced padding
+    padding: 3, // Reduced padding
     borderBottom: '1px solid #000000',
   },
   tableHeaderCell: {
     flex: 1,
     fontWeight: 'bold',
-    fontSize: 9, // Reduced font size
+    fontSize: 8, // Reduced font size
     fontFamily: 'Helvetica-Bold',
   },
   tableRow: {
     flexDirection: 'row',
-    padding: 4, // Reduced padding
+    padding: 3, // Reduced padding
     borderBottom: '1px solid #CCCCCC',
   },
   tableCell: {
     flex: 1,
-    fontSize: 9, // Reduced font size
+    fontSize: 8, // Reduced font size
     fontFamily: 'Helvetica',
   },
   tableContainer: {
     border: '1px solid #000000',
-    marginBottom: 10, // Reduced margin
+    marginBottom: 6, // Reduced margin
   },
   grayBackground: {
     backgroundColor: '#EEEEEE',
-    padding: 6, // Reduced padding
+    padding: 4, // Reduced padding
   },
+  rowContainer: {
+    flexDirection: 'row',
+    marginBottom: 6,
+  },
+  halfColumn: {
+    width: '50%',
+    paddingRight: 4,
+  },
+  thirdColumn: {
+    width: '33.33%',
+    paddingRight: 3,
+  },
+  twoThirdsColumn: {
+    width: '66.67%',
+    paddingRight: 3,
+  },
+  sectionTitle: {
+    fontSize: 9,
+    fontWeight: 'bold',
+    marginBottom: 3,
+    fontFamily: 'Helvetica-Bold',
+  },
+  subTitle: {
+    fontSize: 8,
+    fontWeight: 'bold',
+    marginBottom: 2,
+    fontFamily: 'Helvetica-Bold',
+  }
 });
 
 export const MedcoReport = ({ 
@@ -178,41 +206,41 @@ export const MedcoReport = ({
       <Page size="A4" style={localStyles.page}>
         <Text style={localStyles.title}>Expert Medical Report</Text>
         
-        {/* Section 1 & 2: Claimant and Expert Details in the same row */}
-        <View style={{ flexDirection: 'row', marginBottom: 8 }}>
-          <View style={{ width: '50%', paddingRight: 8 }}>
+        {/* Top Section: 3 columns layout with Claimant, Expert, and Instruction Details */}
+        <View style={localStyles.rowContainer}>
+          <View style={localStyles.thirdColumn}>
             <ClaimantDetailsSection formData={formData} styles={localStyles} />
           </View>
-          <View style={{ width: '50%' }}>
+          <View style={localStyles.thirdColumn}>
             <ExpertDetailsSection styles={localStyles} />
+          </View>
+          <View style={localStyles.thirdColumn}>
+            <InstructionDetailsSection formData={formData} styles={localStyles} />
           </View>
         </View>
         
-        {/* Section 3 & 4: Instruction and Appointment Details side by side */}
-        <View style={{ flexDirection: 'row', marginBottom: 8 }}>
-          <View style={{ width: '50%', paddingRight: 8 }}>
-            <InstructionDetailsSection formData={formData} styles={localStyles} />
-          </View>
-          <View style={{ width: '50%' }}>
+        {/* Section 4 & 5: Appointment Details and Statement of Instruction side by side */}
+        <View style={localStyles.rowContainer}>
+          <View style={localStyles.halfColumn}>
             <AppointmentDetailsSection formData={formData} styles={localStyles} />
+          </View>
+          <View style={localStyles.halfColumn}>
+            <StatementOfInstructionSection styles={localStyles} />
           </View>
         </View>
 
-        {/* Section 5: Statement of Instruction */}
-        <StatementOfInstructionSection styles={localStyles} />
-
-        <PageFooter name={formData.fullName} />
-      </Page>
-
-      <Page size="A4" style={localStyles.page}>
         {/* Section 6: Summary of Injuries */}
         <SummaryOfInjuriesTableSection formData={formData} styles={localStyles} />
         
-        {/* Section 7: Accident Details */}
-        <AccidentDetailsSection formData={formData} styles={localStyles} />
-
-        {/* Section 8: Past Medical History */}
-        <PastMedicalHistorySection formData={formData} styles={localStyles} />
+        {/* Section 7 & 8: Accident Details and Past Medical History side by side */}
+        <View style={localStyles.rowContainer}>
+          <View style={localStyles.halfColumn}>
+            <AccidentDetailsSection formData={formData} styles={localStyles} />
+          </View>
+          <View style={localStyles.halfColumn}>
+            <PastMedicalHistorySection formData={formData} styles={localStyles} />
+          </View>
+        </View>
 
         <PageFooter name={formData.fullName} />
       </Page>
@@ -220,11 +248,7 @@ export const MedcoReport = ({
       <Page size="A4" style={localStyles.page}>
         {/* Section 9: Injuries / Symptoms */}
         <InjuriesSymptomsSection formData={formData} styles={localStyles} />
-
-        <PageFooter name={formData.fullName} />
-      </Page>
-      
-      <Page size="A4" style={localStyles.page}>
+        
         {/* Section 14: Examination */}
         <ExaminationSection formData={formData} styles={localStyles} />
 

@@ -13,8 +13,11 @@ export const ExpertDetailsSection = ({ styles }: ExpertDetailsSectionProps) => {
       <View style={styles.compactFieldRow}>
         <View style={styles.fieldColumn}>
           <Text style={styles.compactFieldLabel}>Medical Expert</Text>
-          <Text style={styles.compactFieldValue}>Dr. Awais Iqbal, General Practice, Consultant</Text>
+          <Text style={styles.compactFieldValue}>Dr. Awais Iqbal, GP Consultant</Text>
         </View>
+      </View>
+      
+      <View style={styles.compactFieldRow}>
         <View style={styles.fieldColumn}>
           <Text style={styles.compactFieldLabel}>Regulatory</Text>
           <Text style={styles.compactFieldValue}>GMC - 6138189</Text>

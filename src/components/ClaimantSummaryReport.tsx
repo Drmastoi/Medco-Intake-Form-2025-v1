@@ -34,7 +34,7 @@ export function ClaimantSummaryReport({ form, onSubmit }: { form: any; onSubmit:
           <TabsContent value="expert" className="mt-4">
             <div className="prose max-w-none mb-6">
               <p className="text-sm text-muted-foreground">
-                This is the full medical report that will be sent to the medical expert. It includes all clinical findings and recommendations.
+                This is the comprehensive medical report for the expert. It includes all clinical findings and recommendations in a compact format.
               </p>
             </div>
           </TabsContent>
