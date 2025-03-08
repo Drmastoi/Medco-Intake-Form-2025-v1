@@ -1,0 +1,37 @@
+
+import { Page, Text, View } from '@react-pdf/renderer';
+import { pdfStyles } from './reportPdfStyles';
+import { ClaimantDetailsSection } from '../sections/ClaimantDetailsSection';
+import { ExpertDetailsSection } from '../sections/ExpertDetailsSection';
+import { StatementOfInstructionSection } from '../sections/StatementOfInstructionSection';
+import { PageFooter } from './PageFooter';
+
+interface FirstPageProps {
+  formData: any;
+}
+
+export const FirstPage = ({ formData }: FirstPageProps) => {
+  return (
+    <Page size="A4" style={pdfStyles.page}>
+      <Text style={pdfStyles.title}>Expert Medical Report</Text>
+      
+      {/* First page combines claimant details with instruction information */}
+      <View style={{ flexDirection: 'row', marginBottom: 15 }}>
+        <View style={{ flex: 1, marginRight: 10 }}>
+          {/* Section 1: Claimant Details - takes 50% of the width */}
+          <ClaimantDetailsSection formData={formData} styles={pdfStyles} />
+        </View>
+        
+        <View style={{ flex: 1 }}>
+          {/* Section 2: Expert Details - takes 50% of the width */}
+          <ExpertDetailsSection styles={pdfStyles} />
+        </View>
+      </View>
+      
+      {/* Section 3: Statement of Instruction with solicitor details */}
+      <StatementOfInstructionSection styles={pdfStyles} formData={formData} />
+      
+      <PageFooter name={formData.fullName} formData={formData} />
+    </Page>
+  );
+};
