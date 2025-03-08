@@ -15,21 +15,23 @@ export const FirstPage = ({ formData }: FirstPageProps) => {
     <Page size="A4" style={pdfStyles.page}>
       <Text style={pdfStyles.title}>Expert Medical Report</Text>
       
-      {/* First page combines claimant details with instruction information */}
+      {/* Two-column layout */}
       <View style={{ flexDirection: 'row', marginBottom: 15 }}>
+        {/* Left column */}
         <View style={{ flex: 1, marginRight: 10 }}>
-          {/* Section 1: Claimant Details - takes 50% of the width */}
+          {/* Section 1: Claimant Details */}
           <ClaimantDetailsSection formData={formData} styles={pdfStyles} />
         </View>
         
+        {/* Right column */}
         <View style={{ flex: 1 }}>
-          {/* Section 2: Expert Details - takes 50% of the width */}
+          {/* Section 2: Expert Details */}
           <ExpertDetailsSection styles={pdfStyles} />
+          
+          {/* Section 3: Statement of Instruction with solicitor details */}
+          <StatementOfInstructionSection styles={pdfStyles} formData={formData} />
         </View>
       </View>
-      
-      {/* Section 3: Statement of Instruction with solicitor details */}
-      <StatementOfInstructionSection styles={pdfStyles} formData={formData} />
       
       <PageFooter name={formData.fullName} formData={formData} />
     </Page>
