@@ -18,28 +18,17 @@ export function AnxietyHistory({ form }: { form: any }) {
         control={form.control}
         name="hasAnxietyHistory"
         render={({ field }) => (
-          <FormItem className="space-y-3">
-            <FormLabel>Do you have any past medical history of anxiety before the accident?</FormLabel>
+          <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
             <FormControl>
-              <RadioGroup
-                onValueChange={field.onChange}
-                defaultValue={field.value}
-                className="flex flex-col space-y-1"
-              >
-                <FormItem className="flex items-center space-x-3 space-y-0">
-                  <FormControl>
-                    <RadioGroupItem value="yes" />
-                  </FormControl>
-                  <FormLabel className="font-normal">Yes</FormLabel>
-                </FormItem>
-                <FormItem className="flex items-center space-x-3 space-y-0">
-                  <FormControl>
-                    <RadioGroupItem value="no" />
-                  </FormControl>
-                  <FormLabel className="font-normal">No</FormLabel>
-                </FormItem>
-              </RadioGroup>
+              <RadioGroupItem
+                value="yes"
+                checked={field.value === "yes"}
+                onClick={() => field.onChange(field.value === "yes" ? "no" : "yes")}
+              />
             </FormControl>
+            <div className="space-y-1 leading-none">
+              <FormLabel>Do you have any past medical history of anxiety before the accident?</FormLabel>
+            </div>
             <FormMessage />
           </FormItem>
         )}
