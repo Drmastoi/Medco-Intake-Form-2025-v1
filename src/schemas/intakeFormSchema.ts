@@ -1,3 +1,4 @@
+
 import * as z from "zod";
 
 export const formSchema = z.object({
@@ -68,7 +69,7 @@ export const formSchema = z.object({
   anxietyDuration: z.string().optional(),
   hasAnxietyHistory: z.enum(["yes", "no"]).optional(),
   
-  // New travel anxiety symptom fields
+  // Travel anxiety symptom fields
   travelAnxietySymptoms: z.array(z.string()).optional(),
   otherTravelAnxietySymptom: z.string().optional(),
 });

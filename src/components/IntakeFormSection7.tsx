@@ -1,6 +1,5 @@
 
 import { TravelAnxietyInitial } from "./travel-anxiety/TravelAnxietyInitial";
-import { DrivingQuestions } from "./travel-anxiety/DrivingQuestions";
 import { AnxietyTiming } from "./travel-anxiety/AnxietyTiming";
 import { AnxietySeverity } from "./travel-anxiety/AnxietySeverity";
 import { AnxietyHistory } from "./travel-anxiety/AnxietyHistory";

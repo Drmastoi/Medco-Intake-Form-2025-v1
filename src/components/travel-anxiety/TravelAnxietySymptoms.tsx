@@ -17,7 +17,7 @@ const travelAnxietySymptomOptions = [
   },
   {
     id: "frequent-mirror-checking",
-    label: "Looking in the mirror more frequently",
+    label: "Looking in the mirror more frequently / checking over shoulders",
   },
   {
     id: "avoid-accident-road",
@@ -44,6 +44,10 @@ const travelAnxietySymptomOptions = [
     label: "Anxiety on busy roads or highways",
   },
   {
+    id: "prevented-driving",
+    label: "Prevented from driving for leisure or work",
+  },
+  {
     id: "other",
     label: "Other",
   },
@@ -51,13 +55,6 @@ const travelAnxietySymptomOptions = [
 
 export function TravelAnxietySymptoms({ form }: { form: any }) {
   const [showOtherInput, setShowOtherInput] = useState(false);
-  
-  // Add a field for whether the user is currently driving
-  const handleCurrentlyDrivingChange = (value: string) => {
-    form.setValue("currentlyDriving", value);
-  };
-  
-  const currentlyDriving = form.watch("currentlyDriving");
   
   return (
     <div className="space-y-6">
