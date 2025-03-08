@@ -20,18 +20,14 @@ export function IntakeFormSection7({ form }: { form: any }) {
           <TravelAnxietySymptoms form={form} />
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <DrivingQuestions form={form} />
+            <AnxietyTiming form={form} />
             <div className="space-y-4">
-              <AnxietyTiming form={form} />
+              <AnxietySeverity form={form} isInitial={true} />
+              <AnxietySeverity form={form} isInitial={false} />
             </div>
           </div>
         </>
       )}
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <AnxietySeverity form={form} isInitial={true} />
-        <AnxietySeverity form={form} isInitial={false} />
-      </div>
 
       <AnxietyHistory form={form} />
     </div>

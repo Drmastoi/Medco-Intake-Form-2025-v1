@@ -1,4 +1,3 @@
-
 import * as z from "zod";
 
 export const formSchema = z.object({
@@ -61,14 +60,13 @@ export const formSchema = z.object({
   // Section 7 - Travel Anxiety Information
   travelAnxiety: z.enum(["1", "2"]),
   currentlyDriving: z.enum(["1", "2"]).optional(),
-  moreCautious: z.enum(["1", "2"]).optional(),
-  checkingMirrors: z.enum(["1", "2"]).optional(),
-  preventedDriving: z.enum(["1", "2"]).optional(),
+  anxietyStart: z.enum(["1", "2", "3"]).optional(),
   anxietyInitialSeverity: z.enum(["1", "2", "3"]).optional(),
   anxietyCurrentSeverity: z.enum(["1", "2", "3", "4"]).optional(),
   anxietyResolveDays: z.string().optional(),
   anxietyPastHistory: z.string().optional(),
   anxietyDuration: z.string().optional(),
+  hasAnxietyHistory: z.enum(["yes", "no"]).optional(),
   
   // New travel anxiety symptom fields
   travelAnxietySymptoms: z.array(z.string()).optional(),
