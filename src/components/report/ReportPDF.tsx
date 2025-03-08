@@ -1,4 +1,4 @@
-<lov-code>
+
 import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 import { styles as importedStyles } from './reportStyles';
 import { PersonalInfoSection } from './PersonalInfoSection';
@@ -482,10 +482,10 @@ export const MedcoReport = ({
               </View>
             </View>
           </View>
+        </View>
 
         <Text style={localStyles.pageNumber} render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} fixed />
         <Text style={localStyles.footer} fixed>{formData.fullName || 'Anonymous'} report dated {new Date().toLocaleDateString()} | Medical Report | CID {Math.floor(Math.random() * 1000000)}</Text>
-        </View>
       </Page>
 
       <Page size="A4" style={localStyles.page}>
@@ -723,4 +723,21 @@ export const MedcoReport = ({
                 <View style={localStyles.fieldRow}>
                   <View style={localStyles.fieldColumn}>
                     <Text style={localStyles.fieldLabel}>Examination</Text>
+                    <Text style={localStyles.text}>
+                      On examination, there was no visible bruising or swelling. There was mild tenderness 
+                      on palpation of the cervical spine and paravertebral muscles. Range of movement was 
+                      slightly restricted in all directions. There was no neurological deficit detected.
+                    </Text>
                   </View>
+                </View>
+              </View>
+            </>
+          )}
+        </View>
+
+        <Text style={localStyles.pageNumber} render={({ pageNumber, totalPages }) => `Page ${pageNumber} of ${totalPages}`} fixed />
+        <Text style={localStyles.footer} fixed>{formData.fullName || 'Anonymous'} report dated {new Date().toLocaleDateString()} | Medical Report | CID {Math.floor(Math.random() * 1000000)}</Text>
+      </Page>
+    </Document>
+  );
+};
