@@ -74,7 +74,12 @@ export const getMechanismOfInjury = (injuryType: string, location?: string) => {
 };
 
 export const getOpinion = (injuryType: string, location?: string) => {
-  if (['Neck', 'Shoulder'].includes(injuryType) || (injuryType === 'Back' && location === "3")) {
+  // Check if it's a whiplash injury (neck, shoulder or lower back)
+  const isWhiplash = (injuryType === 'Neck') || 
+                     (injuryType === 'Shoulder') || 
+                     (injuryType === 'Back' && location === "3");
+                     
+  if (isWhiplash) {
     return "In my opinion, the Claimant's symptoms are due to a Whiplash Injury. On the balance of probabilities, they are attributable to the index accident.";
   } else if (injuryType === 'Back' && location !== "3") {
     return "In my opinion, the Claimant's symptoms are due to a Soft Tissue Injury. On the balance of probabilities, they are attributable to the index accident. The injury falls within subsection 1.3 of the Civil Liability Act 2018.";
