@@ -1,3 +1,4 @@
+
 import { StyleSheet } from '@react-pdf/renderer';
 import { styles as importedStyles } from '../reportStyles';
 
@@ -117,18 +118,20 @@ export const pdfStyles = StyleSheet.create({
   tableHeaderCell: {
     flex: 1,
     fontWeight: 'bold',
-    fontSize: 10,
+    fontSize: 9,
     fontFamily: 'Helvetica-Bold',
   },
   tableRow: {
     flexDirection: 'row',
-    padding: 5,
+    padding: 4,
     borderBottom: '1px solid #CCCCCC',
+    minHeight: 28,
   },
   tableCell: {
     flex: 1,
-    fontSize: 10,
+    fontSize: 9,
     fontFamily: 'Helvetica',
+    paddingHorizontal: 2,
   },
   tableContainer: {
     border: '1px solid #000000',
