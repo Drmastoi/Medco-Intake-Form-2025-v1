@@ -79,14 +79,17 @@ export const getOpinion = (injuryType: string, location?: string) => {
                      (injuryType === 'Shoulder') || 
                      (injuryType === 'Back' && location === "3");
                      
+  // List of injury types that shouldn't have the Civil Liability Act statement
+  const excludedInjuries = ['Neck', 'Shoulder', 'Back', 'Anxiety', 'Travel Anxiety', 'Headache', 'Dizziness'];
+  
   if (isWhiplash) {
     return "In my opinion, the Claimant's symptoms are due to a Whiplash Injury. On the balance of probabilities, they are attributable to the index accident.";
   } else if (injuryType === 'Back' && location !== "3") {
     return "In my opinion, the Claimant's symptoms are due to a Soft Tissue Injury. On the balance of probabilities, they are attributable to the index accident. The injury falls within subsection 1.3 of the Civil Liability Act 2018.";
   } else if (['Headache', 'Dizziness'].includes(injuryType)) {
-    return "In my opinion, the Claimant's symptoms are due to a Whiplash Associated Injury. On the balance of probabilities, they are attributable to the index accident. The injury falls within subsection 1.3 of the Civil Liability Act 2018.";
+    return "In my opinion, the Claimant's symptoms are due to a Whiplash Associated Injury. On the balance of probabilities, they are attributable to the index accident.";
   } else if (['Anxiety', 'Travel Anxiety'].includes(injuryType)) {
-    return "In my opinion, the Claimant's symptoms are due to a Psychological Impact. On the balance of probabilities, they are attributable to the index accident. The injury falls within subsection 1.3 of the Civil Liability Act 2018.";
+    return "In my opinion, the Claimant's symptoms are due to a Psychological Impact. On the balance of probabilities, they are attributable to the index accident.";
   } else {
     return "In my opinion, the Claimant's symptoms are due to a Non-whiplash Injury. On the balance of probabilities, they are attributable to the index accident. The injury falls within subsection 1.3 of the Civil Liability Act 2018.";
   }
