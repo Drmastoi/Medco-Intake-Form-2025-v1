@@ -12,31 +12,35 @@ export const pdfStyles = StyleSheet.create({
     fontFamily: 'Helvetica',
     position: 'relative',
   },
-  header: {
-    marginBottom: 15,
-    borderBottom: '1px solid #CCCCCC',
-    paddingBottom: 10,
+  reportHeader: {
+    marginBottom: 14,
+    borderBottom: '1.5px solid #444444',
+    paddingBottom: 8,
   },
-  title: {
+  reportTitle: {
     fontSize: 18,
-    marginBottom: 5,
+    marginBottom: 4,
     fontWeight: 'bold',
     textAlign: 'center',
     fontFamily: 'Helvetica-Bold',
   },
-  subheader: {
+  reportSubtitle: {
     fontSize: 10,
     textAlign: 'center',
-    color: '#555555',
-    marginBottom: 5,
+    color: '#444444',
+    marginBottom: 4,
   },
-  twoColumnLayout: {
+  mainContent: {
     flexDirection: 'row',
     flexGrow: 1,
   },
-  column: {
+  leftColumn: {
     flex: 1,
-    paddingHorizontal: 5,
+    paddingRight: 8,
+  },
+  rightColumn: {
+    flex: 1,
+    paddingLeft: 8,
   },
   signatureSection: {
     marginTop: 20,
@@ -82,18 +86,18 @@ export const pdfStyles = StyleSheet.create({
     backgroundColor: '#000000',
     color: '#FFFFFF',
     padding: 6,
-    marginBottom: 8,
+    marginBottom: 6,
     fontSize: 11,
     fontWeight: 'bold',
     fontFamily: 'Helvetica-Bold',
   },
   fieldRow: {
     flexDirection: 'row',
-    marginBottom: 6,
+    marginBottom: 5,
   },
   fieldColumn: {
     flex: 1,
-    marginRight: 5,
+    marginRight: 4,
   },
   fieldLabel: {
     fontSize: 9,

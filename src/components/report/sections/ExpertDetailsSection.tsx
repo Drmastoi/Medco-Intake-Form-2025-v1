@@ -7,7 +7,7 @@ interface ExpertDetailsSectionProps {
 
 export const ExpertDetailsSection = ({ styles }: ExpertDetailsSectionProps) => {
   return (
-    <View style={[styles.subsection, { marginBottom: 8 }]}>
+    <View style={[styles.subsection, { marginBottom: 6 }]}>
       <Text style={styles.sectionHeader}>Expert Details</Text>
       
       <View style={styles.fieldRow}>
