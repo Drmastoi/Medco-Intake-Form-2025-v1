@@ -20,15 +20,19 @@ const getInjuryClassification = (injuryType: string, location?: string) => {
   }
 };
 
+const getPrognosis = (severity: string) => {
+  if (severity === "1") return "3 Months";
+  if (severity === "2") return "6 Months";
+  if (severity === "3") return "9 Months";
+  if (severity === "4") return "Resolved";
+  return "Unknown";
+};
+
 const getTreatmentRecommendation = (severity: string) => {
   if (severity === "4") {
     return 'None - Resolved';
-  } else if (severity === "3") {
-    return 'Physiotherapy (8-10 sessions), Pain medication';
-  } else if (severity === "2") {
-    return 'Physiotherapy (4-6 sessions), Rest, Pain medication PRN';
   } else {
-    return 'Rest, Over-the-counter pain medication PRN';
+    return 'Physiotherapy - The required number of sessions to be determined by the Physiotherapist';
   }
 };
 
@@ -79,7 +83,7 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
           <View style={styles.tableRow}>
             <Text style={[styles.tableCell, { flex: 1.5 }]}>Neck (Pain, Stiffness, Discomfort)</Text>
             <Text style={[styles.tableCell, { flex: 1 }]}>
-              {formData.neckPainCurrentSeverity === "4" ? `${formData.neckPainResolveDays || "Unknown"} Days` : "3 Months"}
+              {formData.neckPainCurrentSeverity === "4" ? `${formData.neckPainResolveDays || "Unknown"} Days` : getPrognosis(formData.neckPainCurrentSeverity)}
             </Text>
             <Text style={[styles.tableCell, { flex: 2 }]}>
               {getTreatmentRecommendation(formData.neckPainCurrentSeverity)}
@@ -96,7 +100,7 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
               Shoulder ({formData.shoulderSide === "1" ? "Left" : formData.shoulderSide === "2" ? "Right" : "Both"}) (Pain, Stiffness)
             </Text>
             <Text style={[styles.tableCell, { flex: 1 }]}>
-              {formData.shoulderPainCurrentSeverity === "4" ? `${formData.shoulderPainResolveDays || "Unknown"} Days` : "3 Months"}
+              {formData.shoulderPainCurrentSeverity === "4" ? `${formData.shoulderPainResolveDays || "Unknown"} Days` : getPrognosis(formData.shoulderPainCurrentSeverity)}
             </Text>
             <Text style={[styles.tableCell, { flex: 2 }]}>
               {getTreatmentRecommendation(formData.shoulderPainCurrentSeverity)}
@@ -113,7 +117,7 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
               Back ({formData.backLocation === "1" ? "Upper" : formData.backLocation === "2" ? "Middle" : formData.backLocation === "3" ? "Lower" : "Full"}) (Pain, Stiffness, Discomfort)
             </Text>
             <Text style={[styles.tableCell, { flex: 1 }]}>
-              {formData.backPainCurrentSeverity === "4" ? `${formData.backPainResolveDays || "Unknown"} Days` : "4 Months"}
+              {formData.backPainCurrentSeverity === "4" ? `${formData.backPainResolveDays || "Unknown"} Days` : getPrognosis(formData.backPainCurrentSeverity)}
             </Text>
             <Text style={[styles.tableCell, { flex: 2 }]}>
               {getTreatmentRecommendation(formData.backPainCurrentSeverity)}
@@ -128,7 +132,7 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
           <View style={styles.tableRow}>
             <Text style={[styles.tableCell, { flex: 1.5 }]}>Headaches</Text>
             <Text style={[styles.tableCell, { flex: 1 }]}>
-              {formData.headacheCurrentSeverity === "4" ? `${formData.headacheResolveDays || "Unknown"} Days` : "2 Months"}
+              {formData.headacheCurrentSeverity === "4" ? `${formData.headacheResolveDays || "Unknown"} Days` : getPrognosis(formData.headacheCurrentSeverity)}
             </Text>
             <Text style={[styles.tableCell, { flex: 2 }]}>
               {getTreatmentRecommendation(formData.headacheCurrentSeverity)}
@@ -142,7 +146,7 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
         {formData.travelAnxiety === "1" && (
           <View style={styles.tableRow}>
             <Text style={[styles.tableCell, { flex: 1.5 }]}>Anxiety</Text>
-            <Text style={[styles.tableCell, { flex: 1 }]}>{formData.anxietyDuration || "60"} Days</Text>
+            <Text style={[styles.tableCell, { flex: 1 }]}>{formData.anxietyCurrentSeverity === "4" ? `${formData.anxietyDuration || "60"} Days` : getPrognosis(formData.anxietyCurrentSeverity)}</Text>
             <Text style={[styles.tableCell, { flex: 2 }]}>
               {formData.anxietyCurrentSeverity === "4" ? "None - Resolved" : "Reassurance, Relaxation techniques"}
             </Text>
@@ -156,13 +160,43 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
           <View style={styles.tableRow}>
             <Text style={[styles.tableCell, { flex: 1.5 }]}>Dizziness</Text>
             <Text style={[styles.tableCell, { flex: 1 }]}>
-              {formData.dizzinessCurrentSeverity === "4" ? `${formData.dizzinessResolveDays || "Unknown"} Days` : "6 Weeks"}
+              {formData.dizzinessCurrentSeverity === "4" ? `${formData.dizzinessResolveDays || "Unknown"} Days` : getPrognosis(formData.dizzinessCurrentSeverity)}
             </Text>
             <Text style={[styles.tableCell, { flex: 2 }]}>
               {getTreatmentRecommendation(formData.dizzinessCurrentSeverity)}
             </Text>
             <Text style={[styles.tableCell, { flex: 1.5 }]}>
               {getInjuryClassification('Dizziness')}
+            </Text>
+          </View>
+        )}
+
+        {formData.hasOtherInjury === "1" && (
+          <View style={styles.tableRow}>
+            <Text style={[styles.tableCell, { flex: 1.5 }]}>{formData.injuryName || "Other Injury"}</Text>
+            <Text style={[styles.tableCell, { flex: 1 }]}>
+              {formData.injuryCurrentSeverity === "4" ? `${formData.injuryResolveDays || "Unknown"} Days` : getPrognosis(formData.injuryCurrentSeverity)}
+            </Text>
+            <Text style={[styles.tableCell, { flex: 2 }]}>
+              {getTreatmentRecommendation(formData.injuryCurrentSeverity)}
+            </Text>
+            <Text style={[styles.tableCell, { flex: 1.5 }]}>
+              Non-whiplash Injury
+            </Text>
+          </View>
+        )}
+
+        {formData.hasBruising === "1" && (
+          <View style={styles.tableRow}>
+            <Text style={[styles.tableCell, { flex: 1.5 }]}>Bruising/Scarring</Text>
+            <Text style={[styles.tableCell, { flex: 1 }]}>
+              {formData.bruisingCurrentSeverity === "4" ? `${formData.bruisingResolveDays || "Unknown"} Days` : getPrognosis(formData.bruisingCurrentSeverity)}
+            </Text>
+            <Text style={[styles.tableCell, { flex: 2 }]}>
+              {getTreatmentRecommendation(formData.bruisingCurrentSeverity)}
+            </Text>
+            <Text style={[styles.tableCell, { flex: 1.5 }]}>
+              Non-whiplash Injury
             </Text>
           </View>
         )}

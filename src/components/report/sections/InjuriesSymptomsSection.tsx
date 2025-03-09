@@ -6,6 +6,14 @@ interface InjuriesSymptomsSectionProps {
   styles: any;
 }
 
+const getPrognosis = (severity: string) => {
+  if (severity === "1") return "3 months post accident";
+  if (severity === "2") return "6 months post accident";
+  if (severity === "3") return "9 months post accident";
+  if (severity === "4") return "Resolved";
+  return "Unknown";
+};
+
 export const InjuriesSymptomsSection = ({ formData, styles }: InjuriesSymptomsSectionProps) => {
   let sectionCount = 0;
   
@@ -55,6 +63,21 @@ export const InjuriesSymptomsSection = ({ formData, styles }: InjuriesSymptomsSe
                  formData.neckPainCurrentSeverity === "3" ? "Ongoing with severe symptoms and persistent." :
                  formData.neckPainCurrentSeverity === "4" ? `Resolved within ${formData.neckPainResolveDays || "1"} months (from the date of accident / incident)` : 
                  "Current status not specified."}
+              </Text>
+            </View>
+            
+            <View style={styles.injuryRow}>
+              <Text style={styles.injuryLabel}>Prognosis</Text>
+              <Text style={styles.injuryValue}>
+                {getPrognosis(formData.neckPainCurrentSeverity)}
+                {formData.neckPainCurrentSeverity === "3" && " - The extended prognosis is due to the severity of the symptoms."}
+              </Text>
+            </View>
+            
+            <View style={styles.injuryRow}>
+              <Text style={styles.injuryLabel}>Treatment</Text>
+              <Text style={styles.injuryValue}>
+                Physiotherapy - The required number of sessions to be determined by the Physiotherapist
               </Text>
             </View>
             
@@ -154,6 +177,21 @@ export const InjuriesSymptomsSection = ({ formData, styles }: InjuriesSymptomsSe
             </View>
             
             <View style={styles.injuryRow}>
+              <Text style={styles.injuryLabel}>Prognosis</Text>
+              <Text style={styles.injuryValue}>
+                {getPrognosis(formData.backPainCurrentSeverity)}
+                {formData.backPainCurrentSeverity === "3" && " - The extended prognosis is due to the severity of the symptoms."}
+              </Text>
+            </View>
+            
+            <View style={styles.injuryRow}>
+              <Text style={styles.injuryLabel}>Treatment</Text>
+              <Text style={styles.injuryValue}>
+                Physiotherapy - The required number of sessions to be determined by the Physiotherapist
+              </Text>
+            </View>
+            
+            <View style={styles.injuryRow}>
               <Text style={styles.injuryLabel}>Similar symptoms</Text>
               <Text style={styles.injuryValue}>
                 The Claimant reported no prior similar symptoms before the index accident,
@@ -211,8 +249,8 @@ export const InjuriesSymptomsSection = ({ formData, styles }: InjuriesSymptomsSe
           <Text style={styles.injuriesSectionTitle}>9.{++sectionCount} Physical</Text>
           
           <Text style={styles.injuryTypeHeader}>
-            Shoulder ({formData.shoulderLocation === "1" ? "Right" : 
-                      formData.shoulderLocation === "2" ? "Left" : "Both"})
+            Shoulder ({formData.shoulderSide === "1" ? "Left" : 
+                      formData.shoulderSide === "2" ? "Right" : "Both"})
           </Text>
           
           <View style={styles.injuryTable}>
@@ -251,6 +289,21 @@ export const InjuriesSymptomsSection = ({ formData, styles }: InjuriesSymptomsSe
                  formData.shoulderPainCurrentSeverity === "3" ? "Ongoing with severe symptoms and persistent." :
                  formData.shoulderPainCurrentSeverity === "4" ? `Resolved within ${formData.shoulderPainResolveDays || "1"} months (from the date of accident / incident)` : 
                  "Current status not specified."}
+              </Text>
+            </View>
+            
+            <View style={styles.injuryRow}>
+              <Text style={styles.injuryLabel}>Prognosis</Text>
+              <Text style={styles.injuryValue}>
+                {getPrognosis(formData.shoulderPainCurrentSeverity)}
+                {formData.shoulderPainCurrentSeverity === "3" && " - The extended prognosis is due to the severity of the symptoms."}
+              </Text>
+            </View>
+            
+            <View style={styles.injuryRow}>
+              <Text style={styles.injuryLabel}>Treatment</Text>
+              <Text style={styles.injuryValue}>
+                Physiotherapy - The required number of sessions to be determined by the Physiotherapist
               </Text>
             </View>
             
