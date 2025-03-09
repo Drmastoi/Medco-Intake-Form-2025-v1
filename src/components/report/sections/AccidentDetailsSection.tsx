@@ -19,7 +19,7 @@ export const AccidentDetailsSection = ({ formData, styles }: AccidentDetailsSect
       <View style={styles.grayBackground}>
         <View style={styles.fieldRow}>
           <View style={styles.fieldColumn}>
-            <Text style={styles.fieldLabel}>Time of Accident</Text>
+            <Text style={styles.fieldLabel}>Time of Accident:</Text>
             <Text style={styles.text}>
               {formData.accidentTime === "1" ? "Morning" :
                formData.accidentTime === "2" ? "Afternoon" :
@@ -31,73 +31,66 @@ export const AccidentDetailsSection = ({ formData, styles }: AccidentDetailsSect
         
         <View style={styles.fieldRow}>
           <View style={styles.fieldColumn}>
-            <Text style={styles.fieldLabel}>Vehicle</Text>
+            <Text style={styles.fieldLabel}>Claimant's vehicle:</Text>
             <Text style={styles.text}>
               {formData.claimantVehicle === "1" ? "Car" :
                formData.claimantVehicle === "2" ? "Van" :
-               formData.claimantVehicle === "3" ? "Bus" : "Other"}
+               formData.claimantVehicle === "3" ? "Bus" : 
+               formData.claimantVehicle === "4" ? "Other" : "Not specified"}
             </Text>
           </View>
         </View>
         
         <View style={styles.fieldRow}>
           <View style={styles.fieldColumn}>
-            <Text style={styles.fieldLabel}>Claimant's Position</Text>
+            <Text style={styles.fieldLabel}>Claimant's Position:</Text>
             <Text style={styles.text}>
-              {formData.claimantPosition === "driver" ? "Driver" : 
-               formData.claimantPosition === "front-passenger" ? "Front passenger" : 
-               formData.claimantPosition === "rear-passenger" ? "Rear passenger" : "Not specified"}
+              {formData.claimantPosition === "1" ? "Driver" : 
+               formData.claimantPosition === "2" ? "Front Passenger" : 
+               formData.claimantPosition === "3" ? "Back Passenger" :
+               formData.claimantPosition === "4" ? "Other" : "Not specified"}
             </Text>
           </View>
         </View>
         
         <View style={styles.fieldRow}>
           <View style={styles.fieldColumn}>
-            <Text style={styles.fieldLabel}>Vehicle Location</Text>
+            <Text style={styles.fieldLabel}>Vehicle Location:</Text>
             <Text style={styles.text}>
               {formData.vehicleLocation === "1" ? "Main Road" :
                formData.vehicleLocation === "2" ? "Minor Road" :
-               formData.vehicleLocation === "3" ? "Roundabout" : "Not specified"}
+               formData.vehicleLocation === "3" ? "Roundabout" :
+               formData.vehicleLocation === "4" ? "Parked" :
+               formData.vehicleLocation === "5" ? "Other" : "Not specified"}
             </Text>
           </View>
         </View>
         
         <View style={styles.fieldRow}>
           <View style={styles.fieldColumn}>
-            <Text style={styles.fieldLabel}>Third Party</Text>
-            <Text style={styles.text}>The vehicle was travelling forward at normal speed.</Text>
-          </View>
-        </View>
-        
-        <View style={styles.fieldRow}>
-          <View style={styles.fieldColumn}>
-            <Text style={styles.fieldLabel}>Description</Text>
+            <Text style={styles.fieldLabel}>Third Party vehicle type:</Text>
             <Text style={styles.text}>
               {formData.otherVehicle === "1" ? "Car" :
                formData.otherVehicle === "2" ? "Van" :
-               formData.otherVehicle === "3" ? "Bus" : "Other vehicle"}
+               formData.otherVehicle === "3" ? "Bus" : 
+               formData.otherVehicle === "4" ? "Other" : "Not specified"}
             </Text>
           </View>
         </View>
         
         <View style={styles.fieldRow}>
           <View style={styles.fieldColumn}>
-            <Text style={styles.fieldLabel}>Movement</Text>
+            <Text style={styles.fieldLabel}>Description:</Text>
             <Text style={styles.text}>
-              The vehicle was struck at moderate speed. The impact was from the 
-              {formData.impactLocation === "1" ? " rear" :
-               formData.impactLocation === "2" ? " front" :
-               formData.impactLocation === "3" ? " passenger side" :
-               formData.impactLocation === "4" ? " driver side" : " unspecified location"}.
+              Movement: The Claimant remembers being thrown forwards and backwards.
             </Text>
           </View>
         </View>
         
         <View style={styles.fieldRow}>
           <View style={styles.fieldColumn}>
-            <Text style={styles.fieldLabel}>Damage</Text>
+            <Text style={styles.fieldLabel}>Damage:</Text>
             <Text style={styles.text}>
-              The Claimant remembers being thrown forwards and backwards.
               The Claimant's vehicle sustained a damage to the 
               {formData.impactLocation === "1" ? " rear" :
                formData.impactLocation === "2" ? " front" :
@@ -113,10 +106,10 @@ export const AccidentDetailsSection = ({ formData, styles }: AccidentDetailsSect
         
         <View style={styles.fieldRow}>
           <View style={styles.fieldColumn}>
-            <Text style={styles.fieldLabel}>Safety</Text>
+            <Text style={styles.fieldLabel}>Safety:</Text>
             <Text style={styles.text}>
-              Seat Belt: The Claimant was wearing a seat belt.
-              Head Rest: The vehicle was fitted with a Head rest.
+              Seat Belt: The Claimant was wearing a seat belt.{"\n"}
+              Head Rest: The vehicle was fitted with a Head rest.{"\n"}
               Air Bags: Unable to recollect
             </Text>
           </View>
