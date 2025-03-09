@@ -13,6 +13,8 @@ const getInjuryClassification = (injuryType: string, location?: string) => {
     return 'Whiplash';
   } else if (['Headache', 'Dizziness'].includes(injuryType)) {
     return 'Whiplash Associated';
+  } else if (['Anxiety', 'Travel Anxiety', 'Panic', 'Fear of Travel'].includes(injuryType)) {
+    return 'Psychological Impact';
   } else {
     return 'Non-whiplash Injury';
   }
