@@ -74,22 +74,22 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
       <View style={styles.tableContainer}>
         <View style={styles.tableHeader}>
           <Text style={[styles.tableHeaderCell, { flex: 1.5 }]}>Injuries</Text>
+          <Text style={[styles.tableHeaderCell, { flex: 1.5 }]}>Classification</Text>
           <Text style={[styles.tableHeaderCell, { flex: 1 }]}>Prognosis</Text>
           <Text style={[styles.tableHeaderCell, { flex: 2 }]}>Treatment</Text>
-          <Text style={[styles.tableHeaderCell, { flex: 1.5 }]}>Classification</Text>
         </View>
         
         {formData.neckPain === "1" && (
           <View style={styles.tableRow}>
             <Text style={[styles.tableCell, { flex: 1.5 }]}>Neck (Pain, Stiffness, Discomfort)</Text>
+            <Text style={[styles.tableCell, { flex: 1.5 }]}>
+              {getInjuryClassification('Neck')}
+            </Text>
             <Text style={[styles.tableCell, { flex: 1 }]}>
               {formData.neckPainCurrentSeverity === "4" ? `${formData.neckPainResolveDays || "Unknown"} Days` : getPrognosis(formData.neckPainCurrentSeverity)}
             </Text>
             <Text style={[styles.tableCell, { flex: 2 }]}>
               {getTreatmentRecommendation(formData.neckPainCurrentSeverity)}
-            </Text>
-            <Text style={[styles.tableCell, { flex: 1.5 }]}>
-              {getInjuryClassification('Neck')}
             </Text>
           </View>
         )}
@@ -99,14 +99,14 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
             <Text style={[styles.tableCell, { flex: 1.5 }]}>
               Shoulder ({formData.shoulderSide === "1" ? "Left" : formData.shoulderSide === "2" ? "Right" : "Both"}) (Pain, Stiffness)
             </Text>
+            <Text style={[styles.tableCell, { flex: 1.5 }]}>
+              {getInjuryClassification('Shoulder')}
+            </Text>
             <Text style={[styles.tableCell, { flex: 1 }]}>
               {formData.shoulderPainCurrentSeverity === "4" ? `${formData.shoulderPainResolveDays || "Unknown"} Days` : getPrognosis(formData.shoulderPainCurrentSeverity)}
             </Text>
             <Text style={[styles.tableCell, { flex: 2 }]}>
               {getTreatmentRecommendation(formData.shoulderPainCurrentSeverity)}
-            </Text>
-            <Text style={[styles.tableCell, { flex: 1.5 }]}>
-              {getInjuryClassification('Shoulder')}
             </Text>
           </View>
         )}
@@ -116,14 +116,14 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
             <Text style={[styles.tableCell, { flex: 1.5 }]}>
               Back ({formData.backLocation === "1" ? "Upper" : formData.backLocation === "2" ? "Middle" : formData.backLocation === "3" ? "Lower" : "Full"}) (Pain, Stiffness, Discomfort)
             </Text>
+            <Text style={[styles.tableCell, { flex: 1.5 }]}>
+              {getInjuryClassification('Back', formData.backLocation)}
+            </Text>
             <Text style={[styles.tableCell, { flex: 1 }]}>
               {formData.backPainCurrentSeverity === "4" ? `${formData.backPainResolveDays || "Unknown"} Days` : getPrognosis(formData.backPainCurrentSeverity)}
             </Text>
             <Text style={[styles.tableCell, { flex: 2 }]}>
               {getTreatmentRecommendation(formData.backPainCurrentSeverity)}
-            </Text>
-            <Text style={[styles.tableCell, { flex: 1.5 }]}>
-              {getInjuryClassification('Back', formData.backLocation)}
             </Text>
           </View>
         )}
@@ -131,14 +131,14 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
         {formData.headache === "1" && (
           <View style={styles.tableRow}>
             <Text style={[styles.tableCell, { flex: 1.5 }]}>Headaches</Text>
+            <Text style={[styles.tableCell, { flex: 1.5 }]}>
+              {getInjuryClassification('Headache')}
+            </Text>
             <Text style={[styles.tableCell, { flex: 1 }]}>
               {formData.headacheCurrentSeverity === "4" ? `${formData.headacheResolveDays || "Unknown"} Days` : getPrognosis(formData.headacheCurrentSeverity)}
             </Text>
             <Text style={[styles.tableCell, { flex: 2 }]}>
               {getTreatmentRecommendation(formData.headacheCurrentSeverity)}
-            </Text>
-            <Text style={[styles.tableCell, { flex: 1.5 }]}>
-              {getInjuryClassification('Headache')}
             </Text>
           </View>
         )}
@@ -146,12 +146,14 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
         {formData.travelAnxiety === "1" && (
           <View style={styles.tableRow}>
             <Text style={[styles.tableCell, { flex: 1.5 }]}>Anxiety</Text>
-            <Text style={[styles.tableCell, { flex: 1 }]}>{formData.anxietyCurrentSeverity === "4" ? `${formData.anxietyDuration || "60"} Days` : getPrognosis(formData.anxietyCurrentSeverity)}</Text>
-            <Text style={[styles.tableCell, { flex: 2 }]}>
-              {formData.anxietyCurrentSeverity === "4" ? "None - Resolved" : "Reassurance, Relaxation techniques"}
-            </Text>
             <Text style={[styles.tableCell, { flex: 1.5 }]}>
               {getInjuryClassification('Anxiety')}
+            </Text>
+            <Text style={[styles.tableCell, { flex: 1 }]}>
+              {formData.anxietyCurrentSeverity === "4" ? `${formData.anxietyDuration || "60"} Days` : getPrognosis(formData.anxietyCurrentSeverity)}
+            </Text>
+            <Text style={[styles.tableCell, { flex: 2 }]}>
+              {formData.anxietyCurrentSeverity === "4" ? "None - Resolved" : "Reassurance, Relaxation techniques"}
             </Text>
           </View>
         )}
@@ -159,14 +161,14 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
         {formData.dizziness === "1" && (
           <View style={styles.tableRow}>
             <Text style={[styles.tableCell, { flex: 1.5 }]}>Dizziness</Text>
+            <Text style={[styles.tableCell, { flex: 1.5 }]}>
+              {getInjuryClassification('Dizziness')}
+            </Text>
             <Text style={[styles.tableCell, { flex: 1 }]}>
               {formData.dizzinessCurrentSeverity === "4" ? `${formData.dizzinessResolveDays || "Unknown"} Days` : getPrognosis(formData.dizzinessCurrentSeverity)}
             </Text>
             <Text style={[styles.tableCell, { flex: 2 }]}>
               {getTreatmentRecommendation(formData.dizzinessCurrentSeverity)}
-            </Text>
-            <Text style={[styles.tableCell, { flex: 1.5 }]}>
-              {getInjuryClassification('Dizziness')}
             </Text>
           </View>
         )}
@@ -174,14 +176,14 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
         {formData.hasOtherInjury === "1" && (
           <View style={styles.tableRow}>
             <Text style={[styles.tableCell, { flex: 1.5 }]}>{formData.injuryName || "Other Injury"}</Text>
+            <Text style={[styles.tableCell, { flex: 1.5 }]}>
+              Non-whiplash Injury
+            </Text>
             <Text style={[styles.tableCell, { flex: 1 }]}>
               {formData.injuryCurrentSeverity === "4" ? `${formData.injuryResolveDays || "Unknown"} Days` : getPrognosis(formData.injuryCurrentSeverity)}
             </Text>
             <Text style={[styles.tableCell, { flex: 2 }]}>
               {getTreatmentRecommendation(formData.injuryCurrentSeverity)}
-            </Text>
-            <Text style={[styles.tableCell, { flex: 1.5 }]}>
-              Non-whiplash Injury
             </Text>
           </View>
         )}
@@ -189,14 +191,14 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
         {formData.hasBruising === "1" && (
           <View style={styles.tableRow}>
             <Text style={[styles.tableCell, { flex: 1.5 }]}>Bruising/Scarring</Text>
+            <Text style={[styles.tableCell, { flex: 1.5 }]}>
+              Non-whiplash Injury
+            </Text>
             <Text style={[styles.tableCell, { flex: 1 }]}>
               {formData.bruisingCurrentSeverity === "4" ? `${formData.bruisingResolveDays || "Unknown"} Days` : getPrognosis(formData.bruisingCurrentSeverity)}
             </Text>
             <Text style={[styles.tableCell, { flex: 2 }]}>
               {getTreatmentRecommendation(formData.bruisingCurrentSeverity)}
-            </Text>
-            <Text style={[styles.tableCell, { flex: 1.5 }]}>
-              Non-whiplash Injury
             </Text>
           </View>
         )}
