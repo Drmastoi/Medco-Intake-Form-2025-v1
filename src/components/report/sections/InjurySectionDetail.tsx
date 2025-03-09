@@ -41,6 +41,17 @@ const InjurySectionDetail = ({
     <>
       <Text style={styles.injuriesSectionTitle}>9.{sectionCount} {injuryType === 'Travel Anxiety' ? 'Psychological' : 'Physical'}</Text>
       
+      {/* Add General Physical Examination section before the first injury */}
+      {sectionCount === 1 && (
+        <View style={{ marginBottom: 10 }}>
+          <Text style={[styles.injuryTypeHeader, { marginBottom: 5 }]}>General Physical Examination:</Text>
+          <Text style={styles.text}>
+            In my observation, the Claimant was not tearful, not agitated, good eye contact, good rapport, time and place orientation,
+            and showed signs of no psychotic features, no delusional ideas, and no thought disorder. Communication was normal.
+          </Text>
+        </View>
+      )}
+      
       <Text style={styles.injuryTypeHeader}>
         {title}
         {injuryType === 'Back' && location && (
