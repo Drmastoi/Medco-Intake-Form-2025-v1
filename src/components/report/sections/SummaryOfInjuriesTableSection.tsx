@@ -32,7 +32,37 @@ const getTreatmentRecommendation = (severity: string) => {
   }
 };
 
+// Helper function to determine if exceptional criteria are met
+const hasExceptionalCircumstances = (formData: any) => {
+  // Check if any symptoms are still severe (severity level 3) or have lasted more than 8 months
+  if (
+    (formData.neckPain === "1" && formData.neckPainCurrentSeverity === "3") ||
+    (formData.shoulderPain === "1" && formData.shoulderPainCurrentSeverity === "3") ||
+    (formData.backPain === "1" && formData.backPainCurrentSeverity === "3") ||
+    (formData.headache === "1" && formData.headacheCurrentSeverity === "3") ||
+    (formData.travelAnxiety === "1" && formData.anxietyCurrentSeverity === "3")
+  ) {
+    return true;
+  }
+  
+  // Check for duration of symptoms (assuming 240 days = ~8 months)
+  // This is an approximation as we don't have direct duration data for all symptoms
+  if (
+    (formData.neckPainResolveDays && parseInt(formData.neckPainResolveDays) > 240) ||
+    (formData.shoulderPainResolveDays && parseInt(formData.shoulderPainResolveDays) > 240) ||
+    (formData.backPainResolveDays && parseInt(formData.backPainResolveDays) > 240) ||
+    (formData.headacheResolveDays && parseInt(formData.headacheResolveDays) > 240) ||
+    (formData.anxietyDuration && parseInt(formData.anxietyDuration) > 240)
+  ) {
+    return true;
+  }
+  
+  return false;
+};
+
 export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInjuriesTableSectionProps) => {
+  const isExceptional = hasExceptionalCircumstances(formData);
+  
   return (
     <View style={styles.subsection}>
       <Text style={styles.sectionHeader}>Section 6 - Summary of Injuries</Text>
@@ -136,6 +166,35 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
             </Text>
           </View>
         )}
+      </View>
+      
+      {/* Exceptional Injuries Section */}
+      <View style={{ marginTop: 15, marginBottom: 10 }}>
+        <Text style={{ fontSize: 11, fontWeight: 'bold', marginBottom: 8 }}>Exceptional Circumstances</Text>
+        
+        <View style={[styles.tableContainer, { marginTop: 5 }]}>
+          <View style={styles.tableRow}>
+            <Text style={[styles.tableCell, { flex: 3, fontFamily: 'Helvetica-Bold' }]}>Exceptional Injuries Claimed:</Text>
+            <Text style={[styles.tableCell, { flex: 1 }]}>{isExceptional ? "Yes" : "No"}</Text>
+          </View>
+          
+          <View style={styles.tableRow}>
+            <Text style={[styles.tableCell, { flex: 3, fontFamily: 'Helvetica-Bold' }]}>Exceptional Injuries Awarded:</Text>
+            <Text style={[styles.tableCell, { flex: 1 }]}>{isExceptional ? "Yes" : "No"}</Text>
+          </View>
+          
+          <View style={styles.tableRow}>
+            <Text style={[styles.tableCell, { flex: 3, fontFamily: 'Helvetica-Bold' }]}>Exceptional Circumstances Claimed:</Text>
+            <Text style={[styles.tableCell, { flex: 1 }]}>{isExceptional ? "Yes" : "No"}</Text>
+          </View>
+          
+          {isExceptional && (
+            <View style={styles.tableRow}>
+              <Text style={[styles.tableCell, { flex: 3, fontFamily: 'Helvetica-Bold' }]}>Exceptional Injuries / Circumstances:</Text>
+              <Text style={[styles.tableCell, { flex: 1 }]}>Pain and restrictions due to the accident</Text>
+            </View>
+          )}
+        </View>
       </View>
     </View>
   );
