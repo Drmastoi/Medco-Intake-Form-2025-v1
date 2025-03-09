@@ -79,6 +79,11 @@ export const InjuriesSymptomsSection = ({ formData, styles }: InjuriesSymptomsSe
     <View>
       <Text style={styles.sectionHeader}>Section 9 - Injuries / Symptoms</Text>
       
+      {/* Acknowledgment statement at the beginning */}
+      <Text style={[styles.text, { marginBottom: 12, marginTop: 5, fontStyle: 'italic' }]}>
+        I have acknowledged the Letter of Instruction and I confirm there were no other injuries suffered by the claimant as told to me during the examination after direct questioning
+      </Text>
+      
       {/* Neck Injury */}
       {formData.neckPain === "1" && (
         <>
