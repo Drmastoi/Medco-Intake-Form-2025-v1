@@ -1,5 +1,6 @@
 
 import { Text, View } from '@react-pdf/renderer';
+import { getPrognosis, getMechanismOfInjury, getOpinion, getOICTariff, getExaminationFindings, getTreatmentRecommendation } from '../utils/injuryClassification';
 
 interface InjurySectionDetailProps {
   title: string;
@@ -35,10 +36,6 @@ const InjurySectionDetail = ({
   const initialSeverity = formData[`${prefix}PainInitialSeverity`];
   const currentSeverity = formData[`${prefix}PainCurrentSeverity`];
   const resolveDays = formData[`${prefix}PainResolveDays`];
-
-  // Import functions from utils
-  const { getPrognosis, getMechanismOfInjury, getOpinion, getOICTariff, getExaminationFindings } = 
-    require('../utils/injuryClassification');
 
   return (
     <>
