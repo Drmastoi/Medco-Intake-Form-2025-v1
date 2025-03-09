@@ -14,6 +14,64 @@ const getPrognosis = (severity: string) => {
   return "Unknown";
 };
 
+const getMechanismOfInjury = (injuryType: string, location?: string) => {
+  if (injuryType === 'Neck' || (injuryType === 'Back' && location === "3")) {
+    return "The injury is caused by acceleration-deceleration mechanism of energy transfer to the neck.";
+  } else if (injuryType === 'Shoulder' || (injuryType === 'Back' && location !== "3")) {
+    return "The injury is caused by a direct trauma to the vehicle interior.";
+  } else if (['Headache', 'Dizziness'].includes(injuryType)) {
+    return "It is classified as non-whiplash injury and falls within subsection 1.3 of the civil liability act 2018.";
+  } else if (['Anxiety', 'Travel Anxiety'].includes(injuryType)) {
+    return "It is classified as non-whiplash injury and falls within subsection 1.3 of the civil liability act 2018.";
+  } else {
+    return "The injury is caused by a direct impact during the accident.";
+  }
+};
+
+const getOpinion = (injuryType: string, location?: string) => {
+  if (['Neck', 'Shoulder'].includes(injuryType) || (injuryType === 'Back' && location === "3")) {
+    return "In my opinion, the Claimant's symptoms are due to a Whiplash Injury. On the balance of probabilities, they are attributable to the index accident.";
+  } else if (injuryType === 'Back' && location !== "3") {
+    return "In my opinion, the Claimant's symptoms are due to a Soft Tissue Injury. On the balance of probabilities, they are attributable to the index accident. The injury falls within subsection 1.3 of the Civil Liability Act 2018.";
+  } else if (['Headache', 'Dizziness'].includes(injuryType)) {
+    return "In my opinion, the Claimant's symptoms are due to a Whiplash Associated Injury. On the balance of probabilities, they are attributable to the index accident. The injury falls within subsection 1.3 of the Civil Liability Act 2018.";
+  } else if (['Anxiety', 'Travel Anxiety'].includes(injuryType)) {
+    return "In my opinion, the Claimant's symptoms are due to a Psychological Impact. On the balance of probabilities, they are attributable to the index accident. The injury falls within subsection 1.3 of the Civil Liability Act 2018.";
+  } else {
+    return "In my opinion, the Claimant's symptoms are due to a Non-whiplash Injury. On the balance of probabilities, they are attributable to the index accident. The injury falls within subsection 1.3 of the Civil Liability Act 2018.";
+  }
+};
+
+const getOICTariff = (injuryType: string, location?: string) => {
+  if (injuryType === 'Neck' || (injuryType === 'Back' && location === "3")) {
+    return "Yes";
+  } else {
+    return "No";
+  }
+};
+
+const getExaminationFindings = (injuryType: string, severity: string) => {
+  if (['Anxiety', 'Travel Anxiety', 'Headache', 'Dizziness'].includes(injuryType)) {
+    return "Not applicable for this type of injury.";
+  }
+  
+  let baseText = "Observation Normal\n";
+  
+  if (severity === "1") {
+    baseText += "Mild - as per claimant's entry. ";
+  } else if (severity === "2") {
+    baseText += "Moderate - as per claimant's entry. ";
+  } else if (severity === "3") {
+    baseText += "Severe - as per claimant's entry. ";
+  }
+  
+  baseText += "Movements Flexion, Extension Mild Restriction | Extremes mild Painful\n";
+  baseText += "Left Lateral Flexion, Right Lateral Flexion | Left side | Normal\n";
+  baseText += "No neurovascular deficits noted.";
+  
+  return baseText;
+};
+
 export const InjuriesSymptomsSection = ({ formData, styles }: InjuriesSymptomsSectionProps) => {
   let sectionCount = 0;
   
@@ -61,23 +119,29 @@ export const InjuriesSymptomsSection = ({ formData, styles }: InjuriesSymptomsSe
                 {formData.neckPainCurrentSeverity === "1" ? "Ongoing with mild symptoms and intermittent." :
                  formData.neckPainCurrentSeverity === "2" ? "Ongoing with moderate symptoms and intermittent." :
                  formData.neckPainCurrentSeverity === "3" ? "Ongoing with severe symptoms and persistent." :
-                 formData.neckPainCurrentSeverity === "4" ? `Resolved within ${formData.neckPainResolveDays || "1"} months (from the date of accident / incident)` : 
+                 formData.neckPainCurrentSeverity === "4" ? `Resolved within ${formData.neckPainResolveDays || "1"} days (from the date of accident / incident)` : 
                  "Current status not specified."}
               </Text>
             </View>
             
             <View style={styles.injuryRow}>
-              <Text style={styles.injuryLabel}>Prognosis</Text>
+              <Text style={styles.injuryLabel}>Mechanism of Injury</Text>
               <Text style={styles.injuryValue}>
-                {getPrognosis(formData.neckPainCurrentSeverity)}
-                {formData.neckPainCurrentSeverity === "3" && " - The extended prognosis is due to the severity of the symptoms."}
+                {getMechanismOfInjury('Neck')}
               </Text>
             </View>
             
             <View style={styles.injuryRow}>
-              <Text style={styles.injuryLabel}>Treatment</Text>
+              <Text style={styles.injuryLabel}>Examination Findings</Text>
               <Text style={styles.injuryValue}>
-                Physiotherapy - The required number of sessions to be determined by the Physiotherapist
+                {getExaminationFindings('Neck', formData.neckPainCurrentSeverity)}
+              </Text>
+            </View>
+            
+            <View style={styles.injuryRow}>
+              <Text style={styles.injuryLabel}>Opinion</Text>
+              <Text style={styles.injuryValue}>
+                {getOpinion('Neck')}
               </Text>
             </View>
             
@@ -91,35 +155,27 @@ export const InjuriesSymptomsSection = ({ formData, styles }: InjuriesSymptomsSe
             </View>
             
             <View style={styles.injuryRow}>
-              <Text style={styles.injuryLabel}>Opinion</Text>
-              <Text style={styles.injuryValue}>
-                In my opinion, the Claimant's symptoms are due to a Whiplash Injury. On the
-                balance of probabilities, they are attributable to the index accident.
-              </Text>
-            </View>
-            
-            <View style={styles.injuryRow}>
-              <Text style={styles.injuryLabel}>Mechanism of Injury</Text>
-              <Text style={styles.injuryValue}>
-                The injury is caused by acceleration-deceleration mechanism of energy transfer to the neck.
-              </Text>
-            </View>
-            
-            <View style={styles.injuryRow}>
               <Text style={styles.injuryLabel}>Additional Report</Text>
               <Text style={styles.injuryValue}>No additional reports are required.</Text>
             </View>
             
             <View style={styles.injuryRow}>
               <Text style={styles.injuryLabel}>OIC Tariff</Text>
-              <Text style={styles.injuryValue}>Yes</Text>
+              <Text style={styles.injuryValue}>{getOICTariff('Neck')}</Text>
             </View>
             
             <View style={styles.injuryRow}>
-              <Text style={styles.injuryLabel}>Exacerbation and Apportioning</Text>
+              <Text style={styles.injuryLabel}>Prognosis</Text>
               <Text style={styles.injuryValue}>
-                In my opinion, On the balance of probabilities, the symptoms are not
-                exacerbated by the index accident.
+                {getPrognosis(formData.neckPainCurrentSeverity)}
+                {formData.neckPainCurrentSeverity === "3" && " - The extended prognosis is due to the severity of the symptoms."}
+              </Text>
+            </View>
+            
+            <View style={styles.injuryRow}>
+              <Text style={styles.injuryLabel}>Treatment Recommendation</Text>
+              <Text style={styles.injuryValue}>
+                Physiotherapy - The required number of sessions to be determined by the Physiotherapist
               </Text>
             </View>
           </View>
@@ -171,23 +227,29 @@ export const InjuriesSymptomsSection = ({ formData, styles }: InjuriesSymptomsSe
                 {formData.backPainCurrentSeverity === "1" ? "Ongoing with mild symptoms and intermittent." :
                  formData.backPainCurrentSeverity === "2" ? "Ongoing with moderate symptoms and intermittent." :
                  formData.backPainCurrentSeverity === "3" ? "Ongoing with severe symptoms and persistent." :
-                 formData.backPainCurrentSeverity === "4" ? `Resolved within ${formData.backPainResolveDays || "1"} months (from the date of accident / incident)` : 
+                 formData.backPainCurrentSeverity === "4" ? `Resolved within ${formData.backPainResolveDays || "1"} days (from the date of accident / incident)` : 
                  "Current status not specified."}
               </Text>
             </View>
             
             <View style={styles.injuryRow}>
-              <Text style={styles.injuryLabel}>Prognosis</Text>
+              <Text style={styles.injuryLabel}>Mechanism of Injury</Text>
               <Text style={styles.injuryValue}>
-                {getPrognosis(formData.backPainCurrentSeverity)}
-                {formData.backPainCurrentSeverity === "3" && " - The extended prognosis is due to the severity of the symptoms."}
+                {getMechanismOfInjury('Back', formData.backLocation)}
               </Text>
             </View>
             
             <View style={styles.injuryRow}>
-              <Text style={styles.injuryLabel}>Treatment</Text>
+              <Text style={styles.injuryLabel}>Examination Findings</Text>
               <Text style={styles.injuryValue}>
-                Physiotherapy - The required number of sessions to be determined by the Physiotherapist
+                {getExaminationFindings('Back', formData.backPainCurrentSeverity)}
+              </Text>
+            </View>
+            
+            <View style={styles.injuryRow}>
+              <Text style={styles.injuryLabel}>Opinion</Text>
+              <Text style={styles.injuryValue}>
+                {getOpinion('Back', formData.backLocation)}
               </Text>
             </View>
             
@@ -201,26 +263,6 @@ export const InjuriesSymptomsSection = ({ formData, styles }: InjuriesSymptomsSe
             </View>
             
             <View style={styles.injuryRow}>
-              <Text style={styles.injuryLabel}>Opinion</Text>
-              <Text style={styles.injuryValue}>
-                In my opinion, the Claimant's symptoms are due to a 
-                {formData.backLocation === "3" ? " Whiplash Injury. " : " Soft Tissue Injury. "}
-                On the balance of probabilities, they are attributable to the index accident.
-                {formData.backLocation !== "3" ? " The injury falls within subsection 1.3 of the Civil Liability Act 2018." : ""}
-              </Text>
-            </View>
-            
-            <View style={styles.injuryRow}>
-              <Text style={styles.injuryLabel}>Mechanism of Injury</Text>
-              <Text style={styles.injuryValue}>
-                The injury is caused by 
-                {formData.backLocation === "3" ? 
-                  " acceleration-deceleration mechanism of energy transfer to the back." : 
-                  " a direct trauma to the vehicle interior."}
-              </Text>
-            </View>
-            
-            <View style={styles.injuryRow}>
               <Text style={styles.injuryLabel}>Additional Report</Text>
               <Text style={styles.injuryValue}>No additional reports are required.</Text>
             </View>
@@ -228,15 +270,22 @@ export const InjuriesSymptomsSection = ({ formData, styles }: InjuriesSymptomsSe
             <View style={styles.injuryRow}>
               <Text style={styles.injuryLabel}>OIC Tariff</Text>
               <Text style={styles.injuryValue}>
-                {formData.backLocation === "3" ? "Yes" : "No"}
+                {getOICTariff('Back', formData.backLocation)}
               </Text>
             </View>
             
             <View style={styles.injuryRow}>
-              <Text style={styles.injuryLabel}>Exacerbation and Apportioning</Text>
+              <Text style={styles.injuryLabel}>Prognosis</Text>
               <Text style={styles.injuryValue}>
-                In my opinion, On the balance of probabilities, the symptoms are not
-                exacerbated by the index accident.
+                {getPrognosis(formData.backPainCurrentSeverity)}
+                {formData.backPainCurrentSeverity === "3" && " - The extended prognosis is due to the severity of the symptoms."}
+              </Text>
+            </View>
+            
+            <View style={styles.injuryRow}>
+              <Text style={styles.injuryLabel}>Treatment Recommendation</Text>
+              <Text style={styles.injuryValue}>
+                Physiotherapy - The required number of sessions to be determined by the Physiotherapist
               </Text>
             </View>
           </View>
@@ -287,23 +336,29 @@ export const InjuriesSymptomsSection = ({ formData, styles }: InjuriesSymptomsSe
                 {formData.shoulderPainCurrentSeverity === "1" ? "Ongoing with mild symptoms and intermittent." :
                  formData.shoulderPainCurrentSeverity === "2" ? "Ongoing with moderate symptoms and intermittent." :
                  formData.shoulderPainCurrentSeverity === "3" ? "Ongoing with severe symptoms and persistent." :
-                 formData.shoulderPainCurrentSeverity === "4" ? `Resolved within ${formData.shoulderPainResolveDays || "1"} months (from the date of accident / incident)` : 
+                 formData.shoulderPainCurrentSeverity === "4" ? `Resolved within ${formData.shoulderPainResolveDays || "1"} days (from the date of accident / incident)` : 
                  "Current status not specified."}
               </Text>
             </View>
             
             <View style={styles.injuryRow}>
-              <Text style={styles.injuryLabel}>Prognosis</Text>
+              <Text style={styles.injuryLabel}>Mechanism of Injury</Text>
               <Text style={styles.injuryValue}>
-                {getPrognosis(formData.shoulderPainCurrentSeverity)}
-                {formData.shoulderPainCurrentSeverity === "3" && " - The extended prognosis is due to the severity of the symptoms."}
+                {getMechanismOfInjury('Shoulder')}
               </Text>
             </View>
             
             <View style={styles.injuryRow}>
-              <Text style={styles.injuryLabel}>Treatment</Text>
+              <Text style={styles.injuryLabel}>Examination Findings</Text>
               <Text style={styles.injuryValue}>
-                Physiotherapy - The required number of sessions to be determined by the Physiotherapist
+                {getExaminationFindings('Shoulder', formData.shoulderPainCurrentSeverity)}
+              </Text>
+            </View>
+            
+            <View style={styles.injuryRow}>
+              <Text style={styles.injuryLabel}>Opinion</Text>
+              <Text style={styles.injuryValue}>
+                {getOpinion('Shoulder')}
               </Text>
             </View>
             
@@ -317,36 +372,27 @@ export const InjuriesSymptomsSection = ({ formData, styles }: InjuriesSymptomsSe
             </View>
             
             <View style={styles.injuryRow}>
-              <Text style={styles.injuryLabel}>Opinion</Text>
-              <Text style={styles.injuryValue}>
-                In my opinion, the Claimant's symptoms are due to a Soft Tissue Injury. 
-                On the balance of probabilities, they are attributable to the index accident.
-                The injury falls within subsection 1.3 of the Civil Liability Act 2018.
-              </Text>
-            </View>
-            
-            <View style={styles.injuryRow}>
-              <Text style={styles.injuryLabel}>Mechanism of Injury</Text>
-              <Text style={styles.injuryValue}>
-                The injury is caused by a direct trauma to the vehicle interior.
-              </Text>
-            </View>
-            
-            <View style={styles.injuryRow}>
               <Text style={styles.injuryLabel}>Additional Report</Text>
               <Text style={styles.injuryValue}>No additional reports are required.</Text>
             </View>
             
             <View style={styles.injuryRow}>
               <Text style={styles.injuryLabel}>OIC Tariff</Text>
-              <Text style={styles.injuryValue}>No</Text>
+              <Text style={styles.injuryValue}>{getOICTariff('Shoulder')}</Text>
             </View>
             
             <View style={styles.injuryRow}>
-              <Text style={styles.injuryLabel}>Exacerbation and Apportioning</Text>
+              <Text style={styles.injuryLabel}>Prognosis</Text>
               <Text style={styles.injuryValue}>
-                In my opinion, On the balance of probabilities, the symptoms are not
-                exacerbated by the index accident.
+                {getPrognosis(formData.shoulderPainCurrentSeverity)}
+                {formData.shoulderPainCurrentSeverity === "3" && " - The extended prognosis is due to the severity of the symptoms."}
+              </Text>
+            </View>
+            
+            <View style={styles.injuryRow}>
+              <Text style={styles.injuryLabel}>Treatment Recommendation</Text>
+              <Text style={styles.injuryValue}>
+                Physiotherapy - The required number of sessions to be determined by the Physiotherapist
               </Text>
             </View>
           </View>
@@ -394,8 +440,29 @@ export const InjuriesSymptomsSection = ({ formData, styles }: InjuriesSymptomsSe
                 {formData.headacheCurrentSeverity === "1" ? "Ongoing with mild symptoms and intermittent." :
                  formData.headacheCurrentSeverity === "2" ? "Ongoing with moderate symptoms and intermittent." :
                  formData.headacheCurrentSeverity === "3" ? "Ongoing with severe symptoms and persistent." :
-                 formData.headacheCurrentSeverity === "4" ? `Resolved within ${formData.headacheResolveDays || "1"} months (from the date of accident / incident)` : 
+                 formData.headacheCurrentSeverity === "4" ? `Resolved within ${formData.headacheResolveDays || "1"} days (from the date of accident / incident)` : 
                  "Current status not specified."}
+              </Text>
+            </View>
+            
+            <View style={styles.injuryRow}>
+              <Text style={styles.injuryLabel}>Mechanism of Injury</Text>
+              <Text style={styles.injuryValue}>
+                {getMechanismOfInjury('Headache')}
+              </Text>
+            </View>
+            
+            <View style={styles.injuryRow}>
+              <Text style={styles.injuryLabel}>Examination Findings</Text>
+              <Text style={styles.injuryValue}>
+                Not applicable for this type of injury.
+              </Text>
+            </View>
+            
+            <View style={styles.injuryRow}>
+              <Text style={styles.injuryLabel}>Opinion</Text>
+              <Text style={styles.injuryValue}>
+                {getOpinion('Headache')}
               </Text>
             </View>
             
@@ -409,36 +476,27 @@ export const InjuriesSymptomsSection = ({ formData, styles }: InjuriesSymptomsSe
             </View>
             
             <View style={styles.injuryRow}>
-              <Text style={styles.injuryLabel}>Opinion</Text>
-              <Text style={styles.injuryValue}>
-                In my opinion, the Claimant's symptoms are due to a Non-whiplash Injury. 
-                On the balance of probabilities, they are attributable to the index accident.
-                The injury falls within subsection 1.3 of the Civil Liability Act 2018.
-              </Text>
-            </View>
-            
-            <View style={styles.injuryRow}>
-              <Text style={styles.injuryLabel}>Mechanism of Injury</Text>
-              <Text style={styles.injuryValue}>
-                It is classified as non-whiplash injury and falls within subsection 1.3 of the civil liability act 2018.
-              </Text>
-            </View>
-            
-            <View style={styles.injuryRow}>
               <Text style={styles.injuryLabel}>Additional Report</Text>
               <Text style={styles.injuryValue}>No additional reports are required.</Text>
             </View>
             
             <View style={styles.injuryRow}>
               <Text style={styles.injuryLabel}>OIC Tariff</Text>
-              <Text style={styles.injuryValue}>No</Text>
+              <Text style={styles.injuryValue}>{getOICTariff('Headache')}</Text>
             </View>
             
             <View style={styles.injuryRow}>
-              <Text style={styles.injuryLabel}>Exacerbation and Apportioning</Text>
+              <Text style={styles.injuryLabel}>Prognosis</Text>
               <Text style={styles.injuryValue}>
-                In my opinion, On the balance of probabilities, the symptoms are not
-                exacerbated by the index accident.
+                {getPrognosis(formData.headacheCurrentSeverity)}
+                {formData.headacheCurrentSeverity === "3" && " - The extended prognosis is due to the severity of the symptoms."}
+              </Text>
+            </View>
+            
+            <View style={styles.injuryRow}>
+              <Text style={styles.injuryLabel}>Treatment Recommendation</Text>
+              <Text style={styles.injuryValue}>
+                Physiotherapy - The required number of sessions to be determined by the Physiotherapist
               </Text>
             </View>
           </View>
@@ -486,8 +544,29 @@ export const InjuriesSymptomsSection = ({ formData, styles }: InjuriesSymptomsSe
                 {formData.anxietyCurrentSeverity === "1" ? "Ongoing with mild symptoms and intermittent." :
                  formData.anxietyCurrentSeverity === "2" ? "Ongoing with moderate symptoms and intermittent." :
                  formData.anxietyCurrentSeverity === "3" ? "Ongoing with severe symptoms and persistent." :
-                 formData.anxietyCurrentSeverity === "4" ? `Resolved within ${formData.anxietyResolveDays || "1"} months (from the date of accident / incident)` : 
+                 formData.anxietyCurrentSeverity === "4" ? `Resolved within ${formData.anxietyResolveDays || "1"} days (from the date of accident / incident)` : 
                  "Current status not specified."}
+              </Text>
+            </View>
+            
+            <View style={styles.injuryRow}>
+              <Text style={styles.injuryLabel}>Mechanism of Injury</Text>
+              <Text style={styles.injuryValue}>
+                {getMechanismOfInjury('Travel Anxiety')}
+              </Text>
+            </View>
+            
+            <View style={styles.injuryRow}>
+              <Text style={styles.injuryLabel}>Examination Findings</Text>
+              <Text style={styles.injuryValue}>
+                Not applicable for this type of injury.
+              </Text>
+            </View>
+            
+            <View style={styles.injuryRow}>
+              <Text style={styles.injuryLabel}>Opinion</Text>
+              <Text style={styles.injuryValue}>
+                {getOpinion('Travel Anxiety')}
               </Text>
             </View>
             
@@ -501,36 +580,27 @@ export const InjuriesSymptomsSection = ({ formData, styles }: InjuriesSymptomsSe
             </View>
             
             <View style={styles.injuryRow}>
-              <Text style={styles.injuryLabel}>Opinion</Text>
-              <Text style={styles.injuryValue}>
-                In my opinion, the Claimant's symptoms are due to a Psychological Impact. 
-                On the balance of probabilities, they are attributable to the index accident.
-                The injury falls within subsection 1.3 of the Civil Liability Act 2018.
-              </Text>
-            </View>
-            
-            <View style={styles.injuryRow}>
-              <Text style={styles.injuryLabel}>Mechanism of Injury</Text>
-              <Text style={styles.injuryValue}>
-                It is classified as non-whiplash injury and falls within subsection 1.3 of the civil liability act 2018.
-              </Text>
-            </View>
-            
-            <View style={styles.injuryRow}>
               <Text style={styles.injuryLabel}>Additional Report</Text>
               <Text style={styles.injuryValue}>No additional reports are required.</Text>
             </View>
             
             <View style={styles.injuryRow}>
               <Text style={styles.injuryLabel}>OIC Tariff</Text>
-              <Text style={styles.injuryValue}>No</Text>
+              <Text style={styles.injuryValue}>{getOICTariff('Travel Anxiety')}</Text>
             </View>
             
             <View style={styles.injuryRow}>
-              <Text style={styles.injuryLabel}>Exacerbation and Apportioning</Text>
+              <Text style={styles.injuryLabel}>Prognosis</Text>
               <Text style={styles.injuryValue}>
-                In my opinion, On the balance of probabilities, the symptoms are not
-                exacerbated by the index accident.
+                {getPrognosis(formData.anxietyCurrentSeverity)}
+                {formData.anxietyCurrentSeverity === "3" && " - The extended prognosis is due to the severity of the symptoms."}
+              </Text>
+            </View>
+            
+            <View style={styles.injuryRow}>
+              <Text style={styles.injuryLabel}>Treatment Recommendation</Text>
+              <Text style={styles.injuryValue}>
+                {formData.anxietyCurrentSeverity === "4" ? "None - Resolved" : "Reassurance, Relaxation techniques"}
               </Text>
             </View>
           </View>

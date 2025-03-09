@@ -7,9 +7,9 @@ interface SummaryOfInjuriesTableSectionProps {
 }
 
 const getInjuryClassification = (injuryType: string, location?: string) => {
-  if (['Neck', 'Shoulder'].includes(injuryType)) {
+  if (injuryType === 'Neck' || injuryType === 'Shoulder' || (injuryType === 'Back' && (location === "1" || location === "2"))) {
     return 'Whiplash';
-  } else if (injuryType === 'Back') {
+  } else if (injuryType === 'Back' && location === "3") {
     return 'Whiplash';
   } else if (['Headache', 'Dizziness'].includes(injuryType)) {
     return 'Whiplash Associated';
@@ -28,9 +28,11 @@ const getPrognosis = (severity: string) => {
   return "Unknown";
 };
 
-const getTreatmentRecommendation = (severity: string) => {
+const getTreatmentRecommendation = (severity: string, injuryType?: string) => {
   if (severity === "4") {
     return 'None - Resolved';
+  } else if (['Anxiety', 'Travel Anxiety'].includes(injuryType || '')) {
+    return 'Reassurance, Relaxation techniques';
   } else {
     return 'Physiotherapy - The required number of sessions to be determined by the Physiotherapist';
   }
@@ -153,7 +155,7 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
               {formData.anxietyCurrentSeverity === "4" ? `${formData.anxietyDuration || "60"} Days` : getPrognosis(formData.anxietyCurrentSeverity)}
             </Text>
             <Text style={[styles.tableCell, { flex: 2 }]}>
-              {formData.anxietyCurrentSeverity === "4" ? "None - Resolved" : "Reassurance, Relaxation techniques"}
+              {getTreatmentRecommendation(formData.anxietyCurrentSeverity, 'Anxiety')}
             </Text>
           </View>
         )}
