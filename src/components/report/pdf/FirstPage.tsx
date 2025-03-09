@@ -16,7 +16,7 @@ export const FirstPage = ({ formData }: FirstPageProps) => {
       <Text style={pdfStyles.title}>Expert Medical Report</Text>
       
       {/* Two-column layout */}
-      <View style={{ flexDirection: 'row', marginBottom: 15 }}>
+      <View style={{ flexDirection: 'row' }}>
         {/* Left column */}
         <View style={{ flex: 1, marginRight: 10 }}>
           {/* Section 1: Claimant Details */}
