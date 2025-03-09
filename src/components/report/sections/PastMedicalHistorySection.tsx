@@ -10,10 +10,10 @@ interface PastMedicalHistorySectionProps {
 export const PastMedicalHistorySection = ({ formData, styles }: PastMedicalHistorySectionProps) => {
   return (
     <View>
-      <Text style={styles.sectionHeader}>Section 8 - Past Medical History</Text>
+      <Text style={styles.sectionHeader}>Section 7 - Past Medical History</Text>
       
       <View style={styles.grayBackground}>
-        <Text style={{ fontSize: 12, fontWeight: 'bold', marginBottom: 5 }}>8.1 Medical and Psychological</Text>
+        <Text style={{ fontSize: 12, fontWeight: 'bold', marginBottom: 5 }}>7.1 Medical and Psychological</Text>
       </View>
       
       <Text style={{ fontSize: 12, fontWeight: 'bold', marginTop: 10, marginBottom: 5 }}>Medical and Psychological</Text>
@@ -46,7 +46,7 @@ export const PastMedicalHistorySection = ({ formData, styles }: PastMedicalHisto
       
       <View style={{ marginTop: 20 }}>
         <View style={styles.grayBackground}>
-          <Text style={{ fontSize: 12, fontWeight: 'bold', marginBottom: 5 }}>8.2 RTA</Text>
+          <Text style={{ fontSize: 12, fontWeight: 'bold', marginBottom: 5 }}>7.2 RTA</Text>
         </View>
         
         <Text style={{ fontSize: 12, fontWeight: 'bold', marginTop: 10, marginBottom: 5 }}>RTA</Text>
