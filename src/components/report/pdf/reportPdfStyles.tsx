@@ -10,13 +10,33 @@ export const pdfStyles = StyleSheet.create({
     padding: 30,
     fontSize: 10,
     fontFamily: 'Helvetica',
+    position: 'relative',
+  },
+  header: {
+    marginBottom: 15,
+    borderBottom: '1px solid #CCCCCC',
+    paddingBottom: 10,
   },
   title: {
     fontSize: 18,
-    marginBottom: 20,
+    marginBottom: 5,
     fontWeight: 'bold',
     textAlign: 'center',
     fontFamily: 'Helvetica-Bold',
+  },
+  subheader: {
+    fontSize: 10,
+    textAlign: 'center',
+    color: '#555555',
+    marginBottom: 5,
+  },
+  twoColumnLayout: {
+    flexDirection: 'row',
+    flexGrow: 1,
+  },
+  column: {
+    flex: 1,
+    paddingHorizontal: 5,
   },
   signatureSection: {
     marginTop: 20,
@@ -32,6 +52,13 @@ export const pdfStyles = StyleSheet.create({
     fontSize: 10,
     marginBottom: 5,
     lineHeight: 1.4,
+    fontFamily: 'Helvetica',
+  },
+  disclaimerText: {
+    fontSize: 8,
+    marginTop: 3,
+    lineHeight: 1.3,
+    color: '#444444',
     fontFamily: 'Helvetica',
   },
   pageNumber: {
@@ -54,36 +81,37 @@ export const pdfStyles = StyleSheet.create({
   sectionHeader: {
     backgroundColor: '#000000',
     color: '#FFFFFF',
-    padding: 8,
-    marginBottom: 10,
-    fontSize: 12,
+    padding: 6,
+    marginBottom: 8,
+    fontSize: 11,
     fontWeight: 'bold',
     fontFamily: 'Helvetica-Bold',
   },
   fieldRow: {
     flexDirection: 'row',
-    marginBottom: 10,
+    marginBottom: 6,
   },
   fieldColumn: {
     flex: 1,
-    marginRight: 10,
+    marginRight: 5,
   },
   fieldLabel: {
-    fontSize: 10,
-    marginBottom: 3,
+    fontSize: 9,
+    marginBottom: 2,
     fontFamily: 'Helvetica',
+    color: '#555555',
   },
   fieldValue: {
     fontSize: 10,
-    padding: 5,
+    padding: 4,
     border: '1px solid #CCCCCC',
-    minHeight: 20,
+    minHeight: 18,
     fontFamily: 'Helvetica',
     backgroundColor: '#FFFFFF',
   },
   subsection: {
-    marginTop: 10,
-    marginBottom: 15,
+    marginTop: 5,
+    marginBottom: 10,
   },
   tableHeader: {
     backgroundColor: '#EEEEEE',
@@ -112,7 +140,7 @@ export const pdfStyles = StyleSheet.create({
     marginBottom: 15,
   },
   grayBackground: {
-    backgroundColor: '#EEEEEE',
+    backgroundColor: '#F5F5F5',
     padding: 8,
   },
 });

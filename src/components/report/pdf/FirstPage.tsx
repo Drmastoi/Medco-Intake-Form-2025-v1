@@ -13,18 +13,21 @@ interface FirstPageProps {
 export const FirstPage = ({ formData }: FirstPageProps) => {
   return (
     <Page size="A4" style={pdfStyles.page}>
-      <Text style={pdfStyles.title}>Expert Medical Report</Text>
+      <View style={pdfStyles.header}>
+        <Text style={pdfStyles.title}>Expert Medical Report</Text>
+        <Text style={pdfStyles.subheader}>Medco Whiplash Report - Confidential</Text>
+      </View>
       
-      {/* Two-column layout */}
-      <View style={{ flexDirection: 'row' }}>
+      {/* Two-column layout with improved spacing */}
+      <View style={pdfStyles.twoColumnLayout}>
         {/* Left column */}
-        <View style={{ flex: 1, marginRight: 10 }}>
+        <View style={pdfStyles.column}>
           {/* Section 1: Claimant Details */}
           <ClaimantDetailsSection formData={formData} styles={pdfStyles} />
         </View>
         
         {/* Right column */}
-        <View style={{ flex: 1 }}>
+        <View style={pdfStyles.column}>
           {/* Section 2: Expert Details */}
           <ExpertDetailsSection styles={pdfStyles} />
           
