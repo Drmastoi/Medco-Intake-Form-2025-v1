@@ -141,4 +141,27 @@ export const pdfStyles = StyleSheet.create({
     backgroundColor: '#F5F5F5',
     padding: 8,
   },
+  // New styles for RTA table
+  rtaTable: {
+    width: '100%',
+  },
+  rtaRow: {
+    flexDirection: 'row',
+    marginBottom: 6,
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#CCCCCC',
+    paddingBottom: 4,
+  },
+  rtaLabel: {
+    width: '25%',
+    fontSize: 10,
+    fontFamily: 'Helvetica-Bold',
+    fontWeight: 'bold',
+  },
+  rtaValue: {
+    width: '75%',
+    fontSize: 10,
+    fontFamily: 'Helvetica',
+    paddingRight: 4,
+  },
 });
