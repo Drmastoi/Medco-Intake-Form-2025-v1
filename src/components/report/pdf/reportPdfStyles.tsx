@@ -1,4 +1,3 @@
-
 import { StyleSheet } from '@react-pdf/renderer';
 import { styles as importedStyles } from '../reportStyles';
 
@@ -30,17 +29,9 @@ export const pdfStyles = StyleSheet.create({
     color: '#444444',
     marginBottom: 4,
   },
-  mainContent: {
-    flexDirection: 'row',
+  singleColumnContent: {
+    flexDirection: 'column',
     flexGrow: 1,
-  },
-  leftColumn: {
-    flex: 1,
-    paddingRight: 8,
-  },
-  rightColumn: {
-    flex: 1,
-    paddingLeft: 8,
   },
   signatureSection: {
     marginTop: 20,

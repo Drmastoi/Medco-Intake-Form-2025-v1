@@ -18,22 +18,16 @@ export const FirstPage = ({ formData }: FirstPageProps) => {
         <Text style={pdfStyles.reportSubtitle}>Medco Whiplash Report - Confidential</Text>
       </View>
       
-      {/* Enhanced two-column layout with better spacing */}
-      <View style={pdfStyles.mainContent}>
-        {/* Left column */}
-        <View style={pdfStyles.leftColumn}>
-          {/* Section 1: Claimant Details */}
-          <ClaimantDetailsSection formData={formData} styles={pdfStyles} />
-        </View>
+      {/* Single column layout containing all sections */}
+      <View style={pdfStyles.singleColumnContent}>
+        {/* Section 1: Expert Details */}
+        <ExpertDetailsSection styles={pdfStyles} />
         
-        {/* Right column */}
-        <View style={pdfStyles.rightColumn}>
-          {/* Section 2: Expert Details */}
-          <ExpertDetailsSection styles={pdfStyles} />
-          
-          {/* Section 3: Statement of Instruction with solicitor details */}
-          <StatementOfInstructionSection styles={pdfStyles} formData={formData} />
-        </View>
+        {/* Section 2: Claimant Details */}
+        <ClaimantDetailsSection formData={formData} styles={pdfStyles} />
+        
+        {/* Section 3: Statement of Instruction */}
+        <StatementOfInstructionSection styles={pdfStyles} formData={formData} />
       </View>
       
       <PageFooter name={formData.fullName} formData={formData} />
