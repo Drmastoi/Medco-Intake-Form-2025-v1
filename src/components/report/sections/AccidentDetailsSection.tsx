@@ -9,10 +9,10 @@ interface AccidentDetailsSectionProps {
 export const AccidentDetailsSection = ({ formData, styles }: AccidentDetailsSectionProps) => {
   return (
     <View style={styles.subsection}>
-      <Text style={styles.sectionHeader}>Section 7 - Accident/Incident Details</Text>
+      <Text style={styles.sectionHeader}>Section 5 - Accident/Incident Details</Text>
       
       <View style={styles.grayBackground}>
-        <Text style={{ fontSize: 12, fontWeight: 'bold', marginBottom: 5 }}>7.1 Road Traffic Accident (Vehicle)</Text>
+        <Text style={{ fontSize: 12, fontWeight: 'bold', marginBottom: 5 }}>5.1 Road Traffic Accident (Vehicle)</Text>
       </View>
       
       <Text style={{ fontSize: 12, fontWeight: 'bold', marginTop: 10, marginBottom: 5 }}>Road Traffic Accident</Text>

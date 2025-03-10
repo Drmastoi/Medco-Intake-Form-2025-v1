@@ -1,3 +1,4 @@
+
 import { Text, View } from '@react-pdf/renderer';
 import { InjuriesTable } from './InjuriesTable';
 import { InjuryTableRow } from './InjuryTableRow';
@@ -11,7 +12,7 @@ interface SummaryOfInjuriesTableSectionProps {
 export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInjuriesTableSectionProps) => {
   return (
     <View style={styles.subsection}>
-      <Text style={styles.sectionHeader}>Section 6 - Summary of Injuries</Text>
+      <Text style={styles.sectionHeader}>Section 4 - Summary of Injuries</Text>
       
       <InjuriesTable styles={styles}>
         {/* Neck Injury */}

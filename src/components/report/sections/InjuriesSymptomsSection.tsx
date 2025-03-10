@@ -13,7 +13,7 @@ export const InjuriesSymptomsSection = ({ formData, styles }: InjuriesSymptomsSe
   
   return (
     <View>
-      <Text style={styles.sectionHeader}>Section 9 - Injuries / Symptoms</Text>
+      <Text style={styles.sectionHeader}>Section 6 - Injuries / Symptoms</Text>
       
       {/* Acknowledgment statement at the beginning */}
       <Text style={[styles.text, { marginBottom: 12, marginTop: 5, fontStyle: 'italic' }]}>

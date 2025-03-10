@@ -33,13 +33,13 @@ const InjurySectionDetail = ({
 
   const prefix = getDataPrefix();
   const painStart = formData[`${prefix}PainStart`];
-  const initialSeverity = formData[`${prefix}PainInitialSeverity`];
-  const currentSeverity = formData[`${prefix}PainCurrentSeverity`];
-  const resolveDays = formData[`${prefix}PainResolveDays`];
+  const initialSeverity = formData[`${prefix}InitialSeverity`];
+  const currentSeverity = formData[`${prefix}CurrentSeverity`];
+  const resolveDays = formData[`${prefix}ResolveDays`];
 
   return (
     <>
-      <Text style={styles.injuriesSectionTitle}>9.{sectionCount} {injuryType === 'Travel Anxiety' ? 'Psychological' : 'Physical'}</Text>
+      <Text style={styles.injuriesSectionTitle}>6.{sectionCount} {injuryType === 'Travel Anxiety' ? 'Psychological' : 'Physical'}</Text>
       
       {/* Add General Physical Examination section before the first injury */}
       {sectionCount === 1 && (
