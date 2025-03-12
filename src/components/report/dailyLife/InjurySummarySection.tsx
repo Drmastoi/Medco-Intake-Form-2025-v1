@@ -1,106 +1,135 @@
-import { Text, View } from '@react-pdf/renderer';
-import { dailyLifeStyles as styles } from './dailyLifeStyles';
 
-export const InjurySummarySection = ({ formData }: { formData: any }) => {
-  // Helper function to get text based on value codes
-  const getPainTimingText = (code: string) => {
+import React from 'react';
+import { View, Text } from '@react-pdf/renderer';
+import { FormSchema } from '@/schemas/intakeFormSchema';
+import { dailyLifeStyles } from './dailyLifeStyles';
+
+interface InjurySummaryProps {
+  formData: Partial<FormSchema>;
+}
+
+export const InjurySummarySection = ({ formData }: InjurySummaryProps) => {
+  // Extract relevant form data
+  const {
+    neckPain, 
+    neckPainInitialSeverity,
+    neckPainCurrentSeverity,
+    shoulderPain,
+    shoulderPainInitialSeverity,
+    shoulderPainCurrentSeverity,
+    shoulderSide,
+    backPain,
+    backPainInitialSeverity,
+    backPainCurrentSeverity,
+    backLocation,
+    headache,
+    headacheInitialSeverity,
+    headacheCurrentSeverity,
+    travelAnxiety,
+    anxietyInitialSeverity,
+    anxietyCurrentSeverity
+  } = formData;
+
+  // Helper function to convert severity codes to readable text
+  const getSeverityText = (code: string | undefined) => {
     switch(code) {
-      case "1": return "same day";
-      case "2": return "next day";
-      case "3": return "few days later";
-      default: return "unknown time";
+      case '1': return 'mild';
+      case '2': return 'moderate';
+      case '3': return 'severe';
+      case '4': return 'resolved';
+      default: return 'unknown';
     }
   };
-  
-  const getSeverityText = (code: string) => {
-    switch(code) {
-      case "1": return "mild";
-      case "2": return "moderate";
-      case "3": return "severe";
-      case "4": return "resolved";
-      default: return "unknown severity";
+
+  // Helper function to get shoulder side text
+  const getShoulderSideText = (side: string | undefined) => {
+    switch(side) {
+      case '1': return 'right';
+      case '2': return 'left';
+      case '3': return 'both';
+      default: return '';
     }
   };
 
-  const getShoulderSideText = (code: string) => {
-    switch(code) {
-      case "1": return "left shoulder";
-      case "2": return "right shoulder";
-      case "3": return "both shoulders";
-      default: return "shoulder";
+  // Helper function to get back location text
+  const getBackLocationText = (location: string | undefined) => {
+    switch(location) {
+      case '1': return 'upper';
+      case '2': return 'middle';
+      case '3': return 'lower';
+      case '4': return 'entire';
+      default: return '';
     }
   };
-
-  // Neck pain information
-  const hasNeckPain = formData?.neckPain === "1";
-  let neckPainText = "";
-  
-  if (hasNeckPain) {
-    const startText = getPainTimingText(formData?.neckPainStart);
-    const initialSeverity = getSeverityText(formData?.neckPainInitialSeverity);
-    const currentSeverity = getSeverityText(formData?.neckPainCurrentSeverity);
-    
-    neckPainText = `Claimant suffered from neck pain after the accident. It started ${startText}, initial severity was ${initialSeverity}, current severity is ${currentSeverity}. `;
-    
-    // Add resolution days if pain has resolved
-    if (formData?.neckPainCurrentSeverity === "4" && formData?.neckPainResolveDays) {
-      neckPainText += `Claimant's neck pain resolved in ${formData.neckPainResolveDays} days. `;
-    }
-    
-    if (formData?.hadPriorNeckPain === "1") {
-      if (formData?.accidentNeckPainPercentage && formData?.priorNeckPainPercentage) {
-        neckPainText += `Claimant had previous history of neck pain before the accident. ${formData.accidentNeckPainPercentage}% of current pain is due to this accident and ${formData.priorNeckPainPercentage}% is due to previous condition.`;
-      } else {
-        neckPainText += "Claimant had previous history of neck pain before the accident.";
-      }
-    } else {
-      neckPainText += "Claimant did not have previous history of neck pain before the accident.";
-    }
-  } else {
-    neckPainText = "Claimant did not suffer from neck pain after the accident.";
-  }
-
-  // Shoulder pain information
-  const hasShoulderPain = formData?.shoulderPain === "1";
-  let shoulderPainText = "";
-  
-  if (hasShoulderPain) {
-    const shoulderSide = getShoulderSideText(formData?.shoulderSide);
-    const startText = getPainTimingText(formData?.shoulderPainStart);
-    const initialSeverity = getSeverityText(formData?.shoulderPainInitialSeverity);
-    const currentSeverity = getSeverityText(formData?.shoulderPainCurrentSeverity);
-    
-    shoulderPainText = `Claimant suffered from ${shoulderSide} pain after the accident. It started ${startText}, initial severity was ${initialSeverity}, current severity is ${currentSeverity}. `;
-    
-    // Add resolution days if pain has resolved
-    if (formData?.shoulderPainCurrentSeverity === "4" && formData?.shoulderPainResolveDays) {
-      shoulderPainText += `Claimant's shoulder pain resolved in ${formData.shoulderPainResolveDays} days. `;
-    }
-    
-    if (formData?.hadPriorShoulderPain === "1") {
-      if (formData?.accidentShoulderPainPercentage && formData?.priorShoulderPainPercentage) {
-        shoulderPainText += `Claimant had previous history of shoulder pain before the accident. ${formData.accidentShoulderPainPercentage}% of current pain is due to this accident and ${formData.priorShoulderPainPercentage}% is due to previous condition.`;
-      } else {
-        shoulderPainText += "Claimant had previous history of shoulder pain before the accident.";
-      }
-    } else {
-      shoulderPainText += "Claimant did not have previous history of shoulder pain before the accident.";
-    }
-  } else {
-    shoulderPainText = "Claimant did not suffer from shoulder pain after the accident.";
-  }
 
   return (
-    <View style={styles.subsection}>
-      <Text style={styles.subheading}>PHYSICAL INJURIES AND SYMPTOMS</Text>
+    <View style={dailyLifeStyles.section}>
+      <Text style={dailyLifeStyles.title}>Summary of Injuries and Symptoms</Text>
       
-      {/* Neck Pain Details */}
-      <Text style={styles.paragraph}>{neckPainText}</Text>
-      
-      {/* Shoulder Pain Details */}
-      <Text style={styles.paragraph}>{shoulderPainText}</Text>
-      
-      {/* Other injuries will be added here as more sections are developed */}
+      <Text style={dailyLifeStyles.text}>
+        The following is a summary of the injuries and symptoms reported by the claimant 
+        as a result of the accident:
+      </Text>
+
+      {/* Neck Pain */}
+      {neckPain === '1' && (
+        <View style={dailyLifeStyles.section}>
+          <Text style={dailyLifeStyles.subtitle}>Neck Pain</Text>
+          <Text style={dailyLifeStyles.text}>
+            The claimant reported experiencing neck pain following the accident. 
+            The initial severity was {getSeverityText(neckPainInitialSeverity)}.
+            The current severity is {getSeverityText(neckPainCurrentSeverity)}.
+          </Text>
+        </View>
+      )}
+
+      {/* Shoulder Pain */}
+      {shoulderPain === '1' && (
+        <View style={dailyLifeStyles.section}>
+          <Text style={dailyLifeStyles.subtitle}>Shoulder Pain</Text>
+          <Text style={dailyLifeStyles.text}>
+            The claimant reported {getShoulderSideText(shoulderSide)} shoulder pain following the accident.
+            The initial severity was {getSeverityText(shoulderPainInitialSeverity)}.
+            The current severity is {getSeverityText(shoulderPainCurrentSeverity)}.
+          </Text>
+        </View>
+      )}
+
+      {/* Back Pain */}
+      {backPain === '1' && (
+        <View style={dailyLifeStyles.section}>
+          <Text style={dailyLifeStyles.subtitle}>Back Pain</Text>
+          <Text style={dailyLifeStyles.text}>
+            The claimant reported {getBackLocationText(backLocation)} back pain following the accident.
+            The initial severity was {getSeverityText(backPainInitialSeverity)}.
+            The current severity is {getSeverityText(backPainCurrentSeverity)}.
+          </Text>
+        </View>
+      )}
+
+      {/* Headache */}
+      {headache === '1' && (
+        <View style={dailyLifeStyles.section}>
+          <Text style={dailyLifeStyles.subtitle}>Headache</Text>
+          <Text style={dailyLifeStyles.text}>
+            The claimant reported experiencing headaches following the accident.
+            The initial severity was {getSeverityText(headacheInitialSeverity)}.
+            The current severity is {getSeverityText(headacheCurrentSeverity)}.
+          </Text>
+        </View>
+      )}
+
+      {/* Travel Anxiety */}
+      {travelAnxiety === '1' && (
+        <View style={dailyLifeStyles.section}>
+          <Text style={dailyLifeStyles.subtitle}>Travel Anxiety</Text>
+          <Text style={dailyLifeStyles.text}>
+            The claimant reported experiencing travel anxiety following the accident.
+            The initial severity was {getSeverityText(anxietyInitialSeverity)}.
+            The current severity is {getSeverityText(anxietyCurrentSeverity)}.
+          </Text>
+        </View>
+      )}
     </View>
   );
 };
