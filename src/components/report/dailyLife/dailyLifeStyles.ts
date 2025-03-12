@@ -47,6 +47,34 @@ export const dailyLifeStyles = StyleSheet.create({
     flex: 1,
     fontSize: 10,
     paddingLeft: 5,
+  },
+  // Additional styles needed for the components
+  paragraph: {
+    marginBottom: 10,
+  },
+  sectionTitle: {
+    fontSize: 11,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  bulletPoint: {
+    fontSize: 10,
+    marginBottom: 3,
+    marginLeft: 10,
+  },
+  explanationText: {
+    fontSize: 10,
+    marginTop: 5,
+    marginBottom: 5,
+    fontStyle: 'italic',
+  },
+  bulletList: {
+    marginLeft: 10,
+    marginBottom: 10,
+  },
+  bulletItem: {
+    fontSize: 10,
+    marginBottom: 3,
+    lineHeight: 1.4,
   }
 });
-

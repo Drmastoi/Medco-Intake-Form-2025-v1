@@ -9,9 +9,9 @@ interface AdditionalInfoProps {
 
 export const AdditionalInfoSection = ({ formData }: AdditionalInfoProps) => (
   formData.additionalInformation === "1" ? (
-    <View style={styles.paragraph}>
-      <Text style={styles.sectionTitle}>Additional Information:</Text>
-      <Text style={styles.bulletPoint}>• {formData.additionalInformationDetails}</Text>
+    <View style={styles.section}>
+      <Text style={styles.subtitle}>Additional Information:</Text>
+      <Text style={styles.text}>• {formData.additionalInformationDetails}</Text>
     </View>
   ) : null
 );

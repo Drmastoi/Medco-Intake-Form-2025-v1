@@ -9,13 +9,13 @@ interface ActivitiesImpactProps {
 }
 
 export const ActivitiesImpactSection = ({ formData }: ActivitiesImpactProps) => (
-  <View style={styles.paragraph}>
-    <Text style={styles.sectionTitle}>Impact on Daily Activities:</Text>
+  <View style={styles.section}>
+    <Text style={styles.subtitle}>Impact on Daily Activities:</Text>
     {formData.effectOnDomesticLiving === "1" && (
-      <Text style={styles.bulletPoint}>• Domestic activities affected: {formatList(formData.domesticEffects, formData.otherDomesticEffects)}</Text>
+      <Text style={styles.text}>• Domestic activities affected: {formatList(formData.domesticEffects, formData.otherDomesticEffects)}</Text>
     )}
     {formData.sleepDisturbance === "1" && (
-      <Text style={styles.bulletPoint}>• Sleep disturbances: {formatList(formData.sleepDisturbances, formData.otherSleepDisturbances)}</Text>
+      <Text style={styles.text}>• Sleep disturbances: {formatList(formData.sleepDisturbances, formData.otherSleepDisturbances)}</Text>
     )}
   </View>
 );
