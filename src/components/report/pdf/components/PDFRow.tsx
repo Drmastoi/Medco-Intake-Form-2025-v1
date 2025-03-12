@@ -13,7 +13,9 @@ interface PDFRowProps {
  */
 export const PDFRow: React.FC<PDFRowProps> = ({ label, value }) => {
   // Handle boolean values
-  const displayValue = value === true ? "Yes" : value === false ? "No" : value || "Not specified";
+  const displayValue = typeof value === 'boolean' 
+    ? (value ? "Yes" : "No") 
+    : (value !== null && value !== undefined ? String(value) : "Not specified");
   
   return (
     <View style={styles.row}>

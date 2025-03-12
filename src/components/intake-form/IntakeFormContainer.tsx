@@ -1,21 +1,17 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { FormSchema, formSchema } from "@/schemas/intakeFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Form } from "@/components/ui/form";
-import { IntakeFormNavigation } from "@/components/intake-form/IntakeFormNavigation";
-import { IntakeFormSections } from "@/components/intake-form/IntakeFormSections";
-import { IntakeFormGuidance } from "@/components/intake-form/IntakeFormGuidance";
-import { IntakeFormNavButtons } from "@/components/intake-form/IntakeFormNavButtons";
+import { IntakeFormContent } from "@/components/intake-form/IntakeFormContent";
+import { IntakeFormHeader } from "@/components/intake-form/IntakeFormHeader";
 import PDFReport from "@/components/report/pdf/PDFReport";
 import { convertFormDataToReportData } from "@/utils/pdfReportUtils";
-import { useToast } from "@/components/ui/use-toast";
+import { useFormPrefill } from "@/hooks/useFormPrefill";
+import { useReportGeneration } from "@/hooks/useReportGeneration";
 
 export function IntakeFormContainer() {
   const [currentSection, setCurrentSection] = useState(0);
-  const [showPdfReport, setShowPdfReport] = useState(false);
-  const { toast } = useToast();
   const totalSections = 13; // Reduced by 1 after removing summary report
 
   const tabNames = [
@@ -120,100 +116,30 @@ export function IntakeFormContainer() {
     },
   });
 
+  // Handle tab changes
   const handleTabChange = (value: string) => {
     setCurrentSection(parseInt(value));
   };
 
-  const handleGenerateReport = () => {
-    // Check if we have the minimum required fields
-    const values = form.getValues();
-    if (!values.fullName) {
-      toast({
-        title: "Missing Information",
-        description: "Please fill in at least the personal information section before generating a report.",
-        variant: "destructive",
-      });
-      setCurrentSection(1); // Navigate to personal info section
-      return;
-    }
-
-    // Convert form data to report data format
-    const reportData = convertFormDataToReportData(values);
-    setShowPdfReport(true);
-  };
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    
-    if (params.toString()) {
-      console.log("Found URL parameters for prefilling:", params.toString());
-      
-      const preFillData: Record<string, any> = {};
-      
-      params.forEach((value, key) => {
-        if (value) {
-          preFillData[key] = value;
-          console.log(`Setting parameter ${key} to ${value}`);
-        }
-      });
-      
-      if (preFillData.dateOfExamination) {
-        try {
-          const date = new Date(preFillData.dateOfExamination);
-          preFillData.dateOfExamination = date.toISOString().split('T')[0];
-        } catch (e) {
-          console.error("Error parsing dateOfExamination:", e);
-        }
-      }
-      
-      if (preFillData.dateOfReport) {
-        try {
-          const date = new Date(preFillData.dateOfReport);
-          preFillData.dateOfReport = date.toISOString().split('T')[0];
-        } catch (e) {
-          console.error("Error parsing dateOfReport:", e);
-        }
-      }
-      
-      if (Object.keys(preFillData).length > 0) {
-        const currentValues = form.getValues();
-        const mergedValues = {...currentValues, ...preFillData};
-        form.reset(mergedValues);
-        
-        console.log("Form reset with prefilled data:", mergedValues);
-      }
-    }
-  }, []);
+  // Use custom hooks for form prefilling and report generation
+  useFormPrefill(form);
+  const { showPdfReport, setShowPdfReport, handleGenerateReport } = useReportGeneration(form, setCurrentSection);
 
   return (
     <div className="container mx-auto py-10 px-4">
-      <h1 className="text-2xl font-bold mb-8">Personal Injury Assessment Questionnaire</h1>
-
-      <IntakeFormGuidance currentSection={currentSection} />
-      
-      <IntakeFormNavigation 
+      <IntakeFormHeader 
         currentSection={currentSection}
         onTabChange={handleTabChange}
         tabNames={tabNames}
         onGenerateReport={handleGenerateReport}
       />
       
-      <Form {...form}>
-        <form className="space-y-8">
-          <div className="grid grid-cols-1 gap-6">
-            <IntakeFormSections 
-              currentSection={currentSection} 
-              form={form} 
-            />
-          </div>
-          
-          <IntakeFormNavButtons 
-            currentSection={currentSection}
-            totalSections={totalSections}
-            setCurrentSection={setCurrentSection}
-          />
-        </form>
-      </Form>
+      <IntakeFormContent 
+        form={form}
+        currentSection={currentSection}
+        totalSections={totalSections}
+        setCurrentSection={setCurrentSection}
+      />
 
       {/* PDF Report Dialog */}
       <PDFReport 
