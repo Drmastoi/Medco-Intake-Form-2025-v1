@@ -2,95 +2,55 @@
 import React from 'react';
 import { Text, View } from '@react-pdf/renderer';
 import { styles } from './PDFStyles';
-import { InjuriesData } from '@/types/reportTypes';
+import { InjuriesData } from '@/utils/pdfReportUtils';
 
-interface SummaryOfInjuriesSectionProps {
-  data: InjuriesData;
-}
-
-export const SummaryOfInjuriesSection = ({ data }: SummaryOfInjuriesSectionProps) => {
-  // Create an array of injuries to display in the table
-  const injuries = [
-    {
-      name: 'Neck Pain',
-      currentStatus: data.neckPain.hasInjury ? data.neckPain.currentSeverity : 'None',
-      prognosis: data.neckPain.hasInjury ? `${data.neckPain.resolveDays} days` : 'N/A',
-      classification: data.neckPain.hasInjury ? 'Whiplash' : 'N/A',
-      treatment: 'Physiotherapy'
-    },
-    {
-      name: 'Shoulder Pain',
-      currentStatus: data.shoulderPain.hasInjury ? data.shoulderPain.currentSeverity : 'None',
-      prognosis: data.shoulderPain.hasInjury ? `${data.shoulderPain.resolveDays} days` : 'N/A',
-      classification: data.shoulderPain.hasInjury ? 'Soft Tissue Injury' : 'N/A',
-      treatment: 'Physiotherapy'
-    },
-    {
-      name: 'Back Pain',
-      currentStatus: data.backPain.hasInjury ? data.backPain.currentSeverity : 'None',
-      prognosis: data.backPain.hasInjury ? `${data.backPain.resolveDays} days` : 'N/A',
-      classification: data.backPain.hasInjury ? 'Soft Tissue Injury' : 'N/A',
-      treatment: 'Physiotherapy'
-    },
-    {
-      name: 'Headache',
-      currentStatus: data.headache.hasInjury ? data.headache.currentSeverity : 'None',
-      prognosis: data.headache.hasInjury ? `${data.headache.resolveDays} days` : 'N/A',
-      classification: data.headache.hasInjury ? 'Post-Traumatic' : 'N/A',
-      treatment: 'Pain Relief'
-    }
-  ];
-
+export const SummaryOfInjuriesSection = ({ data }: { data: InjuriesData }) => {
+  // Function to determine if an injury is present
+  const hasInjury = (value: string) => value === "1";
+  
   return (
     <View style={styles.section}>
-      <Text style={styles.sectionTitle}>Summary of Injuries</Text>
+      <Text style={styles.sectionTitle}>6. Summary of Injuries</Text>
       
-      {/* Table header */}
-      <View style={styles.infoTable}>
-        <View style={styles.infoRow}>
-          <View style={{...styles.cellContainer, width: '10%'}}>
-            <Text style={styles.infoHeader}>No.</Text>
-          </View>
-          <View style={{...styles.cellContainer, width: '20%'}}>
-            <Text style={styles.infoHeader}>Injury Name</Text>
-          </View>
-          <View style={{...styles.cellContainer, width: '20%'}}>
-            <Text style={styles.infoHeader}>Current Status</Text>
-          </View>
-          <View style={{...styles.cellContainer, width: '20%'}}>
-            <Text style={styles.infoHeader}>Prognosis</Text>
-          </View>
-          <View style={{...styles.cellContainer, width: '15%'}}>
-            <Text style={styles.infoHeader}>Classification</Text>
-          </View>
-          <View style={{...styles.cellContainer, width: '15%', borderRightWidth: 0}}>
-            <Text style={styles.infoHeader}>Treatment</Text>
-          </View>
-        </View>
+      <View style={styles.summaryBox}>
+        {hasInjury(data.neckPain) && (
+          <Text style={styles.summaryText}>• Neck pain</Text>
+        )}
         
-        {/* Table data rows */}
-        {injuries.map((injury, index) => (
-          <View key={index} style={styles.infoRow}>
-            <View style={{...styles.cellContainer, width: '10%'}}>
-              <Text style={styles.infoCell}>{index + 1}</Text>
-            </View>
-            <View style={{...styles.cellContainer, width: '20%'}}>
-              <Text style={styles.infoCell}>{injury.name}</Text>
-            </View>
-            <View style={{...styles.cellContainer, width: '20%'}}>
-              <Text style={styles.infoCell}>{injury.currentStatus}</Text>
-            </View>
-            <View style={{...styles.cellContainer, width: '20%'}}>
-              <Text style={styles.infoCell}>{injury.prognosis}</Text>
-            </View>
-            <View style={{...styles.cellContainer, width: '15%'}}>
-              <Text style={styles.infoCell}>{injury.classification}</Text>
-            </View>
-            <View style={{...styles.cellContainer, width: '15%', borderRightWidth: 0}}>
-              <Text style={styles.infoCell}>{injury.treatment}</Text>
-            </View>
-          </View>
-        ))}
+        {hasInjury(data.shoulderPain) && (
+          <Text style={styles.summaryText}>• Shoulder pain ({data.shoulderSide === "1" ? "Right" : 
+                                          data.shoulderSide === "2" ? "Left" : 
+                                          data.shoulderSide === "3" ? "Both" : "Unknown"})</Text>
+        )}
+        
+        {hasInjury(data.backPain) && (
+          <Text style={styles.summaryText}>• Back pain ({data.backLocation === "1" ? "Upper back" : 
+                                        data.backLocation === "2" ? "Mid back" : 
+                                        data.backLocation === "3" ? "Lower back" : "Unknown"})</Text>
+        )}
+        
+        {hasInjury(data.headache) && (
+          <Text style={styles.summaryText}>• Headache</Text>
+        )}
+        
+        {hasInjury(data.travelAnxiety) && (
+          <Text style={styles.summaryText}>• Travel anxiety</Text>
+        )}
+        
+        {hasInjury(data.hasBruising) && (
+          <Text style={styles.summaryText}>• Bruising 
+            {data.hasVisibleScar === "1" ? " with visible scarring" : ""}
+          </Text>
+        )}
+        
+        {!hasInjury(data.neckPain) && 
+         !hasInjury(data.shoulderPain) && 
+         !hasInjury(data.backPain) && 
+         !hasInjury(data.headache) && 
+         !hasInjury(data.travelAnxiety) && 
+         !hasInjury(data.hasBruising) && (
+          <Text style={styles.summaryText}>No injuries reported</Text>
+        )}
       </View>
     </View>
   );

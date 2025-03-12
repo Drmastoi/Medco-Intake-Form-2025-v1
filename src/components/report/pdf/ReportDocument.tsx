@@ -39,9 +39,9 @@ const ReportDocument = ({ data }: { data: ReportData }) => (
       {/* Section 4: Appointment Details */}
       <AppointmentDetailsSection data={data.prefilled} />
       
-      {/* Statement of Instruction */}
+      {/* Section 5: Statement of Instruction */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Statement of Instruction</Text>
+        <Text style={styles.sectionTitle}>5. Statement of Instruction</Text>
         <View style={styles.summaryBox}>
           <Text style={styles.summaryText}>
             This report is entirely independent and is prepared for the injuries sustained in the accident. The instructing party has requested an examination to be conducted with a report to include the nature and extent of the claimant's injuries, treatment received, effects on lifestyle and whether any further treatment is appropriate.
@@ -52,7 +52,7 @@ const ReportDocument = ({ data }: { data: ReportData }) => (
         </View>
       </View>
       
-      {/* Section 7: Accident Information (updated from Section 5) */}
+      {/* Section 7: Accident Information */}
       <CompactAccidentInfoSection data={data.accident} />
       
       {/* Section 6: Summary of Injuries */}
