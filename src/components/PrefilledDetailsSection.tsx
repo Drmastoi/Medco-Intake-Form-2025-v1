@@ -21,7 +21,7 @@ export function PrefilledDetailsSection({ form }: { form: any }) {
         <InstructingPartyFields form={form} />
         <ExaminationFields form={form} />
         <DateFields form={form} />
-        <div className="grid grid-cols-1 gap-6">
+        <div className="grid grid-cols-2 gap-6">
           <ClaimantEmailField form={form} />
           <TimeSpentField form={form} />
         </div>
