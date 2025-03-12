@@ -71,6 +71,22 @@ export const InjuriesAndSymptomsSection = ({ data }: { data?: InjuriesData }) =>
     if (severityText === "severe") return "severe";
     return "mild"; // default fallback
   };
+  
+  // Function to get prognosis based on current severity
+  const getPrognosisText = (severity: string): string => {
+    const severityText = getSeverityText(severity);
+    if (severityText === "mild") return "3 months";
+    if (severityText === "moderate") return "6 months";
+    if (severityText === "severe") return "9 months";
+    if (severityText === "resolved") return "already resolved";
+    return "3-6 months"; // default fallback
+  };
+  
+  // Function to check if prognosis is 8 months or more
+  const isProlongedPrognosis = (severity: string): boolean => {
+    const severityText = getSeverityText(severity);
+    return severityText === "severe"; // 9 months is >= 8 months
+  };
 
   return (
     <View style={styles.section}>
@@ -104,6 +120,16 @@ export const InjuriesAndSymptomsSection = ({ data }: { data?: InjuriesData }) =>
             <Text style={{fontSize: 9, lineHeight: 1.4, marginBottom: 8}}>
               <Text style={{fontWeight: 'bold'}}>Examination: </Text>
               Neck examination is showing {getSeverityTextForExamination(data.neckPain.currentSeverity)} restriction of movement and tenderness. No neurological symptoms observed.
+            </Text>
+            <Text style={{fontSize: 9, lineHeight: 1.4, marginBottom: 8}}>
+              <Text style={{fontWeight: 'bold'}}>Prognosis: </Text>
+              {getPrognosisText(data.neckPain.currentSeverity)}
+              {isProlongedPrognosis(data.neckPain.currentSeverity) ? 
+                ". Prolonged prognosis is due to severity of symptoms" : ""}
+            </Text>
+            <Text style={{fontSize: 9, lineHeight: 1.4, marginBottom: 8}}>
+              <Text style={{fontWeight: 'bold'}}>Treatment: </Text>
+              Pain killers and Physiotherapy
             </Text>
           </>
         ) : (
