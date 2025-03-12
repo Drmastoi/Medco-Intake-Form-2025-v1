@@ -1,8 +1,8 @@
 
 import React from 'react';
-import { Document, Page, Text } from '@react-pdf/renderer';
+import { Document, Page, Text, View } from '@react-pdf/renderer';
+import { styles } from './components/PDFStyles';
 import { ReportData } from '@/types/reportTypes';
-import { styles } from './PDFStyles';
 
 // Import all section components
 import { ClaimantDetailsSection } from './components/ClaimantDetailsSection';
@@ -42,7 +42,17 @@ const ReportDocument = ({ data }: { data: ReportData }) => (
       </View>
       
       <CompactAccidentInfoSection data={data.accident} />
-      <SummaryOfInjuriesSection data={data.injuries} />
+      <SummaryOfInjuriesSection data={{
+        neckPain: data.injuries.neckPain.hasInjury ? "1" : "0",
+        shoulderPain: data.injuries.shoulderPain.hasInjury ? "1" : "0",
+        shoulderSide: data.injuries.shoulderPain.side === "right" ? "1" : data.injuries.shoulderPain.side === "left" ? "2" : "3",
+        backPain: data.injuries.backPain.hasInjury ? "1" : "0",
+        backLocation: data.injuries.backPain.location === "upper" ? "1" : data.injuries.backPain.location === "mid" ? "2" : "3",
+        headache: data.injuries.headache.hasInjury ? "1" : "0",
+        travelAnxiety: data.travelAnxiety.hasAnxiety ? "1" : "0",
+        hasBruising: data.other.bruising.hasBruising ? "1" : "0",
+        hasVisibleScar: data.other.bruising.hasBruising ? "1" : "0"
+      }} />
       <InjuriesAndSymptomsSection />
       <TreatmentSection />
       <DailyLifeImpactSection />

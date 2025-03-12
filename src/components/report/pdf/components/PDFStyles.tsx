@@ -10,6 +10,10 @@ export const styles = StyleSheet.create({
   section: {
     marginBottom: 10,
   },
+  subsection: {
+    marginBottom: 10,
+    paddingLeft: 5,
+  },
   title: {
     fontSize: 20,
     textAlign: 'left',
@@ -85,10 +89,6 @@ export const styles = StyleSheet.create({
     marginBottom: 8,
     fontSize: 12,
     fontFamily: 'Helvetica-Bold',
-  },
-  subsection: {
-    marginBottom: 10,
-    paddingLeft: 5,
   },
   infoTable: {
     display: 'flex',
