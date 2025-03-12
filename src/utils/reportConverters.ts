@@ -1,4 +1,3 @@
-
 import { FormSchema } from "@/schemas/intakeFormSchema";
 import { 
   PrefilledData, 
@@ -128,7 +127,6 @@ export function convertOtherData(formData: FormSchema): OtherData {
       initialSeverity: getSeverityText(formData.bruisingInitialSeverity),
       currentSeverity: getSeverityText(formData.bruisingCurrentSeverity),
       resolveDays: formData.bruisingResolveDays,
-      hasVisibleScar: formData.hasVisibleScar === "1"
     },
     otherInjuries: {
       hasOtherInjury: formData.hasOtherInjury === "1",

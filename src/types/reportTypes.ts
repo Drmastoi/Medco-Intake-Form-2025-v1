@@ -1,4 +1,3 @@
-
 export interface PrefilledData {
   solicitorName: string;
   solicitorReference: string;
@@ -96,7 +95,6 @@ export interface BruisingData {
   initialSeverity?: string;
   currentSeverity?: string;
   resolveDays?: string;
-  hasVisibleScar?: boolean;
 }
 
 export interface OtherInjuriesData {
