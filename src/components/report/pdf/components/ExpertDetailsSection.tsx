@@ -17,7 +17,7 @@ export const ExpertDetailsSection: React.FC<ExpertDetailsSectionProps> = ({ data
         <View style={styles.infoRow}>
           <View style={{ width: '50%' }}>
             <Text style={styles.infoHeader}>2.1 Medical Expert</Text>
-            <Text style={styles.infoCell}>Dr.Sam Smith, General Practice, Consultant</Text>
+            <Text style={styles.infoCell}>Dr. Sam Smith, General Practice, Consultant</Text>
           </View>
           <View style={{ width: '50%' }}>
             <Text style={styles.infoHeader}>2.2 Regulatory</Text>

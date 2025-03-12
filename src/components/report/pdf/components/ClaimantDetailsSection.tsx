@@ -17,7 +17,7 @@ export const ClaimantDetailsSection: React.FC<ClaimantDetailsSectionProps> = ({ 
     try {
       const birthYear = parseInt(data.dateOfBirth.split('-')[0]);
       const accidentYear = parseInt(accidentDate.split('-')[0]);
-      return `${accidentYear - birthYear}Years`;
+      return `${accidentYear - birthYear} Years`;
     } catch (e) {
       return "Not specified";
     }
