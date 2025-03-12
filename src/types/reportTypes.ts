@@ -39,9 +39,9 @@ export interface NeckPainData {
   painStart: string;
   initialSeverity: string;
   currentSeverity: string;
-  resolveDays: string;
-  additionalInfo: string;
-  hadPrior: boolean;
+  resolveDays?: string;
+  additionalInfo?: string;
+  hadPrior?: boolean;
 }
 
 export interface ShoulderPainData {
@@ -50,7 +50,7 @@ export interface ShoulderPainData {
   painStart: string;
   initialSeverity: string;
   currentSeverity: string;
-  resolveDays: string;
+  resolveDays?: string;
 }
 
 export interface BackPainData {
@@ -59,7 +59,7 @@ export interface BackPainData {
   painStart: string;
   initialSeverity: string;
   currentSeverity: string;
-  resolveDays: string;
+  resolveDays?: string;
 }
 
 export interface HeadacheData {
@@ -67,7 +67,7 @@ export interface HeadacheData {
   start: string;
   initialSeverity: string;
   currentSeverity: string;
-  resolveDays: string;
+  resolveDays?: string;
   pastHistory: string;
 }
 

@@ -1,3 +1,4 @@
+
 import { FormSchema } from "@/schemas/intakeFormSchema";
 import { 
   PrefilledData, 
@@ -69,17 +70,17 @@ export function convertInjuriesData(formData: FormSchema): InjuriesData {
       painStart: formData.neckPainStart || "Not specified",
       initialSeverity: getSeverityText(formData.neckPainInitialSeverity),
       currentSeverity: getSeverityText(formData.neckPainCurrentSeverity),
-      resolveDays: formData.neckPainResolveDays || "Not specified",
-      additionalInfo: formData.additionalInfo || "None",
+      resolveDays: formData.neckPainResolveDays || undefined,
+      additionalInfo: formData.additionalInfo || undefined,
       hadPrior: formData.hadPriorNeckPain === "1",
     },
     shoulderPain: {
       hasInjury: formData.shoulderPain === "1",
-      side: formData.shoulderSide === "1" ? "Right" : formData.shoulderSide === "2" ? "Left" : "Both",
+      side: formData.shoulderSide === "1" ? "right" : formData.shoulderSide === "2" ? "left" : "both",
       painStart: formData.shoulderPainStart || "Not specified",
       initialSeverity: getSeverityText(formData.shoulderPainInitialSeverity),
       currentSeverity: getSeverityText(formData.shoulderPainCurrentSeverity),
-      resolveDays: formData.shoulderPainResolveDays || "Not specified",
+      resolveDays: formData.shoulderPainResolveDays || undefined,
     },
     backPain: {
       hasInjury: formData.backPain === "1",
@@ -87,14 +88,14 @@ export function convertInjuriesData(formData: FormSchema): InjuriesData {
       painStart: formData.backPainStart || "Not specified",
       initialSeverity: getSeverityText(formData.backPainInitialSeverity),
       currentSeverity: getSeverityText(formData.backPainCurrentSeverity),
-      resolveDays: formData.backPainResolveDays || "Not specified",
+      resolveDays: formData.backPainResolveDays || undefined,
     },
     headache: {
       hasInjury: formData.headache === "1",
       start: formData.headacheStart || "Not specified",
       initialSeverity: getSeverityText(formData.headacheInitialSeverity),
       currentSeverity: getSeverityText(formData.headacheCurrentSeverity),
-      resolveDays: formData.headacheResolveDays || "Not specified",
+      resolveDays: formData.headacheResolveDays || undefined,
       pastHistory: formData.headachePastHistory || "None",
     },
   };
