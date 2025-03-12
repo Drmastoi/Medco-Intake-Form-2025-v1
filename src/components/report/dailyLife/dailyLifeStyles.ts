@@ -68,5 +68,23 @@ export const dailyLifeStyles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 10,
     marginBottom: 8,
+  },
+  // Additional styles for bullet points and lists
+  bulletList: {
+    marginBottom: 8,
+    marginLeft: 5,
+  },
+  bulletItem: {
+    fontSize: 10,
+    marginBottom: 3,
+    lineHeight: 1.4,
+  },
+  // Styles for conclusion text
+  conclusionText: {
+    fontSize: 10,
+    marginTop: 5,
+    marginBottom: 8,
+    fontStyle: 'italic',
+    color: '#444444',
   }
 });
