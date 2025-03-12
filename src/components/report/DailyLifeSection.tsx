@@ -5,6 +5,7 @@ import { dailyLifeStyles as styles } from './dailyLife/dailyLifeStyles';
 import { InjurySummarySection } from './dailyLife/InjurySummarySection';
 import { NeckPainComponent } from './dailyLife/sections/NeckPainComponent';
 import { ShoulderPainComponent } from './dailyLife/sections/ShoulderPainComponent';
+import { BackPainComponent } from './dailyLife/sections/BackPainComponent';
 import { FormSchema } from '@/schemas/intakeFormSchema';
 
 interface DailyLifeSectionProps {
@@ -22,5 +23,8 @@ export const DailyLifeSection = ({ formData }: DailyLifeSectionProps) => (
 
     {/* Section 6.2 - Shoulder Pain */}
     <ShoulderPainComponent formData={formData} />
+    
+    {/* Section 6.3 - Back Pain */}
+    <BackPainComponent formData={formData} />
   </View>
 );

@@ -9,45 +9,62 @@ interface BackPainProps {
 }
 
 export const BackPainComponent = ({ formData }: BackPainProps) => {
-  // Helper function to convert severity codes to readable text
-  const getSeverityText = (code: string | undefined) => {
-    switch(code) {
-      case '1': return 'mild';
-      case '2': return 'moderate';
-      case '3': return 'severe';
-      case '4': return 'resolved';
-      default: return 'unknown';
-    }
-  };
-
-  // Helper function to get back location text
-  const getBackLocationText = (location: string | undefined) => {
-    switch(location) {
-      case '1': return 'upper';
-      case '2': return 'middle';
-      case '3': return 'lower';
-      case '4': return 'entire';
-      default: return '';
-    }
-  };
-
-  if (formData.backPain !== '1') {
+  if (formData.backPain !== "1") {
     return null;
   }
 
+  // Function to get text description for back location
+  const getBackLocationText = () => {
+    switch(formData.backLocation) {
+      case "1": return "upper back";
+      case "2": return "middle back";
+      case "3": return "lower back";
+      case "4": return "all over back";
+      default: return "back";
+    }
+  };
+
+  // Function to get text description for pain start
+  const getPainStartText = () => {
+    switch(formData.backPainStart) {
+      case "1": return "immediately after";
+      case "2": return "the day after";
+      case "3": return "a few days after";
+      default: return "sometime after";
+    }
+  };
+
+  // Function to get severity description
+  const getSeverityText = (severity: string | undefined) => {
+    switch(severity) {
+      case "1": return "mild";
+      case "2": return "moderate";
+      case "3": return "severe";
+      case "4": return "resolved";
+      default: return "unknown";
+    }
+  };
+
+  const generateBackPainText = () => {
+    let text = `The Claimant reports experiencing ${getBackLocationText()} pain that began ${getPainStartText()} the accident. `;
+    
+    // Initial severity
+    text += `Initially, the symptoms were ${getSeverityText(formData.backPainInitialSeverity)}. `;
+    
+    // Current status
+    if (formData.backPainCurrentSeverity === "4") {
+      text += `The symptoms have now resolved ${formData.backPainResolveDays ? `after ${formData.backPainResolveDays} days` : ''}. `;
+    } else {
+      text += `Currently, the symptoms are ${getSeverityText(formData.backPainCurrentSeverity)}. `;
+    }
+
+    return text;
+  };
+
   return (
     <View style={dailyLifeStyles.section}>
-      <Text style={dailyLifeStyles.subtitle}>6.3 Back Pain</Text>
-      <Text style={dailyLifeStyles.text}>
-        The claimant suffered from {getBackLocationText(formData.backLocation)} back pain after the accident. 
-        It started {formData.backPainStart === "1" ? "on the same day" : 
-                  formData.backPainStart === "2" ? "on the next day" : 
-                  "a few days later"}, 
-        with initial severity rated as {getSeverityText(formData.backPainInitialSeverity)}. 
-        The current severity is {getSeverityText(formData.backPainCurrentSeverity)}.
-        {formData.backPainCurrentSeverity === "4" && formData.backPainResolveDays ? 
-          ` The back pain resolved in ${formData.backPainResolveDays} days.` : ''}
-      </Text>
+      <Text style={dailyLifeStyles.title}>6.3 Back Pain</Text>
+      <Text style={dailyLifeStyles.text}>{generateBackPainText()}</Text>
     </View>
   );
 };
