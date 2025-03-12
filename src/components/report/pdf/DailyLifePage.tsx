@@ -15,12 +15,12 @@ export const DailyLifePage = ({ formData }: DailyLifePageProps) => {
       <Text style={pdfStyles.sectionHeader}>Section 5 - Accident Details</Text>
       
       <View style={pdfStyles.subsection}>
-        <Text style={{ fontSize: 12, fontWeight: 'bold', marginTop: 10, marginBottom: 5 }}>5.1 Accident Information</Text>
+        <Text style={pdfStyles.subheader}>5.1 Accident Information</Text>
         <AccidentHistorySection formData={formData} />
       </View>
 
       <View style={pdfStyles.subsection}>
-        <Text style={{ fontSize: 12, fontWeight: 'bold', marginTop: 10, marginBottom: 5 }}>Section 6 - Daily Life Impact & Expert Assessment</Text>
+        <Text style={pdfStyles.sectionHeader}>Section 6 - Daily Life Impact & Expert Assessment</Text>
         <DailyLifeSection formData={formData} />
       </View>
 

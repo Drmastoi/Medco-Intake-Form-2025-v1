@@ -30,8 +30,6 @@ export const DailyLifeSection = ({ formData }: DailyLifeSectionProps) => {
   
   return (
     <View style={styles.section}>
-      <Text style={styles.title}>ACCIDENT DETAILS</Text>
-      
       <InjurySummarySection formData={formData} />
 
       {/* Display expert report sections only if the corresponding pain exists */}
