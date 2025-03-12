@@ -14,10 +14,10 @@ export const ActivitiesImpactSection = ({ formData }: ActivitiesImpactProps) => 
     <View style={dailyLifeStyles.section}>
       <Text style={dailyLifeStyles.subtitle}>Impact on Daily Activities:</Text>
       {formData.impactOnDomestic === "1" && (
-        <Text style={dailyLifeStyles.text}>• Domestic activities affected: {formatList(formData.domesticIssues, formData.otherDomesticIssues)}</Text>
+        <Text style={dailyLifeStyles.text}>• Domestic activities affected: {formatList(formData.domesticIssues)}</Text>
       )}
       {formData.impactOnSleep === "1" && (
-        <Text style={dailyLifeStyles.text}>• Sleep disturbances: {formatList(formData.sleepIssues, formData.otherSleepIssues)}</Text>
+        <Text style={dailyLifeStyles.text}>• Sleep disturbances: {formatList(formData.sleepIssues)}</Text>
       )}
       {formData.impactOnSports === "1" && formData.sportsActivities && (
         <Text style={dailyLifeStyles.text}>• Sports/leisure activities affected: {formData.sportsActivities}</Text>

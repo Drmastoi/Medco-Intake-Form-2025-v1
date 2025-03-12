@@ -1,8 +1,7 @@
-export const formatList = (items: string[] = [], otherText?: string) => {
+export const formatList = (items: string[] = []) => {
   if (!items || !items.length) return '';
   const mainItems = items.filter(item => item !== 'other');
-  const formattedList = mainItems.join(', ');
-  return otherText ? `${formattedList}${mainItems.length ? ', and ' : ''}${otherText}` : formattedList;
+  return mainItems.join(', ');
 };
 
 export const getVehiclePosition = (value: string) => {
