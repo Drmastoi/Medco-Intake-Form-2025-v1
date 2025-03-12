@@ -35,6 +35,8 @@ export const formSchema = z.object({
   claimantPosition: z.enum(["1", "2", "3", "4"]).default("1"),
   claimantVehicle: z.enum(["1", "2", "3", "4"]).default("1"),
   otherVehicle: z.enum(["1", "2", "3", "4"]).default("1"),
+  vehicleStatus: z.enum(["1", "2", "3", "4"]).default("1"),
+  vehicleLocation: z.enum(["1", "2", "3", "4", "5"]).default("1"),
   
   // Section 3 - Medical Information
   neckPain: z.enum(["1", "2"]),
@@ -66,18 +68,15 @@ export const formSchema = z.object({
   
   // Section 7 - Travel Anxiety Information
   travelAnxiety: z.enum(["1", "2"]),
+  travelAnxietySymptoms: z.array(z.string()).optional(),
+  otherTravelAnxietySymptom: z.string().optional(),
   currentlyDriving: z.enum(["1", "2"]).optional(),
-  anxietyStart: z.enum(["1", "2", "3"]).optional(),
   anxietyInitialSeverity: z.enum(["1", "2", "3"]).optional(),
   anxietyCurrentSeverity: z.enum(["1", "2", "3", "4"]).optional(),
   anxietyResolveDays: z.string().optional(),
   anxietyPastHistory: z.string().optional(),
   anxietyDuration: z.string().optional(),
   hasAnxietyHistory: z.enum(["yes", "no"]).optional(),
-  
-  // Travel anxiety symptom fields
-  travelAnxietySymptoms: z.array(z.string()).optional(),
-  otherTravelAnxietySymptom: z.string().optional(),
 });
 
 export type FormSchema = z.infer<typeof formSchema>;
