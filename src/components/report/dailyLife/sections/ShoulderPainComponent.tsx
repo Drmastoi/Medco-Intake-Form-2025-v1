@@ -9,47 +9,71 @@ interface ShoulderPainProps {
 }
 
 export const ShoulderPainComponent = ({ formData }: ShoulderPainProps) => {
-  // Helper function to convert severity codes to readable text
-  const getSeverityText = (code: string | undefined) => {
-    switch(code) {
-      case '1': return 'mild';
-      case '2': return 'moderate';
-      case '3': return 'severe';
-      case '4': return 'resolved';
-      default: return 'unknown';
-    }
-  };
-
-  // Helper function to get shoulder side text
-  const getShoulderSideText = (side: string | undefined) => {
-    switch(side) {
-      case '1': return 'right';
-      case '2': return 'left';
-      case '3': return 'both';
-      default: return '';
-    }
-  };
-
-  if (formData.shoulderPain !== '1') {
+  if (formData.shoulderPain !== "1") {
     return null;
   }
 
+  // Function to get text description for shoulder side
+  const getShoulderSideText = () => {
+    switch(formData.shoulderSide) {
+      case "1": return "left shoulder";
+      case "2": return "right shoulder";
+      case "3": return "both shoulders";
+      default: return "shoulder";
+    }
+  };
+
+  // Function to get text description for pain start
+  const getPainStartText = () => {
+    switch(formData.shoulderPainStart) {
+      case "1": return "immediately after";
+      case "2": return "the day after";
+      case "3": return "a few days after";
+      default: return "sometime after";
+    }
+  };
+
+  // Function to get severity description
+  const getSeverityText = (severity: string | undefined) => {
+    switch(severity) {
+      case "1": return "mild";
+      case "2": return "moderate";
+      case "3": return "severe";
+      case "4": return "resolved";
+      default: return "unknown";
+    }
+  };
+
+  const generateShoulderPainText = () => {
+    let text = `The Claimant reports experiencing ${getShoulderSideText()} pain that began ${getPainStartText()} the accident. `;
+    
+    // Initial severity
+    text += `Initially, the symptoms were ${getSeverityText(formData.shoulderPainInitialSeverity)}. `;
+    
+    // Current status
+    if (formData.shoulderPainCurrentSeverity === "4") {
+      text += `The symptoms have now resolved ${formData.shoulderPainResolveDays ? `after ${formData.shoulderPainResolveDays} days` : ''}. `;
+    } else {
+      text += `Currently, the symptoms are ${getSeverityText(formData.shoulderPainCurrentSeverity)}. `;
+    }
+    
+    // Prior history
+    if (formData.hadPriorShoulderPain === "1") {
+      text += "The Claimant reports a history of shoulder pain prior to this accident. ";
+      if (formData.accidentShoulderPainPercentage && formData.priorShoulderPainPercentage) {
+        text += `They attribute ${formData.accidentShoulderPainPercentage}% of their current shoulder pain to this accident and ${formData.priorShoulderPainPercentage}% to their previous condition. `;
+      }
+    } else {
+      text += "The Claimant reports no history of shoulder pain prior to this accident. ";
+    }
+
+    return text;
+  };
+
   return (
     <View style={dailyLifeStyles.section}>
-      <Text style={dailyLifeStyles.subtitle}>6.2 Shoulder Pain</Text>
-      <Text style={dailyLifeStyles.text}>
-        The claimant suffered from {getShoulderSideText(formData.shoulderSide)} shoulder pain after the accident. 
-        It started {formData.shoulderPainStart === "1" ? "on the same day" : 
-                  formData.shoulderPainStart === "2" ? "on the next day" : 
-                  "a few days later"}, 
-        with initial severity rated as {getSeverityText(formData.shoulderPainInitialSeverity)}. 
-        The current severity is {getSeverityText(formData.shoulderPainCurrentSeverity)}.
-        {formData.shoulderPainCurrentSeverity === "4" && formData.shoulderPainResolveDays ? 
-          ` The shoulder pain resolved in ${formData.shoulderPainResolveDays} days.` : ''}
-        {formData.hadPriorShoulderPain === "1" ? 
-          ' The claimant had previous history of shoulder pain before the accident.' : 
-          ' The claimant did not have previous history of shoulder pain before the accident.'}
-      </Text>
+      <Text style={dailyLifeStyles.title}>6.2 Shoulder Pain</Text>
+      <Text style={dailyLifeStyles.text}>{generateShoulderPainText()}</Text>
     </View>
   );
 };

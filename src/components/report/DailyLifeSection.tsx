@@ -4,6 +4,7 @@ import { Text, View } from '@react-pdf/renderer';
 import { dailyLifeStyles as styles } from './dailyLife/dailyLifeStyles';
 import { InjurySummarySection } from './dailyLife/InjurySummarySection';
 import { NeckPainComponent } from './dailyLife/sections/NeckPainComponent';
+import { ShoulderPainComponent } from './dailyLife/sections/ShoulderPainComponent';
 import { FormSchema } from '@/schemas/intakeFormSchema';
 
 interface DailyLifeSectionProps {
@@ -18,5 +19,8 @@ export const DailyLifeSection = ({ formData }: DailyLifeSectionProps) => (
     
     {/* Section 6.1 - Neck Pain */}
     <NeckPainComponent formData={formData} />
+
+    {/* Section 6.2 - Shoulder Pain */}
+    <ShoulderPainComponent formData={formData} />
   </View>
 );
