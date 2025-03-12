@@ -1,17 +1,22 @@
 
 import React from 'react';
-import { Text, View } from '@react-pdf/renderer';
-import { dailyLifeStyles as styles } from './dailyLifeStyles';
+import { View, Text } from '@react-pdf/renderer';
+import { FormSchema } from '@/schemas/intakeFormSchema';
+import { dailyLifeStyles } from './dailyLifeStyles';
 
 interface AdditionalInfoProps {
-  formData: any;
+  formData: Partial<FormSchema>;
 }
 
-export const AdditionalInfoSection = ({ formData }: AdditionalInfoProps) => (
-  formData.additionalInformation === "1" ? (
-    <View style={styles.section}>
-      <Text style={styles.subtitle}>Additional Information:</Text>
-      <Text style={styles.text}>• {formData.additionalInformationDetails}</Text>
+export const AdditionalInfoSection = ({ formData }: AdditionalInfoProps) => {
+  if (formData.additionalInformation !== "1" || !formData.additionalInformationDetails) {
+    return null;
+  }
+  
+  return (
+    <View style={dailyLifeStyles.section}>
+      <Text style={dailyLifeStyles.subtitle}>Additional Information:</Text>
+      <Text style={dailyLifeStyles.text}>• {formData.additionalInformationDetails}</Text>
     </View>
-  ) : null
-);
+  );
+};
