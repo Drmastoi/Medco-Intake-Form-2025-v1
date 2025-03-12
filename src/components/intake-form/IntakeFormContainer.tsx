@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { FormSchema, formSchema } from "@/schemas/intakeFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,9 +8,14 @@ import { IntakeFormNavigation } from "@/components/intake-form/IntakeFormNavigat
 import { IntakeFormSections } from "@/components/intake-form/IntakeFormSections";
 import { IntakeFormGuidance } from "@/components/intake-form/IntakeFormGuidance";
 import { IntakeFormNavButtons } from "@/components/intake-form/IntakeFormNavButtons";
+import PDFReport from "@/components/report/pdf/PDFReport";
+import { convertFormDataToReportData } from "@/utils/pdfReportUtils";
+import { useToast } from "@/components/ui/use-toast";
 
 export function IntakeFormContainer() {
   const [currentSection, setCurrentSection] = useState(0);
+  const [showPdfReport, setShowPdfReport] = useState(false);
+  const { toast } = useToast();
   const totalSections = 13; // Reduced by 1 after removing summary report
 
   const tabNames = [
@@ -118,6 +124,24 @@ export function IntakeFormContainer() {
     setCurrentSection(parseInt(value));
   };
 
+  const handleGenerateReport = () => {
+    // Check if we have the minimum required fields
+    const values = form.getValues();
+    if (!values.fullName) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in at least the personal information section before generating a report.",
+        variant: "destructive",
+      });
+      setCurrentSection(1); // Navigate to personal info section
+      return;
+    }
+
+    // Convert form data to report data format
+    const reportData = convertFormDataToReportData(values);
+    setShowPdfReport(true);
+  };
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     
@@ -171,6 +195,7 @@ export function IntakeFormContainer() {
         currentSection={currentSection}
         onTabChange={handleTabChange}
         tabNames={tabNames}
+        onGenerateReport={handleGenerateReport}
       />
       
       <Form {...form}>
@@ -189,6 +214,13 @@ export function IntakeFormContainer() {
           />
         </form>
       </Form>
+
+      {/* PDF Report Dialog */}
+      <PDFReport 
+        reportData={convertFormDataToReportData(form.getValues())} 
+        isOpen={showPdfReport} 
+        onClose={() => setShowPdfReport(false)} 
+      />
     </div>
   );
 }
