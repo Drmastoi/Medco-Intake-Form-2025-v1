@@ -9,35 +9,61 @@ interface HeadacheProps {
 }
 
 export const HeadacheComponent = ({ formData }: HeadacheProps) => {
-  // Helper function to convert severity codes to readable text
-  const getSeverityText = (code: string | undefined) => {
-    switch(code) {
-      case '1': return 'mild';
-      case '2': return 'moderate';
-      case '3': return 'severe';
-      case '4': return 'resolved';
-      default: return 'unknown';
-    }
-  };
-
-  if (formData.headache !== '1') {
+  if (formData.headache !== "1") {
     return null;
   }
 
+  // Function to get text description for pain start
+  const getPainStartText = () => {
+    switch(formData.headacheStart) {
+      case "1": return "immediately after";
+      case "2": return "the day after";
+      case "3": return "a few days after";
+      default: return "sometime after";
+    }
+  };
+
+  // Function to get severity description
+  const getSeverityText = (severity: string | undefined) => {
+    switch(severity) {
+      case "1": return "mild";
+      case "2": return "moderate";
+      case "3": return "severe";
+      case "4": return "resolved";
+      default: return "unknown";
+    }
+  };
+
+  const generateHeadacheText = () => {
+    let text = `The Claimant reports experiencing headache that began ${getPainStartText()} the accident. `;
+    
+    // Initial severity
+    text += `Initially, the symptoms were ${getSeverityText(formData.headacheInitialSeverity)}. `;
+    
+    // Current status
+    if (formData.headacheCurrentSeverity === "4") {
+      text += `The symptoms have now resolved ${formData.headacheResolveDays ? `after ${formData.headacheResolveDays} days` : ''}. `;
+    } else {
+      text += `Currently, the symptoms are ${getSeverityText(formData.headacheCurrentSeverity)}. `;
+    }
+    
+    // Prior history
+    if (formData.hasHeadacheHistory === "yes") {
+      text += "The Claimant reports a history of headaches prior to this accident. ";
+      if (formData.headachePastHistory) {
+        text += `${formData.headachePastHistory} `;
+      }
+    } else if (formData.hasHeadacheHistory === "no") {
+      text += "The Claimant reports no history of headaches prior to this accident. ";
+    }
+
+    return text;
+  };
+
   return (
     <View style={dailyLifeStyles.section}>
-      <Text style={dailyLifeStyles.subtitle}>6.4 Headache</Text>
-      <Text style={dailyLifeStyles.text}>
-        The claimant suffered from headaches after the accident. 
-        They started {formData.headacheStart === "1" ? "on the same day" : 
-                  formData.headacheStart === "2" ? "on the next day" : 
-                  "a few days later"}, 
-        with initial severity rated as {getSeverityText(formData.headacheInitialSeverity)}. 
-        The current severity is {getSeverityText(formData.headacheCurrentSeverity)}.
-        {formData.headacheCurrentSeverity === "4" && formData.headacheResolveDays ? 
-          ` The headaches resolved in ${formData.headacheResolveDays} days.` : ''}
-        {formData.headachePastHistory ? ` Past history: ${formData.headachePastHistory}.` : ''}
-      </Text>
+      <Text style={dailyLifeStyles.title}>6.4 Headache</Text>
+      <Text style={dailyLifeStyles.text}>{generateHeadacheText()}</Text>
     </View>
   );
 };
