@@ -1,3 +1,4 @@
+
 import {
   FormControl,
   FormField,
@@ -18,7 +19,7 @@ export function ClaimantPositionSection({ form }: { form: any }) {
           <FormControl>
             <RadioGroup
               onValueChange={field.onChange}
-              defaultValue={field.value}
+              defaultValue={field.value || "1"}
               className="flex flex-col space-y-1"
             >
               <FormItem className="flex items-center space-x-3 space-y-0">

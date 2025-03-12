@@ -1,3 +1,4 @@
+
 import * as z from "zod";
 
 export const formSchema = z.object({
@@ -29,6 +30,11 @@ export const formSchema = z.object({
   accidentDate: z.string(),
   accidentTime: z.enum(["1", "2", "3", "4"]),
   vehiclePosition: z.enum(["1", "2", "3"]),
+  impactLocation: z.enum(["1", "2", "3", "4"]).default("1"),
+  vehicleDamage: z.enum(["1", "2", "3"]).default("1"),
+  claimantPosition: z.enum(["1", "2", "3", "4"]).default("1"),
+  claimantVehicle: z.enum(["1", "2", "3", "4"]).default("1"),
+  otherVehicle: z.enum(["1", "2", "3", "4"]).default("1"),
   
   // Section 3 - Medical Information
   neckPain: z.enum(["1", "2"]),
