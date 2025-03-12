@@ -5,13 +5,51 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
+import { useEffect, useState } from "react";
 
 export function IntakeFormSection9({ form }: { form: any }) {
   const hasOtherInjury = form.watch("hasOtherInjury");
+  const injuryName = form.watch("injuryName");
+  const injuryStart = form.watch("injuryStart");
+  const injuryInitialSeverity = form.watch("injuryInitialSeverity");
+  const injuryCurrentSeverity = form.watch("injuryCurrentSeverity");
+  const injuryResolveDays = form.watch("injuryResolveDays");
+  
+  const [summaryText, setSummaryText] = useState<string>("");
+  
+  // Generate summary text based on selected options
+  useEffect(() => {
+    if (hasOtherInjury === "1" && injuryName) {
+      const startText = injuryStart === "1" ? "same day" : 
+                      injuryStart === "2" ? "next day" : 
+                      "few days later";
+                      
+      const initialSeverityText = injuryInitialSeverity === "1" ? "mild" :
+                               injuryInitialSeverity === "2" ? "moderate" :
+                               "severe";
+                               
+      const currentSeverityText = injuryCurrentSeverity === "1" ? "mild" :
+                               injuryCurrentSeverity === "2" ? "moderate" :
+                               injuryCurrentSeverity === "3" ? "severe" :
+                               "resolved";
+      
+      let text = `Claimant suffered from ${injuryName} after the accident. It started ${startText}, initial severity was ${initialSeverityText}, current severity is ${currentSeverityText}.`;
+      
+      // Add resolution days if injury has resolved
+      if (injuryCurrentSeverity === "4" && injuryResolveDays) {
+        text += ` This injury resolved in ${injuryResolveDays} days.`;
+      }
+      
+      setSummaryText(text);
+    } else {
+      setSummaryText("Claimant did not suffer from any other injuries after the accident.");
+    }
+  }, [hasOtherInjury, injuryName, injuryStart, injuryInitialSeverity, injuryCurrentSeverity, injuryResolveDays]);
 
   return (
     <div className="space-y-4">
@@ -29,11 +67,20 @@ export function IntakeFormSection9({ form }: { form: any }) {
                     checked={field.value === "1"}
                     onCheckedChange={(checked) => {
                       field.onChange(checked ? "1" : "2");
+                      // Set default values when checked
+                      if (checked) {
+                        form.setValue("injuryStart", "1"); // Same day
+                        form.setValue("injuryInitialSeverity", "1"); // Mild
+                        form.setValue("injuryCurrentSeverity", "1"); // Mild
+                      }
                     }}
                   />
                 </FormControl>
                 <div className="space-y-1 leading-none">
                   <FormLabel>Any Other Injury?</FormLabel>
+                  <FormDescription className="text-gray-500">
+                    Please select this if you experienced any other injuries due to the accident
+                  </FormDescription>
                 </div>
                 <FormMessage />
               </FormItem>
@@ -194,6 +241,13 @@ export function IntakeFormSection9({ form }: { form: any }) {
           )}
         </div>
       </div>
+      
+      {/* Dynamic Summary Text */}
+      {summaryText && (
+        <div className="mt-6 p-4 bg-gray-50 rounded-md border border-gray-200">
+          <p className="text-xs text-gray-600 italic">{summaryText}</p>
+        </div>
+      )}
     </div>
   );
 }

@@ -5,16 +5,53 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { HeadacheStart } from "./headache/HeadacheStart";
 import { HeadacheSeverity } from "./headache/HeadacheSeverity";
 import { HeadacheHistory } from "./headache/HeadacheHistory";
+import { useEffect, useState } from "react";
 
 export function IntakeFormSection6({ form }: { form: any }) {
   const headache = form.watch("headache");
+  const headacheStart = form.watch("headacheStart");
+  const headacheInitialSeverity = form.watch("headacheInitialSeverity");
   const headacheCurrentSeverity = form.watch("headacheCurrentSeverity");
+  const headacheResolveDays = form.watch("headacheResolveDays");
+  
+  const [summaryText, setSummaryText] = useState<string>("");
+  
+  // Generate summary text based on selected options
+  useEffect(() => {
+    if (headache === "1") {
+      // Map the values to their text representations
+      const startText = headacheStart === "1" ? "same day" : 
+                        headacheStart === "2" ? "next day" : 
+                        "few days later";
+                        
+      const initialSeverityText = headacheInitialSeverity === "1" ? "mild" :
+                                 headacheInitialSeverity === "2" ? "moderate" :
+                                 "severe";
+                                 
+      const currentSeverityText = headacheCurrentSeverity === "1" ? "mild" :
+                                 headacheCurrentSeverity === "2" ? "moderate" :
+                                 headacheCurrentSeverity === "3" ? "severe" :
+                                 "resolved";
+      
+      let text = `Claimant suffered from headache after the accident. It started ${startText}, initial severity was ${initialSeverityText}, current severity is ${currentSeverityText}.`;
+      
+      // Add resolution days if pain has resolved
+      if (headacheCurrentSeverity === "4" && headacheResolveDays) {
+        text += ` Claimant's headache resolved in ${headacheResolveDays} days.`;
+      }
+      
+      setSummaryText(text);
+    } else {
+      setSummaryText("Claimant did not suffer from headache after the accident.");
+    }
+  }, [headache, headacheStart, headacheInitialSeverity, headacheCurrentSeverity, headacheResolveDays]);
 
   return (
     <div className="space-y-4">
@@ -30,11 +67,20 @@ export function IntakeFormSection6({ form }: { form: any }) {
                 checked={field.value === "1"}
                 onCheckedChange={(checked) => {
                   field.onChange(checked ? "1" : "2");
+                  // Set default values for headache fields when checked
+                  if (checked) {
+                    form.setValue("headacheStart", "1"); // Same day
+                    form.setValue("headacheInitialSeverity", "1"); // Mild
+                    form.setValue("headacheCurrentSeverity", "1"); // Mild
+                  }
                 }}
               />
             </FormControl>
             <div className="space-y-1 leading-none">
               <FormLabel>Did you get Any Headache?</FormLabel>
+              <FormDescription className="text-gray-500">
+                Please select this option if you experienced headache due to the accident
+              </FormDescription>
             </div>
             <FormMessage />
           </FormItem>
@@ -81,6 +127,13 @@ export function IntakeFormSection6({ form }: { form: any }) {
       )}
 
       <HeadacheHistory form={form} />
+      
+      {/* Dynamic Summary Text */}
+      {summaryText && (
+        <div className="mt-6 p-4 bg-gray-50 rounded-md border border-gray-200">
+          <p className="text-xs text-gray-600 italic">{summaryText}</p>
+        </div>
+      )}
     </div>
   );
 }

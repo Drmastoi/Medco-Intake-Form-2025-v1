@@ -5,13 +5,64 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useEffect, useState } from "react";
 
 export function IntakeFormSection5({ form }: { form: any }) {
   const backPain = form.watch("backPain");
+  const backLocation = form.watch("backLocation");
+  const backPainStart = form.watch("backPainStart");
+  const backPainInitialSeverity = form.watch("backPainInitialSeverity");
   const backPainCurrentSeverity = form.watch("backPainCurrentSeverity");
+  const backPainResolveDays = form.watch("backPainResolveDays");
+  
+  const [summaryText, setSummaryText] = useState<string>("");
+  
+  // Helper function to get location text
+  const getBackLocationText = (code: string) => {
+    switch(code) {
+      case "1": return "upper back";
+      case "2": return "middle back";
+      case "3": return "lower back";
+      case "4": return "all over back";
+      default: return "back";
+    }
+  };
+  
+  // Generate summary text based on selected options
+  useEffect(() => {
+    if (backPain === "1") {
+      // Map the values to their text representations
+      const locationText = getBackLocationText(backLocation);
+                      
+      const startText = backPainStart === "1" ? "same day" : 
+                        backPainStart === "2" ? "next day" : 
+                        "few days later";
+                        
+      const initialSeverityText = backPainInitialSeverity === "1" ? "mild" :
+                                 backPainInitialSeverity === "2" ? "moderate" :
+                                 "severe";
+                                 
+      const currentSeverityText = backPainCurrentSeverity === "1" ? "mild" :
+                                 backPainCurrentSeverity === "2" ? "moderate" :
+                                 backPainCurrentSeverity === "3" ? "severe" :
+                                 "resolved";
+      
+      let text = `Claimant suffered from ${locationText} pain after the accident. It started ${startText}, initial severity was ${initialSeverityText}, current severity is ${currentSeverityText}.`;
+      
+      // Add resolution days if pain has resolved
+      if (backPainCurrentSeverity === "4" && backPainResolveDays) {
+        text += ` Claimant's back pain resolved in ${backPainResolveDays} days.`;
+      }
+      
+      setSummaryText(text);
+    } else {
+      setSummaryText("Claimant did not suffer from back pain after the accident.");
+    }
+  }, [backPain, backLocation, backPainStart, backPainInitialSeverity, backPainCurrentSeverity, backPainResolveDays]);
 
   return (
     <div className="space-y-4">
@@ -29,11 +80,21 @@ export function IntakeFormSection5({ form }: { form: any }) {
                     checked={field.value === "1"}
                     onCheckedChange={(checked) => {
                       field.onChange(checked ? "1" : "2");
+                      // Set default values for back pain fields when checked
+                      if (checked) {
+                        form.setValue("backLocation", "1"); // Upper back
+                        form.setValue("backPainStart", "1"); // Same day
+                        form.setValue("backPainInitialSeverity", "1"); // Mild
+                        form.setValue("backPainCurrentSeverity", "1"); // Mild
+                      }
                     }}
                   />
                 </FormControl>
                 <div className="space-y-1 leading-none">
                   <FormLabel>Did you get Any Back Pain?</FormLabel>
+                  <FormDescription className="text-gray-500">
+                    Please select this option if you experienced back pain due to the accident
+                  </FormDescription>
                 </div>
                 <FormMessage />
               </FormItem>
@@ -189,6 +250,13 @@ export function IntakeFormSection5({ form }: { form: any }) {
           )}
         </div>
       </div>
+      
+      {/* Dynamic Summary Text */}
+      {summaryText && (
+        <div className="mt-6 p-4 bg-gray-50 rounded-md border border-gray-200">
+          <p className="text-xs text-gray-600 italic">{summaryText}</p>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,9 +1,11 @@
+
 import {
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from "@/components/ui/form";
 import {
   Select,
@@ -15,9 +17,54 @@ import {
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
+import { useEffect, useState } from "react";
 
 export function IntakeFormSection8({ form }: { form: any }) {
   const hasBruising = form.watch("hasBruising");
+  const bruisingLocation = form.watch("bruisingLocation");
+  const bruisingNoticed = form.watch("bruisingNoticed");
+  const bruisingInitialSeverity = form.watch("bruisingInitialSeverity");
+  const bruisingCurrentSeverity = form.watch("bruisingCurrentSeverity");
+  const bruisingResolveDays = form.watch("bruisingResolveDays");
+  const hasVisibleScar = form.watch("hasVisibleScar");
+  
+  const [summaryText, setSummaryText] = useState<string>("");
+  
+  // Generate summary text based on selected options
+  useEffect(() => {
+    if (hasBruising === "1") {
+      const noticedText = bruisingNoticed === "1" ? "same day" : 
+                         bruisingNoticed === "2" ? "next day" : 
+                         "few days later";
+                        
+      const initialSeverityText = bruisingInitialSeverity === "1" ? "mild" :
+                                 bruisingInitialSeverity === "2" ? "moderate" :
+                                 "severe";
+                                 
+      const currentSeverityText = bruisingCurrentSeverity === "1" ? "mild" :
+                                 bruisingCurrentSeverity === "2" ? "moderate" :
+                                 bruisingCurrentSeverity === "3" ? "severe" :
+                                 "resolved";
+      
+      let text = `Claimant had bruising or scarring at ${bruisingLocation} after the accident. It was noticed on the ${noticedText}, initial severity was ${initialSeverityText}, current severity is ${currentSeverityText}.`;
+      
+      // Add resolution days if bruising has resolved
+      if (bruisingCurrentSeverity === "4" && bruisingResolveDays) {
+        text += ` The bruising resolved in ${bruisingResolveDays} days.`;
+      }
+      
+      // Add scar information
+      if (hasVisibleScar === "1") {
+        text += " There is a visible scar remaining.";
+      } else if (hasVisibleScar === "2") {
+        text += " There is no visible scar remaining.";
+      }
+      
+      setSummaryText(text);
+    } else {
+      setSummaryText("Claimant did not have any bruising or scarring from the accident.");
+    }
+  }, [hasBruising, bruisingLocation, bruisingNoticed, bruisingInitialSeverity, bruisingCurrentSeverity, bruisingResolveDays, hasVisibleScar]);
 
   return (
     <div className="space-y-4">
@@ -33,11 +80,21 @@ export function IntakeFormSection8({ form }: { form: any }) {
                 checked={field.value === "1"}
                 onCheckedChange={(checked) => {
                   field.onChange(checked ? "1" : "2");
+                  // Set default values when checked
+                  if (checked) {
+                    form.setValue("bruisingNoticed", "1"); // Same day
+                    form.setValue("bruisingInitialSeverity", "1"); // Mild
+                    form.setValue("bruisingCurrentSeverity", "1"); // Mild
+                    form.setValue("hasVisibleScar", "2"); // No
+                  }
                 }}
               />
             </FormControl>
             <div className="space-y-1 leading-none">
               <FormLabel>Is there Any Bruising or Scarring on the body due to this accident?</FormLabel>
+              <FormDescription className="text-gray-500">
+                Please select this if you experienced bruising or scarring due to the accident
+              </FormDescription>
             </div>
             <FormMessage />
           </FormItem>
@@ -179,6 +236,13 @@ export function IntakeFormSection8({ form }: { form: any }) {
             )}
           />
         </>
+      )}
+      
+      {/* Dynamic Summary Text */}
+      {summaryText && (
+        <div className="mt-6 p-4 bg-gray-50 rounded-md border border-gray-200">
+          <p className="text-xs text-gray-600 italic">{summaryText}</p>
+        </div>
       )}
     </div>
   );
