@@ -3,16 +3,16 @@ import { StyleSheet } from '@react-pdf/renderer';
 
 export const dailyLifeStyles = StyleSheet.create({
   section: {
-    marginBottom: 15,
+    marginBottom: 20,
   },
   title: {
-    fontSize: 10,
+    fontSize: 14,
     marginBottom: 10,
     fontWeight: 'bold',
   },
   subtitle: {
-    fontSize: 10,
-    marginBottom: 10,
+    fontSize: 12,
+    marginBottom: 8,
     fontWeight: 'bold',
   },
   text: {
@@ -20,31 +20,33 @@ export const dailyLifeStyles = StyleSheet.create({
     marginBottom: 5,
     lineHeight: 1.4,
   },
-  sectionTitle: {
-    fontSize: 10,
-    fontWeight: 'bold',
-    marginTop: 10,
+  listContainer: {
+    marginLeft: 10,
     marginBottom: 5,
   },
-  paragraph: {
-    marginBottom: 10,
-  },
-  bulletPoint: {
-    marginLeft: 10,
+  listItem: {
     fontSize: 10,
+    marginBottom: 3,
     lineHeight: 1.4,
-  },
-  explanationText: {
-    marginLeft: 10,
-    fontSize: 10,
-    fontStyle: 'italic',
-    lineHeight: 1.4,
-    marginTop: 2,
   },
   conclusionText: {
     fontSize: 10,
+    marginTop: 10,
     fontStyle: 'italic',
-    marginTop: 15,
-    marginBottom: 5,
+  },
+  bulletStyle: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginBottom: 3,
+  },
+  bullet: {
+    width: 10,
+    fontSize: 10,
+  },
+  bulletText: {
+    flex: 1,
+    fontSize: 10,
+    paddingLeft: 5,
   }
 });
+
