@@ -56,6 +56,9 @@ export const formSchema = z.object({
   shoulderPainInitialSeverity: z.enum(["1", "2", "3"]),
   shoulderPainCurrentSeverity: z.enum(["1", "2", "3", "4"]),
   shoulderPainResolveDays: z.string().optional(),
+  hadPriorShoulderPain: z.enum(["1", "2"]).default("2"), // "1" for Yes, "2" for No
+  accidentShoulderPainPercentage: z.string().optional(), // Percentage due to current accident
+  priorShoulderPainPercentage: z.string().optional(), // Percentage due to previous condition
 
   // Section 5 - Back Pain Information
   backPain: z.enum(["1", "2"]),

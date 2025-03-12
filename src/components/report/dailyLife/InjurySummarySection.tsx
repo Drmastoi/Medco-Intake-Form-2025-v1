@@ -22,6 +22,15 @@ export const InjurySummarySection = ({ formData }: { formData: any }) => {
     }
   };
 
+  const getShoulderSideText = (code: string) => {
+    switch(code) {
+      case "1": return "left shoulder";
+      case "2": return "right shoulder";
+      case "3": return "both shoulders";
+      default: return "shoulder";
+    }
+  };
+
   // Neck pain information
   const hasNeckPain = formData?.neckPain === "1";
   let neckPainText = "";
@@ -46,12 +55,40 @@ export const InjurySummarySection = ({ formData }: { formData: any }) => {
     neckPainText = "Claimant did not suffer from neck pain after the accident.";
   }
 
+  // Shoulder pain information
+  const hasShoulderPain = formData?.shoulderPain === "1";
+  let shoulderPainText = "";
+  
+  if (hasShoulderPain) {
+    const shoulderSide = getShoulderSideText(formData?.shoulderSide);
+    const startText = getPainTimingText(formData?.shoulderPainStart);
+    const initialSeverity = getSeverityText(formData?.shoulderPainInitialSeverity);
+    const currentSeverity = getSeverityText(formData?.shoulderPainCurrentSeverity);
+    
+    shoulderPainText = `Claimant suffered from ${shoulderSide} pain after the accident. It started ${startText}, initial severity was ${initialSeverity}, current severity is ${currentSeverity}. `;
+    
+    if (formData?.hadPriorShoulderPain === "1") {
+      if (formData?.accidentShoulderPainPercentage && formData?.priorShoulderPainPercentage) {
+        shoulderPainText += `Claimant had previous history of shoulder pain before the accident. ${formData.accidentShoulderPainPercentage}% of current pain is due to this accident and ${formData.priorShoulderPainPercentage}% is due to previous condition.`;
+      } else {
+        shoulderPainText += "Claimant had previous history of shoulder pain before the accident.";
+      }
+    } else {
+      shoulderPainText += "Claimant did not have previous history of shoulder pain before the accident.";
+    }
+  } else {
+    shoulderPainText = "Claimant did not suffer from shoulder pain after the accident.";
+  }
+
   return (
     <View style={styles.subsection}>
       <Text style={styles.subheading}>PHYSICAL INJURIES AND SYMPTOMS</Text>
       
       {/* Neck Pain Details */}
       <Text style={styles.paragraph}>{neckPainText}</Text>
+      
+      {/* Shoulder Pain Details */}
+      <Text style={styles.paragraph}>{shoulderPainText}</Text>
       
       {/* Other injuries will be added here as more sections are developed */}
     </View>
