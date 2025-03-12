@@ -43,6 +43,9 @@ export const InjuriesAndSymptomsSection = ({ data }: { data?: InjuriesData }) =>
       case "hours": return "within hours of the accident";
       case "day": return "the day after the accident";
       case "days": return "a few days after the accident";
+      case "1": return "same day";
+      case "2": return "next day";
+      case "3": return "few days later";
       default: return "after the accident";
     }
   };
@@ -53,7 +56,10 @@ export const InjuriesAndSymptomsSection = ({ data }: { data?: InjuriesData }) =>
       case "1": return "mild";
       case "2": return "moderate";
       case "3": return "severe";
-      case "4": return "very severe";
+      case "4": return "resolved";
+      case "Mild": return "mild";
+      case "Moderate": return "moderate";
+      case "Severe": return "severe";
       default: return "unknown";
     }
   };
@@ -79,11 +85,8 @@ export const InjuriesAndSymptomsSection = ({ data }: { data?: InjuriesData }) =>
         </Text>
         {data?.neckPain?.hasInjury ? (
           <Text style={{fontSize: 9, lineHeight: 1.4, marginBottom: 8}}>
-            Claimant suffered from neck pain after the accident. It started {
-              data.neckPain.painStart === "1" ? "same day" :
-              data.neckPain.painStart === "2" ? "next day" :
-              data.neckPain.painStart === "3" ? "few days later" : getPainStartText(data.neckPain.painStart)
-            }, initial severity was {getSeverityText(data.neckPain.initialSeverity)}, 
+            Claimant suffered from neck pain after the accident. It started {getPainStartText(data.neckPain.painStart)}, 
+            initial severity was {getSeverityText(data.neckPain.initialSeverity)}, 
             current severity is {getSeverityText(data.neckPain.currentSeverity)}.
             {data.neckPain.resolveDays && data.neckPain.currentSeverity === "4" ? ` Pain resolved after ${data.neckPain.resolveDays} days.` : ""}
             {data.neckPain.hadPrior ? " Claimant had previous history of neck pain before the accident." : " Claimant did not have previous history of neck pain before the accident."}
@@ -105,9 +108,7 @@ export const InjuriesAndSymptomsSection = ({ data }: { data?: InjuriesData }) =>
           <Text style={{fontSize: 9, lineHeight: 1.4, marginBottom: 8}}>
             The claimant reported {data.shoulderPain.side === "right" ? "right" : 
             data.shoulderPain.side === "left" ? "left" : "bilateral"} shoulder pain that started 
-            {data.shoulderPain.painStart === "1" ? " same day" : 
-            data.shoulderPain.painStart === "2" ? " next day" : 
-            data.shoulderPain.painStart === "3" ? " few days later" : " " + getPainStartText(data.shoulderPain.painStart)}.
+            {" " + getPainStartText(data.shoulderPain.painStart)}.
             Initial severity was {getSeverityText(data.shoulderPain.initialSeverity)} and current severity is 
             {" " + getSeverityText(data.shoulderPain.currentSeverity)}.
           </Text>
@@ -127,9 +128,7 @@ export const InjuriesAndSymptomsSection = ({ data }: { data?: InjuriesData }) =>
           <Text style={{fontSize: 9, lineHeight: 1.4, marginBottom: 8}}>
             The claimant reported {data.backPain.location === "upper" ? "upper back" : 
             data.backPain.location === "mid" ? "mid back" : "lower back"} pain that started 
-            {data.backPain.painStart === "1" ? " same day" : 
-            data.backPain.painStart === "2" ? " next day" : 
-            data.backPain.painStart === "3" ? " few days later" : " " + getPainStartText(data.backPain.painStart)}.
+            {" " + getPainStartText(data.backPain.painStart)}.
             Initial severity was {getSeverityText(data.backPain.initialSeverity)} and current severity is 
             {" " + getSeverityText(data.backPain.currentSeverity)}.
           </Text>
@@ -148,9 +147,7 @@ export const InjuriesAndSymptomsSection = ({ data }: { data?: InjuriesData }) =>
         {data?.headache?.hasInjury ? (
           <Text style={{fontSize: 9, lineHeight: 1.4, marginBottom: 8}}>
             The claimant reported headaches that started
-            {data.headache.start === "1" ? " same day" : 
-            data.headache.start === "2" ? " next day" : 
-            data.headache.start === "3" ? " few days later" : " after the accident"}.
+            {" " + getPainStartText(data.headache.start)}.
             Initial severity was {getSeverityText(data.headache.initialSeverity)} and current severity is 
             {" " + getSeverityText(data.headache.currentSeverity)}.
           </Text>
