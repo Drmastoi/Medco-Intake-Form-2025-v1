@@ -37,6 +37,22 @@ const ReportDocument = ({ data }: { data: ReportData }) => (
       {/* Section 4: Appointment Details */}
       <AppointmentDetailsSection data={data.prefilled} />
       
+      {/* Report identifier and page number */}
+      <Text style={styles.reportIdentifier}>
+        {data.personal.fullName} report dated {data.prefilled.dateOfReport} | Medical Report | CID 406679
+      </Text>
+      
+      <Text style={styles.pageIndicator} render={({ pageNumber, totalPages }) => (
+        `Page: ${pageNumber} of ${totalPages}`
+      )} fixed />
+      
+      <PageFooter />
+    </Page>
+
+    {/* Page 2: Accident Details and More */}
+    <Page size="A4" style={styles.page}>
+      <Text style={styles.title}>Expert Medical Report</Text>
+      
       {/* Section 5: Accident Information */}
       <CompactAccidentInfoSection data={data.accident} />
       
