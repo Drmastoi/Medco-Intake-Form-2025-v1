@@ -129,7 +129,7 @@ export const InjuriesAndSymptomsSection = ({ data }: { data?: InjuriesData }) =>
             </Text>
             <Text style={{fontSize: 9, lineHeight: 1.4, marginBottom: 8}}>
               <Text style={{fontWeight: 'bold'}}>Treatment: </Text>
-              Pain killers and Physiotherapy
+              Pain killers and Physiotherapy. The required number of sessions to be determined by the Physiotherapist.
             </Text>
           </>
         ) : (
