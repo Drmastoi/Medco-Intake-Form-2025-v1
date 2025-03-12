@@ -1,3 +1,4 @@
+
 import { StyleSheet } from '@react-pdf/renderer';
 
 export const styles = StyleSheet.create({
@@ -212,7 +213,7 @@ export const styles = StyleSheet.create({
     fontFamily: 'Helvetica',
   },
   
-  // Updated injury table styles
+  // Injury table styles
   injuryTable: {
     marginTop: 5,
     marginBottom: 10,
@@ -233,14 +234,14 @@ export const styles = StyleSheet.create({
     padding: 3,
   },
   tableHeaderCell2: {
-    width: '18%',
+    width: '17%',
     backgroundColor: '#f0f0f0',
     borderRightWidth: 1,
     borderRightColor: '#000000',
     padding: 3,
   },
   tableHeaderCell3: {
-    width: '16%',
+    width: '15%',
     backgroundColor: '#f0f0f0',
     borderRightWidth: 1,
     borderRightColor: '#000000',
@@ -261,7 +262,7 @@ export const styles = StyleSheet.create({
     padding: 3,
   },
   tableHeaderCell6: {
-    width: '20%',
+    width: '22%',
     backgroundColor: '#f0f0f0',
     padding: 3,
   },
@@ -272,13 +273,13 @@ export const styles = StyleSheet.create({
     padding: 3,
   },
   tableCell2: {
-    width: '18%',
+    width: '17%',
     borderRightWidth: 1,
     borderRightColor: '#000000',
     padding: 3,
   },
   tableCell3: {
-    width: '16%',
+    width: '15%',
     borderRightWidth: 1,
     borderRightColor: '#000000',
     padding: 3,
@@ -296,90 +297,7 @@ export const styles = StyleSheet.create({
     padding: 3,
   },
   tableCell6: {
-    width: '20%',
-    padding: 3,
-  },
-  tableHeaderText: {
-    fontSize: 9,
-    fontFamily: 'Helvetica-Bold',
-  },
-  tableCellText: {
-    fontSize: 8,
-    fontFamily: 'Helvetica',
-  },
-  
-  // Injury table styles
-  injuryTable: {
-    marginTop: 5,
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: '#000000',
-  },
-  tableRow: {
-    flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderBottomColor: '#000000',
-    minHeight: 24,
-  },
-  tableHeaderCell1: {
-    width: '8%',
-    backgroundColor: '#f0f0f0',
-    borderRightWidth: 1,
-    borderRightColor: '#000000',
-    padding: 3,
-  },
-  tableHeaderCell2: {
     width: '22%',
-    backgroundColor: '#f0f0f0',
-    borderRightWidth: 1,
-    borderRightColor: '#000000',
-    padding: 3,
-  },
-  tableHeaderCell3: {
-    width: '20%',
-    backgroundColor: '#f0f0f0',
-    borderRightWidth: 1,
-    borderRightColor: '#000000',
-    padding: 3,
-  },
-  tableHeaderCell4: {
-    width: '30%',
-    backgroundColor: '#f0f0f0',
-    borderRightWidth: 1,
-    borderRightColor: '#000000',
-    padding: 3,
-  },
-  tableHeaderCell5: {
-    width: '20%',
-    backgroundColor: '#f0f0f0',
-    padding: 3,
-  },
-  tableCell1: {
-    width: '8%',
-    borderRightWidth: 1,
-    borderRightColor: '#000000',
-    padding: 3,
-  },
-  tableCell2: {
-    width: '22%',
-    borderRightWidth: 1,
-    borderRightColor: '#000000',
-    padding: 3,
-  },
-  tableCell3: {
-    width: '20%',
-    borderRightWidth: 1,
-    borderRightColor: '#000000',
-    padding: 3,
-  },
-  tableCell4: {
-    width: '30%',
-    borderRightWidth: 1,
-    borderRightColor: '#000000',
-    padding: 3,
-  },
-  tableCell5: {
-    width: '20%',
     padding: 3,
   },
   tableHeaderText: {

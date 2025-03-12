@@ -53,7 +53,7 @@ const ReportDocument = ({ data }: { data: ReportData }) => (
         hasBruising: data.other.bruising.hasBruising ? "1" : "0",
         hasVisibleScar: data.other.bruising.hasBruising ? "1" : "0"
       }} />
-      <InjuriesAndSymptomsSection />
+      <InjuriesAndSymptomsSection data={data.injuries} />
       <TreatmentSection />
       <DailyLifeImpactSection />
       <ClinicalExaminationSection />
