@@ -8,7 +8,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export function IntakeFormSection11({ form }: { form: any }) {
   const [showOtherWorkDifficulties, setShowOtherWorkDifficulties] = useState(false);
@@ -16,6 +16,7 @@ export function IntakeFormSection11({ form }: { form: any }) {
   const [showOtherDomesticEffect, setShowOtherDomesticEffect] = useState(false);
   const [showOtherSportLeisure, setShowOtherSportLeisure] = useState(false);
   const [showOtherSocialLife, setShowOtherSocialLife] = useState(false);
+  const [summaryText, setSummaryText] = useState<string>("");
 
   const sleepDisturbance = form.watch("sleepDisturbance");
   const effectOnDomesticLiving = form.watch("effectOnDomesticLiving");
@@ -26,6 +27,173 @@ export function IntakeFormSection11({ form }: { form: any }) {
   const domesticEffects = form.watch("domesticEffects") || [];
   const sportLeisureEffects = form.watch("sportLeisureEffects") || [];
   const socialLifeEffects = form.watch("socialLifeEffects") || [];
+  const daysOffWork = form.watch("daysOffWork");
+  const daysLightDuties = form.watch("daysLightDuties");
+  const otherWorkDifficulties = form.watch("otherWorkDifficulties");
+  const otherSleepDisturbances = form.watch("otherSleepDisturbances");
+  const otherDomesticEffects = form.watch("otherDomesticEffects");
+  const otherSportLeisureEffects = form.watch("otherSportLeisureEffects");
+  const otherSocialLifeEffects = form.watch("otherSocialLifeEffects");
+
+  // Function to format array items for display
+  const formatArrayForDisplay = (array: string[], optionsMap: Record<string, string>, otherText?: string) => {
+    if (!array || array.length === 0) return "";
+    
+    const items = array
+      .filter(item => item !== "other")
+      .map(item => optionsMap[item] || item);
+    
+    let result = "";
+    
+    if (items.length === 1) {
+      result = items[0];
+    } else if (items.length === 2) {
+      result = `${items[0]} and ${items[1]}`;
+    } else if (items.length > 2) {
+      const lastItem = items.pop();
+      result = `${items.join(", ")}, and ${lastItem}`;
+    }
+    
+    if (otherText && array.includes("other")) {
+      result = result ? `${result}, and ${otherText}` : otherText;
+    }
+    
+    return result;
+  };
+
+  // Maps for different option types
+  const workDifficultyOptionsMap: Record<string, string> = {
+    "sitting": "sitting for long periods",
+    "standing": "standing for long periods",
+    "lifting": "lifting heavy objects",
+    "bending": "bending or twisting",
+    "typing": "typing/computer work",
+    "concentration": "concentration",
+    "driving": "driving"
+  };
+
+  const sleepDisturbanceOptionsMap: Record<string, string> = {
+    "fallingAsleep": "difficulty falling asleep",
+    "stayingAsleep": "difficulty staying asleep",
+    "earlyWaking": "early morning waking",
+    "nightmares": "nightmares",
+    "painDisturbs": "pain disturbs sleep",
+    "restlessness": "restlessness"
+  };
+
+  const domesticEffectOptionsMap: Record<string, string> = {
+    "cleaning": "house cleaning",
+    "cooking": "cooking meals",
+    "laundry": "doing laundry",
+    "shopping": "grocery shopping",
+    "childcare": "childcare duties",
+    "gardening": "gardening/yard work",
+    "petCare": "pet care"
+  };
+
+  const sportLeisureOptionsMap: Record<string, string> = {
+    "gym": "going to the gym",
+    "running": "running/jogging",
+    "swimming": "swimming",
+    "cycling": "cycling",
+    "teamSports": "team sports",
+    "hiking": "hiking",
+    "yoga": "yoga/stretching"
+  };
+
+  const socialLifeOptionsMap: Record<string, string> = {
+    "meetingFriends": "meeting friends",
+    "familyGatherings": "family gatherings",
+    "dining": "dining out",
+    "parties": "attending parties",
+    "concerts": "concerts/events",
+    "traveling": "traveling",
+    "hobbies": "group hobbies"
+  };
+
+  // Generate summary text based on selected options
+  useEffect(() => {
+    let text = "Impact on Daily Life: ";
+    
+    // Work impact
+    if (daysOffWork && parseInt(daysOffWork) > 0) {
+      text += `The claimant took ${daysOffWork} days off work due to their injuries. `;
+    } else {
+      text += "The claimant did not take any days off work. ";
+    }
+    
+    if (daysLightDuties && parseInt(daysLightDuties) > 0) {
+      text += `They required ${daysLightDuties} days of light duties or reduced hours. `;
+    }
+    
+    if (workDifficulties && workDifficulties.length > 0) {
+      const formattedDifficulties = formatArrayForDisplay(workDifficulties, workDifficultyOptionsMap, otherWorkDifficulties);
+      text += `The claimant reports difficulties with ${formattedDifficulties} at work. `;
+    }
+    
+    // Sleep disturbance
+    if (sleepDisturbance === "1") {
+      text += "The claimant is experiencing sleep disturbances. ";
+      if (sleepDisturbances && sleepDisturbances.length > 0) {
+        const formattedDisturbances = formatArrayForDisplay(sleepDisturbances, sleepDisturbanceOptionsMap, otherSleepDisturbances);
+        text += `These include ${formattedDisturbances}. `;
+      }
+    } else {
+      text += "The claimant reports no sleep disturbances. ";
+    }
+    
+    // Domestic living
+    if (effectOnDomesticLiving === "1") {
+      text += "Their injuries have affected their domestic activities. ";
+      if (domesticEffects && domesticEffects.length > 0) {
+        const formattedEffects = formatArrayForDisplay(domesticEffects, domesticEffectOptionsMap, otherDomesticEffects);
+        text += `Affected activities include ${formattedEffects}. `;
+      }
+    } else {
+      text += "Their injuries have not affected their domestic activities. ";
+    }
+    
+    // Sport and leisure
+    if (effectOnSportLeisure === "1") {
+      text += "Their injuries have affected their sport and leisure activities. ";
+      if (sportLeisureEffects && sportLeisureEffects.length > 0) {
+        const formattedEffects = formatArrayForDisplay(sportLeisureEffects, sportLeisureOptionsMap, otherSportLeisureEffects);
+        text += `Affected activities include ${formattedEffects}. `;
+      }
+    } else {
+      text += "Their injuries have not affected their sport and leisure activities. ";
+    }
+    
+    // Social life
+    if (effectOnSocialLife === "1") {
+      text += "Their injuries have affected their social life. ";
+      if (socialLifeEffects && socialLifeEffects.length > 0) {
+        const formattedEffects = formatArrayForDisplay(socialLifeEffects, socialLifeOptionsMap, otherSocialLifeEffects);
+        text += `Affected activities include ${formattedEffects}.`;
+      }
+    } else {
+      text += "Their injuries have not affected their social life.";
+    }
+    
+    setSummaryText(text);
+  }, [
+    daysOffWork,
+    daysLightDuties,
+    workDifficulties,
+    sleepDisturbance,
+    sleepDisturbances,
+    effectOnDomesticLiving,
+    domesticEffects,
+    effectOnSportLeisure,
+    sportLeisureEffects,
+    effectOnSocialLife,
+    socialLifeEffects,
+    otherWorkDifficulties,
+    otherSleepDisturbances,
+    otherDomesticEffects,
+    otherSportLeisureEffects,
+    otherSocialLifeEffects
+  ]);
 
   const workDifficultyOptions = [
     { id: "sitting", label: "Sitting for long periods" },
@@ -463,6 +631,12 @@ export function IntakeFormSection11({ form }: { form: any }) {
             </FormItem>
           )}
         />
+      )}
+
+      {summaryText && (
+        <div className="mt-6 p-4 bg-gray-50 rounded-md border border-gray-200">
+          <p className="text-xs text-gray-600 italic">{summaryText}</p>
+        </div>
       )}
     </div>
   );

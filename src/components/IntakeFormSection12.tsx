@@ -10,10 +10,77 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useState, useEffect } from "react";
 
 export function IntakeFormSection12({ form }: { form: any }) {
   const previousAccident = form.watch("previousAccident");
   const additionalInformation = form.watch("additionalInformation");
+  const previousAccidentDate = form.watch("previousAccidentDate");
+  const previousAccidentRecovery = form.watch("previousAccidentRecovery");
+  const previousInjuriesWorse = form.watch("previousInjuriesWorse");
+  const previousConditionWorse = form.watch("previousConditionWorse");
+  const additionalInformationDetails = form.watch("additionalInformationDetails");
+  
+  const [summaryText, setSummaryText] = useState<string>("");
+  
+  // Generate summary text based on selected options
+  useEffect(() => {
+    let text = "Medical History Summary: ";
+    
+    // Previous accident
+    if (previousAccident === "1") {
+      text += "The claimant reports having been involved in a previous road traffic accident";
+      
+      if (previousAccidentDate) {
+        // Format the date for display
+        const formattedDate = new Date(previousAccidentDate).toLocaleDateString('en-GB', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric'
+        });
+        text += ` on ${formattedDate}`;
+      }
+      text += ". ";
+      
+      // Recovery from previous accident
+      if (previousAccidentRecovery === "1") {
+        text += "They report having made a complete recovery from that accident. ";
+      } else if (previousAccidentRecovery === "2") {
+        text += "They report that they had not made a complete recovery from that accident. ";
+      }
+      
+      // Effect of current accident on previous injuries
+      if (previousInjuriesWorse === "1") {
+        text += "The claimant reports that the current accident has made their previous injuries worse. ";
+      } else if (previousInjuriesWorse === "2") {
+        text += "The claimant reports that the current accident has not made their previous injuries worse. ";
+      }
+    } else {
+      text += "The claimant reports no previous road traffic accidents. ";
+    }
+    
+    // Previous medical conditions
+    if (previousConditionWorse) {
+      text += `The claimant reports having previous medical conditions that have been made worse by this accident: ${previousConditionWorse}. `;
+    } else {
+      text += "The claimant has not reported any pre-existing medical conditions that have been exacerbated by this accident. ";
+    }
+    
+    // Additional information
+    if (additionalInformation === "1" && additionalInformationDetails) {
+      text += `Additional information provided by the claimant: ${additionalInformationDetails}.`;
+    }
+    
+    setSummaryText(text);
+  }, [
+    previousAccident,
+    previousAccidentDate,
+    previousAccidentRecovery,
+    previousInjuriesWorse,
+    previousConditionWorse,
+    additionalInformation,
+    additionalInformationDetails
+  ]);
 
   return (
     <div className="space-y-6">
@@ -174,6 +241,13 @@ export function IntakeFormSection12({ form }: { form: any }) {
           )}
         </div>
       </div>
+      
+      {/* Dynamic Summary Text */}
+      {summaryText && (
+        <div className="mt-6 p-4 bg-gray-50 rounded-md border border-gray-200">
+          <p className="text-xs text-gray-600 italic">{summaryText}</p>
+        </div>
+      )}
     </div>
   );
 }
