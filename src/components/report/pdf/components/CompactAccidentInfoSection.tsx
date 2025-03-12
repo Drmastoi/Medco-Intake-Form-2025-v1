@@ -8,28 +8,38 @@ interface AccidentData {
   accidentDate: string;
   accidentTime: string;
   vehiclePosition: string;
+  vehicleStatus?: string;
+  vehicleLocation?: string;
+  impactLocation?: string;
+  vehicleDamage?: string;
+  claimantPosition?: string;
+  claimantVehicle?: string;
+  otherVehicle?: string;
+  accidentSummary?: string;
 }
 
 export const CompactAccidentInfoSection = ({ data }: { data: AccidentData }) => {
   // Convert accidentTime codes to readable text
-  const getTimeOfDay = (code: string) => {
-    switch (code) {
-      case "1": return "Morning";
-      case "2": return "Afternoon";
-      case "3": return "Evening";
-      case "4": return "Night";
-      default: return "Unknown";
+  const getTimeOfDay = (time: string) => {
+    switch(time) {
+      case "Morning": return "Morning";
+      case "Afternoon": return "Afternoon";
+      case "Evening": return "Evening";
+      case "Night": return "Night";
+      default: return time; // Return the text if it's already converted
     }
   };
 
-  // Convert vehicle position codes to readable text
-  const getVehiclePosition = (code: string) => {
-    switch (code) {
-      case "1": return "Driver";
-      case "2": return "Front Passenger";
-      case "3": return "Rear Passenger";
-      default: return "Unknown";
-    }
+  // Helper to check if a value exists and is not empty
+  const hasValue = (value: string | undefined): boolean => {
+    return !!value && value.trim() !== "" && value !== "Not specified";
+  };
+
+  // Format vehicle position
+  const getVehiclePosition = (position: string) => {
+    return position === "driver" ? "Driver" : 
+           position === "frontPassenger" ? "Front Passenger" : 
+           position === "rearPassenger" ? "Rear Passenger" : position;
   };
 
   return (
@@ -39,53 +49,27 @@ export const CompactAccidentInfoSection = ({ data }: { data: AccidentData }) => 
       
       <View style={styles.accidentTable}>
         <View style={styles.accidentRow}>
-          <Text style={styles.accidentLabel}>Time of Accident:</Text>
-          <Text style={styles.accidentValue}>{data.accidentDate} - {getTimeOfDay(data.accidentTime)}</Text>
+          <View style={styles.accidentCell}>
+            <Text style={styles.accidentLabel}>Date of Accident:</Text>
+            <Text style={styles.accidentValue}>{data.accidentDate}</Text>
+          </View>
+          <View style={styles.accidentCell}>
+            <Text style={styles.accidentLabel}>Time of Day:</Text>
+            <Text style={styles.accidentValue}>{getTimeOfDay(data.accidentTime)}</Text>
+          </View>
         </View>
         
         <View style={styles.accidentRow}>
-          <Text style={styles.accidentLabel}>Vehicle:</Text>
-          <Text style={styles.accidentValue}>The claimant was in a van</Text>
-        </View>
-        
-        <View style={styles.accidentRow}>
-          <Text style={styles.accidentLabel}>Claimant's Position:</Text>
-          <Text style={styles.accidentValue}>{getVehiclePosition(data.vehiclePosition)}</Text>
-        </View>
-        
-        <View style={styles.accidentRow}>
-          <Text style={styles.accidentLabel}>Location:</Text>
-          <Text style={styles.accidentValue}>Minor road</Text>
-        </View>
-        
-        <View style={styles.accidentRow}>
-          <Text style={styles.accidentLabel}>Speed:</Text>
-          <Text style={styles.accidentValue}>Moving moderately</Text>
-        </View>
-        
-        <View style={styles.accidentRow}>
-          <Text style={styles.accidentLabel}>Third Party:</Text>
-          <Text style={styles.accidentValue}>A van</Text>
-        </View>
-        
-        <View style={styles.accidentRow}>
-          <Text style={styles.accidentLabel}>Description:</Text>
-          <Text style={styles.accidentValue}>Hit in the front</Text>
-        </View>
-        
-        <View style={styles.accidentRow}>
-          <Text style={styles.accidentLabel}>Movement:</Text>
-          <Text style={styles.accidentValue}>Forward and backward</Text>
-        </View>
-        
-        <View style={styles.accidentRow}>
-          <Text style={styles.accidentLabel}>Damage:</Text>
-          <Text style={styles.accidentValue}>Moderate damage</Text>
-        </View>
-        
-        <View style={styles.accidentRow}>
-          <Text style={styles.accidentLabel}>Safety:</Text>
-          <Text style={styles.accidentValue}>Wearing a seatbelt</Text>
+          <View style={styles.accidentCell}>
+            <Text style={styles.accidentLabel}>Claimant Position:</Text>
+            <Text style={styles.accidentValue}>{getVehiclePosition(data.vehiclePosition)}</Text>
+          </View>
+          {hasValue(data.vehicleStatus) && (
+            <View style={styles.accidentCell}>
+              <Text style={styles.accidentLabel}>Vehicle Status:</Text>
+              <Text style={styles.accidentValue}>{data.vehicleStatus}</Text>
+            </View>
+          )}
         </View>
       </View>
     </View>
