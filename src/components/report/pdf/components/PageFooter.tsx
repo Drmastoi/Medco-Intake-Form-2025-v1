@@ -21,7 +21,7 @@ export const PageFooter: React.FC = () => {
  */
 export const ReportFooter: React.FC = () => {
   return (
-    <Text style={styles.footerText}>
+    <Text style={styles.footer}>
       This report was generated based on the information provided in the Personal Injury Assessment Questionnaire.
     </Text>
   );
