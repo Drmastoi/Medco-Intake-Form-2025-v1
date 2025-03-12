@@ -6,6 +6,7 @@ import { InstructingPartyFields } from "@/components/prefilled-details/Instructi
 import { ExaminationFields } from "@/components/prefilled-details/ExaminationFields";
 import { DateFields } from "@/components/prefilled-details/DateFields";
 import { ClaimantEmailField } from "@/components/prefilled-details/ClaimantEmailField";
+import { TimeSpentField } from "@/components/prefilled-details/TimeSpentField";
 
 export function PrefilledDetailsSection({ form }: { form: any }) {
   return (
@@ -20,7 +21,10 @@ export function PrefilledDetailsSection({ form }: { form: any }) {
         <InstructingPartyFields form={form} />
         <ExaminationFields form={form} />
         <DateFields form={form} />
-        <ClaimantEmailField form={form} />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <ClaimantEmailField form={form} />
+          <TimeSpentField form={form} />
+        </div>
       </div>
     </div>
   );

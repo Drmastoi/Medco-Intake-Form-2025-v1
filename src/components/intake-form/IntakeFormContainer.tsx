@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { FormSchema, formSchema } from "@/schemas/intakeFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -47,6 +46,7 @@ export function IntakeFormContainer() {
       emailId: "",
       dateOfExamination: new Date().toISOString().split('T')[0],
       dateOfReport: new Date().toISOString().split('T')[0],
+      timeSpentWithClaimant: "15",
       
       // Personal information default values
       fullName: "",

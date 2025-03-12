@@ -55,6 +55,16 @@ export const CaseInformationSection = ({ formData }: CaseInformationSectionProps
           <Text style={styles.fieldValue}>{formData.dateOfReport ? formatDate(formData.dateOfReport) : formatDate(new Date().toISOString())}</Text>
         </View>
       </View>
+      
+      <View style={styles.fieldRow}>
+        <View style={styles.fieldColumn}>
+          <Text style={styles.fieldLabel}>Time Spent with Claimant</Text>
+          <Text style={styles.fieldValue}>{formData.timeSpentWithClaimant || '15'} minutes</Text>
+        </View>
+        <View style={styles.fieldColumn}>
+          {/* Empty column for alignment */}
+        </View>
+      </View>
     </View>
   );
 };

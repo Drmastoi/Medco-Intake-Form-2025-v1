@@ -14,6 +14,7 @@ export const formSchema = z.object({
   accompaniedBy: z.string(),
   mobileNumber: z.string(),
   emailId: z.string().email(),
+  timeSpentWithClaimant: z.string().default("15"),
   
   // Personal Information fields
   fullName: z.string().min(2, { message: "Name must be at least 2 characters" }),

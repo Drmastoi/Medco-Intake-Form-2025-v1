@@ -41,6 +41,7 @@ export function ShareLinkButton({ form }: ShareLinkButtonProps) {
       dateOfExamination: formData.dateOfExamination || '',
       dateOfReport: formData.dateOfReport || '',
       emailId: formData.emailId || '',
+      timeSpentWithClaimant: formData.timeSpentWithClaimant || '15',
     };
     
     const queryParams = new URLSearchParams();
