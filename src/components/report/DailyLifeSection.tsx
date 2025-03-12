@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Text, View } from '@react-pdf/renderer';
 import { dailyLifeStyles as styles } from './dailyLife/dailyLifeStyles';
@@ -9,30 +8,44 @@ import { BackPainComponent } from './dailyLife/sections/BackPainComponent';
 import { HeadacheComponent } from './dailyLife/sections/HeadacheComponent';
 import { TravelAnxietyComponent } from './dailyLife/sections/TravelAnxietyComponent';
 import { FormSchema } from '@/schemas/intakeFormSchema';
+import InjurySectionDetail from './sections/InjurySectionDetail';
 
 interface DailyLifeSectionProps {
   formData: Partial<FormSchema>;
 }
 
-export const DailyLifeSection = ({ formData }: DailyLifeSectionProps) => (
-  <View style={styles.section}>
-    <Text style={styles.title}>ACCIDENT DETAILS</Text>
-    
-    <InjurySummarySection formData={formData} />
-    
-    {/* Section 6.1 - Neck Pain */}
-    <NeckPainComponent formData={formData} />
+export const DailyLifeSection = ({ formData }: DailyLifeSectionProps) => {
+  return (
+    <View style={styles.section}>
+      <Text style={styles.title}>ACCIDENT DETAILS</Text>
+      
+      <InjurySummarySection formData={formData} />
 
-    {/* Section 6.2 - Shoulder Pain */}
-    <ShoulderPainComponent formData={formData} />
+      {/* Display expert report sections only if the corresponding pain exists */}
+      {formData.neckPain === "1" && (
+        <InjurySectionDetail
+          title="Neck Pain"
+          injuryType="Neck"
+          formData={formData}
+          styles={styles}
+          sectionCount={1}
+        />
+      )}
+      
+      {/* Section 6.1 - Neck Pain */}
+      <NeckPainComponent formData={formData} />
+
+      {/* Section 6.2 - Shoulder Pain */}
+      <ShoulderPainComponent formData={formData} />
     
-    {/* Section 6.3 - Back Pain */}
-    <BackPainComponent formData={formData} />
+      {/* Section 6.3 - Back Pain */}
+      <BackPainComponent formData={formData} />
     
-    {/* Section 6.4 - Headache */}
-    <HeadacheComponent formData={formData} />
+      {/* Section 6.4 - Headache */}
+      <HeadacheComponent formData={formData} />
     
-    {/* Section 6.5 - Travel Anxiety */}
-    <TravelAnxietyComponent formData={formData} />
-  </View>
-);
+      {/* Section 6.5 - Travel Anxiety */}
+      <TravelAnxietyComponent formData={formData} />
+    </View>
+  );
+};
