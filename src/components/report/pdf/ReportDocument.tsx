@@ -19,10 +19,11 @@ import { PsychologicalSection } from './components/PsychologicalSection';
 import { MedicalHistorySection } from './components/MedicalHistorySection';
 import { DeclarationSection } from './components/DeclarationSection';
 import { PageFooter, ReportFooter } from './components/PageFooter';
+import { CompactAccidentInfoSection } from './components/CompactAccidentInfoSection';
 
 const ReportDocument = ({ data }: { data: ReportData }) => (
   <Document>
-    {/* Page 1: New format matching the provided image */}
+    {/* Page 1: Compact format with accident details */}
     <Page size="A4" style={styles.page}>
       <Text style={styles.title}>Expert Medical Report</Text>
       
@@ -41,6 +42,9 @@ const ReportDocument = ({ data }: { data: ReportData }) => (
       {/* Section 4: Appointment Details */}
       <AppointmentDetailsSection data={data.prefilled} />
       
+      {/* Section 5: Compact Accident Information */}
+      <CompactAccidentInfoSection data={data.accident} />
+      
       {/* Report identifier and page number */}
       <Text style={styles.reportIdentifier}>
         {data.personal.fullName} report dated {data.prefilled.dateOfReport} | Medical Report | CID 406679
@@ -51,15 +55,7 @@ const ReportDocument = ({ data }: { data: ReportData }) => (
       )} fixed />
     </Page>
 
-    {/* Page 2: Accident Details */}
-    <Page size="A4" style={styles.page}>
-      {/* Section 5: Accident Details */}
-      <AccidentInfoSection data={data.accident} />
-
-      <PageFooter />
-    </Page>
-
-    {/* Page 3: Injury Assessment */}
+    {/* Page 2: Injury Assessment */}
     <Page size="A4" style={styles.page}>
       {/* Section 6: Injuries Information */}
       <InjurySection data={data.injuries} />
@@ -67,7 +63,7 @@ const ReportDocument = ({ data }: { data: ReportData }) => (
       <PageFooter />
     </Page>
 
-    {/* Page 4: Psychological Assessment, Medical History, and Declaration */}
+    {/* Page 3: Psychological Assessment, Medical History, and Declaration */}
     <Page size="A4" style={styles.page}>
       {/* Section 7-8: Headache and Travel Anxiety */}
       <PsychologicalSection 
