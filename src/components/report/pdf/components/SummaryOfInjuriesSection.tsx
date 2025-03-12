@@ -48,6 +48,9 @@ export const SummaryOfInjuriesSection = ({ data }: SummaryOfInjuriesSectionProps
       {/* Table header */}
       <View style={styles.infoTable}>
         <View style={styles.infoRow}>
+          <View style={{...styles.cellContainer, width: '10%'}}>
+            <Text style={styles.infoHeader}>No.</Text>
+          </View>
           <View style={{...styles.cellContainer, width: '20%'}}>
             <Text style={styles.infoHeader}>Injury Name</Text>
           </View>
@@ -57,10 +60,10 @@ export const SummaryOfInjuriesSection = ({ data }: SummaryOfInjuriesSectionProps
           <View style={{...styles.cellContainer, width: '20%'}}>
             <Text style={styles.infoHeader}>Prognosis</Text>
           </View>
-          <View style={{...styles.cellContainer, width: '20%'}}>
+          <View style={{...styles.cellContainer, width: '15%'}}>
             <Text style={styles.infoHeader}>Classification</Text>
           </View>
-          <View style={{...styles.cellContainer, width: '20%', borderRightWidth: 0}}>
+          <View style={{...styles.cellContainer, width: '15%', borderRightWidth: 0}}>
             <Text style={styles.infoHeader}>Treatment</Text>
           </View>
         </View>
@@ -68,6 +71,9 @@ export const SummaryOfInjuriesSection = ({ data }: SummaryOfInjuriesSectionProps
         {/* Table data rows */}
         {injuries.map((injury, index) => (
           <View key={index} style={styles.infoRow}>
+            <View style={{...styles.cellContainer, width: '10%'}}>
+              <Text style={styles.infoCell}>{index + 1}</Text>
+            </View>
             <View style={{...styles.cellContainer, width: '20%'}}>
               <Text style={styles.infoCell}>{injury.name}</Text>
             </View>
@@ -77,10 +83,10 @@ export const SummaryOfInjuriesSection = ({ data }: SummaryOfInjuriesSectionProps
             <View style={{...styles.cellContainer, width: '20%'}}>
               <Text style={styles.infoCell}>{injury.prognosis}</Text>
             </View>
-            <View style={{...styles.cellContainer, width: '20%'}}>
+            <View style={{...styles.cellContainer, width: '15%'}}>
               <Text style={styles.infoCell}>{injury.classification}</Text>
             </View>
-            <View style={{...styles.cellContainer, width: '20%', borderRightWidth: 0}}>
+            <View style={{...styles.cellContainer, width: '15%', borderRightWidth: 0}}>
               <Text style={styles.infoCell}>{injury.treatment}</Text>
             </View>
           </View>
