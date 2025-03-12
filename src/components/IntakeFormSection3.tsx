@@ -39,7 +39,7 @@ export function IntakeFormSection3({ form }: { form: any }) {
                                  neckPainCurrentSeverity === "3" ? "severe" :
                                  "resolved";
       
-      let text = `Claimant suffered from neck pain after the accident. It started [${startText}], initial severity was [${initialSeverityText}], current severity is [${currentSeverityText}]. `;
+      let text = `Claimant suffered from neck pain after the accident. It started ${startText}, initial severity was ${initialSeverityText}, current severity is ${currentSeverityText}. `;
       
       if (hadPriorNeckPain === "1") {
         if (accidentNeckPainPercentage && priorNeckPainPercentage) {
