@@ -168,4 +168,43 @@ export const styles = StyleSheet.create({
     fontSize: 11,
     fontFamily: 'Helvetica-Bold',
   },
+  
+  // New accident details section styles
+  accidentSubtitle: {
+    fontSize: 14,
+    fontFamily: 'Helvetica-Bold',
+    marginBottom: 8,
+    marginTop: 4
+  },
+  accidentGrayBox: {
+    backgroundColor: '#eeeeee',
+    padding: 8,
+    marginBottom: 10,
+  },
+  accidentSectionHeader: {
+    fontSize: 14,
+    fontFamily: 'Helvetica-Bold',
+  },
+  accidentTable: {
+    marginBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#dddddd',
+  },
+  accidentRow: {
+    flexDirection: 'row',
+    borderTopWidth: 1,
+    borderTopColor: '#dddddd',
+    paddingVertical: 4,
+  },
+  accidentLabel: {
+    width: '30%',
+    fontSize: 10,
+    fontFamily: 'Helvetica-Bold',
+    paddingLeft: 2,
+  },
+  accidentValue: {
+    width: '70%',
+    fontSize: 10,
+    fontFamily: 'Helvetica',
+  },
 });
