@@ -27,7 +27,9 @@ export const InjurySummarySection = ({ formData }: InjurySummaryProps) => {
     headacheCurrentSeverity,
     travelAnxiety,
     anxietyInitialSeverity,
-    anxietyCurrentSeverity
+    anxietyCurrentSeverity,
+    exceptionalInjuries,
+    exceptionalInjuriesDetails
   } = formData;
 
   // Helper function to convert severity codes to readable text
@@ -127,6 +129,17 @@ export const InjurySummarySection = ({ formData }: InjurySummaryProps) => {
             The claimant reported experiencing travel anxiety following the accident.
             The initial severity was {getSeverityText(anxietyInitialSeverity)}.
             The current severity is {getSeverityText(anxietyCurrentSeverity)}.
+          </Text>
+        </View>
+      )}
+
+      {/* Exceptional Injuries */}
+      {exceptionalInjuries === '1' && (
+        <View style={dailyLifeStyles.section}>
+          <Text style={dailyLifeStyles.subtitle}>Exceptionally Severe Injuries</Text>
+          <Text style={dailyLifeStyles.text}>
+            The claimant reported experiencing exceptionally severe physical or psychological injuries.
+            Details: {exceptionalInjuriesDetails || "No additional details provided."}
           </Text>
         </View>
       )}

@@ -111,6 +111,10 @@ export function IntakeFormContainer() {
       anxietyPastHistory: "",
       anxietyDuration: "",
       hasAnxietyHistory: "no",
+      
+      // Previous Medical History fields
+      exceptionalInjuries: "2", // Default to No (unchecked)
+      exceptionalInjuriesDetails: "",
     },
   });
 

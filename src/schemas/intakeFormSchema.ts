@@ -88,6 +88,10 @@ export const formSchema = z.object({
   anxietyPastHistory: z.string().optional(),
   anxietyDuration: z.string().optional(),
   hasAnxietyHistory: z.enum(["yes", "no"]).optional(),
+  
+  // New fields for Section 12 - Previous Medical History
+  exceptionalInjuries: z.enum(["1", "2"]).default("2"), // "1" for Yes, "2" for No
+  exceptionalInjuriesDetails: z.string().optional(),
 });
 
 export type FormSchema = z.infer<typeof formSchema>;

@@ -5,6 +5,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -20,6 +21,8 @@ export function IntakeFormSection12({ form }: { form: any }) {
   const previousInjuriesWorse = form.watch("previousInjuriesWorse");
   const previousConditionWorse = form.watch("previousConditionWorse");
   const additionalInformationDetails = form.watch("additionalInformationDetails");
+  const exceptionalInjuries = form.watch("exceptionalInjuries");
+  const exceptionalInjuriesDetails = form.watch("exceptionalInjuriesDetails");
   
   const [summaryText, setSummaryText] = useState<string>("");
   
@@ -66,6 +69,15 @@ export function IntakeFormSection12({ form }: { form: any }) {
       text += "The claimant has not reported any pre-existing medical conditions that have been exacerbated by this accident. ";
     }
     
+    // Exceptional injuries
+    if (exceptionalInjuries === "1" && exceptionalInjuriesDetails) {
+      text += `The claimant reports having exceptionally severe physical or psychological injuries: ${exceptionalInjuriesDetails}. `;
+    } else if (exceptionalInjuries === "1") {
+      text += "The claimant reports having exceptionally severe physical or psychological injuries. ";
+    } else {
+      text += "The claimant does not report any exceptionally severe physical or psychological injuries. ";
+    }
+    
     // Additional information
     if (additionalInformation === "1" && additionalInformationDetails) {
       text += `Additional information provided by the claimant: ${additionalInformationDetails}.`;
@@ -79,7 +91,9 @@ export function IntakeFormSection12({ form }: { form: any }) {
     previousInjuriesWorse,
     previousConditionWorse,
     additionalInformation,
-    additionalInformationDetails
+    additionalInformationDetails,
+    exceptionalInjuries,
+    exceptionalInjuriesDetails
   ]);
 
   return (
@@ -155,6 +169,46 @@ export function IntakeFormSection12({ form }: { form: any }) {
               </FormItem>
             )}
           />
+
+          <FormField
+            control={form.control}
+            name="exceptionalInjuries"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value === "1"}
+                    onCheckedChange={(checked) => {
+                      field.onChange(checked ? "1" : "2");
+                    }}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>Do you have exceptionally severe physical or psychological injuries?</FormLabel>
+                </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {exceptionalInjuries === "1" && (
+            <FormField
+              control={form.control}
+              name="exceptionalInjuriesDetails"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Please explain why they are exceptionally severe</FormLabel>
+                  <FormControl>
+                    <Textarea 
+                      placeholder="Provide details about the exceptionally severe injuries"
+                      {...field} 
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
         </div>
 
         <div className="space-y-6">
