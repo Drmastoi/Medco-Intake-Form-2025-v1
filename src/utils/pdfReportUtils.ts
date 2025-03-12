@@ -80,10 +80,44 @@ export interface ReportData {
     hasHistory: string;
   };
   other: {
-    bruising: any;
-    otherInjuries: any;
-    treatment: any;
-    lifestyle: any;
+    bruising: {
+      hasBruising: boolean;
+      location?: string;
+      noticed?: string;
+      initialSeverity?: string;
+      currentSeverity?: string;
+      resolveDays?: string;
+      hasVisibleScar?: boolean;
+    };
+    otherInjuries: {
+      hasOtherInjury: boolean;
+      name?: string;
+      start?: string;
+      initialSeverity?: string;
+      currentSeverity?: string;
+      resolveDays?: string;
+    };
+    treatment: {
+      hasTreatment: boolean;
+      type?: string[];
+      frequency?: string;
+      duration?: string;
+      ongoing?: boolean;
+    };
+    lifestyle: {
+      impactOnWork: boolean;
+      timeOffWork?: string;
+      workRestrictions?: string[];
+      impactOnSleep: boolean;
+      sleepIssues?: string[];
+      impactOnDomestic: boolean;
+      domesticIssues?: string[];
+      impactOnSports: boolean;
+      sportsActivities?: string;
+      sportsDuration?: string;
+      impactOnSocial: boolean;
+      socialDetails?: string;
+    };
     medicalHistory: {
       exceptionalInjuries: boolean;
       exceptionalInjuriesDetails: string;
@@ -194,10 +228,44 @@ export function convertFormDataToReportData(formData: FormSchema): ReportData {
       hasHistory: formData.hasAnxietyHistory || "No",
     },
     other: {
-      bruising: formData.bruising || {},
-      otherInjuries: formData.otherInjuries || {},
-      treatment: formData.treatment || {},
-      lifestyle: formData.lifestyle || {},
+      bruising: {
+        hasBruising: formData.hasBruising === "1",
+        location: formData.bruisingLocation,
+        noticed: formData.bruisingNoticed,
+        initialSeverity: getSeverityText(formData.bruisingInitialSeverity),
+        currentSeverity: getSeverityText(formData.bruisingCurrentSeverity),
+        resolveDays: formData.bruisingResolveDays,
+        hasVisibleScar: formData.hasVisibleScar === "1"
+      },
+      otherInjuries: {
+        hasOtherInjury: formData.hasOtherInjury === "1",
+        name: formData.injuryName,
+        start: formData.injuryStart,
+        initialSeverity: getSeverityText(formData.injuryInitialSeverity),
+        currentSeverity: getSeverityText(formData.injuryCurrentSeverity),
+        resolveDays: formData.injuryResolveDays
+      },
+      treatment: {
+        hasTreatment: formData.hasTreatment === "1",
+        type: formData.treatmentType,
+        frequency: formData.treatmentFrequency,
+        duration: formData.treatmentDuration,
+        ongoing: formData.ongoingTreatment === "1"
+      },
+      lifestyle: {
+        impactOnWork: formData.impactOnWork === "1",
+        timeOffWork: formData.timeOffWork,
+        workRestrictions: formData.workRestrictions,
+        impactOnSleep: formData.impactOnSleep === "1",
+        sleepIssues: formData.sleepIssues,
+        impactOnDomestic: formData.impactOnDomestic === "1",
+        domesticIssues: formData.domesticIssues,
+        impactOnSports: formData.impactOnSports === "1",
+        sportsActivities: formData.sportsActivities,
+        sportsDuration: formData.sportsDuration,
+        impactOnSocial: formData.impactOnSocial === "1",
+        socialDetails: formData.socialDetails
+      },
       medicalHistory: {
         exceptionalInjuries: formData.exceptionalInjuries === "1",
         exceptionalInjuriesDetails: formData.exceptionalInjuriesDetails || "None",
