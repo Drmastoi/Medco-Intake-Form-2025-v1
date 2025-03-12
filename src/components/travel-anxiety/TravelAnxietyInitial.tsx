@@ -5,6 +5,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from "@/components/ui/form";
 import { Checkbox } from "@/components/ui/checkbox";
 
@@ -25,6 +26,9 @@ export function TravelAnxietyInitial({ form }: { form: any }) {
           </FormControl>
           <div className="space-y-1 leading-none">
             <FormLabel>Did you experience Travel Anxiety after the accident?</FormLabel>
+            <FormDescription className="text-gray-500">
+              Please select this option if you experienced travel anxiety due to the accident
+            </FormDescription>
           </div>
           <FormMessage />
         </FormItem>

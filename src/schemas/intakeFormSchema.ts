@@ -51,7 +51,7 @@ export const formSchema = z.object({
   priorNeckPainPercentage: z.string().optional(), // Percentage due to previous condition
   
   // Section 4 - Shoulder Pain Information
-  shoulderPain: z.enum(["1", "2"]),
+  shoulderPain: z.enum(["1", "2"]).default("2"),
   shoulderSide: z.enum(["1", "2", "3"]),
   shoulderPainStart: z.enum(["1", "2", "3"]),
   shoulderPainInitialSeverity: z.enum(["1", "2", "3"]),
@@ -62,7 +62,7 @@ export const formSchema = z.object({
   priorShoulderPainPercentage: z.string().optional(), // Percentage due to previous condition
 
   // Section 5 - Back Pain Information
-  backPain: z.enum(["1", "2"]),
+  backPain: z.enum(["1", "2"]).default("2"),
   backLocation: z.enum(["1", "2", "3", "4"]),
   backPainStart: z.enum(["1", "2", "3"]),
   backPainInitialSeverity: z.enum(["1", "2", "3"]),
@@ -70,7 +70,7 @@ export const formSchema = z.object({
   backPainResolveDays: z.string().optional(),
 
   // Section 6 - Headache Information
-  headache: z.enum(["1", "2"]),
+  headache: z.enum(["1", "2"]).default("2"),
   headacheStart: z.enum(["1", "2", "3"]),
   headacheInitialSeverity: z.enum(["1", "2", "3"]),
   headacheCurrentSeverity: z.enum(["1", "2", "3", "4"]),
@@ -78,7 +78,7 @@ export const formSchema = z.object({
   headachePastHistory: z.string().optional(),
   
   // Section 7 - Travel Anxiety Information
-  travelAnxiety: z.enum(["1", "2"]),
+  travelAnxiety: z.enum(["1", "2"]).default("2"),
   travelAnxietySymptoms: z.array(z.string()).optional(),
   otherTravelAnxietySymptom: z.string().optional(),
   currentlyDriving: z.enum(["1", "2"]).optional(),

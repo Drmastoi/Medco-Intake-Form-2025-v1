@@ -27,5 +27,8 @@ export const PsychologicalImpactSection = ({ formData }: PsychologicalImpactProp
         )}
       </View>
     )}
+    {formData.travelAnxiety !== "1" && (
+      <Text style={styles.text}>No travel anxiety reported by the claimant.</Text>
+    )}
   </View>
 );

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { FormSchema, formSchema } from "@/schemas/intakeFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -76,7 +77,7 @@ export function IntakeFormContainer() {
       priorNeckPainPercentage: "",
       
       // Section 4 - Shoulder Pain Information
-      shoulderPain: "1",
+      shoulderPain: "2", // Changed to unchecked
       shoulderSide: "1",
       shoulderPainStart: "1",
       shoulderPainInitialSeverity: "1",
@@ -84,7 +85,7 @@ export function IntakeFormContainer() {
       shoulderPainResolveDays: "",
 
       // Section 5 - Back Pain Information
-      backPain: "1",
+      backPain: "2", // Changed to unchecked
       backLocation: "1",
       backPainStart: "1",
       backPainInitialSeverity: "1",
@@ -92,7 +93,7 @@ export function IntakeFormContainer() {
       backPainResolveDays: "",
 
       // Section 6 - Headache Information
-      headache: "1",
+      headache: "2", // Changed to unchecked
       headacheStart: "1",
       headacheInitialSeverity: "1",
       headacheCurrentSeverity: "1",
@@ -100,7 +101,7 @@ export function IntakeFormContainer() {
       headachePastHistory: "",
       
       // Travel anxiety fields
-      travelAnxiety: "1",
+      travelAnxiety: "2", // Changed to unchecked
       travelAnxietySymptoms: [],
       otherTravelAnxietySymptom: "",
       currentlyDriving: "1",
