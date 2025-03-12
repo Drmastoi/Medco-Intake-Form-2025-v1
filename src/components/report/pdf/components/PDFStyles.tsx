@@ -1,3 +1,4 @@
+
 import { StyleSheet } from '@react-pdf/renderer';
 
 export const styles = StyleSheet.create({
@@ -19,6 +20,14 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 10,
     fontFamily: 'Helvetica-Bold',
+  },
+  subheader: {
+    fontSize: 14,
+    marginBottom: 8,
+    marginTop: 10,
+    fontFamily: 'Helvetica-Bold',
+    borderBottom: '1 solid #CCCCCC',
+    paddingBottom: 3,
   },
   row: {
     flexDirection: 'row',
@@ -42,6 +51,14 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'grey',
   },
+  pageNumber: {
+    position: 'absolute',
+    bottom: 20,
+    left: 0,
+    right: 0,
+    textAlign: 'center',
+    fontSize: 9,
+  },
   reportFooter: {
     fontSize: 10,
     marginTop: 20,
@@ -59,5 +76,17 @@ export const styles = StyleSheet.create({
     lineHeight: 1.4,
     color: '#333333',
     fontFamily: 'Helvetica',
+  },
+  sectionTitle: {
+    backgroundColor: '#000000',
+    color: '#FFFFFF',
+    padding: 8,
+    marginBottom: 10,
+    fontSize: 14,
+    fontFamily: 'Helvetica-Bold',
+  },
+  subsection: {
+    marginBottom: 15,
+    paddingLeft: 5,
   },
 });
