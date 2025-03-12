@@ -9,6 +9,7 @@ interface InjuryData {
   currentStatus: string;
   prognosis: string;
   classification: string;
+  treatment: string;
 }
 
 interface InjuriesData {
@@ -36,7 +37,8 @@ export const SummaryOfInjuriesSection = ({ data }: { data: InjuriesData }) => {
       name: "Neck Pain",
       currentStatus: "Ongoing",
       prognosis: "Expected to resolve within 6-12 months",
-      classification: "Whiplash"
+      classification: "Whiplash",
+      treatment: "Physiotherapy and pain management"
     });
   }
   
@@ -50,7 +52,8 @@ export const SummaryOfInjuriesSection = ({ data }: { data: InjuriesData }) => {
       name: `Shoulder Pain (${side})`,
       currentStatus: "Improving",
       prognosis: "Expected to resolve within 3-6 months",
-      classification: "Whiplash Associated Disorder"
+      classification: "Whiplash Associated Disorder",
+      treatment: "Physical therapy and mobility exercises"
     });
   }
   
@@ -64,7 +67,8 @@ export const SummaryOfInjuriesSection = ({ data }: { data: InjuriesData }) => {
       name: `Back Pain (${location})`,
       currentStatus: "Ongoing",
       prognosis: "Expected to resolve within 6-12 months",
-      classification: "Whiplash Associated Disorder"
+      classification: "Whiplash Associated Disorder",
+      treatment: "Physiotherapy and posture correction"
     });
   }
   
@@ -74,7 +78,8 @@ export const SummaryOfInjuriesSection = ({ data }: { data: InjuriesData }) => {
       name: "Headache",
       currentStatus: "Intermittent",
       prognosis: "Expected to resolve within 3-6 months",
-      classification: "Whiplash Associated Disorder"
+      classification: "Whiplash Associated Disorder",
+      treatment: "Pain relief medication and rest"
     });
   }
   
@@ -84,7 +89,8 @@ export const SummaryOfInjuriesSection = ({ data }: { data: InjuriesData }) => {
       name: "Travel Anxiety",
       currentStatus: "Ongoing",
       prognosis: "Likely to improve with time and confidence building",
-      classification: "Psychological"
+      classification: "Psychological",
+      treatment: "Cognitive behavioral therapy"
     });
   }
   
@@ -94,7 +100,8 @@ export const SummaryOfInjuriesSection = ({ data }: { data: InjuriesData }) => {
       name: "Bruising" + (hasInjury(data.hasVisibleScar) ? " with scarring" : ""),
       currentStatus: hasInjury(data.hasVisibleScar) ? "Visible scarring remains" : "Resolved",
       prognosis: hasInjury(data.hasVisibleScar) ? "Permanent scarring likely" : "Fully resolved",
-      classification: "Soft Tissue"
+      classification: "Soft Tissue",
+      treatment: hasInjury(data.hasVisibleScar) ? "Scar management therapy" : "No further treatment required"
     });
   }
   
@@ -121,6 +128,9 @@ export const SummaryOfInjuriesSection = ({ data }: { data: InjuriesData }) => {
             <View style={styles.tableHeaderCell5}>
               <Text style={styles.tableHeaderText}>Classification</Text>
             </View>
+            <View style={styles.tableHeaderCell6}>
+              <Text style={styles.tableHeaderText}>Treatment</Text>
+            </View>
           </View>
           
           {/* Table Rows */}
@@ -140,6 +150,9 @@ export const SummaryOfInjuriesSection = ({ data }: { data: InjuriesData }) => {
               </View>
               <View style={styles.tableCell5}>
                 <Text style={styles.tableCellText}>{injury.classification}</Text>
+              </View>
+              <View style={styles.tableCell6}>
+                <Text style={styles.tableCellText}>{injury.treatment}</Text>
               </View>
             </View>
           ))}
