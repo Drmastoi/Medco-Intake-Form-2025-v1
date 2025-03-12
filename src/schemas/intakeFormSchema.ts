@@ -89,9 +89,60 @@ export const formSchema = z.object({
   anxietyDuration: z.string().optional(),
   hasAnxietyHistory: z.enum(["yes", "no"]).optional(),
   
+  // Section 8 - Bruising Information
+  hasBruising: z.enum(["1", "2"]).default("2"),
+  bruisingLocation: z.string().optional(),
+  bruisingInitialSeverity: z.enum(["1", "2", "3"]).optional(),
+  bruisingCurrentSeverity: z.enum(["1", "2", "3", "4"]).optional(),
+  bruisingResolveDays: z.string().optional(),
+  
+  // Section 9 - Other Injuries Information
+  hasOtherInjury: z.enum(["1", "2"]).default("2"),
+  injuryName: z.string().optional(),
+  injuryDescription: z.string().optional(),
+  injuryInitialSeverity: z.enum(["1", "2", "3"]).optional(),
+  injuryCurrentSeverity: z.enum(["1", "2", "3", "4"]).optional(),
+  injuryResolveDays: z.string().optional(),
+  
+  // Section 10 - Treatment Information
+  hasTreatment: z.enum(["1", "2"]).default("2"),
+  treatmentType: z.array(z.string()).optional(),
+  otherTreatmentType: z.string().optional(),
+  treatmentFrequency: z.string().optional(),
+  treatmentDuration: z.string().optional(),
+  ongoingTreatment: z.enum(["1", "2"]).optional(),
+  
+  // Section 11 - Lifestyle Impact
+  impactOnWork: z.enum(["1", "2"]).default("2"),
+  timeOffWork: z.string().optional(),
+  workRestrictions: z.array(z.string()).optional(),
+  impactOnSleep: z.enum(["1", "2"]).default("2"),
+  sleepIssues: z.array(z.string()).optional(),
+  impactOnDomestic: z.enum(["1", "2"]).default("2"),
+  domesticIssues: z.array(z.string()).optional(),
+  impactOnSports: z.enum(["1", "2"]).default("2"),
+  sportsActivities: z.string().optional(),
+  sportsDuration: z.string().optional(),
+  impactOnSocial: z.enum(["1", "2"]).default("2"),
+  socialDetails: z.string().optional(),
+  
+  // Section 12 - Previous Medical History
+  previousAccident: z.enum(["1", "2"]).default("2"),
+  previousAccidentDate: z.string().optional(),
+  previousAccidentRecovery: z.enum(["1", "2"]).optional(),
+  previousInjuriesWorse: z.enum(["1", "2"]).optional(),
+  previousConditionWorse: z.string().optional(),
+  additionalInformation: z.enum(["1", "2"]).default("2"),
+  additionalInformationDetails: z.string().optional(),
+  
   // New fields for Section 12 - Previous Medical History
   exceptionalInjuries: z.enum(["1", "2"]).default("2"), // "1" for Yes, "2" for No
   exceptionalInjuriesDetails: z.string().optional(),
+  
+  // New fields for Section 7-11 dynamic text (these are derived values, not directly input)
+  dizziness: z.enum(["1", "2"]).default("2"),
+  dizzinessCurrentSeverity: z.enum(["1", "2", "3", "4"]).optional(),
+  dizzinessResolveDays: z.string().optional(),
 });
 
 export type FormSchema = z.infer<typeof formSchema>;
