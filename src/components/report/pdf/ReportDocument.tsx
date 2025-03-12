@@ -23,7 +23,7 @@ import { CompactAccidentInfoSection } from './components/CompactAccidentInfoSect
 
 const ReportDocument = ({ data }: { data: ReportData }) => (
   <Document>
-    {/* Page 1: Compact format with accident details */}
+    {/* Page 1: Compact format without accident details */}
     <Page size="A4" style={styles.page}>
       <Text style={styles.title}>Expert Medical Report</Text>
       
@@ -42,9 +42,6 @@ const ReportDocument = ({ data }: { data: ReportData }) => (
       {/* Section 4: Appointment Details */}
       <AppointmentDetailsSection data={data.prefilled} />
       
-      {/* Section 5: Compact Accident Information */}
-      <CompactAccidentInfoSection data={data.accident} />
-      
       {/* Report identifier and page number */}
       <Text style={styles.reportIdentifier}>
         {data.personal.fullName} report dated {data.prefilled.dateOfReport} | Medical Report | CID 406679
@@ -55,8 +52,11 @@ const ReportDocument = ({ data }: { data: ReportData }) => (
       )} fixed />
     </Page>
 
-    {/* Page 2: Injury Assessment */}
+    {/* Page 2: Accident Details and Injury Assessment */}
     <Page size="A4" style={styles.page}>
+      {/* Section 5: Accident Information (moved from page 1) */}
+      <CompactAccidentInfoSection data={data.accident} />
+      
       {/* Section 6: Injuries Information */}
       <InjurySection data={data.injuries} />
 
