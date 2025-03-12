@@ -66,6 +66,10 @@ export function IntakeFormContainer() {
       
       // Section 3 - Medical Information
       neckPain: "2", // Default to No (unchecked)
+      neckPainStart: "1", // Default to Same day
+      neckPainInitialSeverity: "1", // Default to Mild
+      neckPainCurrentSeverity: "1", // Default to Mild
+      neckPainResolveDays: "",
       additionalInfo: "",
       hadPriorNeckPain: "2", // Default to No
       accidentNeckPainPercentage: "",

@@ -31,6 +31,13 @@ export function IntakeFormSection3({ form }: { form: any }) {
                     checked={field.value === "1"}
                     onCheckedChange={(checked) => {
                       field.onChange(checked ? "1" : "2");
+                      // Set default values for neck pain fields when checked
+                      if (checked) {
+                        form.setValue("neckPainStart", "1"); // Same day
+                        form.setValue("neckPainInitialSeverity", "1"); // Mild
+                        form.setValue("neckPainCurrentSeverity", "1"); // Mild
+                        form.setValue("hadPriorNeckPain", "2"); // No
+                      }
                     }}
                   />
                 </FormControl>
