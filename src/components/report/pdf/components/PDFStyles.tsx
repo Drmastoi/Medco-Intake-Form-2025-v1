@@ -93,35 +93,40 @@ export const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     marginBottom: 15,
+    width: '100%',
+    borderWidth: 1,
+    borderColor: '#DDDDDD',
   },
   infoRow: {
     flexDirection: 'row',
     borderBottomWidth: 1,
     borderBottomColor: '#DDDDDD',
+    width: '100%',
   },
   infoCell: {
     padding: 8,
-    fontSize: 11,
+    fontSize: 10,
     fontFamily: 'Helvetica',
     flex: 1,
     borderRightWidth: 1,
     borderRightColor: '#DDDDDD',
-    lineHeight: 1.5,
+    lineHeight: 1.4,
   },
   rightCell: {
     padding: 8,
-    fontSize: 11,
+    fontSize: 10,
     fontFamily: 'Helvetica',
     flex: 1,
     borderRightWidth: 0,
-    lineHeight: 1.5,
+    lineHeight: 1.4,
   },
   infoHeader: {
-    fontSize: 11,
+    fontSize: 10,
     fontFamily: 'Helvetica-Bold',
     marginBottom: 3,
-    paddingLeft: 5,
-    paddingRight: 5,
+    paddingLeft: 8,
+    paddingRight: 8,
+    paddingTop: 5,
   },
   reportIdentifier: {
     fontSize: 9,
@@ -132,5 +137,8 @@ export const styles = StyleSheet.create({
   pageIndicator: {
     fontSize: 9,
     textAlign: 'right',
+  },
+  cellContainer: {
+    width: '50%',
   }
 });
