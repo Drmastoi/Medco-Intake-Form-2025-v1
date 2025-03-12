@@ -45,34 +45,33 @@ export const ShoulderPainComponent = ({ formData }: ShoulderPainProps) => {
   };
 
   const generateShoulderPainText = () => {
-    let text = `The Claimant reports experiencing ${getShoulderSideText()} pain that began ${getPainStartText()} the accident. `;
+    let text = `I experienced ${getShoulderSideText()} pain that began ${getPainStartText()} the accident. `;
     
     // Initial severity
-    text += `Initially, the symptoms were ${getSeverityText(formData.shoulderPainInitialSeverity)}. `;
+    text += `Initially, my symptoms were ${getSeverityText(formData.shoulderPainInitialSeverity)}. `;
     
     // Current status
     if (formData.shoulderPainCurrentSeverity === "4") {
-      text += `The symptoms have now resolved ${formData.shoulderPainResolveDays ? `after ${formData.shoulderPainResolveDays} days` : ''}. `;
+      text += `My symptoms have now resolved ${formData.shoulderPainResolveDays ? `after ${formData.shoulderPainResolveDays} days` : ''}. `;
     } else {
-      text += `Currently, the symptoms are ${getSeverityText(formData.shoulderPainCurrentSeverity)}. `;
+      text += `Currently, my symptoms are ${getSeverityText(formData.shoulderPainCurrentSeverity)}. `;
     }
     
     // Prior history
     if (formData.hadPriorShoulderPain === "1") {
-      text += "The Claimant reports a history of shoulder pain prior to this accident. ";
+      text += "I had a history of shoulder pain prior to this accident. ";
       if (formData.accidentShoulderPainPercentage && formData.priorShoulderPainPercentage) {
-        text += `They attribute ${formData.accidentShoulderPainPercentage}% of their current shoulder pain to this accident and ${formData.priorShoulderPainPercentage}% to their previous condition. `;
+        text += `I attribute ${formData.accidentShoulderPainPercentage}% of my current shoulder pain to this accident and ${formData.priorShoulderPainPercentage}% to my previous condition. `;
       }
     } else {
-      text += "The Claimant reports no history of shoulder pain prior to this accident. ";
+      text += "I had no history of shoulder pain prior to this accident. ";
     }
 
     return text;
   };
 
   return (
-    <View style={dailyLifeStyles.section}>
-      <Text style={dailyLifeStyles.title}>6.2 Shoulder Pain</Text>
+    <View>
       <Text style={dailyLifeStyles.text}>{generateShoulderPainText()}</Text>
     </View>
   );

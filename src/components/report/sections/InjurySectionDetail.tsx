@@ -38,16 +38,17 @@ const InjurySectionDetail = ({
   const resolveDays = formData[`${prefix}ResolveDays`];
 
   return (
-    <>
-      <Text style={styles.injuriesSectionTitle}>6.{sectionCount} {injuryType === 'Travel Anxiety' ? 'Psychological' : 'Physical'}</Text>
+    <View style={{ marginBottom: 15 }}>
+      <Text style={styles.injuriesSectionTitle}>6.{sectionCount} Expert Medical Assessment - {title}</Text>
       
       {/* Add General Physical Examination section before the first injury */}
       {sectionCount === 1 && (
         <View style={{ marginBottom: 10 }}>
-          <Text style={[styles.injuryTypeHeader, { marginBottom: 5 }]}>General Physical Examination:</Text>
+          <Text style={styles.injuryTypeHeader}>General Physical Examination:</Text>
           <Text style={styles.text}>
-            In my observation, the Claimant was not tearful, not agitated, good eye contact, good rapport, time and place orientation,
-            and showed signs of no psychotic features, no delusional ideas, and no thought disorder. Communication was normal.
+            In my observation, the Claimant was not tearful, not agitated, maintained good eye contact, established good rapport, 
+            demonstrated clear time and place orientation, and showed no signs of psychotic features, delusional ideas, or thought disorder. 
+            Communication was normal and appropriate throughout the examination.
           </Text>
         </View>
       )}
@@ -165,7 +166,7 @@ const InjurySectionDetail = ({
           </Text>
         </View>
       </View>
-    </>
+    </View>
   );
 };
 

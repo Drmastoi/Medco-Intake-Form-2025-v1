@@ -15,7 +15,7 @@ export const DailyLifePage = ({ formData }: DailyLifePageProps) => {
       <Text style={pdfStyles.sectionHeader}>Section 5 - Accident Details</Text>
       
       <View style={pdfStyles.subsection}>
-        <Text style={pdfStyles.subheader}>5.1 Accident Information</Text>
+        <Text style={pdfStyles.injuriesSectionTitle}>5.1 Accident Information</Text>
         <AccidentHistorySection formData={formData} />
       </View>
 

@@ -35,32 +35,31 @@ export const HeadacheComponent = ({ formData }: HeadacheProps) => {
   };
 
   const generateHeadacheText = () => {
-    let text = `The Claimant reports experiencing headache that began ${getPainStartText()} the accident. `;
+    let text = `I experienced headaches that began ${getPainStartText()} the accident. `;
     
     // Initial severity
-    text += `Initially, the symptoms were ${getSeverityText(formData.headacheInitialSeverity)}. `;
+    text += `Initially, my symptoms were ${getSeverityText(formData.headacheInitialSeverity)}. `;
     
     // Current status
     if (formData.headacheCurrentSeverity === "4") {
-      text += `The symptoms have now resolved ${formData.headacheResolveDays ? `after ${formData.headacheResolveDays} days` : ''}. `;
+      text += `My symptoms have now resolved ${formData.headacheResolveDays ? `after ${formData.headacheResolveDays} days` : ''}. `;
     } else {
-      text += `Currently, the symptoms are ${getSeverityText(formData.headacheCurrentSeverity)}. `;
+      text += `Currently, my symptoms are ${getSeverityText(formData.headacheCurrentSeverity)}. `;
     }
     
     // Prior history - using headachePastHistory instead of hasHeadacheHistory
     if (formData.headachePastHistory) {
-      text += "The Claimant reports a history of headaches prior to this accident. ";
+      text += "I had a history of headaches prior to this accident. ";
       text += `${formData.headachePastHistory} `;
     } else {
-      text += "The Claimant reports no history of headaches prior to this accident. ";
+      text += "I had no history of headaches prior to this accident. ";
     }
 
     return text;
   };
 
   return (
-    <View style={dailyLifeStyles.section}>
-      <Text style={dailyLifeStyles.title}>6.4 Headache</Text>
+    <View>
       <Text style={dailyLifeStyles.text}>{generateHeadacheText()}</Text>
     </View>
   );

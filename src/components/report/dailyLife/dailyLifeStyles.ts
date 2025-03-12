@@ -3,16 +3,16 @@ import { StyleSheet } from '@react-pdf/renderer';
 
 export const dailyLifeStyles = StyleSheet.create({
   section: {
-    marginBottom: 20,
+    marginBottom: 15,
   },
   title: {
-    fontSize: 14,
-    marginBottom: 10,
+    fontSize: 12,
+    marginBottom: 5,
     fontWeight: 'bold',
   },
   subtitle: {
-    fontSize: 12,
-    marginBottom: 8,
+    fontSize: 11,
+    marginBottom: 3,
     fontWeight: 'bold',
   },
   text: {
@@ -20,61 +20,53 @@ export const dailyLifeStyles = StyleSheet.create({
     marginBottom: 5,
     lineHeight: 1.4,
   },
-  listContainer: {
-    marginLeft: 10,
-    marginBottom: 5,
+  highlight: {
+    fontWeight: 'bold',
   },
-  listItem: {
-    fontSize: 10,
-    marginBottom: 3,
-    lineHeight: 1.4,
-  },
-  conclusionText: {
-    fontSize: 10,
+  claimantReportSection: {
     marginTop: 10,
-    fontStyle: 'italic',
+    marginBottom: 15,
+    padding: 8,
+    backgroundColor: '#f5f5f5',
+    borderRadius: 4,
   },
-  bulletStyle: {
-    display: 'flex',
-    flexDirection: 'row',
-    marginBottom: 3,
-  },
-  bullet: {
-    width: 10,
+  claimantSectionTitle: {
     fontSize: 10,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    color: '#555555',
+    textDecoration: 'underline',
   },
-  bulletText: {
-    flex: 1,
-    fontSize: 10,
-    paddingLeft: 5,
-  },
-  // Additional styles needed for the components
-  paragraph: {
-    marginBottom: 10,
-  },
-  sectionTitle: {
+  // Styles for InjurySectionDetail
+  injuryTypeHeader: {
     fontSize: 11,
     fontWeight: 'bold',
     marginBottom: 5,
-  },
-  bulletPoint: {
-    fontSize: 10,
-    marginBottom: 3,
-    marginLeft: 10,
-  },
-  explanationText: {
-    fontSize: 10,
     marginTop: 5,
-    marginBottom: 5,
-    fontStyle: 'italic',
   },
-  bulletList: {
-    marginLeft: 10,
+  injuryTable: {
     marginBottom: 10,
   },
-  bulletItem: {
-    fontSize: 10,
-    marginBottom: 3,
-    lineHeight: 1.4,
+  injuryRow: {
+    flexDirection: 'row',
+    marginBottom: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: '#EEEEEE',
+    paddingBottom: 3,
+  },
+  injuryLabel: {
+    width: '30%',
+    fontWeight: 'bold',
+    fontSize: 9,
+  },
+  injuryValue: {
+    width: '70%',
+    fontSize: 9,
+  },
+  injuriesSectionTitle: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    marginTop: 10,
+    marginBottom: 8,
   }
 });

@@ -58,24 +58,24 @@ export const TravelAnxietyComponent = ({ formData }: TravelAnxietyProps) => {
     if (readableSymptoms.length === 0) {
       return "";
     } else if (readableSymptoms.length === 1) {
-      return `The symptoms include ${readableSymptoms[0]}. `;
+      return `My symptoms include ${readableSymptoms[0]}. `;
     } else {
       const lastSymptom = readableSymptoms.pop();
-      return `The symptoms include ${readableSymptoms.join(", ")} and ${lastSymptom}. `;
+      return `My symptoms include ${readableSymptoms.join(", ")} and ${lastSymptom}. `;
     }
   };
 
   const generateTravelAnxietyText = () => {
-    let text = "The Claimant reports experiencing travel anxiety following the accident. ";
+    let text = "I experienced travel anxiety following the accident. ";
     
     // Initial severity
-    text += `Initially, the anxiety was ${getSeverityText(formData.anxietyInitialSeverity)}. `;
+    text += `Initially, my anxiety was ${getSeverityText(formData.anxietyInitialSeverity)}. `;
     
     // Current status
     if (formData.anxietyCurrentSeverity === "4") {
-      text += `The anxiety has now resolved ${formData.anxietyResolveDays ? `after ${formData.anxietyResolveDays} days` : ''}. `;
+      text += `My anxiety has now resolved ${formData.anxietyResolveDays ? `after ${formData.anxietyResolveDays} days` : ''}. `;
     } else {
-      text += `Currently, the anxiety is ${getSeverityText(formData.anxietyCurrentSeverity)}. `;
+      text += `Currently, my anxiety is ${getSeverityText(formData.anxietyCurrentSeverity)}. `;
     }
 
     // Symptoms
@@ -83,27 +83,26 @@ export const TravelAnxietyComponent = ({ formData }: TravelAnxietyProps) => {
     
     // Driving status
     if (formData.currentlyDriving === "1") {
-      text += "The Claimant has returned to driving. ";
+      text += "I have returned to driving. ";
     } else if (formData.currentlyDriving === "2") {
-      text += "The Claimant has not yet returned to driving. ";
+      text += "I have not yet returned to driving. ";
     }
     
     // Prior history
     if (formData.hasAnxietyHistory === "yes") {
-      text += "The Claimant reports a history of anxiety prior to this accident. ";
+      text += "I had a history of anxiety prior to this accident. ";
       if (formData.anxietyPastHistory) {
         text += `${formData.anxietyPastHistory} `;
       }
     } else if (formData.hasAnxietyHistory === "no") {
-      text += "The Claimant reports no history of anxiety prior to this accident. ";
+      text += "I had no history of anxiety prior to this accident. ";
     }
 
     return text;
   };
 
   return (
-    <View style={dailyLifeStyles.section}>
-      <Text style={dailyLifeStyles.title}>6.5 Travel Anxiety</Text>
+    <View>
       <Text style={dailyLifeStyles.text}>{generateTravelAnxietyText()}</Text>
     </View>
   );

@@ -30,8 +30,6 @@ export const DailyLifeSection = ({ formData }: DailyLifeSectionProps) => {
   
   return (
     <View style={styles.section}>
-      <InjurySummarySection formData={formData} />
-
       {/* Display expert report sections only if the corresponding pain exists */}
       {formData.neckPain === "1" && (
         <>
@@ -44,7 +42,10 @@ export const DailyLifeSection = ({ formData }: DailyLifeSectionProps) => {
           />
           
           {/* Section 6.1 - Neck Pain (simplified version) */}
-          <NeckPainComponent formData={formData} />
+          <View style={styles.claimantReportSection}>
+            <Text style={styles.claimantSectionTitle}>Claimant's Statement - Neck Pain</Text>
+            <NeckPainComponent formData={formData} />
+          </View>
         </>
       )}
       
@@ -61,7 +62,10 @@ export const DailyLifeSection = ({ formData }: DailyLifeSectionProps) => {
           />
           
           {/* Section 6.2 - Shoulder Pain (simplified version) */}
-          <ShoulderPainComponent formData={formData} />
+          <View style={styles.claimantReportSection}>
+            <Text style={styles.claimantSectionTitle}>Claimant's Statement - Shoulder Pain</Text>
+            <ShoulderPainComponent formData={formData} />
+          </View>
         </>
       )}
     
@@ -78,7 +82,10 @@ export const DailyLifeSection = ({ formData }: DailyLifeSectionProps) => {
           />
           
           {/* Section 6.3 - Back Pain (simplified version) */}
-          <BackPainComponent formData={formData} />
+          <View style={styles.claimantReportSection}>
+            <Text style={styles.claimantSectionTitle}>Claimant's Statement - Back Pain</Text>
+            <BackPainComponent formData={formData} />
+          </View>
         </>
       )}
     
@@ -94,7 +101,10 @@ export const DailyLifeSection = ({ formData }: DailyLifeSectionProps) => {
           />
           
           {/* Section 6.4 - Headache (simplified version) */}
-          <HeadacheComponent formData={formData} />
+          <View style={styles.claimantReportSection}>
+            <Text style={styles.claimantSectionTitle}>Claimant's Statement - Headache</Text>
+            <HeadacheComponent formData={formData} />
+          </View>
         </>
       )}
     
@@ -110,7 +120,10 @@ export const DailyLifeSection = ({ formData }: DailyLifeSectionProps) => {
           />
           
           {/* Section 6.5 - Travel Anxiety (simplified version) */}
-          <TravelAnxietyComponent formData={formData} />
+          <View style={styles.claimantReportSection}>
+            <Text style={styles.claimantSectionTitle}>Claimant's Statement - Travel Anxiety</Text>
+            <TravelAnxietyComponent formData={formData} />
+          </View>
         </>
       )}
     </View>

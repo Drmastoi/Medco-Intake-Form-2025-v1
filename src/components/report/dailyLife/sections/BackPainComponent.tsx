@@ -46,24 +46,23 @@ export const BackPainComponent = ({ formData }: BackPainProps) => {
   };
 
   const generateBackPainText = () => {
-    let text = `The Claimant reports experiencing ${getBackLocationText()} pain that began ${getPainStartText()} the accident. `;
+    let text = `I experienced ${getBackLocationText()} pain that began ${getPainStartText()} the accident. `;
     
     // Initial severity
-    text += `Initially, the symptoms were ${getSeverityText(formData.backPainInitialSeverity)}. `;
+    text += `Initially, my symptoms were ${getSeverityText(formData.backPainInitialSeverity)}. `;
     
     // Current status
     if (formData.backPainCurrentSeverity === "4") {
-      text += `The symptoms have now resolved ${formData.backPainResolveDays ? `after ${formData.backPainResolveDays} days` : ''}. `;
+      text += `My symptoms have now resolved ${formData.backPainResolveDays ? `after ${formData.backPainResolveDays} days` : ''}. `;
     } else {
-      text += `Currently, the symptoms are ${getSeverityText(formData.backPainCurrentSeverity)}. `;
+      text += `Currently, my symptoms are ${getSeverityText(formData.backPainCurrentSeverity)}. `;
     }
 
     return text;
   };
 
   return (
-    <View style={dailyLifeStyles.section}>
-      <Text style={dailyLifeStyles.title}>6.3 Back Pain</Text>
+    <View>
       <Text style={dailyLifeStyles.text}>{generateBackPainText()}</Text>
     </View>
   );
