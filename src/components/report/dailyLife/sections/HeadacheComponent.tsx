@@ -47,13 +47,11 @@ export const HeadacheComponent = ({ formData }: HeadacheProps) => {
       text += `Currently, the symptoms are ${getSeverityText(formData.headacheCurrentSeverity)}. `;
     }
     
-    // Prior history
-    if (formData.hasHeadacheHistory === "yes") {
+    // Prior history - using headachePastHistory instead of hasHeadacheHistory
+    if (formData.headachePastHistory) {
       text += "The Claimant reports a history of headaches prior to this accident. ";
-      if (formData.headachePastHistory) {
-        text += `${formData.headachePastHistory} `;
-      }
-    } else if (formData.hasHeadacheHistory === "no") {
+      text += `${formData.headachePastHistory} `;
+    } else {
       text += "The Claimant reports no history of headaches prior to this accident. ";
     }
 
