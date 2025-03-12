@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    textAlign: 'center',
+    textAlign: 'left',
     marginBottom: 30,
     fontFamily: 'Helvetica-Bold',
   },
@@ -89,4 +89,44 @@ export const styles = StyleSheet.create({
     marginBottom: 15,
     paddingLeft: 5,
   },
+  infoTable: {
+    display: 'flex',
+    flexDirection: 'column',
+    marginBottom: 15,
+  },
+  infoRow: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderBottomColor: '#DDDDDD',
+  },
+  infoCell: {
+    padding: 5,
+    fontSize: 11,
+    fontFamily: 'Helvetica',
+    flex: 1,
+    borderRightWidth: 1,
+    borderRightColor: '#DDDDDD',
+  },
+  rightCell: {
+    padding: 5,
+    fontSize: 11,
+    fontFamily: 'Helvetica',
+    flex: 1,
+    borderRightWidth: 0,
+  },
+  infoHeader: {
+    fontSize: 11,
+    fontFamily: 'Helvetica-Bold',
+    marginBottom: 3,
+  },
+  reportIdentifier: {
+    fontSize: 9,
+    color: '#666666',
+    marginTop: 20,
+    marginBottom: 5,
+  },
+  pageIndicator: {
+    fontSize: 9,
+    textAlign: 'right',
+  }
 });
