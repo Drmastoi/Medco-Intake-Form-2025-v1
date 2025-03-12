@@ -49,23 +49,23 @@ export const CompactAccidentInfoSection = ({ data }: { data: AccidentData }) => 
       
       <View style={styles.accidentTable}>
         <View style={styles.accidentRow}>
-          <View style={[styles.accidentCell, { flex: 1 }]}>
+          <View style={styles.accidentCell}>
             <Text style={styles.accidentLabel}>Date of Accident:</Text>
             <Text style={styles.accidentValue}>{data.accidentDate}</Text>
           </View>
-          <View style={[styles.accidentCell, { flex: 1 }]}>
+          <View style={styles.accidentCell}>
             <Text style={styles.accidentLabel}>Time of Day:</Text>
             <Text style={styles.accidentValue}>{getTimeOfDay(data.accidentTime)}</Text>
           </View>
         </View>
         
         <View style={styles.accidentRow}>
-          <View style={[styles.accidentCell, { flex: 1 }]}>
+          <View style={styles.accidentCell}>
             <Text style={styles.accidentLabel}>Claimant Position:</Text>
             <Text style={styles.accidentValue}>{getVehiclePosition(data.vehiclePosition)}</Text>
           </View>
           {hasValue(data.vehicleStatus) && (
-            <View style={[styles.accidentCell, { flex: 1 }]}>
+            <View style={styles.accidentCell}>
               <Text style={styles.accidentLabel}>Vehicle Status:</Text>
               <Text style={styles.accidentValue}>{data.vehicleStatus}</Text>
             </View>
