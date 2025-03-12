@@ -16,12 +16,12 @@ export function PrefilledDetailsSection({ form }: { form: any }) {
         <ShareLinkButton form={form} />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <SolicitorFields form={form} />
         <InstructingPartyFields form={form} />
         <ExaminationFields form={form} />
         <DateFields form={form} />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-6">
           <ClaimantEmailField form={form} />
           <TimeSpentField form={form} />
         </div>

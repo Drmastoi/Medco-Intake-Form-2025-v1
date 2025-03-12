@@ -8,15 +8,15 @@ export function TimeSpentField({ form }: { form: any }) {
       control={form.control}
       name="timeSpentWithClaimant"
       render={({ field }) => (
-        <FormItem>
-          <FormLabel>Time Spent with Claimant (minutes)</FormLabel>
+        <FormItem className="space-y-3">
+          <FormLabel className="font-medium">Time Spent with Claimant (minutes)</FormLabel>
           <FormControl>
             <Input 
               placeholder="15" 
               {...field} 
               type="number" 
               min="1"
-              className="w-full"
+              className="w-full py-2"
             />
           </FormControl>
           <FormMessage />
