@@ -12,9 +12,7 @@ interface InjurySummaryProps {
 export const InjurySummarySection = ({ formData }: InjurySummaryProps) => {
   return (
     <View style={dailyLifeStyles.section}>
-      <Text style={dailyLifeStyles.title}>Summary of Accident</Text>
-      
-      {/* Section 5.1 - Accident History */}
+      <Text style={dailyLifeStyles.title}>5.1 Accident Information</Text>
       <AccidentInfoComponent formData={formData} />
     </View>
   );
