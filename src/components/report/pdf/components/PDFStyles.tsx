@@ -1,66 +1,63 @@
-
 import { StyleSheet } from '@react-pdf/renderer';
 
-// Define styles for reuse across PDF components
 export const styles = StyleSheet.create({
   page: {
+    flexDirection: 'column',
+    backgroundColor: '#fff',
     padding: 40,
-    fontSize: 10,
-    fontFamily: 'Helvetica',
-    color: '#222222',
   },
   section: {
     marginBottom: 20,
   },
-  header: {
-    backgroundColor: '#000000',
-    color: '#FFFFFF',
-    padding: 8,
-    marginBottom: 10,
-    fontWeight: 'bold',
-    fontSize: 12,
+  title: {
+    fontSize: 24,
+    textAlign: 'center',
+    marginBottom: 30,
+    fontFamily: 'Helvetica-Bold',
   },
-  subheader: {
-    fontWeight: 'bold',
-    marginBottom: 5,
-    marginTop: 10,
-    fontSize: 11,
-    borderBottom: '1 solid #CCCCCC',
-    paddingBottom: 3,
+  header: {
+    fontSize: 18,
+    marginBottom: 10,
+    fontFamily: 'Helvetica-Bold',
   },
   row: {
     flexDirection: 'row',
     marginBottom: 5,
   },
   label: {
-    fontWeight: 'bold',
-    width: 170,
+    width: 150,
+    fontSize: 12,
+    fontFamily: 'Helvetica-Bold',
   },
   value: {
-    flex: 1,
-  },
-  title: {
-    fontSize: 16,
-    marginBottom: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  pageNumber: {
-    position: 'absolute',
-    bottom: 20,
-    left: 0,
-    right: 0,
-    textAlign: 'center',
-    fontSize: 9,
+    fontSize: 12,
+    fontFamily: 'Helvetica',
   },
   footer: {
     position: 'absolute',
-    bottom: 20,
-    left: 40,
-    right: 40,
+    fontSize: 12,
+    bottom: 30,
+    left: 0,
+    right: 0,
     textAlign: 'center',
-    fontSize: 9,
-    borderTop: '1 solid #CCCCCC',
-    paddingTop: 5,
+    color: 'grey',
+  },
+  reportFooter: {
+    fontSize: 10,
+    marginTop: 20,
+    textAlign: 'center',
+    fontFamily: 'Helvetica',
+  },
+  summaryBox: {
+    marginBottom: 10,
+    padding: 8,
+    backgroundColor: '#f8f8f8',
+    borderRadius: 4,
+  },
+  summaryText: {
+    fontSize: 11,
+    lineHeight: 1.4,
+    color: '#333333',
+    fontFamily: 'Helvetica',
   },
 });
