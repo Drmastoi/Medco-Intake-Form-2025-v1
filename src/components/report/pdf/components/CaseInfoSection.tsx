@@ -15,7 +15,7 @@ interface CaseInfoSectionProps {
 export const CaseInfoSection: React.FC<CaseInfoSectionProps> = ({ data }) => {
   return (
     <View style={styles.section}>
-      <Text style={styles.header}>Case Information</Text>
+      <Text style={styles.header}>1. Prefilled Details</Text>
       <PDFRow label="Solicitor" value={data.solicitorName} />
       <PDFRow label="Solicitor Reference" value={data.solicitorReference} />
       <PDFRow label="Instructing Party" value={data.instructingPartyName} />

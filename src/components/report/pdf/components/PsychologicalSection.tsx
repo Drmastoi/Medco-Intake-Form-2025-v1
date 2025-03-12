@@ -28,10 +28,7 @@ export const PsychologicalSection: React.FC<PsychologicalSectionProps> = ({
 }) => {
   return (
     <View style={styles.section}>
-      <Text style={styles.header}>Psychological Assessment</Text>
-      
-      {/* Headache */}
-      <Text style={styles.subheader}>Headache</Text>
+      <Text style={styles.header}>6. Headache</Text>
       <PDFRow label="Reported Headaches" value={headache.hasInjury} />
       
       {headache.hasInjury && (
@@ -44,8 +41,7 @@ export const PsychologicalSection: React.FC<PsychologicalSectionProps> = ({
         </>
       )}
       
-      {/* Travel Anxiety */}
-      <Text style={styles.subheader}>Travel Anxiety</Text>
+      <Text style={styles.subheader}>7. Travel Anxiety</Text>
       <PDFRow label="Reported Travel Anxiety" value={travelAnxiety.hasAnxiety} />
       
       {travelAnxiety.hasAnxiety && (

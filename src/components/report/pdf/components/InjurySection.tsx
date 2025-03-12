@@ -18,7 +18,7 @@ export const InjurySection: React.FC<InjurySectionProps> = ({ data }) => {
       <Text style={styles.header}>Injury Assessment</Text>
       
       {/* Neck Pain */}
-      <Text style={styles.subheader}>Neck Pain</Text>
+      <Text style={styles.subheader}>3. Neck Pain</Text>
       <PDFRow label="Reported Neck Pain" value={data.neckPain.hasInjury} />
       
       {data.neckPain.hasInjury && (
@@ -33,7 +33,7 @@ export const InjurySection: React.FC<InjurySectionProps> = ({ data }) => {
       )}
       
       {/* Shoulder Pain */}
-      <Text style={styles.subheader}>Shoulder Pain</Text>
+      <Text style={styles.subheader}>4. Shoulder Pain</Text>
       <PDFRow label="Reported Shoulder Pain" value={data.shoulderPain.hasInjury} />
       
       {data.shoulderPain.hasInjury && (
@@ -47,7 +47,7 @@ export const InjurySection: React.FC<InjurySectionProps> = ({ data }) => {
       )}
       
       {/* Back Pain */}
-      <Text style={styles.subheader}>Back Pain</Text>
+      <Text style={styles.subheader}>5. Back Pain</Text>
       <PDFRow label="Reported Back Pain" value={data.backPain.hasInjury} />
       
       {data.backPain.hasInjury && (

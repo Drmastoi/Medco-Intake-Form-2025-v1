@@ -22,13 +22,13 @@ const ReportDocument = ({ data }: { data: ReportData }) => (
     <Page size="A4" style={styles.page}>
       <Text style={styles.title}>Medical Assessment Report</Text>
       
-      {/* Case Information */}
+      {/* Section 1: Prefilled Details */}
       <CaseInfoSection data={data.prefilled} />
       
-      {/* Personal Information */}
+      {/* Section 2: Personal Information */}
       <PersonalInfoSection data={data.personal} />
 
-      {/* Accident Information */}
+      {/* Section 3: Accident Details */}
       <AccidentInfoSection data={data.accident} />
 
       <PageFooter />
@@ -36,7 +36,7 @@ const ReportDocument = ({ data }: { data: ReportData }) => (
 
     {/* Page 2: Injury Assessment */}
     <Page size="A4" style={styles.page}>
-      {/* Injuries Information */}
+      {/* Sections 3-5: Injuries Information */}
       <InjurySection data={data.injuries} />
 
       <PageFooter />
@@ -44,13 +44,13 @@ const ReportDocument = ({ data }: { data: ReportData }) => (
 
     {/* Page 3: Psychological Assessment, Medical History, and Declaration */}
     <Page size="A4" style={styles.page}>
-      {/* Headache and Travel Anxiety */}
+      {/* Sections 6-7: Headache and Travel Anxiety */}
       <PsychologicalSection 
         headache={data.injuries.headache} 
         travelAnxiety={data.travelAnxiety} 
       />
       
-      {/* Medical History Information */}
+      {/* Section 13: Medical History Information */}
       <MedicalHistorySection data={data.other} />
       
       {/* Declaration */}

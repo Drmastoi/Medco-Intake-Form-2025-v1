@@ -15,7 +15,7 @@ interface MedicalHistorySectionProps {
 export const MedicalHistorySection: React.FC<MedicalHistorySectionProps> = ({ data }) => {
   return (
     <View style={styles.section}>
-      <Text style={styles.header}>Medical History</Text>
+      <Text style={styles.header}>13. Past Medical History</Text>
       <PDFRow label="Exceptional Injuries" value={data.medicalHistory.exceptionalInjuries} />
       {data.medicalHistory.exceptionalInjuries && (
         <PDFRow label="Details" value={data.medicalHistory.exceptionalInjuriesDetails} />

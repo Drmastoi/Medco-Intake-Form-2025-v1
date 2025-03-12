@@ -15,7 +15,7 @@ interface AccidentInfoSectionProps {
 export const AccidentInfoSection: React.FC<AccidentInfoSectionProps> = ({ data }) => {
   return (
     <View style={styles.section}>
-      <Text style={styles.header}>Accident Information</Text>
+      <Text style={styles.header}>3. Accident Details</Text>
       <PDFRow label="Accident Date" value={data.accidentDate} />
       <PDFRow label="Time of Day" value={data.accidentTime} />
       <PDFRow label="Vehicle Position" value={data.vehiclePosition} />
