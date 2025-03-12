@@ -39,7 +39,7 @@ export const formSchema = z.object({
   vehicleLocation: z.enum(["1", "2", "3", "4", "5"]).default("1"),
   
   // Section 3 - Medical Information
-  neckPain: z.enum(["1", "2"]),
+  neckPain: z.enum(["1", "2"]).default("2"),
   additionalInfo: z.string().optional(),
   
   // Section 4 - Shoulder Pain Information

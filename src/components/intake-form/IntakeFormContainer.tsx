@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { FormSchema, formSchema } from "@/schemas/intakeFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -64,7 +65,7 @@ export function IntakeFormContainer() {
       vehiclePosition: "1", // Default to first option
       
       // Section 3 - Medical Information
-      neckPain: "1",
+      neckPain: "2", // Default to No (unchecked)
       additionalInfo: "",
       
       // Section 4 - Shoulder Pain Information

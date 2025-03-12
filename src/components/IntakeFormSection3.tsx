@@ -5,6 +5,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -34,6 +35,9 @@ export function IntakeFormSection3({ form }: { form: any }) {
                 </FormControl>
                 <div className="space-y-1 leading-none">
                   <FormLabel>Did you get Any Neck Pain?</FormLabel>
+                  <FormDescription className="text-gray-500">
+                    Please select this option if you experienced neck pain due to the accident
+                  </FormDescription>
                 </div>
                 <FormMessage />
               </FormItem>

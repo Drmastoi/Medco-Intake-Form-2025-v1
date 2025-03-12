@@ -20,7 +20,7 @@ export const InjuriesSymptomsSection = ({ formData, styles }: InjuriesSymptomsSe
         I have acknowledged the Letter of Instruction and I confirm there were no other injuries suffered by the claimant as told to me during the examination after direct questioning
       </Text>
       
-      {/* Neck Injury */}
+      {/* Neck Injury - Only show if selected */}
       {formData.neckPain === "1" && (
         <InjurySectionDetail
           title="Neck"
