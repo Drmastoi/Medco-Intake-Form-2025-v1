@@ -13,6 +13,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 export function IntakeFormSection3({ form }: { form: any }) {
   const neckPain = form.watch("neckPain");
   const neckPainCurrentSeverity = form.watch("neckPainCurrentSeverity");
+  const hadPriorNeckPain = form.watch("hadPriorNeckPain");
 
   return (
     <div className="space-y-4">
@@ -117,6 +118,89 @@ export function IntakeFormSection3({ form }: { form: any }) {
                   </FormItem>
                 )}
               />
+
+              <FormField
+                control={form.control}
+                name="hadPriorNeckPain"
+                render={({ field }) => (
+                  <FormItem className="space-y-3">
+                    <FormLabel>Did you have neck pain before this accident?</FormLabel>
+                    <FormControl>
+                      <div className="flex flex-col space-y-2">
+                        <div className="flex items-center space-x-2">
+                          <Checkbox
+                            checked={field.value === "1"}
+                            onCheckedChange={() => field.onChange("1")}
+                          />
+                          <label>Yes</label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox
+                            checked={field.value === "2"}
+                            onCheckedChange={() => field.onChange("2")}
+                          />
+                          <label>No</label>
+                        </div>
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {hadPriorNeckPain === "1" && (
+                <div className="space-y-4 border p-4 rounded-md">
+                  <p className="text-sm text-gray-500">
+                    Please indicate what percentage of your current neck pain is attributable to this accident versus your previous condition:
+                  </p>
+                  
+                  <FormField
+                    control={form.control}
+                    name="accidentNeckPainPercentage"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Percentage due to this accident (%)</FormLabel>
+                        <FormControl>
+                          <Input 
+                            type="number" 
+                            placeholder="e.g. 50" 
+                            min="0" 
+                            max="100" 
+                            {...field} 
+                          />
+                        </FormControl>
+                        <FormDescription>
+                          Enter a value between 0-100
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <FormField
+                    control={form.control}
+                    name="priorNeckPainPercentage"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Percentage due to previous condition (%)</FormLabel>
+                        <FormControl>
+                          <Input 
+                            type="number" 
+                            placeholder="e.g. 50" 
+                            min="0" 
+                            max="100" 
+                            {...field} 
+                          />
+                        </FormControl>
+                        <FormDescription>
+                          Enter a value between 0-100
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              )}
             </>
           )}
         </div>

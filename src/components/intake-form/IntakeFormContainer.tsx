@@ -67,6 +67,9 @@ export function IntakeFormContainer() {
       // Section 3 - Medical Information
       neckPain: "2", // Default to No (unchecked)
       additionalInfo: "",
+      hadPriorNeckPain: "2", // Default to No
+      accidentNeckPainPercentage: "",
+      priorNeckPainPercentage: "",
       
       // Section 4 - Shoulder Pain Information
       shoulderPain: "1",

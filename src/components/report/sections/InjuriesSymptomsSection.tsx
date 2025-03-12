@@ -31,6 +31,19 @@ export const InjuriesSymptomsSection = ({ formData, styles }: InjuriesSymptomsSe
         />
       )}
       
+      {/* Display prior neck pain information if applicable */}
+      {formData.neckPain === "1" && formData.hadPriorNeckPain === "1" && (
+        <View style={{ marginBottom: 10 }}>
+          <Text style={styles.text}>
+            <Text style={{ fontWeight: 'bold' }}>Prior Neck Pain History: </Text>
+            The patient reported experiencing neck pain before this accident. 
+            {formData.accidentNeckPainPercentage && formData.priorNeckPainPercentage && (
+              ` They attribute approximately ${formData.accidentNeckPainPercentage}% of their current neck pain to this accident and ${formData.priorNeckPainPercentage}% to their previous condition.`
+            )}
+          </Text>
+        </View>
+      )}
+      
       {/* Back Injury */}
       {formData.backPain === "1" && (
         <InjurySectionDetail

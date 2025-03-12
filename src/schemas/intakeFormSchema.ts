@@ -41,6 +41,9 @@ export const formSchema = z.object({
   // Section 3 - Medical Information
   neckPain: z.enum(["1", "2"]).default("2"),
   additionalInfo: z.string().optional(),
+  hadPriorNeckPain: z.enum(["1", "2"]).default("2"), // "1" for Yes, "2" for No
+  accidentNeckPainPercentage: z.string().optional(), // Percentage due to current accident
+  priorNeckPainPercentage: z.string().optional(), // Percentage due to previous condition
   
   // Section 4 - Shoulder Pain Information
   shoulderPain: z.enum(["1", "2"]),
