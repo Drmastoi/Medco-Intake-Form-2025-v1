@@ -1,6 +1,5 @@
-
 export const formatList = (items: string[] = [], otherText?: string) => {
-  if (!items.length) return '';
+  if (!items || !items.length) return '';
   const mainItems = items.filter(item => item !== 'other');
   const formattedList = mainItems.join(', ');
   return otherText ? `${formattedList}${mainItems.length ? ', and ' : ''}${otherText}` : formattedList;

@@ -13,16 +13,16 @@ export const WorkImpactSection = ({ formData }: WorkImpactProps) => {
   return (
     <View style={dailyLifeStyles.section}>
       <Text style={dailyLifeStyles.subtitle}>Impact on Work:</Text>
-      {formData.daysOffWork > 0 && (
-        <Text style={dailyLifeStyles.text}>• Total days off work: {formData.daysOffWork}</Text>
+      {formData.timeOffWork && parseInt(formData.timeOffWork) > 0 && (
+        <Text style={dailyLifeStyles.text}>• Total days off work: {formData.timeOffWork}</Text>
       )}
-      {formData.daysLightDuties > 0 && (
-        <Text style={dailyLifeStyles.text}>• Days on light duties: {formData.daysLightDuties}</Text>
+      {formData.workRestrictions && formData.workRestrictions.includes('light-duties') && (
+        <Text style={dailyLifeStyles.text}>• Days on light duties: {formData.timeOffWork}</Text>
       )}
-      {formData.workDifficulties?.length > 0 && (
-        <Text style={dailyLifeStyles.text}>• Specific work difficulties: {formatList(formData.workDifficulties, formData.otherWorkDifficulties)}</Text>
+      {formData.workRestrictions && formData.workRestrictions.length > 0 && (
+        <Text style={dailyLifeStyles.text}>• Specific work difficulties: {formatList(formData.workRestrictions)}</Text>
       )}
-      {!formData.daysOffWork && !formData.daysLightDuties && (!formData.workDifficulties || formData.workDifficulties.length === 0) && (
+      {(!formData.timeOffWork || parseInt(formData.timeOffWork) === 0) && (!formData.workRestrictions || formData.workRestrictions.length === 0) && (
         <Text style={dailyLifeStyles.text}>No significant impact on work reported by the claimant.</Text>
       )}
     </View>

@@ -13,20 +13,20 @@ export const ActivitiesImpactSection = ({ formData }: ActivitiesImpactProps) => 
   return (
     <View style={dailyLifeStyles.section}>
       <Text style={dailyLifeStyles.subtitle}>Impact on Daily Activities:</Text>
-      {formData.effectOnDomesticLiving === "1" && (
-        <Text style={dailyLifeStyles.text}>• Domestic activities affected: {formatList(formData.domesticEffects, formData.otherDomesticEffects)}</Text>
+      {formData.impactOnDomestic === "1" && (
+        <Text style={dailyLifeStyles.text}>• Domestic activities affected: {formatList(formData.domesticIssues, formData.otherDomesticIssues)}</Text>
       )}
-      {formData.sleepDisturbance === "1" && (
-        <Text style={dailyLifeStyles.text}>• Sleep disturbances: {formatList(formData.sleepDisturbances, formData.otherSleepDisturbances)}</Text>
+      {formData.impactOnSleep === "1" && (
+        <Text style={dailyLifeStyles.text}>• Sleep disturbances: {formatList(formData.sleepIssues, formData.otherSleepIssues)}</Text>
       )}
-      {formData.effectOnSportsActivities === "1" && formData.sportsActivitiesAffected && (
-        <Text style={dailyLifeStyles.text}>• Sports/leisure activities affected: {formData.sportsActivitiesAffected}</Text>
+      {formData.impactOnSports === "1" && formData.sportsActivities && (
+        <Text style={dailyLifeStyles.text}>• Sports/leisure activities affected: {formData.sportsActivities}</Text>
       )}
-      {formData.effectOnSocialLife === "1" && formData.socialLifeDetails && (
-        <Text style={dailyLifeStyles.text}>• Social life impact: {formData.socialLifeDetails}</Text>
+      {formData.impactOnSocial === "1" && formData.socialDetails && (
+        <Text style={dailyLifeStyles.text}>• Social life impact: {formData.socialDetails}</Text>
       )}
-      {formData.effectOnDomesticLiving !== "1" && formData.sleepDisturbance !== "1" && 
-       formData.effectOnSportsActivities !== "1" && formData.effectOnSocialLife !== "1" && (
+      {formData.impactOnDomestic !== "1" && formData.impactOnSleep !== "1" && 
+       formData.impactOnSports !== "1" && formData.impactOnSocial !== "1" && (
         <Text style={dailyLifeStyles.text}>No significant impact on daily activities reported by the claimant.</Text>
       )}
     </View>
