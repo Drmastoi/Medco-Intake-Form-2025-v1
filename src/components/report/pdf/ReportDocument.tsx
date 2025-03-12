@@ -16,6 +16,9 @@ import { AppointmentDetailsSection } from './components/AppointmentDetailsSectio
 import { CompactAccidentInfoSection } from './components/CompactAccidentInfoSection';
 import { PageFooter } from './components/PageFooter';
 
+// Import summary of injuries section
+import { SummaryOfInjuriesSection } from './components/SummaryOfInjuriesSection';
+
 const ReportDocument = ({ data }: { data: ReportData }) => (
   <Document>
     {/* Page 1: Basic information */}
@@ -68,6 +71,9 @@ const ReportDocument = ({ data }: { data: ReportData }) => (
       
       {/* Section 5: Accident Information */}
       <CompactAccidentInfoSection data={data.accident} />
+      
+      {/* Section 6: Summary of Injuries */}
+      <SummaryOfInjuriesSection data={data.injuries} />
       
       {/* Report identifier and page number */}
       <Text style={styles.reportIdentifier}>
