@@ -64,6 +64,14 @@ export const InjuriesAndSymptomsSection = ({ data }: { data?: InjuriesData }) =>
     }
   };
 
+  const getSeverityTextForExamination = (severity: string): string => {
+    const severityText = getSeverityText(severity);
+    if (severityText === "mild") return "mild";
+    if (severityText === "moderate") return "moderate";
+    if (severityText === "severe") return "severe";
+    return "mild"; // default fallback
+  };
+
   return (
     <View style={styles.section}>
       <Text style={styles.sectionTitle}>8. Injuries and Symptoms</Text>
@@ -84,14 +92,20 @@ export const InjuriesAndSymptomsSection = ({ data }: { data?: InjuriesData }) =>
           8.1 Neck Pain
         </Text>
         {data?.neckPain?.hasInjury ? (
-          <Text style={{fontSize: 9, lineHeight: 1.4, marginBottom: 8}}>
-            Claimant suffered from neck pain after the accident. It started {getPainStartText(data.neckPain.painStart)}, 
-            initial severity was {getSeverityText(data.neckPain.initialSeverity)}, 
-            current severity is {getSeverityText(data.neckPain.currentSeverity)}.
-            {data.neckPain.resolveDays && data.neckPain.currentSeverity === "4" ? ` Pain resolved after ${data.neckPain.resolveDays} days.` : ""}
-            {data.neckPain.hadPrior ? " Claimant had previous history of neck pain before the accident." : " Claimant did not have previous history of neck pain before the accident."}
-            {data.neckPain.additionalInfo ? ` ${data.neckPain.additionalInfo}` : ""}
-          </Text>
+          <>
+            <Text style={{fontSize: 9, lineHeight: 1.4, marginBottom: 8}}>
+              Claimant suffered from neck pain after the accident. It started {getPainStartText(data.neckPain.painStart)}, 
+              initial severity was {getSeverityText(data.neckPain.initialSeverity)}, 
+              current severity is {getSeverityText(data.neckPain.currentSeverity)}.
+              {data.neckPain.resolveDays && data.neckPain.currentSeverity === "4" ? ` Pain resolved after ${data.neckPain.resolveDays} days.` : ""}
+              {data.neckPain.hadPrior ? " Claimant had previous history of neck pain before the accident." : " Claimant did not have previous history of neck pain before the accident."}
+              {data.neckPain.additionalInfo ? ` ${data.neckPain.additionalInfo}` : ""}
+            </Text>
+            <Text style={{fontSize: 9, lineHeight: 1.4, marginBottom: 8}}>
+              <Text style={{fontWeight: 'bold'}}>Examination: </Text>
+              Neck examination is showing {getSeverityTextForExamination(data.neckPain.currentSeverity)} restriction of movement and tenderness. No neurological symptoms observed.
+            </Text>
+          </>
         ) : (
           <Text style={{fontSize: 9, lineHeight: 1.4, marginBottom: 8}}>
             Claimant did not suffer from neck pain after the accident.
