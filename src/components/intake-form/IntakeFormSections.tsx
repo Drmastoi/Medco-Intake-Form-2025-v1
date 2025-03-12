@@ -13,7 +13,6 @@ import { IntakeFormSection9 } from "@/components/IntakeFormSection9";
 import { IntakeFormSection10 } from "@/components/IntakeFormSection10";
 import { IntakeFormSection11 } from "@/components/IntakeFormSection11";
 import { IntakeFormSection12 } from "@/components/IntakeFormSection12";
-import { IntakeFormSummary } from "@/components/IntakeFormSummary";
 
 interface IntakeFormSectionsProps {
   currentSection: number;
@@ -48,8 +47,6 @@ export function IntakeFormSections({ currentSection, form }: IntakeFormSectionsP
       return <IntakeFormSection11 form={form} />;
     case 12:
       return <IntakeFormSection12 form={form} />;
-    case 13:
-      return <IntakeFormSummary form={form} />;
     default:
       return null;
   }

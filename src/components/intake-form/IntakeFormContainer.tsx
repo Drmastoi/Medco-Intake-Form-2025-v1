@@ -1,19 +1,16 @@
-
 import React, { useState, useEffect } from "react";
 import { FormSchema, formSchema } from "@/schemas/intakeFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Form } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
 import { IntakeFormNavigation } from "@/components/intake-form/IntakeFormNavigation";
 import { IntakeFormSections } from "@/components/intake-form/IntakeFormSections";
-import { useFormSubmission } from "@/components/intake-form/useFormSubmission";
 import { IntakeFormGuidance } from "@/components/intake-form/IntakeFormGuidance";
 import { IntakeFormNavButtons } from "@/components/intake-form/IntakeFormNavButtons";
 
 export function IntakeFormContainer() {
   const [currentSection, setCurrentSection] = useState(0);
-  const totalSections = 14;
+  const totalSections = 13; // Reduced by 1 after removing summary report
 
   const tabNames = [
     "Prefilled Details",
@@ -28,8 +25,7 @@ export function IntakeFormContainer() {
     "Other Injuries",
     "Treatment",
     "Impact on Lifestyle",
-    "Past Medical History",
-    "Summary Report"
+    "Past Medical History"
   ];
   
   const form = useForm<FormSchema>({
@@ -118,8 +114,6 @@ export function IntakeFormContainer() {
     },
   });
 
-  const { handleSubmit } = useFormSubmission();
-
   const handleTabChange = (value: string) => {
     setCurrentSection(parseInt(value));
   };
@@ -180,7 +174,7 @@ export function IntakeFormContainer() {
       />
       
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+        <form className="space-y-8">
           <div className="grid grid-cols-1 gap-6">
             <IntakeFormSections 
               currentSection={currentSection} 
