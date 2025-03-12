@@ -15,10 +15,11 @@ export const formSchema = z.object({
   mobileNumber: z.string(),
   emailId: z.string().email(),
   
-  // Existing fields
+  // Personal Information fields
   fullName: z.string().min(2, { message: "Name must be at least 2 characters" }),
   dateOfBirth: z.string(),
-  idType: z.enum(["1", "2", "3"]),
+  gender: z.string().optional(),
+  idType: z.enum(["1", "2", "3", "4"]),
   address: z.string(),
   occupation: z.string(),
   workType: z.enum(["1", "2"]),

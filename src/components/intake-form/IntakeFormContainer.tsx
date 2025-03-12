@@ -47,32 +47,43 @@ export function IntakeFormContainer() {
       dateOfExamination: new Date().toISOString().split('T')[0],
       dateOfReport: new Date().toISOString().split('T')[0],
       
-      // Existing default values
+      // Personal information default values
       fullName: "",
       dateOfBirth: "",
-      idType: "1",
+      gender: "male", // Default gender value
+      idType: "1", // Default to driving license
       address: "",
       occupation: "",
       workType: "1",
       livingWith: "1",
       childrenCount: "0",
+      
+      // Accident information default values
       accidentDate: "",
-      accidentTime: "1",
-      vehiclePosition: "1",
+      accidentTime: "1", // Default to Morning
+      vehiclePosition: "1", // Default to first option
+      
+      // Section 3 - Medical Information
       neckPain: "1",
       additionalInfo: "",
+      
+      // Section 4 - Shoulder Pain Information
       shoulderPain: "1",
       shoulderSide: "1",
       shoulderPainStart: "1",
       shoulderPainInitialSeverity: "1",
       shoulderPainCurrentSeverity: "1",
       shoulderPainResolveDays: "",
+
+      // Section 5 - Back Pain Information
       backPain: "1",
       backLocation: "1",
       backPainStart: "1",
       backPainInitialSeverity: "1",
       backPainCurrentSeverity: "1",
       backPainResolveDays: "",
+
+      // Section 6 - Headache Information
       headache: "1",
       headacheStart: "1",
       headacheInitialSeverity: "1",
