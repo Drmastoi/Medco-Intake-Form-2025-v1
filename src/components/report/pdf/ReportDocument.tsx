@@ -65,7 +65,7 @@ const ReportDocument = ({ data }: { data: ReportData }) => (
       <PageFooter />
     </Page>
 
-    {/* Page 2: Accident Details and More */}
+    {/* Page 2: Accident Details, Summary of Injuries and More */}
     <Page size="A4" style={styles.page}>
       <Text style={styles.title}>Expert Medical Report</Text>
       
@@ -90,3 +90,4 @@ const ReportDocument = ({ data }: { data: ReportData }) => (
 );
 
 export default ReportDocument;
+
