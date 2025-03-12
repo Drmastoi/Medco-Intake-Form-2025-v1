@@ -2,7 +2,18 @@
 import React from 'react';
 import { Text, View } from '@react-pdf/renderer';
 import { styles } from './PDFStyles';
-import { InjuriesData } from '@/utils/pdfReportUtils';
+
+interface InjuriesData {
+  neckPain: string;
+  shoulderPain: string;
+  shoulderSide: string;
+  backPain: string;
+  backLocation: string;
+  headache: string;
+  travelAnxiety: string;
+  hasBruising: string;
+  hasVisibleScar: string;
+}
 
 export const SummaryOfInjuriesSection = ({ data }: { data: InjuriesData }) => {
   // Function to determine if an injury is present
@@ -10,7 +21,7 @@ export const SummaryOfInjuriesSection = ({ data }: { data: InjuriesData }) => {
   
   return (
     <View style={styles.section}>
-      <Text style={styles.sectionTitle}>6. Summary of Injuries</Text>
+      <Text style={styles.sectionTitle}>7. Summary of Injuries</Text>
       
       <View style={styles.summaryBox}>
         {hasInjury(data.neckPain) && (

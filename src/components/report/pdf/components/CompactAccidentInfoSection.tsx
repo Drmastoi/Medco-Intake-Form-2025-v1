@@ -3,7 +3,12 @@ import React from 'react';
 import { Text, View } from '@react-pdf/renderer';
 import { styles } from './PDFStyles';
 import { PDFRow } from './PDFRow';
-import { AccidentData } from '@/utils/pdfReportUtils';
+
+interface AccidentData {
+  accidentDate: string;
+  accidentTime: string;
+  vehiclePosition: string;
+}
 
 export const CompactAccidentInfoSection = ({ data }: { data: AccidentData }) => {
   // Convert accidentTime codes to readable text
@@ -29,8 +34,8 @@ export const CompactAccidentInfoSection = ({ data }: { data: AccidentData }) => 
 
   return (
     <View style={styles.section}>
-      <Text style={styles.sectionTitle}>7. Accident Information</Text>
-      <Text style={styles.accidentSubtitle}>7.1 Road Traffic Accident (Vehicle)</Text>
+      <Text style={styles.sectionTitle}>6. Accident Information</Text>
+      <Text style={styles.accidentSubtitle}>6.1 Road Traffic Accident (Vehicle)</Text>
       
       <View style={styles.accidentTable}>
         <View style={styles.accidentRow}>
