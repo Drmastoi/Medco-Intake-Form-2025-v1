@@ -9,11 +9,53 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useEffect, useState } from "react";
 
 export function IntakeFormSection3({ form }: { form: any }) {
   const neckPain = form.watch("neckPain");
+  const neckPainStart = form.watch("neckPainStart");
+  const neckPainInitialSeverity = form.watch("neckPainInitialSeverity");
   const neckPainCurrentSeverity = form.watch("neckPainCurrentSeverity");
   const hadPriorNeckPain = form.watch("hadPriorNeckPain");
+  const accidentNeckPainPercentage = form.watch("accidentNeckPainPercentage");
+  const priorNeckPainPercentage = form.watch("priorNeckPainPercentage");
+  
+  const [summaryText, setSummaryText] = useState<string>("");
+  
+  // Generate summary text based on selected options
+  useEffect(() => {
+    if (neckPain === "1") {
+      // Map the values to their text representations
+      const startText = neckPainStart === "1" ? "same day" : 
+                        neckPainStart === "2" ? "next day" : 
+                        "few days later";
+                        
+      const initialSeverityText = neckPainInitialSeverity === "1" ? "mild" :
+                                 neckPainInitialSeverity === "2" ? "moderate" :
+                                 "severe";
+                                 
+      const currentSeverityText = neckPainCurrentSeverity === "1" ? "mild" :
+                                 neckPainCurrentSeverity === "2" ? "moderate" :
+                                 neckPainCurrentSeverity === "3" ? "severe" :
+                                 "resolved";
+      
+      let text = `Claimant suffered from neck pain after the accident. It started [${startText}], initial severity was [${initialSeverityText}], current severity is [${currentSeverityText}]. `;
+      
+      if (hadPriorNeckPain === "1") {
+        if (accidentNeckPainPercentage && priorNeckPainPercentage) {
+          text += `Claimant had previous history of neck pain before the accident. ${accidentNeckPainPercentage}% of current pain is due to this accident and ${priorNeckPainPercentage}% is due to previous condition.`;
+        } else {
+          text += "Claimant had previous history of neck pain before the accident.";
+        }
+      } else {
+        text += "Claimant did not have previous history of neck pain before the accident.";
+      }
+      
+      setSummaryText(text);
+    } else {
+      setSummaryText("Claimant did not suffer from neck pain after the accident.");
+    }
+  }, [neckPain, neckPainStart, neckPainInitialSeverity, neckPainCurrentSeverity, hadPriorNeckPain, accidentNeckPainPercentage, priorNeckPainPercentage]);
 
   return (
     <div className="space-y-4">
@@ -278,6 +320,13 @@ export function IntakeFormSection3({ form }: { form: any }) {
           )}
         </div>
       </div>
+      
+      {/* Dynamic Summary Text */}
+      {summaryText && (
+        <div className="mt-6 p-4 bg-gray-50 rounded-md border border-gray-200">
+          <p className="text-xs text-gray-600 italic">{summaryText}</p>
+        </div>
+      )}
     </div>
   );
 }
