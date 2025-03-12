@@ -59,12 +59,16 @@ export const CompactAccidentInfoSection: React.FC<CompactAccidentInfoSectionProp
       <Text style={styles.compactSectionTitle}>Section 5 - Accident Details</Text>
       
       <View style={styles.summaryBox}>
-        <Text style={styles.summaryText}>
-          The incident occurred on {data.accidentDate} during the {getTimeOfDay(data.accidentTime)}. 
-          {data.claimantPosition ? ` The claimant was the ${getPosition(data.claimantPosition)} of ` : ' The claimant was in '}
-          {data.claimantVehicle ? `a ${getVehicleType(data.claimantVehicle)}` : 'the vehicle'}.
-          {data.impactLocation ? ` The impact occurred at the ${getImpactLocation(data.impactLocation)} of the vehicle.` : ''}
-        </Text>
+        {data.accidentSummary ? (
+          <Text style={styles.summaryText}>{data.accidentSummary}</Text>
+        ) : (
+          <Text style={styles.summaryText}>
+            The incident occurred on {data.accidentDate} during the {getTimeOfDay(data.accidentTime)}. 
+            {data.claimantPosition ? ` The claimant was the ${getPosition(data.claimantPosition)} of ` : ' The claimant was in '}
+            {data.claimantVehicle ? `a ${getVehicleType(data.claimantVehicle)}` : 'the vehicle'}.
+            {data.impactLocation ? ` The impact occurred at the ${getImpactLocation(data.impactLocation)} of the vehicle.` : ''}
+          </Text>
+        )}
       </View>
       
       <View style={styles.infoTable}>

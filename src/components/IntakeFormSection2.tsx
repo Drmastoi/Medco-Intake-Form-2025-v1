@@ -101,6 +101,11 @@ export function IntakeFormSection2({ form }: { form: any }) {
     text += `The claimant was ${position} at the time of the accident.`;
     
     setSummaryText(text);
+    
+    // Store the summary in the form data (without the prefix)
+    const cleanSummary = text.replace("Accident Information Summary: ", "");
+    form.setValue("accidentSummary", cleanSummary);
+    
   }, [
     accidentDate,
     accidentTime,
@@ -110,7 +115,8 @@ export function IntakeFormSection2({ form }: { form: any }) {
     vehicleDamage,
     claimantPosition,
     claimantVehicle,
-    otherVehicle
+    otherVehicle,
+    form
   ]);
 
   return (

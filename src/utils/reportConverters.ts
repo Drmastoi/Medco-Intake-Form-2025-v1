@@ -55,6 +55,7 @@ export function convertAccidentData(formData: FormSchema): AccidentData {
     claimantPosition: formData.claimantPosition,
     claimantVehicle: formData.claimantVehicle,
     otherVehicle: formData.otherVehicle,
+    accidentSummary: formData.accidentSummary || undefined,
   };
 }
 
