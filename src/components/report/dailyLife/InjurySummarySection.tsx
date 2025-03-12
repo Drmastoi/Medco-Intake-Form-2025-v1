@@ -42,6 +42,11 @@ export const InjurySummarySection = ({ formData }: { formData: any }) => {
     
     neckPainText = `Claimant suffered from neck pain after the accident. It started ${startText}, initial severity was ${initialSeverity}, current severity is ${currentSeverity}. `;
     
+    // Add resolution days if pain has resolved
+    if (formData?.neckPainCurrentSeverity === "4" && formData?.neckPainResolveDays) {
+      neckPainText += `Claimant's neck pain resolved in ${formData.neckPainResolveDays} days. `;
+    }
+    
     if (formData?.hadPriorNeckPain === "1") {
       if (formData?.accidentNeckPainPercentage && formData?.priorNeckPainPercentage) {
         neckPainText += `Claimant had previous history of neck pain before the accident. ${formData.accidentNeckPainPercentage}% of current pain is due to this accident and ${formData.priorNeckPainPercentage}% is due to previous condition.`;
@@ -66,6 +71,11 @@ export const InjurySummarySection = ({ formData }: { formData: any }) => {
     const currentSeverity = getSeverityText(formData?.shoulderPainCurrentSeverity);
     
     shoulderPainText = `Claimant suffered from ${shoulderSide} pain after the accident. It started ${startText}, initial severity was ${initialSeverity}, current severity is ${currentSeverity}. `;
+    
+    // Add resolution days if pain has resolved
+    if (formData?.shoulderPainCurrentSeverity === "4" && formData?.shoulderPainResolveDays) {
+      shoulderPainText += `Claimant's shoulder pain resolved in ${formData.shoulderPainResolveDays} days. `;
+    }
     
     if (formData?.hadPriorShoulderPain === "1") {
       if (formData?.accidentShoulderPainPercentage && formData?.priorShoulderPainPercentage) {

@@ -1,4 +1,3 @@
-
 import {
   FormControl,
   FormField,
@@ -19,6 +18,7 @@ export function IntakeFormSection3({ form }: { form: any }) {
   const hadPriorNeckPain = form.watch("hadPriorNeckPain");
   const accidentNeckPainPercentage = form.watch("accidentNeckPainPercentage");
   const priorNeckPainPercentage = form.watch("priorNeckPainPercentage");
+  const neckPainResolveDays = form.watch("neckPainResolveDays");
   
   const [summaryText, setSummaryText] = useState<string>("");
   
@@ -41,6 +41,11 @@ export function IntakeFormSection3({ form }: { form: any }) {
       
       let text = `Claimant suffered from neck pain after the accident. It started ${startText}, initial severity was ${initialSeverityText}, current severity is ${currentSeverityText}. `;
       
+      // Add resolution days if pain has resolved
+      if (neckPainCurrentSeverity === "4" && neckPainResolveDays) {
+        text += `Claimant's neck pain resolved in ${neckPainResolveDays} days. `;
+      }
+      
       if (hadPriorNeckPain === "1") {
         if (accidentNeckPainPercentage && priorNeckPainPercentage) {
           text += `Claimant had previous history of neck pain before the accident. ${accidentNeckPainPercentage}% of current pain is due to this accident and ${priorNeckPainPercentage}% is due to previous condition.`;
@@ -55,7 +60,7 @@ export function IntakeFormSection3({ form }: { form: any }) {
     } else {
       setSummaryText("Claimant did not suffer from neck pain after the accident.");
     }
-  }, [neckPain, neckPainStart, neckPainInitialSeverity, neckPainCurrentSeverity, hadPriorNeckPain, accidentNeckPainPercentage, priorNeckPainPercentage]);
+  }, [neckPain, neckPainStart, neckPainInitialSeverity, neckPainCurrentSeverity, hadPriorNeckPain, accidentNeckPainPercentage, priorNeckPainPercentage, neckPainResolveDays]);
 
   return (
     <div className="space-y-4">
