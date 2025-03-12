@@ -36,6 +36,28 @@ interface InjuriesData {
 }
 
 export const InjuriesAndSymptomsSection = ({ data }: { data?: InjuriesData }) => {
+  // Function to get the pain start text
+  const getPainStartText = (painStart: string): string => {
+    switch(painStart) {
+      case "immediately": return "immediately after the accident";
+      case "hours": return "within hours of the accident";
+      case "day": return "the day after the accident";
+      case "days": return "a few days after the accident";
+      default: return "after the accident";
+    }
+  };
+  
+  // Function to get severity text
+  const getSeverityText = (severity: string): string => {
+    switch(severity) {
+      case "1": return "mild";
+      case "2": return "moderate";
+      case "3": return "severe";
+      case "4": return "very severe";
+      default: return "unknown";
+    }
+  };
+
   return (
     <View style={styles.section}>
       <Text style={styles.sectionTitle}>8. Injuries and Symptoms</Text>
@@ -51,87 +73,93 @@ export const InjuriesAndSymptomsSection = ({ data }: { data?: InjuriesData }) =>
       </Text>
       
       {/* 8.1 Neck Pain */}
-      {data?.neckPain?.hasInjury && (
-        <View style={styles.subsection}>
-          <Text style={{...styles.compactLabel, fontSize: 11, marginBottom: 5}}>
-            8.1 Neck Pain
-          </Text>
+      <View style={styles.subsection}>
+        <Text style={{...styles.compactLabel, fontSize: 11, marginBottom: 5}}>
+          8.1 Neck Pain
+        </Text>
+        {data?.neckPain?.hasInjury ? (
           <Text style={{fontSize: 9, lineHeight: 1.4, marginBottom: 8}}>
-            The claimant reported neck pain that started {data.neckPain.painStart === "immediately" ? "immediately after the accident" : 
-            data.neckPain.painStart === "hours" ? "within hours of the accident" : 
-            data.neckPain.painStart === "day" ? "the day after the accident" : 
-            data.neckPain.painStart === "days" ? "a few days after the accident" : "after the accident"}.
-            Initial severity was {data.neckPain.initialSeverity === "1" ? "mild" : 
-            data.neckPain.initialSeverity === "2" ? "moderate" : 
-            data.neckPain.initialSeverity === "3" ? "severe" : "very severe"} and current severity is 
-            {data.neckPain.currentSeverity === "1" ? " mild" : 
-            data.neckPain.currentSeverity === "2" ? " moderate" : 
-            data.neckPain.currentSeverity === "3" ? " severe" : " very severe"}.
+            Claimant suffered from neck pain after the accident. It started {
+              data.neckPain.painStart === "1" ? "same day" :
+              data.neckPain.painStart === "2" ? "next day" :
+              data.neckPain.painStart === "3" ? "few days later" : getPainStartText(data.neckPain.painStart)
+            }, initial severity was {getSeverityText(data.neckPain.initialSeverity)}, 
+            current severity is {getSeverityText(data.neckPain.currentSeverity)}.
             {data.neckPain.resolveDays && data.neckPain.currentSeverity === "4" ? ` Pain resolved after ${data.neckPain.resolveDays} days.` : ""}
-            {data.neckPain.hadPrior ? " The claimant reported having neck pain before this accident." : ""}
+            {data.neckPain.hadPrior ? " Claimant had previous history of neck pain before the accident." : " Claimant did not have previous history of neck pain before the accident."}
             {data.neckPain.additionalInfo ? ` ${data.neckPain.additionalInfo}` : ""}
           </Text>
-        </View>
-      )}
+        ) : (
+          <Text style={{fontSize: 9, lineHeight: 1.4, marginBottom: 8}}>
+            Claimant did not suffer from neck pain after the accident.
+          </Text>
+        )}
+      </View>
       
       {/* 8.2 Shoulder Pain */}
-      {data?.shoulderPain?.hasInjury && (
-        <View style={styles.subsection}>
-          <Text style={{...styles.compactLabel, fontSize: 11, marginBottom: 5}}>
-            8.2 Shoulder Pain
+      <View style={styles.subsection}>
+        <Text style={{...styles.compactLabel, fontSize: 11, marginBottom: 5}}>
+          8.2 Shoulder Pain
+        </Text>
+        {data?.shoulderPain?.hasInjury ? (
+          <Text style={{fontSize: 9, lineHeight: 1.4, marginBottom: 8}}>
+            The claimant reported {data.shoulderPain.side === "right" ? "right" : 
+            data.shoulderPain.side === "left" ? "left" : "bilateral"} shoulder pain that started 
+            {data.shoulderPain.painStart === "1" ? " same day" : 
+            data.shoulderPain.painStart === "2" ? " next day" : 
+            data.shoulderPain.painStart === "3" ? " few days later" : " " + getPainStartText(data.shoulderPain.painStart)}.
+            Initial severity was {getSeverityText(data.shoulderPain.initialSeverity)} and current severity is 
+            {" " + getSeverityText(data.shoulderPain.currentSeverity)}.
           </Text>
-          <View style={styles.summaryBox}>
-            <Text style={styles.summaryText}>
-              The claimant reported {data.shoulderPain.side === "right" ? "right" : 
-              data.shoulderPain.side === "left" ? "left" : "bilateral"} shoulder pain that started 
-              {data.shoulderPain.painStart === "immediately" ? " immediately after the accident" : 
-              data.shoulderPain.painStart === "hours" ? " within hours of the accident" : 
-              data.shoulderPain.painStart === "day" ? " the day after the accident" : 
-              data.shoulderPain.painStart === "days" ? " a few days after the accident" : " after the accident"}.
-              Initial severity was {data.shoulderPain.initialSeverity === "1" ? "mild" : 
-              data.shoulderPain.initialSeverity === "2" ? "moderate" : 
-              data.shoulderPain.initialSeverity === "3" ? "severe" : "very severe"} and current severity is 
-              {data.shoulderPain.currentSeverity === "1" ? " mild" : 
-              data.shoulderPain.currentSeverity === "2" ? " moderate" : 
-              data.shoulderPain.currentSeverity === "3" ? " severe" : " very severe"}.
-            </Text>
-          </View>
-        </View>
-      )}
+        ) : (
+          <Text style={{fontSize: 9, lineHeight: 1.4, marginBottom: 8}}>
+            Claimant did not suffer from shoulder pain after the accident.
+          </Text>
+        )}
+      </View>
       
       {/* 8.3 Back Pain */}
-      {data?.backPain?.hasInjury && (
-        <View style={styles.subsection}>
-          <Text style={{...styles.compactLabel, fontSize: 11, marginBottom: 5}}>
-            8.3 Back Pain
+      <View style={styles.subsection}>
+        <Text style={{...styles.compactLabel, fontSize: 11, marginBottom: 5}}>
+          8.3 Back Pain
+        </Text>
+        {data?.backPain?.hasInjury ? (
+          <Text style={{fontSize: 9, lineHeight: 1.4, marginBottom: 8}}>
+            The claimant reported {data.backPain.location === "upper" ? "upper back" : 
+            data.backPain.location === "mid" ? "mid back" : "lower back"} pain that started 
+            {data.backPain.painStart === "1" ? " same day" : 
+            data.backPain.painStart === "2" ? " next day" : 
+            data.backPain.painStart === "3" ? " few days later" : " " + getPainStartText(data.backPain.painStart)}.
+            Initial severity was {getSeverityText(data.backPain.initialSeverity)} and current severity is 
+            {" " + getSeverityText(data.backPain.currentSeverity)}.
           </Text>
-          <View style={styles.summaryBox}>
-            <Text style={styles.summaryText}>
-              The claimant reported {data.backPain.location === "upper" ? "upper back" : 
-              data.backPain.location === "mid" ? "mid back" : "lower back"} pain that started 
-              {data.backPain.painStart === "immediately" ? " immediately after the accident" : 
-              data.backPain.painStart === "hours" ? " within hours of the accident" : 
-              data.backPain.painStart === "day" ? " the day after the accident" : 
-              data.backPain.painStart === "days" ? " a few days after the accident" : " after the accident"}.
-              Initial severity was {data.backPain.initialSeverity === "1" ? "mild" : 
-              data.backPain.initialSeverity === "2" ? "moderate" : 
-              data.backPain.initialSeverity === "3" ? "severe" : "very severe"} and current severity is 
-              {data.backPain.currentSeverity === "1" ? " mild" : 
-              data.backPain.currentSeverity === "2" ? " moderate" : 
-              data.backPain.currentSeverity === "3" ? " severe" : " very severe"}.
-            </Text>
-          </View>
-        </View>
-      )}
+        ) : (
+          <Text style={{fontSize: 9, lineHeight: 1.4, marginBottom: 8}}>
+            Claimant did not suffer from back pain after the accident.
+          </Text>
+        )}
+      </View>
       
-      {/* If no whiplash injuries were reported */}
-      {(!data?.neckPain?.hasInjury && !data?.shoulderPain?.hasInjury && !data?.backPain?.hasInjury) && (
-        <View style={styles.summaryBox}>
-          <Text style={styles.summaryText}>
-            No whiplash injuries were reported by the claimant.
+      {/* 8.4 Headache */}
+      <View style={styles.subsection}>
+        <Text style={{...styles.compactLabel, fontSize: 11, marginBottom: 5}}>
+          8.4 Headache
+        </Text>
+        {data?.headache?.hasInjury ? (
+          <Text style={{fontSize: 9, lineHeight: 1.4, marginBottom: 8}}>
+            The claimant reported headaches that started
+            {data.headache.start === "1" ? " same day" : 
+            data.headache.start === "2" ? " next day" : 
+            data.headache.start === "3" ? " few days later" : " after the accident"}.
+            Initial severity was {getSeverityText(data.headache.initialSeverity)} and current severity is 
+            {" " + getSeverityText(data.headache.currentSeverity)}.
           </Text>
-        </View>
-      )}
+        ) : (
+          <Text style={{fontSize: 9, lineHeight: 1.4, marginBottom: 8}}>
+            Claimant did not suffer from headaches after the accident.
+          </Text>
+        )}
+      </View>
     </View>
   );
 };
