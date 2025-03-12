@@ -1,91 +1,114 @@
 
-import { useState } from "react";
-import { useToast } from "@/components/ui/use-toast";
-import { supabase } from "@/integrations/supabase/client";
+import { useState } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/components/ui/use-toast';
 
-export function useReportSubmission(onComplete: () => void) {
+export function useReportSubmission(onSuccess: () => void) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
+  const uploadPdfToStorage = async (
+    pdfBlob: string, 
+    fileName: string
+  ): Promise<string> => {
+    try {
+      // Convert data URL to Blob
+      const blob = await fetch(pdfBlob).then(r => r.blob());
+      
+      // Upload to Supabase Storage
+      const filePath = `reports/${fileName}-${Date.now()}.pdf`;
+      const { error: uploadError } = await supabase.storage
+        .from('reports')
+        .upload(filePath, blob, { contentType: 'application/pdf' });
+
+      if (uploadError) throw uploadError;
+      
+      // Get public URL
+      const { data } = supabase.storage.from('reports').getPublicUrl(filePath);
+      return data.publicUrl;
+    } catch (error) {
+      console.error('Error uploading PDF:', error);
+      throw error;
+    }
+  };
+
   const handleSubmit = async (
-    signature: string,
-    formData: any,
-    claimantUrl: string,
-    fullUrl: string
+    signature: string, 
+    formData: any, 
+    claimantPdfUrl: string, 
+    fullPdfUrl: string,
+    finalPdfUrl?: string
   ) => {
-    if (!signature.trim()) {
+    if (!signature) {
       toast({
         title: "Signature Required",
-        description: "Please sign the form to confirm submission.",
+        description: "Please provide your signature before submitting the report.",
         variant: "destructive",
       });
       return;
     }
 
     setIsSubmitting(true);
-    
-    try {
-      // Current date and time for signature timestamp
-      const signatureDate = new Date().toISOString();
 
-      // Generate a reference number if not already available
-      const referenceNumber = formData.medcoReference || `MED-${Date.now().toString().slice(-6)}`;
-      
-      // Fetch PDFs as blobs and convert to base64
-      const claimantResponse = await fetch(claimantUrl);
-      const claimantBlob = await claimantResponse.blob();
-      const claimantBase64 = await blobToBase64(claimantBlob);
-      
-      const fullResponse = await fetch(fullUrl);
-      const fullBlob = await fullResponse.blob();
-      const fullBase64 = await blobToBase64(fullBlob);
-      
-      // Email the claimant copy to the patient
-      if (formData.emailId) {
-        const claimantEmailResult = await supabase.functions.invoke("send-report", {
-          body: {
-            to: formData.emailId,
-            pdfBase64: claimantBase64,
-            patientName: formData.fullName,
-            referenceNumber: referenceNumber,
-            isClaimantCopy: true,
-            signature: signature,
-            signatureDate: signatureDate
-          },
-        });
-        
-        if (claimantEmailResult.error) throw new Error(claimantEmailResult.error.message);
+    try {
+      // Get authenticated user
+      const { data: userData } = await supabase.auth.getUser();
+      if (!userData.user) {
+        throw new Error("User not authenticated");
       }
+
+      // Upload PDFs to storage
+      const claimantStorageUrl = await uploadPdfToStorage(claimantPdfUrl, 'claimant-report');
+      const fullStorageUrl = await uploadPdfToStorage(fullPdfUrl, 'expert-report');
+      let finalStorageUrl = '';
       
-      // Email the full medical report to medical expert (using the instructor's email if available)
-      const expertEmail = formData.instructingPartyEmail || "medical@example.com";
-      const expertEmailResult = await supabase.functions.invoke("send-report", {
-        body: {
-          to: expertEmail,
-          pdfBase64: fullBase64,
-          patientName: formData.fullName,
-          referenceNumber: referenceNumber,
-          isClaimantCopy: false,
-          signature: signature,
-          signatureDate: signatureDate
-        },
-      });
-      
-      if (expertEmailResult.error) throw new Error(expertEmailResult.error.message);
-      
+      if (finalPdfUrl) {
+        finalStorageUrl = await uploadPdfToStorage(finalPdfUrl, 'final-medco-report');
+      }
+
+      // Insert record to database
+      const { error } = await supabase
+        .from('reports')
+        .insert([
+          {
+            patient_id: userData.user.id,
+            claimant_email: formData.emailId,
+            storage_path: fullStorageUrl,
+            original_filename: 'expert-report.pdf',
+            status: 'submitted',
+            // Store additional report URLs in the comments field as JSON
+            comments: JSON.stringify({
+              claimantReport: claimantStorageUrl,
+              finalReport: finalStorageUrl
+            })
+          }
+        ]);
+
+      if (error) throw error;
+
+      // Add signature record
+      await supabase
+        .from('claimant_signatures')
+        .insert([
+          {
+            claimant_name: formData.fullName,
+            confirmed: true
+          }
+        ]);
+
+      // Success notification
       toast({
-        title: "Report Submitted Successfully!",
-        description: "Your report has been sent. A copy has been emailed to you.",
+        title: "Report Submitted",
+        description: "Your medical report has been successfully submitted.",
       });
-      
-      // Trigger completion callback
-      onComplete();
-      
+
+      // Trigger callback
+      onSuccess();
     } catch (error) {
-      console.error("Error submitting report:", error);
+      console.error('Submission error:', error);
       toast({
         title: "Submission Failed",
-        description: error instanceof Error ? error.message : "Unknown error occurred",
+        description: "There was an error submitting your report. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -95,17 +118,3 @@ export function useReportSubmission(onComplete: () => void) {
 
   return { isSubmitting, handleSubmit };
 }
-
-// Helper function to convert blob to base64
-const blobToBase64 = (blob: Blob): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(blob);
-    reader.onloadend = () => {
-      const base64data = reader.result as string;
-      // Remove the data URL prefix to get only the base64 content
-      resolve(base64data.substring(base64data.indexOf(",") + 1));
-    };
-    reader.onerror = reject;
-  });
-};

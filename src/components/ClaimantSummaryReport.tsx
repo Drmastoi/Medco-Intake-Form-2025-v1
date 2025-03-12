@@ -18,9 +18,10 @@ export function ClaimantSummaryReport({ form, onSubmit }: { form: any; onSubmit:
         <h2 className="text-2xl font-semibold mb-4">Report Summary</h2>
         
         <Tabs defaultValue="claimant" value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-6">
+          <TabsList className="grid w-full grid-cols-3 mb-6">
             <TabsTrigger value="claimant">Claimant Summary</TabsTrigger>
             <TabsTrigger value="expert">Medical Expert Report</TabsTrigger>
+            <TabsTrigger value="final">Final Medco Report</TabsTrigger>
           </TabsList>
           
           <TabsContent value="claimant" className="mt-4">
@@ -38,6 +39,14 @@ export function ClaimantSummaryReport({ form, onSubmit }: { form: any; onSubmit:
               </p>
             </div>
           </TabsContent>
+          
+          <TabsContent value="final" className="mt-4">
+            <div className="prose max-w-none mb-6">
+              <p className="text-sm text-muted-foreground">
+                This is the final Medco-compliant report that will be used for official purposes. It includes comprehensive medical assessment, all clinical findings, and formal recommendations.
+              </p>
+            </div>
+          </TabsContent>
         </Tabs>
 
         <PDFPreview
@@ -45,8 +54,8 @@ export function ClaimantSummaryReport({ form, onSubmit }: { form: any; onSubmit:
           signature={signature}
           setSignature={setSignature}
           isSubmitting={isSubmitting}
-          onSubmit={(claimantUrl, fullUrl) => handleSubmit(signature, formData, claimantUrl, fullUrl)}
-          previewMode={activeTab === "expert" ? "expert" : "claimant"}
+          onSubmit={(claimantUrl, fullUrl, finalUrl) => handleSubmit(signature, formData, claimantUrl, fullUrl, finalUrl)}
+          previewMode={activeTab as 'claimant' | 'expert' | 'final'}
         />
       </div>
     </div>
