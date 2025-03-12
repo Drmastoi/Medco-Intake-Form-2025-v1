@@ -1,42 +1,31 @@
 
 import React from 'react';
-import { Document, Page, Text, View } from '@react-pdf/renderer';
-import { ReportData } from '@/utils/pdfReportUtils';
+import { Document, Page, Text } from '@react-pdf/renderer';
+import { ReportData } from '@/types/reportTypes';
+import { styles } from './PDFStyles';
 
-// Import component styles
-import { styles } from './components/PDFStyles';
-
-// Import updated component sections
+// Import all section components
 import { ClaimantDetailsSection } from './components/ClaimantDetailsSection';
 import { ExpertDetailsSection } from './components/ExpertDetailsSection';
 import { InstructionDetailsSection } from './components/InstructionDetailsSection';
 import { AppointmentDetailsSection } from './components/AppointmentDetailsSection';
-
-// Import accident info section
 import { CompactAccidentInfoSection } from './components/CompactAccidentInfoSection';
-import { PageFooter } from './components/PageFooter';
-
-// Import summary of injuries section
 import { SummaryOfInjuriesSection } from './components/SummaryOfInjuriesSection';
+import { InjuriesAndSymptomsSection } from './components/InjuriesAndSymptomsSection';
+import { TreatmentSection } from './components/TreatmentSection';
+import { DailyLifeImpactSection } from './components/DailyLifeImpactSection';
+import { ClinicalExaminationSection } from './components/ClinicalExaminationSection';
+import { DeclarationSection } from './components/DeclarationSection';
+import { PageFooter } from './components/PageFooter';
 
 const ReportDocument = ({ data }: { data: ReportData }) => (
   <Document>
     <Page size="A4" style={styles.page}>
       <Text style={styles.title}>Expert Medical Report</Text>
       
-      {/* Section 1: Claimant Details */}
-      <ClaimantDetailsSection 
-        data={data.personal} 
-        accidentDate={data.accident.accidentDate} 
-      />
-      
-      {/* Section 2: Expert Details */}
+      <ClaimantDetailsSection data={data.personal} accidentDate={data.accident.accidentDate} />
       <ExpertDetailsSection data={data.prefilled} />
-      
-      {/* Section 3: Instruction Details */}
       <InstructionDetailsSection data={data.prefilled} />
-      
-      {/* Section 4: Appointment Details */}
       <AppointmentDetailsSection data={data.prefilled} />
       
       {/* Section 5: Statement of Instruction */}
@@ -52,13 +41,14 @@ const ReportDocument = ({ data }: { data: ReportData }) => (
         </View>
       </View>
       
-      {/* Section 6: Accident Information */}
       <CompactAccidentInfoSection data={data.accident} />
-      
-      {/* Section 7: Summary of Injuries */}
       <SummaryOfInjuriesSection data={data.injuries} />
+      <InjuriesAndSymptomsSection />
+      <TreatmentSection />
+      <DailyLifeImpactSection />
+      <ClinicalExaminationSection />
+      <DeclarationSection />
       
-      {/* Report identifier and page number */}
       <Text style={styles.reportIdentifier}>
         {data.personal.fullName} report dated {data.prefilled.dateOfReport} | Medical Report | CID 406679
       </Text>
