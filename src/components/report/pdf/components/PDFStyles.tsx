@@ -1,4 +1,3 @@
-
 import { StyleSheet } from '@react-pdf/renderer';
 
 export const styles = StyleSheet.create({
@@ -103,30 +102,32 @@ export const styles = StyleSheet.create({
     borderBottomColor: '#DDDDDD',
     width: '100%',
   },
-  infoCell: {
-    padding: 8,
-    fontSize: 10,
-    fontFamily: 'Helvetica',
-    flex: 1,
+  cellContainer: {
+    width: '50%',
     borderRightWidth: 1,
     borderRightColor: '#DDDDDD',
-    lineHeight: 1.4,
-  },
-  rightCell: {
-    padding: 8,
-    fontSize: 10,
-    fontFamily: 'Helvetica',
-    flex: 1,
-    borderRightWidth: 0,
-    lineHeight: 1.4,
   },
   infoHeader: {
     fontSize: 10,
     fontFamily: 'Helvetica-Bold',
-    marginBottom: 3,
-    paddingLeft: 8,
-    paddingRight: 8,
+    padding: 8,
+    paddingBottom: 3,
+    borderBottomWidth: 1,
+    borderBottomColor: '#DDDDDD',
+  },
+  infoCell: {
+    padding: 8,
     paddingTop: 5,
+    fontSize: 10,
+    fontFamily: 'Helvetica',
+    lineHeight: 1.4,
+  },
+  rightCell: {
+    padding: 8,
+    paddingTop: 5,
+    fontSize: 10,
+    fontFamily: 'Helvetica',
+    lineHeight: 1.4,
   },
   reportIdentifier: {
     fontSize: 9,
@@ -138,7 +139,4 @@ export const styles = StyleSheet.create({
     fontSize: 9,
     textAlign: 'right',
   },
-  cellContainer: {
-    width: '50%',
-  }
 });
