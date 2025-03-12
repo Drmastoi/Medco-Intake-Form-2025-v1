@@ -40,6 +40,12 @@ const ReportDocument = ({ data }: { data: ReportData }) => (
       {/* Section 4: Appointment Details */}
       <AppointmentDetailsSection data={data.prefilled} />
       
+      {/* Section 5: Accident Information */}
+      <CompactAccidentInfoSection data={data.accident} />
+      
+      {/* Section 6: Summary of Injuries */}
+      <SummaryOfInjuriesSection data={data.injuries} />
+      
       {/* Statement of Instruction */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Statement of Instruction</Text>
@@ -64,30 +70,7 @@ const ReportDocument = ({ data }: { data: ReportData }) => (
       
       <PageFooter />
     </Page>
-
-    {/* Page 2: Accident Details, Summary of Injuries and More */}
-    <Page size="A4" style={styles.page}>
-      <Text style={styles.title}>Expert Medical Report</Text>
-      
-      {/* Section 5: Accident Information */}
-      <CompactAccidentInfoSection data={data.accident} />
-      
-      {/* Section 6: Summary of Injuries */}
-      <SummaryOfInjuriesSection data={data.injuries} />
-      
-      {/* Report identifier and page number */}
-      <Text style={styles.reportIdentifier}>
-        {data.personal.fullName} report dated {data.prefilled.dateOfReport} | Medical Report | CID 406679
-      </Text>
-      
-      <Text style={styles.pageIndicator} render={({ pageNumber, totalPages }) => (
-        `Page: ${pageNumber} of ${totalPages}`
-      )} fixed />
-      
-      <PageFooter />
-    </Page>
   </Document>
 );
 
 export default ReportDocument;
-
