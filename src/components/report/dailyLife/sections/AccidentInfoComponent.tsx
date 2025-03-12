@@ -50,10 +50,10 @@ export const AccidentInfoComponent = ({ formData }: AccidentInfoProps) => {
   // Helper function to get vehicle status text
   const getVehicleStatusText = (status: string | undefined) => {
     switch(status) {
-      case '1': return 'stationary';
-      case '2': return 'moving slowly';
-      case '3': return 'moving moderately';
-      case '4': return 'moving at speed';
+      case '1': return 'moving';
+      case '2': return 'stationary';
+      case '3': return 'parked';
+      case '4': return 'in another state';
       default: return 'in an unspecified motion state';
     }
   };
