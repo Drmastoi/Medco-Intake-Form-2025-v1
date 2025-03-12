@@ -52,7 +52,7 @@ const ReportDocument = ({ data }: { data: ReportData }) => (
         </View>
       </View>
       
-      {/* Section 7: Accident Information (updated from Section 5) */}
+      {/* Section 7: Accident Information */}
       <CompactAccidentInfoSection data={data.accident} />
       
       {/* Section 6: Summary of Injuries */}
