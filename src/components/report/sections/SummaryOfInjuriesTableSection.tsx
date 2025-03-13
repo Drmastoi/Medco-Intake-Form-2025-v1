@@ -50,84 +50,70 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
       
       <View style={styles.tableContainer}>
         <View style={styles.tableHeader}>
-          <Text style={[styles.tableHeaderCell, { width: '25%' }]}>Injury</Text>
-          <Text style={[styles.tableHeaderCell, { width: '15%' }]}>Classification</Text>
-          <Text style={[styles.tableHeaderCell, { width: '10%' }]}>Onset</Text>
-          <Text style={[styles.tableHeaderCell, { width: '15%' }]}>Initial Severity</Text>
-          <Text style={[styles.tableHeaderCell, { width: '15%' }]}>Current Status</Text>
-          <Text style={[styles.tableHeaderCell, { width: '20%' }]}>Treatment</Text>
-          <Text style={[styles.tableHeaderCell, { width: '15%' }]}>Prognosis</Text>
+          <Text style={[styles.tableHeaderCell, { width: '30%' }]}>Injury</Text>
+          <Text style={[styles.tableHeaderCell, { width: '20%' }]}>Classification</Text>
+          <Text style={[styles.tableHeaderCell, { width: '20%' }]}>Current Status</Text>
+          <Text style={[styles.tableHeaderCell, { width: '30%' }]}>Treatment</Text>
+          <Text style={[styles.tableHeaderCell, { width: '20%' }]}>Prognosis</Text>
         </View>
         
         {hasNeckPain && (
           <View style={styles.tableRow}>
-            <Text style={[styles.tableCell, { width: '25%' }]}>Neck Pain</Text>
-            <Text style={[styles.tableCell, { width: '15%' }]}>WAD II</Text>
-            <Text style={[styles.tableCell, { width: '10%' }]}>{getOnsetText(formData.injuries.neckPain.painStart)}</Text>
-            <Text style={[styles.tableCell, { width: '15%' }]}>{formData.injuries.neckPain.initialSeverity}</Text>
-            <Text style={[styles.tableCell, { width: '15%' }]}>{formData.injuries.neckPain.currentSeverity}</Text>
-            <Text style={[styles.tableCell, { width: '20%' }]}>{getTreatmentRecommendation("Neck", formData.injuries.neckPain.currentSeverity)}</Text>
-            <Text style={[styles.tableCell, { width: '15%' }]}>{getPrognosisMonths(formData.injuries.neckPain.currentSeverity, formData.injuries.neckPain.resolveDays)}</Text>
+            <Text style={[styles.tableCell, { width: '30%' }]}>Neck Pain</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>Whiplash</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>{formData.injuries.neckPain.currentSeverity}</Text>
+            <Text style={[styles.tableCell, { width: '30%' }]}>{getTreatmentRecommendation("Neck", formData.injuries.neckPain.currentSeverity)}</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>{getPrognosisMonths(formData.injuries.neckPain.currentSeverity, formData.injuries.neckPain.resolveDays)}</Text>
           </View>
         )}
         
         {hasShoulderPain && (
           <View style={styles.tableRow}>
-            <Text style={[styles.tableCell, { width: '25%' }]}>Shoulder Pain ({formData.injuries.shoulderPain.side})</Text>
-            <Text style={[styles.tableCell, { width: '15%' }]}>WAD II</Text>
-            <Text style={[styles.tableCell, { width: '10%' }]}>{getOnsetText(formData.injuries.shoulderPain.painStart)}</Text>
-            <Text style={[styles.tableCell, { width: '15%' }]}>{formData.injuries.shoulderPain.initialSeverity}</Text>
-            <Text style={[styles.tableCell, { width: '15%' }]}>{formData.injuries.shoulderPain.currentSeverity}</Text>
-            <Text style={[styles.tableCell, { width: '20%' }]}>{getTreatmentRecommendation("Shoulder", formData.injuries.shoulderPain.currentSeverity)}</Text>
-            <Text style={[styles.tableCell, { width: '15%' }]}>{getPrognosisMonths(formData.injuries.shoulderPain.currentSeverity, formData.injuries.shoulderPain.resolveDays)}</Text>
+            <Text style={[styles.tableCell, { width: '30%' }]}>Shoulder Pain ({formData.injuries.shoulderPain.side})</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>Whiplash</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>{formData.injuries.shoulderPain.currentSeverity}</Text>
+            <Text style={[styles.tableCell, { width: '30%' }]}>{getTreatmentRecommendation("Shoulder", formData.injuries.shoulderPain.currentSeverity)}</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>{getPrognosisMonths(formData.injuries.shoulderPain.currentSeverity, formData.injuries.shoulderPain.resolveDays)}</Text>
           </View>
         )}
         
         {hasBackPain && (
           <View style={styles.tableRow}>
-            <Text style={[styles.tableCell, { width: '25%' }]}>Back Pain ({formData.injuries.backPain.location})</Text>
-            <Text style={[styles.tableCell, { width: '15%' }]}>WAD II</Text>
-            <Text style={[styles.tableCell, { width: '10%' }]}>{getOnsetText(formData.injuries.backPain.painStart)}</Text>
-            <Text style={[styles.tableCell, { width: '15%' }]}>{formData.injuries.backPain.initialSeverity}</Text>
-            <Text style={[styles.tableCell, { width: '15%' }]}>{formData.injuries.backPain.currentSeverity}</Text>
-            <Text style={[styles.tableCell, { width: '20%' }]}>{getTreatmentRecommendation("Back", formData.injuries.backPain.currentSeverity)}</Text>
-            <Text style={[styles.tableCell, { width: '15%' }]}>{getPrognosisMonths(formData.injuries.backPain.currentSeverity, formData.injuries.backPain.resolveDays)}</Text>
+            <Text style={[styles.tableCell, { width: '30%' }]}>Back Pain ({formData.injuries.backPain.location})</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>Whiplash</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>{formData.injuries.backPain.currentSeverity}</Text>
+            <Text style={[styles.tableCell, { width: '30%' }]}>{getTreatmentRecommendation("Back", formData.injuries.backPain.currentSeverity)}</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>{getPrognosisMonths(formData.injuries.backPain.currentSeverity, formData.injuries.backPain.resolveDays)}</Text>
           </View>
         )}
         
         {hasHeadache && (
           <View style={styles.tableRow}>
-            <Text style={[styles.tableCell, { width: '25%' }]}>Headache</Text>
-            <Text style={[styles.tableCell, { width: '15%' }]}>WAD II</Text>
-            <Text style={[styles.tableCell, { width: '10%' }]}>{getOnsetText(formData.injuries.headache.start)}</Text>
-            <Text style={[styles.tableCell, { width: '15%' }]}>{formData.injuries.headache.initialSeverity}</Text>
-            <Text style={[styles.tableCell, { width: '15%' }]}>{formData.injuries.headache.currentSeverity}</Text>
-            <Text style={[styles.tableCell, { width: '20%' }]}>{getTreatmentRecommendation("Headache", formData.injuries.headache.currentSeverity)}</Text>
-            <Text style={[styles.tableCell, { width: '15%' }]}>{getPrognosisMonths(formData.injuries.headache.currentSeverity, formData.injuries.headache.resolveDays)}</Text>
+            <Text style={[styles.tableCell, { width: '30%' }]}>Headache</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>Whiplash</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>{formData.injuries.headache.currentSeverity}</Text>
+            <Text style={[styles.tableCell, { width: '30%' }]}>{getTreatmentRecommendation("Headache", formData.injuries.headache.currentSeverity)}</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>{getPrognosisMonths(formData.injuries.headache.currentSeverity, formData.injuries.headache.resolveDays)}</Text>
           </View>
         )}
         
         {hasTravelAnxiety && (
           <View style={styles.tableRow}>
-            <Text style={[styles.tableCell, { width: '25%' }]}>Travel Anxiety</Text>
-            <Text style={[styles.tableCell, { width: '15%' }]}>Psychological</Text>
-            <Text style={[styles.tableCell, { width: '10%' }]}>Immediate</Text>
-            <Text style={[styles.tableCell, { width: '15%' }]}>{formData.travelAnxiety.initialSeverity}</Text>
-            <Text style={[styles.tableCell, { width: '15%' }]}>{formData.travelAnxiety.currentSeverity}</Text>
-            <Text style={[styles.tableCell, { width: '20%' }]}>{getTreatmentRecommendation("Travel Anxiety", formData.travelAnxiety.currentSeverity)}</Text>
-            <Text style={[styles.tableCell, { width: '15%' }]}>{getPrognosisMonths(formData.travelAnxiety.currentSeverity, formData.travelAnxiety.resolveDays)}</Text>
+            <Text style={[styles.tableCell, { width: '30%' }]}>Travel Anxiety</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>Psychological</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>{formData.travelAnxiety.currentSeverity}</Text>
+            <Text style={[styles.tableCell, { width: '30%' }]}>{getTreatmentRecommendation("Travel Anxiety", formData.travelAnxiety.currentSeverity)}</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>{getPrognosisMonths(formData.travelAnxiety.currentSeverity, formData.travelAnxiety.resolveDays)}</Text>
           </View>
         )}
         
         {hasBruising && (
           <View style={styles.tableRow}>
-            <Text style={[styles.tableCell, { width: '25%' }]}>Bruising</Text>
-            <Text style={[styles.tableCell, { width: '15%' }]}>Physical</Text>
-            <Text style={[styles.tableCell, { width: '10%' }]}>Immediate</Text>
-            <Text style={[styles.tableCell, { width: '15%' }]}>{formData.other?.bruising?.initialSeverity || "Mild"}</Text>
-            <Text style={[styles.tableCell, { width: '15%' }]}>{formData.other?.bruising?.currentSeverity || "Resolved"}</Text>
-            <Text style={[styles.tableCell, { width: '20%' }]}>{getTreatmentRecommendation("Bruising", formData.other?.bruising?.currentSeverity || "Resolved")}</Text>
-            <Text style={[styles.tableCell, { width: '15%' }]}>
+            <Text style={[styles.tableCell, { width: '30%' }]}>Bruising</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>Physical</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>{formData.other?.bruising?.currentSeverity || "Resolved"}</Text>
+            <Text style={[styles.tableCell, { width: '30%' }]}>{getTreatmentRecommendation("Bruising", formData.other?.bruising?.currentSeverity || "Resolved")}</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>
               {formData.other?.bruising?.resolveDays ? `${formData.other.bruising.resolveDays} days` : "2-3 weeks"}
             </Text>
           </View>
