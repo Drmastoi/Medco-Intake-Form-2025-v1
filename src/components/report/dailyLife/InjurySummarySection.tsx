@@ -14,6 +14,14 @@ export const InjurySummarySection = ({ formData }: InjurySummaryProps) => {
     <View style={dailyLifeStyles.section}>
       <Text style={dailyLifeStyles.title}>5.1 Accident Information</Text>
       <AccidentInfoComponent formData={formData} />
+      
+      {/* Display accident summary if available */}
+      {formData.accidentSummary && (
+        <View style={{ marginTop: 10 }}>
+          <Text style={dailyLifeStyles.subtitle}>Accident Information Summary:</Text>
+          <Text style={dailyLifeStyles.text}>{formData.accidentSummary}</Text>
+        </View>
+      )}
     </View>
   );
 };

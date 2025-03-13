@@ -15,8 +15,20 @@ export const InjuriesSymptomsSection = ({ formData, styles }: InjuriesSymptomsSe
     <View>
       <Text style={styles.sectionHeader}>Section 6 - Injuries / Symptoms</Text>
       
-      {/* Acknowledgment statement at the beginning */}
-      <Text style={[styles.text, { marginBottom: 12, marginTop: 5, fontStyle: 'italic' }]}>
+      {/* Accident Information Summary at the beginning */}
+      <View style={{ marginBottom: 12, marginTop: 5 }}>
+        <Text style={[styles.text, { fontWeight: 'bold', marginBottom: 4 }]}>
+          Accident Information Summary:
+        </Text>
+        <Text style={[styles.text, { marginBottom: 8 }]}>
+          {formData.accidentSummary || 
+            `The accident occurred on ${formData.accidentDate ? new Date(formData.accidentDate).toLocaleDateString('en-GB', {day: 'numeric', month: 'long', year: 'numeric'}) : '[date not specified]'} in a ${formData.claimantVehicle === "1" ? "car" : formData.claimantVehicle === "2" ? "van" : formData.claimantVehicle === "3" ? "bus" : "vehicle"}. ${formData.impactLocation === "1" ? "The vehicle was hit from behind" : formData.impactLocation === "2" ? "The vehicle was hit from the front" : formData.impactLocation === "3" ? "The vehicle was hit on the passenger side" : formData.impactLocation === "4" ? "The vehicle was hit on the driver side" : "The vehicle was impacted"}.`
+          }
+        </Text>
+      </View>
+      
+      {/* Acknowledgment statement after accident summary */}
+      <Text style={[styles.text, { marginBottom: 12, fontStyle: 'italic' }]}>
         I have acknowledged the Letter of Instruction and I confirm there were no other injuries suffered by the claimant as told to me during the examination after direct questioning
       </Text>
       

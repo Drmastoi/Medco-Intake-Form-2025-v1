@@ -29,7 +29,7 @@ export const OtherInjuriesComponent = ({ formData }: OtherInjuriesProps) => {
       <Text style={dailyLifeStyles.subtitle}>6.7 Other Injuries</Text>
       <Text style={dailyLifeStyles.text}>
         The claimant experienced {formData.injuryName || 'other injuries'} as a result of the accident.
-        {formData.injuryDescription ? ` Details: ${formData.injuryDescription}.` : ''}
+        {formData.injuryName ? ` Details: ${formData.injuryName}.` : ''}
         The initial severity was rated as {getSeverityText(formData.injuryInitialSeverity)}.
         The current severity is {getSeverityText(formData.injuryCurrentSeverity)}.
         {formData.injuryCurrentSeverity === "4" && formData.injuryResolveDays ? 
