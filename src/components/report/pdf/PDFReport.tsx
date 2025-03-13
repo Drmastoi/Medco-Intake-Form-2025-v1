@@ -17,6 +17,13 @@ import { ExpertDetailsSection } from './sections/ExpertDetailsSection';
 import { InstructionDetailsSection } from './sections/InstructionDetailsSection';
 import { AppointmentDetailsSection } from './sections/AppointmentDetailsSection';
 import { AccidentDetailsSection } from './sections/AccidentDetailsSection';
+import { InjuriesSection } from './sections/InjuriesSection';
+import { TravelAnxietySection } from './sections/TravelAnxietySection';
+import { MedicalExaminationSection } from './sections/MedicalExaminationSection';
+import { TreatmentSection } from './sections/TreatmentSection';
+import { LifestyleImpactSection } from './sections/LifestyleImpactSection';
+import { MedicalHistorySection } from './sections/MedicalHistorySection';
+import { ConclusionSection } from './sections/ConclusionSection';
 
 // Create styles
 const styles = StyleSheet.create({
@@ -73,11 +80,24 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontStyle: 'italic',
   },
+  pageBreak: {
+    height: 0,
+    pageBreakAfter: 'always',
+  },
+  summaryText: {
+    fontSize: 9,
+    marginTop: 10,
+    fontStyle: 'italic',
+    backgroundColor: '#f9f9f9',
+    padding: 5,
+    borderRadius: 3,
+  }
 });
 
 // Define the PDF Document component
 const PDFDocument = ({ reportData }: { reportData: ReportData }) => (
   <Document>
+    {/* First Page - Basic Information */}
     <Page size="A4" style={styles.page}>
       <View style={styles.header}>
         <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
@@ -103,6 +123,82 @@ const PDFDocument = ({ reportData }: { reportData: ReportData }) => (
       
       <View style={styles.section}>
         <AccidentDetailsSection formData={reportData} styles={styles} />
+      </View>
+    </Page>
+
+    {/* Second Page - Injuries */}
+    <Page size="A4" style={styles.page}>
+      <View style={styles.header}>
+        <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
+          Injuries and Symptoms
+        </Text>
+      </View>
+      
+      <View style={styles.section}>
+        <InjuriesSection formData={reportData} styles={styles} />
+      </View>
+    </Page>
+    
+    {/* Third Page - Travel Anxiety and Examination */}
+    <Page size="A4" style={styles.page}>
+      <View style={styles.header}>
+        <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
+          Travel Anxiety and Medical Examination
+        </Text>
+      </View>
+      
+      <View style={styles.section}>
+        <TravelAnxietySection formData={reportData} styles={styles} />
+      </View>
+      
+      <View style={styles.section}>
+        <MedicalExaminationSection formData={reportData} styles={styles} />
+      </View>
+    </Page>
+    
+    {/* Fourth Page - Treatment and Lifestyle Impact */}
+    <Page size="A4" style={styles.page}>
+      <View style={styles.header}>
+        <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
+          Treatment and Lifestyle Impact
+        </Text>
+      </View>
+      
+      <View style={styles.section}>
+        <TreatmentSection formData={reportData} styles={styles} />
+      </View>
+      
+      <View style={styles.section}>
+        <LifestyleImpactSection formData={reportData} styles={styles} />
+      </View>
+    </Page>
+    
+    {/* Fifth Page - Medical History and Conclusion */}
+    <Page size="A4" style={styles.page}>
+      <View style={styles.header}>
+        <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
+          Medical History and Conclusion
+        </Text>
+      </View>
+      
+      <View style={styles.section}>
+        <MedicalHistorySection formData={reportData} styles={styles} />
+      </View>
+      
+      <View style={styles.section}>
+        <ConclusionSection formData={reportData} styles={styles} />
+      </View>
+      
+      <View style={styles.section}>
+        <View style={styles.subsection}>
+          <Text style={styles.sectionHeader}>Expert Declaration</Text>
+          <Text style={styles.fieldValue}>
+            I, {reportData.prefilled.expertName}, declare that the content of this report is true to the best of my knowledge and belief. I understand that this report is to be submitted as expert evidence. I confirm that I have no conflict of interest in this case.
+          </Text>
+          <Text style={styles.fieldValue}>
+            Date: {new Date().toLocaleDateString()}
+          </Text>
+        </View>
       </View>
     </Page>
   </Document>

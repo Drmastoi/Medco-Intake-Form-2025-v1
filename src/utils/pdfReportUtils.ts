@@ -14,6 +14,7 @@ export function convertFormDataToReportData(formData: FormSchema): ReportData {
     address: formData.address || "Not Specified",
     occupation: formData.occupation || "Not Specified",
     workType: getWorkTypeText(formData.workType),
+    idType: formData.idType,
   };
 
   // Extract accident details
@@ -21,13 +22,13 @@ export function convertFormDataToReportData(formData: FormSchema): ReportData {
     accidentDate: formData.accidentDate || "Not Specified",
     accidentTime: getAccidentTimeText(formData.accidentTime),
     vehiclePosition: formData.vehiclePosition || "Not Specified",
-    vehicleStatus: formData.vehicleStatus || "Not Specified",
-    vehicleLocation: formData.vehicleLocation || "Not Specified",
-    impactLocation: formData.impactLocation || "Not Specified",
-    vehicleDamage: formData.vehicleDamage || "Not Specified",
-    claimantPosition: formData.claimantPosition || "Not Specified",
-    claimantVehicle: formData.claimantVehicle || "Not Specified",
-    otherVehicle: formData.otherVehicle || "Not Specified",
+    vehicleStatus: getVehicleStatusText(formData.vehicleStatus),
+    vehicleLocation: getVehicleLocationText(formData.vehicleLocation),
+    impactLocation: getImpactLocationText(formData.impactLocation),
+    vehicleDamage: getVehicleDamageText(formData.vehicleDamage),
+    claimantPosition: getClaimantPositionText(formData.claimantPosition),
+    claimantVehicle: getVehicleTypeText(formData.claimantVehicle),
+    otherVehicle: getVehicleTypeText(formData.otherVehicle),
     accidentSummary: formData.accidentSummary || "",
   };
 
@@ -72,7 +73,7 @@ export function convertFormDataToReportData(formData: FormSchema): ReportData {
 }
 
 // Helper functions to convert form values to readable text
-function getWorkTypeText(workType: string): string {
+function getWorkTypeText(workType: string | undefined): string {
   switch (workType) {
     case "1": return "Full Time";
     case "2": return "Part Time";
@@ -81,7 +82,7 @@ function getWorkTypeText(workType: string): string {
   }
 }
 
-function getAccidentTimeText(time: string): string {
+function getAccidentTimeText(time: string | undefined): string {
   switch (time) {
     case "1": return "Morning";
     case "2": return "Afternoon";
@@ -91,13 +92,72 @@ function getAccidentTimeText(time: string): string {
   }
 }
 
+function getVehicleStatusText(status: string | undefined): string {
+  switch (status) {
+    case "1": return "Moving";
+    case "2": return "Stationary";
+    case "3": return "Parked";
+    default: return "Not Specified";
+  }
+}
+
+function getVehicleLocationText(location: string | undefined): string {
+  switch (location) {
+    case "1": return "Main Road";
+    case "2": return "Minor Road";
+    case "3": return "Roundabout";
+    case "4": return "Parked";
+    case "5": return "Other";
+    default: return "Not Specified";
+  }
+}
+
+function getImpactLocationText(location: string | undefined): string {
+  switch (location) {
+    case "1": return "Rear";
+    case "2": return "Front";
+    case "3": return "Passenger Side";
+    case "4": return "Driver Side";
+    default: return "Not Specified";
+  }
+}
+
+function getVehicleDamageText(damage: string | undefined): string {
+  switch (damage) {
+    case "1": return "Minor Damage";
+    case "2": return "Moderate Damage";
+    case "3": return "Written Off";
+    default: return "Not Specified";
+  }
+}
+
+function getClaimantPositionText(position: string | undefined): string {
+  switch (position) {
+    case "1": return "Driver";
+    case "2": return "Front Passenger";
+    case "3": return "Back Passenger";
+    case "4": return "Other";
+    default: return "Not Specified";
+  }
+}
+
+function getVehicleTypeText(type: string | undefined): string {
+  switch (type) {
+    case "1": return "Car";
+    case "2": return "Van";
+    case "3": return "Bus";
+    case "4": return "Other";
+    default: return "Not Specified";
+  }
+}
+
 // Helper functions to extract specific injury data
 function getNeckPainData(formData: FormSchema) {
   return {
     hasInjury: formData.neckPain === "1",
     painStart: formData.neckPainStart || "Not Specified",
-    initialSeverity: formData.neckPainInitialSeverity || "Not Specified",
-    currentSeverity: formData.neckPainCurrentSeverity || "Not Specified",
+    initialSeverity: getSeverityText(formData.neckPainInitialSeverity),
+    currentSeverity: getSeverityText(formData.neckPainCurrentSeverity),
     resolveDays: formData.neckPainResolveDays || "Not Specified",
     additionalInfo: formData.additionalInfo || "",
     hadPrior: formData.hadPriorNeckPain === "1"
@@ -105,12 +165,15 @@ function getNeckPainData(formData: FormSchema) {
 }
 
 function getShoulderPainData(formData: FormSchema) {
+  const sideText = formData.shoulderSide === "1" ? "left" : 
+                  formData.shoulderSide === "2" ? "right" : "both";
+  
   return {
     hasInjury: formData.shoulderPain === "1",
-    side: formData.shoulderSide || "Not Specified",
+    side: sideText,
     painStart: formData.shoulderPainStart || "Not Specified",
-    initialSeverity: formData.shoulderPainInitialSeverity || "Not Specified",
-    currentSeverity: formData.shoulderPainCurrentSeverity || "Not Specified",
+    initialSeverity: getSeverityText(formData.shoulderPainInitialSeverity),
+    currentSeverity: getSeverityText(formData.shoulderPainCurrentSeverity),
     resolveDays: formData.shoulderPainResolveDays || "Not Specified"
   };
 }
@@ -120,8 +183,8 @@ function getBackPainData(formData: FormSchema) {
     hasInjury: formData.backPain === "1",
     location: formData.backLocation || "Not Specified",
     painStart: formData.backPainStart || "Not Specified",
-    initialSeverity: formData.backPainInitialSeverity || "Not Specified",
-    currentSeverity: formData.backPainCurrentSeverity || "Not Specified",
+    initialSeverity: getSeverityText(formData.backPainInitialSeverity),
+    currentSeverity: getSeverityText(formData.backPainCurrentSeverity),
     resolveDays: formData.backPainResolveDays || "Not Specified"
   };
 }
@@ -130,20 +193,46 @@ function getHeadacheData(formData: FormSchema) {
   return {
     hasInjury: formData.headache === "1",
     start: formData.headacheStart || "Not Specified",
-    initialSeverity: formData.headacheInitialSeverity || "Not Specified",
-    currentSeverity: formData.headacheCurrentSeverity || "Not Specified",
+    initialSeverity: getSeverityText(formData.headacheInitialSeverity),
+    currentSeverity: getSeverityText(formData.headacheCurrentSeverity),
     resolveDays: formData.headacheResolveDays || "Not Specified",
     pastHistory: formData.headachePastHistory || ""
   };
 }
 
+function getSeverityText(severity: string | undefined): string {
+  switch (severity) {
+    case "1": return "Mild";
+    case "2": return "Moderate";
+    case "3": return "Severe";
+    case "4": return "Resolved";
+    default: return "Not Specified";
+  }
+}
+
 function getTravelAnxietyData(formData: FormSchema) {
+  // Convert symptom IDs to readable text
+  const symptoms = (formData.travelAnxietySymptoms || []).map(symptom => {
+    switch(symptom) {
+      case "cautious-driver": return "Being a more cautious driver";
+      case "frequent-mirror-checking": return "Looking in the mirror more frequently";
+      case "avoid-accident-road": return "Avoiding the road where the accident happened";
+      case "avoid-passenger": return "Avoiding being a passenger";
+      case "avoid-driving": return "Avoiding driving";
+      case "panic-attacks": return "Panic attacks when in a car";
+      case "passenger-anxiety": return "Anxiety when traveling as a passenger";
+      case "busy-road-anxiety": return "Anxiety on busy roads or highways";
+      case "prevented-driving": return "Being prevented from driving for leisure or work";
+      default: return symptom;
+    }
+  });
+
   return {
     hasAnxiety: formData.travelAnxiety === "1",
-    symptoms: formData.travelAnxietySymptoms || [],
+    symptoms: symptoms,
     currentlyDriving: formData.currentlyDriving || "Not Specified",
-    initialSeverity: formData.anxietyInitialSeverity || "Not Specified",
-    currentSeverity: formData.anxietyCurrentSeverity || "Not Specified",
+    initialSeverity: getSeverityText(formData.anxietyInitialSeverity),
+    currentSeverity: getSeverityText(formData.anxietyCurrentSeverity),
     resolveDays: formData.anxietyResolveDays || "Not Specified",
     pastHistory: formData.anxietyPastHistory || "",
     duration: formData.anxietyDuration || "",
@@ -153,50 +242,59 @@ function getTravelAnxietyData(formData: FormSchema) {
 
 function getBruisingData(formData: FormSchema) {
   return {
-    hasBruising: false, // Default value, needs to be updated based on actual form schema
-    location: "Not Specified",
-    noticed: "Not Specified",
-    initialSeverity: "Not Specified",
-    currentSeverity: "Not Specified",
-    resolveDays: "Not Specified"
+    hasBruising: formData.hasBruising === "1",
+    location: formData.bruisingLocation || "Not Specified",
+    noticed: formData.bruisingNoticed || "Not Specified",
+    initialSeverity: getSeverityText(formData.bruisingInitialSeverity),
+    currentSeverity: getSeverityText(formData.bruisingCurrentSeverity),
+    resolveDays: formData.bruisingResolveDays || "Not Specified"
   };
 }
 
 function getOtherInjuriesData(formData: FormSchema) {
   return {
-    hasOtherInjury: false, // Default value, needs to be updated based on actual form schema
-    name: "Not Specified",
-    start: "Not Specified",
-    initialSeverity: "Not Specified",
-    currentSeverity: "Not Specified",
-    resolveDays: "Not Specified"
+    hasOtherInjury: formData.hasOtherInjury === "1",
+    name: formData.injuryName || "Not Specified",
+    start: formData.injuryStart || "Not Specified",
+    initialSeverity: getSeverityText(formData.injuryInitialSeverity),
+    currentSeverity: getSeverityText(formData.injuryCurrentSeverity),
+    resolveDays: formData.injuryResolveDays || "Not Specified"
   };
 }
 
 function getTreatmentData(formData: FormSchema) {
+  const treatmentTypes = [];
+  if (formData.treatmentType) {
+    if (typeof formData.treatmentType === 'string') {
+      treatmentTypes.push(formData.treatmentType);
+    } else if (Array.isArray(formData.treatmentType)) {
+      treatmentTypes.push(...formData.treatmentType);
+    }
+  }
+
   return {
-    hasTreatment: false, // Default value, needs to be updated based on actual form schema
-    type: [],
-    frequency: "Not Specified",
-    duration: "Not Specified",
-    ongoing: false
+    hasTreatment: formData.hasTreatment === "1",
+    type: treatmentTypes,
+    frequency: formData.treatmentFrequency || "Not Specified",
+    duration: formData.treatmentDuration || "Not Specified",
+    ongoing: formData.ongoingTreatment === "1"
   };
 }
 
 function getLifestyleData(formData: FormSchema) {
   return {
-    impactOnWork: false, // Default value, needs to be updated based on actual form schema
-    timeOffWork: "Not Specified",
-    workRestrictions: [],
-    impactOnSleep: false,
-    sleepIssues: [],
-    impactOnDomestic: false,
-    domesticIssues: [],
-    impactOnSports: false,
-    sportsActivities: "Not Specified",
-    sportsDuration: "Not Specified",
-    impactOnSocial: false,
-    socialDetails: "Not Specified"
+    impactOnWork: formData.impactOnWork === "1",
+    timeOffWork: formData.timeOffWork || "Not Specified",
+    workRestrictions: formData.workRestrictions || [],
+    impactOnSleep: formData.impactOnSleep === "1",
+    sleepIssues: formData.sleepIssues || [],
+    impactOnDomestic: formData.impactOnDomestic === "1",
+    domesticIssues: formData.domesticIssues || [],
+    impactOnSports: formData.impactOnSports === "1",
+    sportsActivities: formData.sportsActivities || "Not Specified",
+    sportsDuration: formData.sportsDuration || "Not Specified",
+    impactOnSocial: formData.impactOnSocial === "1",
+    socialDetails: formData.socialDetails || "Not Specified"
   };
 }
 
