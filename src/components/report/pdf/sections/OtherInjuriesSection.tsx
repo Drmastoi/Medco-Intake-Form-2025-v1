@@ -10,7 +10,7 @@ interface OtherInjuriesSectionProps {
 export const OtherInjuriesSection = ({ formData, styles }: OtherInjuriesSectionProps) => {
   return (
     <View style={styles.subsection}>
-      <Text style={styles.sectionHeader}>Section 12 - Other Injuries</Text>
+      <Text style={styles.sectionHeader}>Section 12 - Other Injuries Details</Text>
       
       {formData.other?.otherInjuries?.hasOtherInjury ? (
         <>

@@ -10,7 +10,7 @@ interface BruisingSectionProps {
 export const BruisingSection = ({ formData, styles }: BruisingSectionProps) => {
   return (
     <View style={styles.subsection}>
-      <Text style={styles.sectionHeader}>Section 11 - Bruising</Text>
+      <Text style={styles.sectionHeader}>Section 11 - Bruising Details</Text>
       
       {formData.other?.bruising?.hasBruising ? (
         <>

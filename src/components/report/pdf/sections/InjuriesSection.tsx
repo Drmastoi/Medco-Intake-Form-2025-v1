@@ -12,7 +12,7 @@ export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
     <View style={styles.subsection}>
       <Text style={styles.sectionHeader}>Section 8 - Injuries and Symptoms</Text>
       
-      {/* Neck Pain */}
+      {/* 8.1 Neck Pain */}
       {formData.injuries.neckPain.hasInjury && (
         <View style={{ marginBottom: 10 }}>
           <Text style={styles.fieldLabel}>8.1 Neck Pain</Text>
@@ -26,7 +26,7 @@ export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
         </View>
       )}
       
-      {/* Shoulder Pain */}
+      {/* 8.2 Shoulder Pain */}
       {formData.injuries.shoulderPain.hasInjury && (
         <View style={{ marginBottom: 10 }}>
           <Text style={styles.fieldLabel}>8.2 Shoulder Pain</Text>
@@ -41,7 +41,7 @@ export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
         </View>
       )}
       
-      {/* Back Pain */}
+      {/* 8.3 Back Pain */}
       {formData.injuries.backPain.hasInjury && (
         <View style={{ marginBottom: 10 }}>
           <Text style={styles.fieldLabel}>8.3 Back Pain</Text>
@@ -56,7 +56,7 @@ export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
         </View>
       )}
       
-      {/* Headache */}
+      {/* 8.4 Headache */}
       {formData.injuries.headache.hasInjury && (
         <View style={{ marginBottom: 10 }}>
           <Text style={styles.fieldLabel}>8.4 Headache</Text>
@@ -70,6 +70,63 @@ export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
             {formData.injuries.headache.pastHistory && ` Additional information: ${formData.injuries.headache.pastHistory}`}
           </Text>
         </View>
+      )}
+      
+      {/* 8.5 Travel Anxiety */}
+      {formData.travelAnxiety.hasAnxiety && (
+        <View style={{ marginBottom: 10 }}>
+          <Text style={styles.fieldLabel}>8.5 Travel Anxiety</Text>
+          <Text style={styles.fieldValue}>
+            The claimant reported travel anxiety following the accident. 
+            The initial severity was {formData.travelAnxiety.initialSeverity.toLowerCase()}. 
+            {formData.travelAnxiety.currentSeverity === "Resolved" 
+              ? ` The anxiety has now resolved after ${formData.travelAnxiety.resolveDays || "an unspecified number of"} days.` 
+              : ` The current severity is ${formData.travelAnxiety.currentSeverity.toLowerCase()}.`}
+            {formData.travelAnxiety.symptoms && formData.travelAnxiety.symptoms.length > 0 && 
+              ` Symptoms include: ${formData.travelAnxiety.symptoms.join(", ")}.`}
+          </Text>
+        </View>
+      )}
+      
+      {/* 8.6 Bruising */}
+      {formData.other?.bruising?.hasBruising && (
+        <View style={{ marginBottom: 10 }}>
+          <Text style={styles.fieldLabel}>8.6 Bruising</Text>
+          <Text style={styles.fieldValue}>
+            The claimant reported bruising following the accident.
+            {formData.other.bruising.location && ` The bruising was located at ${formData.other.bruising.location}.`}
+            {formData.other.bruising.initialSeverity && ` Initial severity was ${formData.other.bruising.initialSeverity.toLowerCase()}.`}
+            {formData.other.bruising.currentSeverity === "Resolved" 
+              ? ` The bruising has now resolved after ${formData.other.bruising.resolveDays || "an unspecified number of"} days.` 
+              : formData.other.bruising.currentSeverity && ` The current severity is ${formData.other.bruising.currentSeverity.toLowerCase()}.`}
+          </Text>
+        </View>
+      )}
+      
+      {/* 8.7 Other Injuries */}
+      {formData.other?.otherInjuries?.hasOtherInjury && (
+        <View style={{ marginBottom: 10 }}>
+          <Text style={styles.fieldLabel}>8.7 Other Injuries</Text>
+          <Text style={styles.fieldValue}>
+            The claimant reported other injuries following the accident: 
+            {formData.other.otherInjuries.name && ` ${formData.other.otherInjuries.name}.`}
+            {formData.other.otherInjuries.initialSeverity && ` Initial severity was ${formData.other.otherInjuries.initialSeverity.toLowerCase()}.`}
+            {formData.other.otherInjuries.currentSeverity === "Resolved" 
+              ? ` The injury has now resolved after ${formData.other.otherInjuries.resolveDays || "an unspecified number of"} days.` 
+              : formData.other.otherInjuries.currentSeverity && ` The current severity is ${formData.other.otherInjuries.currentSeverity.toLowerCase()}.`}
+          </Text>
+        </View>
+      )}
+      
+      {/* Display a message if no injuries reported */}
+      {!formData.injuries.neckPain.hasInjury && 
+       !formData.injuries.shoulderPain.hasInjury && 
+       !formData.injuries.backPain.hasInjury && 
+       !formData.injuries.headache.hasInjury && 
+       !formData.travelAnxiety.hasAnxiety && 
+       !formData.other?.bruising?.hasBruising && 
+       !formData.other?.otherInjuries?.hasOtherInjury && (
+        <Text style={styles.fieldValue}>No significant injuries were reported by the claimant.</Text>
       )}
     </View>
   );
