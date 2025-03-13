@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   PDFDownloadLink, 
@@ -24,6 +23,8 @@ import { TreatmentSection } from './sections/TreatmentSection';
 import { LifestyleImpactSection } from './sections/LifestyleImpactSection';
 import { MedicalHistorySection } from './sections/MedicalHistorySection';
 import { ConclusionSection } from './sections/ConclusionSection';
+import { BruisingSection } from './sections/BruisingSection';
+import { OtherInjuriesSection } from './sections/OtherInjuriesSection';
 
 // Create styles
 const styles = StyleSheet.create({
@@ -156,7 +157,24 @@ const PDFDocument = ({ reportData }: { reportData: ReportData }) => (
       </View>
     </Page>
     
-    {/* Fourth Page - Treatment and Lifestyle Impact */}
+    {/* Fourth Page - Bruising and Other Injuries */}
+    <Page size="A4" style={styles.page}>
+      <View style={styles.header}>
+        <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
+          Bruising and Other Injuries
+        </Text>
+      </View>
+      
+      <View style={styles.section}>
+        <BruisingSection formData={reportData} styles={styles} />
+      </View>
+      
+      <View style={styles.section}>
+        <OtherInjuriesSection formData={reportData} styles={styles} />
+      </View>
+    </Page>
+    
+    {/* Fifth Page - Treatment and Lifestyle Impact */}
     <Page size="A4" style={styles.page}>
       <View style={styles.header}>
         <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
@@ -173,7 +191,7 @@ const PDFDocument = ({ reportData }: { reportData: ReportData }) => (
       </View>
     </Page>
     
-    {/* Fifth Page - Medical History and Conclusion */}
+    {/* Sixth Page - Medical History and Conclusion */}
     <Page size="A4" style={styles.page}>
       <View style={styles.header}>
         <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>

@@ -1,3 +1,4 @@
+
 import { z } from "zod";
 
 export const formSchema = z.object({
@@ -91,13 +92,16 @@ export const formSchema = z.object({
   // Section 9 - Bruising
   hasBruising: z.enum(["1", "2"]).default("2"),
   bruisingLocation: z.string().optional(),
+  bruisingNoticed: z.enum(["1", "2", "3"]).optional(),
   bruisingInitialSeverity: z.enum(["1", "2", "3", "4"]).optional(),
   bruisingCurrentSeverity: z.enum(["1", "2", "3", "4"]).optional(),
   bruisingResolveDays: z.string().optional(),
+  hasVisibleScar: z.enum(["1", "2"]).optional(),
 
   // Section 10 - Other Injuries
   hasOtherInjury: z.enum(["1", "2"]).default("2"),
   injuryName: z.string().optional(),
+  injuryStart: z.string().optional(),
   injuryInitialSeverity: z.enum(["1", "2", "3", "4"]).optional(),
   injuryCurrentSeverity: z.enum(["1", "2", "3", "4"]).optional(),
   injuryResolveDays: z.string().optional(),
