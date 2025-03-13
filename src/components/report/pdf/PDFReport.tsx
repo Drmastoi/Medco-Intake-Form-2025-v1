@@ -25,6 +25,7 @@ import { MedicalHistorySection } from './sections/MedicalHistorySection';
 import { ConclusionSection } from './sections/ConclusionSection';
 import { BruisingSection } from './sections/BruisingSection';
 import { OtherInjuriesSection } from './sections/OtherInjuriesSection';
+import { StatementOfInstructionSection } from '../../report/sections/StatementOfInstructionSection';
 
 // Create styles
 const styles = StyleSheet.create({
@@ -116,6 +117,10 @@ const PDFDocument = ({ reportData }: { reportData: ReportData }) => (
       
       <View style={styles.section}>
         <InstructionDetailsSection formData={reportData} styles={styles} />
+      </View>
+      
+      <View style={styles.section}>
+        <StatementOfInstructionSection styles={styles} formData={reportData} />
       </View>
       
       <View style={styles.section}>

@@ -57,6 +57,7 @@ export const StatementOfInstructionSection = ({ styles, formData }: StatementOfI
       </View>
       
       <Text style={styles.disclaimerText}>
+        Statement of Instruction:
         This report is entirely independent and is prepared for the injuries sustained in the accident. The instructing party has requested an examination to be conducted with a report to include the nature and extent of the claimant's injuries, treatment received, effects on lifestyle and whether any further treatment is appropriate.
       </Text>
       
