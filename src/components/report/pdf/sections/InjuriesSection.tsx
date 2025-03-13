@@ -46,66 +46,115 @@ export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
       {/* 8.1 Neck Pain */}
       {formData.injuries.neckPain.hasInjury && (
         <View style={{ marginBottom: 10 }}>
-          <Text style={styles.fieldLabel}>8.1 Neck Pain</Text>
+          <Text style={[styles.fieldLabel, { fontSize: 12, marginBottom: 5, marginTop: 8 }]}>8.1 Neck Pain</Text>
           
           <View style={{ marginLeft: 10, marginBottom: 5 }}>
-            <Text style={styles.fieldValue}>
-              <Text style={{ fontWeight: 'bold' }}>Symptoms: </Text>
-              Pain, stiffness and discomfort
-            </Text>
+            {/* Grid-like layout with two columns */}
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Symptoms:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>Pain, stiffness and discomfort</Text>
+              </View>
+            </View>
             
-            <Text style={styles.fieldValue}>
-              <Text style={{ fontWeight: 'bold' }}>Onset: </Text>
-              {formData.injuries.neckPain.painStart}
-            </Text>
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Onset:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{formData.injuries.neckPain.painStart}</Text>
+              </View>
+            </View>
             
-            <Text style={styles.fieldValue}>
-              <Text style={{ fontWeight: 'bold' }}>Initial Severity: </Text>
-              {formData.injuries.neckPain.initialSeverity} Restrictions
-            </Text>
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Initial Severity:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{formData.injuries.neckPain.initialSeverity} Restrictions</Text>
+              </View>
+            </View>
             
-            <Text style={styles.fieldValue}>
-              <Text style={{ fontWeight: 'bold' }}>Current Status: </Text>
-              {formData.injuries.neckPain.currentSeverity} Restrictions
-            </Text>
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Current Status:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{formData.injuries.neckPain.currentSeverity} Restrictions</Text>
+              </View>
+            </View>
             
-            <Text style={styles.fieldValue}>
-              <Text style={{ fontWeight: 'bold' }}>Mechanism of Injury: </Text>
-              Whiplash injury
-            </Text>
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Mechanism of Injury:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>Whiplash injury</Text>
+              </View>
+            </View>
             
-            <Text style={styles.fieldValue}>
-              <Text style={{ fontWeight: 'bold' }}>Examination: </Text>
-              {getExaminationText(formData.injuries.neckPain.currentSeverity)}
-            </Text>
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Examination:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{getExaminationText(formData.injuries.neckPain.currentSeverity)}</Text>
+              </View>
+            </View>
             
-            <Text style={styles.fieldValue}>
-              <Text style={{ fontWeight: 'bold' }}>Opinion: </Text>
-              On the balance of probabilities, they are attributable to the index accident. In my opinion, the Claimant's symptoms are due to a whiplash injury.
-            </Text>
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Opinion:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>On the balance of probabilities, they are attributable to the index accident. In my opinion, the Claimant's symptoms are due to a whiplash injury.</Text>
+              </View>
+            </View>
             
-            <Text style={styles.fieldValue}>
-              <Text style={{ fontWeight: 'bold' }}>Additional Report: </Text>
-              Not Required
-            </Text>
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Additional Report:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>Not Required</Text>
+              </View>
+            </View>
             
-            <Text style={styles.fieldValue}>
-              <Text style={{ fontWeight: 'bold' }}>History: </Text>
-              {formData.injuries.neckPain.hadPrior 
-                ? "The Claimant reported having similar symptoms before the index accident."
-                : "The Claimant reported no prior similar symptoms before the index accident."}
-            </Text>
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>History:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>
+                  {formData.injuries.neckPain.hadPrior 
+                    ? "The Claimant reported having similar symptoms before the index accident."
+                    : "The Claimant reported no prior similar symptoms before the index accident."}
+                </Text>
+              </View>
+            </View>
             
-            <Text style={styles.fieldValue}>
-              <Text style={{ fontWeight: 'bold' }}>Treatment Recommendation: </Text>
-              Physiotherapy, the required number of sessions to be determined by the Physiotherapist.
-            </Text>
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Treatment Recommendation:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>Physiotherapy, the required number of sessions to be determined by the Physiotherapist.</Text>
+              </View>
+            </View>
             
-            <Text style={styles.fieldValue}>
-              <Text style={{ fontWeight: 'bold' }}>Prognosis: </Text>
-              From the date of accident: {getPrognosis(formData.injuries.neckPain.currentSeverity, formData.injuries.neckPain.resolveDays)}
-              {getPrognosisNotes(formData.injuries.neckPain.currentSeverity, getPrognosis(formData.injuries.neckPain.currentSeverity, formData.injuries.neckPain.resolveDays))}
-            </Text>
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Prognosis:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>
+                  From the date of accident: {getPrognosis(formData.injuries.neckPain.currentSeverity, formData.injuries.neckPain.resolveDays)}
+                  {getPrognosisNotes(formData.injuries.neckPain.currentSeverity, getPrognosis(formData.injuries.neckPain.currentSeverity, formData.injuries.neckPain.resolveDays))}
+                </Text>
+              </View>
+            </View>
           </View>
         </View>
       )}
