@@ -6,7 +6,7 @@ import { dailyLifeStyles } from '../dailyLifeStyles';
 export const SoftTissueComponent = () => {
   return (
     <View style={dailyLifeStyles.section}>
-      <Text style={dailyLifeStyles.subtitle}>11. Soft Tissue Injury Claim</Text>
+      <Text style={dailyLifeStyles.subtitle}>12. Soft Tissue Injury Claim</Text>
       <View style={dailyLifeStyles.bulletList}>
         <Text style={dailyLifeStyles.bulletItem}>• Please confirm whether the claimant was an occupant of a Motor vehicle: Yes</Text>
         <Text style={dailyLifeStyles.bulletItem}>(Exclude – Pedestrians, Motorcyclist and Cyclist)</Text>

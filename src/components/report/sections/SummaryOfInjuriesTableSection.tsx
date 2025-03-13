@@ -1,12 +1,29 @@
+
 import { Text, View } from '@react-pdf/renderer';
 import { InjuriesTable } from './InjuriesTable';
 import { InjuryTableRow } from './InjuryTableRow';
 import { ExceptionalCircumstancesTable } from './ExceptionalCircumstancesTable';
+import { 
+  getInjuryClassification, 
+  getPrognosis, 
+  getTreatmentRecommendation 
+} from '../utils/injuryClassification';
 
 interface SummaryOfInjuriesTableSectionProps {
   formData: any;
   styles: any;
 }
+
+// Helper function to determine severity text from level
+const getSeverityText = (level?: string) => {
+  switch(level) {
+    case "1": return "Mild";
+    case "2": return "Moderate";
+    case "3": return "Severe";
+    case "4": return "Resolved";
+    default: return "Unknown";
+  }
+};
 
 export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInjuriesTableSectionProps) => {
   return (
