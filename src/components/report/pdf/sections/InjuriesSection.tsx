@@ -1,6 +1,7 @@
 
 import { Text, View } from '@react-pdf/renderer';
 import { ReportData } from '@/types/reportTypes';
+import { getOnsetText } from '@/utils/injuryTextUtils';
 
 interface InjuriesSectionProps {
   formData: ReportData;
@@ -39,6 +40,11 @@ export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
     return "";
   };
 
+  // Helper function to get formatted onset text from numeric code
+  const getFormattedOnsetText = (onset: string) => {
+    return getOnsetText(onset);
+  };
+
   return (
     <View style={styles.subsection}>
       <Text style={styles.sectionHeader}>Section 8 - Injuries and Symptoms</Text>
@@ -64,7 +70,7 @@ export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
                 <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Onset:</Text>
               </View>
               <View style={{ width: '70%' }}>
-                <Text style={styles.fieldValue}>{formData.injuries.neckPain.painStart}</Text>
+                <Text style={styles.fieldValue}>{getFormattedOnsetText(formData.injuries.neckPain.painStart)}</Text>
               </View>
             </View>
             
@@ -165,7 +171,7 @@ export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
           <Text style={styles.fieldLabel}>8.2 Shoulder Pain</Text>
           <Text style={styles.fieldValue}>
             The claimant reported pain in the {formData.injuries.shoulderPain.side.toLowerCase()} shoulder. 
-            The pain started {formData.injuries.shoulderPain.painStart.toLowerCase()}. 
+            The pain started {getFormattedOnsetText(formData.injuries.shoulderPain.painStart).toLowerCase()}. 
             The initial severity was {formData.injuries.shoulderPain.initialSeverity.toLowerCase()}. 
             {formData.injuries.shoulderPain.currentSeverity === "Resolved" 
               ? ` The shoulder pain has now resolved after ${formData.injuries.shoulderPain.resolveDays || "an unspecified number of"} days.` 
@@ -180,7 +186,7 @@ export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
           <Text style={styles.fieldLabel}>8.3 Back Pain</Text>
           <Text style={styles.fieldValue}>
             The claimant reported pain in the {formData.injuries.backPain.location.toLowerCase()} back. 
-            The pain started {formData.injuries.backPain.painStart.toLowerCase()}. 
+            The pain started {getFormattedOnsetText(formData.injuries.backPain.painStart).toLowerCase()}. 
             The initial severity was {formData.injuries.backPain.initialSeverity.toLowerCase()}. 
             {formData.injuries.backPain.currentSeverity === "Resolved" 
               ? ` The back pain has now resolved after ${formData.injuries.backPain.resolveDays || "an unspecified number of"} days.` 
@@ -195,7 +201,7 @@ export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
           <Text style={styles.fieldLabel}>8.4 Headache</Text>
           <Text style={styles.fieldValue}>
             The claimant reported headaches following the accident. 
-            The headaches started {formData.injuries.headache.start.toLowerCase()}. 
+            The headaches started {getFormattedOnsetText(formData.injuries.headache.start).toLowerCase()}. 
             The initial severity was {formData.injuries.headache.initialSeverity.toLowerCase()}. 
             {formData.injuries.headache.currentSeverity === "Resolved" 
               ? ` The headaches have now resolved after ${formData.injuries.headache.resolveDays || "an unspecified number of"} days.` 

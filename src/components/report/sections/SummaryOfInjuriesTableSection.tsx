@@ -1,6 +1,7 @@
 
 import { Text, View } from '@react-pdf/renderer';
 import { ReportData } from '@/types/reportTypes';
+import { getOnsetText } from '@/utils/injuryTextUtils';
 
 interface SummaryOfInjuriesTableSectionProps {
   formData: ReportData;
@@ -33,7 +34,7 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
           <View style={styles.tableRow}>
             <Text style={[styles.tableCell, { width: '30%' }]}>Neck Pain</Text>
             <Text style={[styles.tableCell, { width: '15%' }]}>WAD II</Text>
-            <Text style={[styles.tableCell, { width: '15%' }]}>{formData.injuries.neckPain.painStart}</Text>
+            <Text style={[styles.tableCell, { width: '15%' }]}>{getOnsetText(formData.injuries.neckPain.painStart)}</Text>
             <Text style={[styles.tableCell, { width: '20%' }]}>{formData.injuries.neckPain.initialSeverity}</Text>
             <Text style={[styles.tableCell, { width: '20%' }]}>
               {formData.injuries.neckPain.currentSeverity === "Resolved" 
@@ -47,7 +48,7 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
           <View style={styles.tableRow}>
             <Text style={[styles.tableCell, { width: '30%' }]}>Shoulder Pain ({formData.injuries.shoulderPain.side})</Text>
             <Text style={[styles.tableCell, { width: '15%' }]}>WAD II</Text>
-            <Text style={[styles.tableCell, { width: '15%' }]}>{formData.injuries.shoulderPain.painStart}</Text>
+            <Text style={[styles.tableCell, { width: '15%' }]}>{getOnsetText(formData.injuries.shoulderPain.painStart)}</Text>
             <Text style={[styles.tableCell, { width: '20%' }]}>{formData.injuries.shoulderPain.initialSeverity}</Text>
             <Text style={[styles.tableCell, { width: '20%' }]}>
               {formData.injuries.shoulderPain.currentSeverity === "Resolved" 
@@ -61,7 +62,7 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
           <View style={styles.tableRow}>
             <Text style={[styles.tableCell, { width: '30%' }]}>Back Pain ({formData.injuries.backPain.location})</Text>
             <Text style={[styles.tableCell, { width: '15%' }]}>WAD II</Text>
-            <Text style={[styles.tableCell, { width: '15%' }]}>{formData.injuries.backPain.painStart}</Text>
+            <Text style={[styles.tableCell, { width: '15%' }]}>{getOnsetText(formData.injuries.backPain.painStart)}</Text>
             <Text style={[styles.tableCell, { width: '20%' }]}>{formData.injuries.backPain.initialSeverity}</Text>
             <Text style={[styles.tableCell, { width: '20%' }]}>
               {formData.injuries.backPain.currentSeverity === "Resolved" 
@@ -75,7 +76,7 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
           <View style={styles.tableRow}>
             <Text style={[styles.tableCell, { width: '30%' }]}>Headache</Text>
             <Text style={[styles.tableCell, { width: '15%' }]}>WAD II</Text>
-            <Text style={[styles.tableCell, { width: '15%' }]}>{formData.injuries.headache.start}</Text>
+            <Text style={[styles.tableCell, { width: '15%' }]}>{getOnsetText(formData.injuries.headache.start)}</Text>
             <Text style={[styles.tableCell, { width: '20%' }]}>{formData.injuries.headache.initialSeverity}</Text>
             <Text style={[styles.tableCell, { width: '20%' }]}>
               {formData.injuries.headache.currentSeverity === "Resolved" 
