@@ -1,9 +1,8 @@
 
 import * as Tabs from "@radix-ui/react-tabs";
 import { Button } from "@/components/ui/button";
-import { FileText, Eye } from "lucide-react";
+import { FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Link } from "react-router-dom";
 
 interface IntakeFormNavigationProps {
   currentSection: number;
@@ -39,29 +38,15 @@ export function IntakeFormNavigation({
           </Tabs.List>
         </Tabs.Root>
         
-        <div className="flex space-x-2">
-          <Button 
-            variant="outline"
-            size="sm"
-            className="whitespace-nowrap"
-            asChild
-          >
-            <Link to="/preview-report">
-              <Eye className="mr-1 h-4 w-4" />
-              Preview Report
-            </Link>
-          </Button>
-          
-          <Button 
-            onClick={onGenerateReport}
-            variant="secondary"
-            size="sm"
-            className="text-white bg-black hover:bg-gray-800 whitespace-nowrap"
-          >
-            <FileText className="mr-1 h-4 w-4" />
-            Generate Report
-          </Button>
-        </div>
+        <Button 
+          onClick={onGenerateReport}
+          variant="secondary"
+          size="sm"
+          className="ml-2 text-white bg-black hover:bg-gray-800 whitespace-nowrap"
+        >
+          <FileText className="mr-1 h-4 w-4" />
+          Generate Report
+        </Button>
       </div>
     </div>
   );
