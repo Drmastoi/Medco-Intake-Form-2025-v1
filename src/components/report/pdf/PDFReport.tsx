@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { 
   PDFDownloadLink, 
@@ -26,6 +27,7 @@ import { ConclusionSection } from './sections/ConclusionSection';
 import { BruisingSection } from './sections/BruisingSection';
 import { OtherInjuriesSection } from './sections/OtherInjuriesSection';
 import { StatementOfInstructionSection } from '../../report/sections/StatementOfInstructionSection';
+import { SummaryOfInjuriesTableSection } from '../../report/sections/SummaryOfInjuriesTableSection';
 
 // Create styles
 const styles = StyleSheet.create({
@@ -93,6 +95,37 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9f9f9',
     padding: 5,
     borderRadius: 3,
+  },
+  // New table styles
+  tableContainer: {
+    marginTop: 10,
+    borderWidth: 1,
+    borderColor: '#000',
+    borderStyle: 'solid',
+  },
+  tableHeader: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderBottomColor: '#000',
+    backgroundColor: '#f0f0f0',
+    paddingVertical: 5,
+    paddingHorizontal: 3,
+  },
+  tableHeaderCell: {
+    fontSize: 10,
+    fontWeight: 'bold',
+    textAlign: 'left',
+  },
+  tableRow: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+    paddingVertical: 5,
+    paddingHorizontal: 3,
+  },
+  tableCell: {
+    fontSize: 9,
+    textAlign: 'left',
   }
 });
 
@@ -129,6 +162,10 @@ const PDFDocument = ({ reportData }: { reportData: ReportData }) => (
       
       <View style={styles.section}>
         <AccidentDetailsSection formData={reportData} styles={styles} />
+      </View>
+      
+      <View style={styles.section}>
+        <SummaryOfInjuriesTableSection formData={reportData} styles={styles} />
       </View>
     </Page>
 
