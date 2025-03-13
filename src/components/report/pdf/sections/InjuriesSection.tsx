@@ -8,6 +8,37 @@ interface InjuriesSectionProps {
 }
 
 export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
+  // Helper function to determine prognosis based on severity and resolve days
+  const getPrognosis = (severity: string, resolveDays?: string) => {
+    if (severity === "Resolved" && resolveDays) {
+      return `${resolveDays} days`;
+    } else if (severity === "Mild") {
+      return "3 Months";
+    } else if (severity === "Moderate") {
+      return "6 Months";
+    } else if (severity === "Severe") {
+      return "9 Months";
+    }
+    return "6 Months"; // Default
+  };
+
+  // Helper function to get examination text based on severity
+  const getExaminationText = (severity: string) => {
+    const restrictionLevel = severity === "Mild" ? "mildly" : 
+                            severity === "Moderate" ? "moderately" : 
+                            severity === "Severe" ? "severely" : "mildly";
+    
+    return `Observation is normal. Flexion extension Movements are ${restrictionLevel} restricted. ${severity} muscular tenderness is present on extreme movements, ${severity.toLowerCase()} muscular spasm is present. No Neurovascular Deficit`;
+  };
+
+  // Helper for prognosis notes
+  const getPrognosisNotes = (severity: string, prognosis: string) => {
+    if (severity === "Severe" || (prognosis.includes("Month") && parseInt(prognosis) >= 8)) {
+      return " Prolonged prognosis is due to severity of symptoms.";
+    }
+    return "";
+  };
+
   return (
     <View style={styles.subsection}>
       <Text style={styles.sectionHeader}>Section 8 - Injuries and Symptoms</Text>
@@ -16,13 +47,66 @@ export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
       {formData.injuries.neckPain.hasInjury && (
         <View style={{ marginBottom: 10 }}>
           <Text style={styles.fieldLabel}>8.1 Neck Pain</Text>
-          <Text style={styles.fieldValue}>
-            The claimant reported neck pain following the accident. The pain started {formData.injuries.neckPain.painStart.toLowerCase()}. 
-            The initial severity was {formData.injuries.neckPain.initialSeverity.toLowerCase()}. 
-            {formData.injuries.neckPain.currentSeverity === "Resolved" 
-              ? ` The neck pain has now resolved after ${formData.injuries.neckPain.resolveDays || "an unspecified number of"} days.` 
-              : ` The current severity is ${formData.injuries.neckPain.currentSeverity.toLowerCase()}.`}
-          </Text>
+          
+          <View style={{ marginLeft: 10, marginBottom: 5 }}>
+            <Text style={styles.fieldValue}>
+              <Text style={{ fontWeight: 'bold' }}>Symptoms: </Text>
+              Pain, stiffness and discomfort
+            </Text>
+            
+            <Text style={styles.fieldValue}>
+              <Text style={{ fontWeight: 'bold' }}>Onset: </Text>
+              {formData.injuries.neckPain.painStart}
+            </Text>
+            
+            <Text style={styles.fieldValue}>
+              <Text style={{ fontWeight: 'bold' }}>Initial Severity: </Text>
+              {formData.injuries.neckPain.initialSeverity} Restrictions
+            </Text>
+            
+            <Text style={styles.fieldValue}>
+              <Text style={{ fontWeight: 'bold' }}>Current Status: </Text>
+              {formData.injuries.neckPain.currentSeverity} Restrictions
+            </Text>
+            
+            <Text style={styles.fieldValue}>
+              <Text style={{ fontWeight: 'bold' }}>Mechanism of Injury: </Text>
+              Whiplash injury
+            </Text>
+            
+            <Text style={styles.fieldValue}>
+              <Text style={{ fontWeight: 'bold' }}>Examination: </Text>
+              {getExaminationText(formData.injuries.neckPain.currentSeverity)}
+            </Text>
+            
+            <Text style={styles.fieldValue}>
+              <Text style={{ fontWeight: 'bold' }}>Opinion: </Text>
+              On the balance of probabilities, they are attributable to the index accident. In my opinion, the Claimant's symptoms are due to a whiplash injury.
+            </Text>
+            
+            <Text style={styles.fieldValue}>
+              <Text style={{ fontWeight: 'bold' }}>Additional Report: </Text>
+              Not Required
+            </Text>
+            
+            <Text style={styles.fieldValue}>
+              <Text style={{ fontWeight: 'bold' }}>History: </Text>
+              {formData.injuries.neckPain.hadPrior 
+                ? "The Claimant reported having similar symptoms before the index accident."
+                : "The Claimant reported no prior similar symptoms before the index accident."}
+            </Text>
+            
+            <Text style={styles.fieldValue}>
+              <Text style={{ fontWeight: 'bold' }}>Treatment Recommendation: </Text>
+              Physiotherapy, the required number of sessions to be determined by the Physiotherapist.
+            </Text>
+            
+            <Text style={styles.fieldValue}>
+              <Text style={{ fontWeight: 'bold' }}>Prognosis: </Text>
+              From the date of accident: {getPrognosis(formData.injuries.neckPain.currentSeverity, formData.injuries.neckPain.resolveDays)}
+              {getPrognosisNotes(formData.injuries.neckPain.currentSeverity, getPrognosis(formData.injuries.neckPain.currentSeverity, formData.injuries.neckPain.resolveDays))}
+            </Text>
+          </View>
         </View>
       )}
       
