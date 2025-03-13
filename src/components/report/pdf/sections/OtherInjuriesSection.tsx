@@ -8,67 +8,34 @@ interface OtherInjuriesSectionProps {
 }
 
 export const OtherInjuriesSection = ({ formData, styles }: OtherInjuriesSectionProps) => {
-  const { other } = formData;
-  const { otherInjuries } = other;
-  
   return (
     <View style={styles.subsection}>
-      <Text style={styles.sectionHeader}>Section 10 - Other Injuries</Text>
+      <Text style={styles.sectionHeader}>Section 12 - Other Injuries</Text>
       
-      {otherInjuries.hasOtherInjury ? (
+      {formData.injuries.otherInjuries && formData.injuries.otherInjuries.length > 0 ? (
         <>
-          <View style={styles.fieldRow}>
-            <View style={styles.fieldColumn}>
-              <Text style={styles.fieldLabel}>Other Injury Present:</Text>
-              <Text style={styles.fieldValue}>Yes</Text>
-            </View>
-            <View style={styles.fieldColumn}>
-              <Text style={styles.fieldLabel}>Injury Type:</Text>
-              <Text style={styles.fieldValue}>{otherInjuries.name || "Not specified"}</Text>
-            </View>
-          </View>
-          
-          <View style={styles.fieldRow}>
-            <View style={styles.fieldColumn}>
-              <Text style={styles.fieldLabel}>When Started:</Text>
-              <Text style={styles.fieldValue}>{otherInjuries.start || "Not specified"}</Text>
-            </View>
-            <View style={styles.fieldColumn}>
-              <Text style={styles.fieldLabel}>Initial Severity:</Text>
-              <Text style={styles.fieldValue}>{otherInjuries.initialSeverity || "Not specified"}</Text>
-            </View>
-          </View>
-          
-          <View style={styles.fieldRow}>
-            <View style={styles.fieldColumn}>
-              <Text style={styles.fieldLabel}>Current Severity:</Text>
-              <Text style={styles.fieldValue}>{otherInjuries.currentSeverity || "Not specified"}</Text>
-            </View>
-            {otherInjuries.currentSeverity === "Resolved" && (
-              <View style={styles.fieldColumn}>
-                <Text style={styles.fieldLabel}>Resolved After:</Text>
-                <Text style={styles.fieldValue}>{otherInjuries.resolveDays || "Not specified"} days</Text>
-              </View>
-            )}
+          <View style={{ marginBottom: 10 }}>
+            <Text style={styles.fieldLabel}>12.1 Additional Injuries</Text>
+            {formData.injuries.otherInjuries.map((injury, index) => (
+              <Text key={index} style={styles.fieldValue}>
+                • {injury.description || "Unspecified injury"} - 
+                Initial severity: {injury.initialSeverity || "Not specified"}, 
+                Current severity: {injury.currentSeverity || "Not specified"}
+                {injury.resolvedAfter ? `, Resolved after: ${injury.resolvedAfter} days` : ""}
+              </Text>
+            ))}
           </View>
         </>
       ) : (
-        <Text style={styles.fieldValue}>No other injuries were reported following the accident.</Text>
+        <Text style={styles.fieldValue}>No other significant injuries were reported by the claimant.</Text>
       )}
       
-      {/* Summary Text */}
-      <Text style={styles.summaryText}>
-        {otherInjuries.hasOtherInjury 
-          ? `The claimant reported ${otherInjuries.name || "an unspecified injury"} following the accident, which started ${
-              otherInjuries.start || "at an unspecified time"
-            }. The initial severity was ${otherInjuries.initialSeverity?.toLowerCase() || "not specified"} and current severity is ${
-              otherInjuries.currentSeverity === "Resolved" 
-                ? `resolved after ${otherInjuries.resolveDays || "an unspecified number of"} days` 
-                : (otherInjuries.currentSeverity?.toLowerCase() || "not specified")
-            }.`
-          : "The claimant did not report any other injuries following the accident."
-        }
-      </Text>
+      {formData.injuries.exceptionalInjuries === "Yes" && formData.injuries.exceptionalInjuriesDetails && (
+        <View style={{ marginBottom: 10, marginTop: 10 }}>
+          <Text style={styles.fieldLabel}>12.2 Exceptional Circumstances</Text>
+          <Text style={styles.fieldValue}>{formData.injuries.exceptionalInjuriesDetails}</Text>
+        </View>
+      )}
     </View>
   );
 };

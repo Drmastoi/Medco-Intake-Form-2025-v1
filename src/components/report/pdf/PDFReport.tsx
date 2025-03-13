@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   PDFDownloadLink, 
@@ -157,15 +156,15 @@ const PDFDocument = ({ reportData }: { reportData: ReportData }) => (
       </View>
       
       <View style={styles.section}>
-        <StatementOfInstructionSection styles={styles} formData={reportData} />
-      </View>
-      
-      <View style={styles.section}>
         <AccidentDetailsSection formData={reportData} styles={styles} />
       </View>
       
       <View style={styles.section}>
         <SummaryOfInjuriesTableSection formData={reportData} styles={styles} />
+      </View>
+      
+      <View style={styles.section}>
+        <StatementOfInstructionSection styles={styles} formData={reportData} />
       </View>
     </Page>
 

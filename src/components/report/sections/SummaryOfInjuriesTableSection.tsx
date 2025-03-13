@@ -1,211 +1,123 @@
 
 import { Text, View } from '@react-pdf/renderer';
-import { InjuriesTable } from './InjuriesTable';
-import { InjuryTableRow } from './InjuryTableRow';
-import { ExceptionalCircumstancesTable } from './ExceptionalCircumstancesTable';
-import { 
-  getInjuryClassification, 
-  getPrognosis, 
-  getTreatmentRecommendation 
-} from '../utils/injuryClassification';
+import { ReportData } from '@/types/reportTypes';
 
 interface SummaryOfInjuriesTableSectionProps {
-  formData: any;
+  formData: ReportData;
   styles: any;
 }
 
-// Helper function to determine severity text from level
-const getSeverityText = (level?: string) => {
-  switch(level) {
-    case "1": return "Mild";
-    case "2": return "Moderate";
-    case "3": return "Severe";
-    case "4": return "Resolved";
-    default: return "Unknown";
-  }
-};
-
 export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInjuriesTableSectionProps) => {
+  // Determine which injuries are present based on formData
+  const hasNeckPain = formData.injuries.neckPain === "Yes";
+  const hasShoulderPain = formData.injuries.shoulderPain === "Yes";
+  const hasBackPain = formData.injuries.backPain === "Yes";
+  const hasHeadache = formData.injuries.headache === "Yes";
+  const hasTravelAnxiety = formData.injuries.travelAnxiety === "Yes";
+  const hasBruising = formData.injuries.bruising === "Yes";
+  
   return (
     <View style={styles.subsection}>
       <Text style={styles.sectionHeader}>Section 6 - Summary of Injuries</Text>
       
       <View style={styles.tableContainer}>
         <View style={styles.tableHeader}>
-          <Text style={[styles.tableHeaderCell, { flex: 1.5 }]}>Injury</Text>
-          <Text style={[styles.tableHeaderCell, { flex: 1 }]}>Current Status</Text>
-          <Text style={[styles.tableHeaderCell, { flex: 1.5 }]}>Classification</Text>
-          <Text style={[styles.tableHeaderCell, { flex: 1 }]}>Treatment</Text>
-          <Text style={[styles.tableHeaderCell, { flex: 1 }]}>Prognosis</Text>
+          <Text style={[styles.tableHeaderCell, { width: '30%' }]}>Injury</Text>
+          <Text style={[styles.tableHeaderCell, { width: '15%' }]}>Classification</Text>
+          <Text style={[styles.tableHeaderCell, { width: '15%' }]}>Onset</Text>
+          <Text style={[styles.tableHeaderCell, { width: '20%' }]}>Initial Severity</Text>
+          <Text style={[styles.tableHeaderCell, { width: '20%' }]}>Recovery/Prognosis</Text>
         </View>
         
-        {/* Neck Injury */}
-        {formData.injuries.neckPain.hasInjury && (
+        {hasNeckPain && (
           <View style={styles.tableRow}>
-            <Text style={[styles.tableCell, { flex: 1.5 }]}>Neck Pain</Text>
-            <Text style={[styles.tableCell, { flex: 1 }]}>
-              {formData.injuries.neckPain.currentSeverity}
-            </Text>
-            <Text style={[styles.tableCell, { flex: 1.5 }]}>
-              {getInjuryClassification("Neck")}
-            </Text>
-            <Text style={[styles.tableCell, { flex: 1 }]}>
-              {getTreatmentRecommendation(formData.injuries.neckPain.currentSeverity, "Neck")}
-            </Text>
-            <Text style={[styles.tableCell, { flex: 1 }]}>
-              {formData.injuries.neckPain.currentSeverity === "Resolved" 
-                ? `${formData.injuries.neckPain.resolveDays || "Unknown"} Days` 
-                : getPrognosis(formData.injuries.neckPain.currentSeverity)}
+            <Text style={[styles.tableCell, { width: '30%' }]}>Neck Pain</Text>
+            <Text style={[styles.tableCell, { width: '15%' }]}>WAD II</Text>
+            <Text style={[styles.tableCell, { width: '15%' }]}>{formData.injuries.neckPainStart}</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>{formData.injuries.neckPainInitialSeverity}</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>
+              {formData.injuries.neckPainCurrentSeverity === "Resolved" 
+                ? `${formData.injuries.neckPainResolveDays || "unknown"} days` 
+                : formData.injuries.neckPainCurrentSeverity}
             </Text>
           </View>
         )}
         
-        {/* Shoulder Injury */}
-        {formData.injuries.shoulderPain.hasInjury && (
+        {hasShoulderPain && (
           <View style={styles.tableRow}>
-            <Text style={[styles.tableCell, { flex: 1.5 }]}>
-              Shoulder Pain ({formData.injuries.shoulderPain.side === "right" ? "Right" : 
-                formData.injuries.shoulderPain.side === "left" ? "Left" : "Both"})
-            </Text>
-            <Text style={[styles.tableCell, { flex: 1 }]}>
-              {formData.injuries.shoulderPain.currentSeverity}
-            </Text>
-            <Text style={[styles.tableCell, { flex: 1.5 }]}>
-              {getInjuryClassification("Shoulder")}
-            </Text>
-            <Text style={[styles.tableCell, { flex: 1 }]}>
-              {getTreatmentRecommendation(formData.injuries.shoulderPain.currentSeverity, "Shoulder")}
-            </Text>
-            <Text style={[styles.tableCell, { flex: 1 }]}>
-              {formData.injuries.shoulderPain.currentSeverity === "Resolved" 
-                ? `${formData.injuries.shoulderPain.resolveDays || "Unknown"} Days` 
-                : getPrognosis(formData.injuries.shoulderPain.currentSeverity)}
+            <Text style={[styles.tableCell, { width: '30%' }]}>Shoulder Pain ({formData.injuries.shoulderSide})</Text>
+            <Text style={[styles.tableCell, { width: '15%' }]}>WAD II</Text>
+            <Text style={[styles.tableCell, { width: '15%' }]}>{formData.injuries.shoulderPainStart}</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>{formData.injuries.shoulderPainInitialSeverity}</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>
+              {formData.injuries.shoulderPainCurrentSeverity === "Resolved" 
+                ? `${formData.injuries.shoulderPainResolveDays || "unknown"} days` 
+                : formData.injuries.shoulderPainCurrentSeverity}
             </Text>
           </View>
         )}
         
-        {/* Back Injury */}
-        {formData.injuries.backPain.hasInjury && (
+        {hasBackPain && (
           <View style={styles.tableRow}>
-            <Text style={[styles.tableCell, { flex: 1.5 }]}>
-              Back Pain ({formData.injuries.backPain.location === "1" ? "Upper" : 
-                formData.injuries.backPain.location === "2" ? "Middle" : 
-                formData.injuries.backPain.location === "3" ? "Lower" : "Full"})
-            </Text>
-            <Text style={[styles.tableCell, { flex: 1 }]}>
-              {formData.injuries.backPain.currentSeverity}
-            </Text>
-            <Text style={[styles.tableCell, { flex: 1.5 }]}>
-              {getInjuryClassification("Back", formData.injuries.backPain.location)}
-            </Text>
-            <Text style={[styles.tableCell, { flex: 1 }]}>
-              {getTreatmentRecommendation(formData.injuries.backPain.currentSeverity, "Back")}
-            </Text>
-            <Text style={[styles.tableCell, { flex: 1 }]}>
-              {formData.injuries.backPain.currentSeverity === "Resolved" 
-                ? `${formData.injuries.backPain.resolveDays || "Unknown"} Days` 
-                : getPrognosis(formData.injuries.backPain.currentSeverity)}
+            <Text style={[styles.tableCell, { width: '30%' }]}>Back Pain ({formData.injuries.backLocation})</Text>
+            <Text style={[styles.tableCell, { width: '15%' }]}>WAD II</Text>
+            <Text style={[styles.tableCell, { width: '15%' }]}>{formData.injuries.backPainStart}</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>{formData.injuries.backPainInitialSeverity}</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>
+              {formData.injuries.backPainCurrentSeverity === "Resolved" 
+                ? `${formData.injuries.backPainResolveDays || "unknown"} days` 
+                : formData.injuries.backPainCurrentSeverity}
             </Text>
           </View>
         )}
         
-        {/* Headache */}
-        {formData.injuries.headache.hasInjury && (
+        {hasHeadache && (
           <View style={styles.tableRow}>
-            <Text style={[styles.tableCell, { flex: 1.5 }]}>Headaches</Text>
-            <Text style={[styles.tableCell, { flex: 1 }]}>
-              {formData.injuries.headache.currentSeverity}
-            </Text>
-            <Text style={[styles.tableCell, { flex: 1.5 }]}>
-              {getInjuryClassification("Headache")}
-            </Text>
-            <Text style={[styles.tableCell, { flex: 1 }]}>
-              {getTreatmentRecommendation(formData.injuries.headache.currentSeverity, "Headache")}
-            </Text>
-            <Text style={[styles.tableCell, { flex: 1 }]}>
-              {formData.injuries.headache.currentSeverity === "Resolved" 
-                ? `${formData.injuries.headache.resolveDays || "Unknown"} Days` 
-                : getPrognosis(formData.injuries.headache.currentSeverity)}
+            <Text style={[styles.tableCell, { width: '30%' }]}>Headache</Text>
+            <Text style={[styles.tableCell, { width: '15%' }]}>WAD II</Text>
+            <Text style={[styles.tableCell, { width: '15%' }]}>{formData.injuries.headacheStart}</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>{formData.injuries.headacheInitialSeverity}</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>
+              {formData.injuries.headacheCurrentSeverity === "Resolved" 
+                ? `${formData.injuries.headacheResolveDays || "unknown"} days` 
+                : formData.injuries.headacheCurrentSeverity}
             </Text>
           </View>
         )}
         
-        {/* Anxiety */}
-        {formData.injuries.travelAnxiety?.hasInjury && (
+        {hasTravelAnxiety && (
           <View style={styles.tableRow}>
-            <Text style={[styles.tableCell, { flex: 1.5 }]}>Travel Anxiety</Text>
-            <Text style={[styles.tableCell, { flex: 1 }]}>
-              {formData.injuries.travelAnxiety.currentSeverity}
-            </Text>
-            <Text style={[styles.tableCell, { flex: 1.5 }]}>
-              {getInjuryClassification("Anxiety")}
-            </Text>
-            <Text style={[styles.tableCell, { flex: 1 }]}>
-              {getTreatmentRecommendation(formData.injuries.travelAnxiety.currentSeverity, "Anxiety")}
-            </Text>
-            <Text style={[styles.tableCell, { flex: 1 }]}>
-              {formData.injuries.travelAnxiety.currentSeverity === "Resolved" 
-                ? `${formData.injuries.travelAnxiety.duration || "Unknown"} Days` 
-                : getPrognosis(formData.injuries.travelAnxiety.currentSeverity)}
+            <Text style={[styles.tableCell, { width: '30%' }]}>Travel Anxiety</Text>
+            <Text style={[styles.tableCell, { width: '15%' }]}>Psychological</Text>
+            <Text style={[styles.tableCell, { width: '15%' }]}>Immediate</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>{formData.injuries.anxietyInitialSeverity}</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>
+              {formData.injuries.anxietyCurrentSeverity === "Resolved" 
+                ? `${formData.injuries.anxietyResolveDays || "unknown"} days` 
+                : formData.injuries.anxietyCurrentSeverity}
             </Text>
           </View>
         )}
         
-        {/* Bruising */}
-        {formData.bruising?.hasBruising && (
+        {hasBruising && (
           <View style={styles.tableRow}>
-            <Text style={[styles.tableCell, { flex: 1.5 }]}>Bruising/Scarring</Text>
-            <Text style={[styles.tableCell, { flex: 1 }]}>
-              {formData.bruising.currentSeverity || getSeverityText(formData.bruising.severityLevel)}
-            </Text>
-            <Text style={[styles.tableCell, { flex: 1.5 }]}>
-              {getInjuryClassification("Other")}
-            </Text>
-            <Text style={[styles.tableCell, { flex: 1 }]}>
-              {getTreatmentRecommendation(formData.bruising.currentSeverity || formData.bruising.severityLevel, "Other")}
-            </Text>
-            <Text style={[styles.tableCell, { flex: 1 }]}>
-              {(formData.bruising.currentSeverity === "Resolved" || formData.bruising.severityLevel === "4") 
-                ? `${formData.bruising.resolveDays || "Unknown"} Days` 
-                : getPrognosis(formData.bruising.currentSeverity || formData.bruising.severityLevel)}
-            </Text>
-          </View>
-        )}
-        
-        {/* Other Injury */}
-        {formData.otherInjuries?.hasOtherInjury && (
-          <View style={styles.tableRow}>
-            <Text style={[styles.tableCell, { flex: 1.5 }]}>
-              {formData.otherInjuries.injuryName || "Other Injury"}
-            </Text>
-            <Text style={[styles.tableCell, { flex: 1 }]}>
-              {formData.otherInjuries.currentSeverity || getSeverityText(formData.otherInjuries.severityLevel)}
-            </Text>
-            <Text style={[styles.tableCell, { flex: 1.5 }]}>
-              {getInjuryClassification("Other")}
-            </Text>
-            <Text style={[styles.tableCell, { flex: 1 }]}>
-              {getTreatmentRecommendation(formData.otherInjuries.currentSeverity || formData.otherInjuries.severityLevel, "Other")}
-            </Text>
-            <Text style={[styles.tableCell, { flex: 1 }]}>
-              {(formData.otherInjuries.currentSeverity === "Resolved" || formData.otherInjuries.severityLevel === "4") 
-                ? `${formData.otherInjuries.resolveDays || "Unknown"} Days` 
-                : getPrognosis(formData.otherInjuries.currentSeverity || formData.otherInjuries.severityLevel)}
+            <Text style={[styles.tableCell, { width: '30%' }]}>Bruising</Text>
+            <Text style={[styles.tableCell, { width: '15%' }]}>Physical</Text>
+            <Text style={[styles.tableCell, { width: '15%' }]}>Immediate</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>{formData.injuries.bruisingInitialSeverity || "Mild"}</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>
+              {formData.injuries.bruisingDuration ? `${formData.injuries.bruisingDuration} days` : "Unknown"}
             </Text>
           </View>
         )}
       </View>
       
-      {/* Add a note if no injuries reported */}
-      {!formData.injuries.neckPain?.hasInjury && 
-       !formData.injuries.shoulderPain?.hasInjury && 
-       !formData.injuries.backPain?.hasInjury && 
-       !formData.injuries.headache?.hasInjury && 
-       !formData.injuries.travelAnxiety?.hasInjury && 
-       !formData.bruising?.hasBruising && 
-       !formData.otherInjuries?.hasOtherInjury && (
-        <Text style={styles.summaryText}>No injuries reported by the claimant.</Text>
-      )}
+      <View style={{ marginTop: 10 }}>
+        <Text style={styles.summaryText}>
+          Based on the examination and information provided by the claimant, the injuries are consistent with the accident as described.
+          The injuries presented are typical of those sustained in this type of road traffic accident.
+        </Text>
+      </View>
     </View>
   );
 };

@@ -8,65 +8,45 @@ interface TreatmentSectionProps {
 }
 
 export const TreatmentSection = ({ formData, styles }: TreatmentSectionProps) => {
-  const { other } = formData;
-  const { treatment } = other;
-  
   return (
     <View style={styles.subsection}>
-      <Text style={styles.sectionHeader}>Section 9 - Treatment</Text>
+      <Text style={styles.sectionHeader}>Section 13 - Treatment</Text>
       
-      {treatment.hasTreatment ? (
-        <>
-          <View style={styles.fieldRow}>
-            <View style={styles.fieldColumn}>
-              <Text style={styles.fieldLabel}>Treatment Received:</Text>
-              <Text style={styles.fieldValue}>Yes</Text>
-            </View>
-            <View style={styles.fieldColumn}>
-              <Text style={styles.fieldLabel}>Type:</Text>
-              <Text style={styles.fieldValue}>
-                {treatment.type && treatment.type.length > 0 
-                  ? treatment.type.join(", ") 
-                  : "Not specified"}
-              </Text>
-            </View>
-          </View>
-          
-          <View style={styles.fieldRow}>
-            <View style={styles.fieldColumn}>
-              <Text style={styles.fieldLabel}>Frequency:</Text>
-              <Text style={styles.fieldValue}>{treatment.frequency || "Not specified"}</Text>
-            </View>
-            <View style={styles.fieldColumn}>
-              <Text style={styles.fieldLabel}>Duration:</Text>
-              <Text style={styles.fieldValue}>{treatment.duration || "Not specified"}</Text>
-            </View>
-          </View>
-          
-          <View style={styles.fieldRow}>
-            <View style={styles.fieldColumn}>
-              <Text style={styles.fieldLabel}>Treatment Ongoing:</Text>
-              <Text style={styles.fieldValue}>{treatment.ongoing ? "Yes" : "No"}</Text>
-            </View>
-          </View>
-        </>
-      ) : (
-        <Text style={styles.fieldValue}>No treatment has been received for injuries related to this accident.</Text>
-      )}
+      <View style={{ marginBottom: 10 }}>
+        <Text style={styles.fieldLabel}>13.1 Hospital Attendance</Text>
+        <Text style={styles.fieldValue}>
+          {formData.treatment.hospitalAttendance === "Yes" 
+            ? `The claimant attended ${formData.treatment.hospitalName || "hospital"} on ${formData.treatment.hospitalDate || "the date of the accident"}.`
+            : "The claimant did not attend hospital following the accident."}
+        </Text>
+      </View>
       
-      {/* Summary Text */}
-      <Text style={styles.summaryText}>
-        {treatment.hasTreatment 
-          ? `The claimant has received treatment consisting of ${
-              treatment.type && treatment.type.length > 0 
-                ? treatment.type.join(", ") 
-                : "unspecified treatments"
-            }${treatment.frequency ? ` at a frequency of ${treatment.frequency}` : ""}${
-              treatment.duration ? ` for a duration of ${treatment.duration}` : ""
-            }. Treatment is ${treatment.ongoing ? "ongoing" : "no longer ongoing"}.`
-          : "The claimant has not received any treatment for injuries sustained in this accident."
-        }
-      </Text>
+      <View style={{ marginBottom: 10 }}>
+        <Text style={styles.fieldLabel}>13.2 GP Attendance</Text>
+        <Text style={styles.fieldValue}>
+          {formData.treatment.gpAttendance === "Yes"
+            ? `The claimant visited their GP on ${formData.treatment.gpDate || "a date after the accident"}.`
+            : "The claimant did not visit their GP following the accident."}
+        </Text>
+      </View>
+      
+      <View style={{ marginBottom: 10 }}>
+        <Text style={styles.fieldLabel}>13.3 Physiotherapy</Text>
+        <Text style={styles.fieldValue}>
+          {formData.treatment.physiotherapy === "Yes"
+            ? `The claimant received physiotherapy treatment. Number of sessions: ${formData.treatment.physiotherapySessions || "not specified"}.`
+            : "The claimant did not receive physiotherapy treatment."}
+        </Text>
+      </View>
+      
+      <View style={{ marginBottom: 10 }}>
+        <Text style={styles.fieldLabel}>13.4 Medication</Text>
+        <Text style={styles.fieldValue}>
+          {formData.treatment.medication 
+            ? `The claimant took the following medication: ${formData.treatment.medication}.`
+            : "The claimant did not report taking any specific medication for their injuries."}
+        </Text>
+      </View>
     </View>
   );
 };

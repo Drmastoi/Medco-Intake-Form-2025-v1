@@ -1,9 +1,8 @@
 
 import { Text, View } from '@react-pdf/renderer';
-import { ReportData } from '@/types/reportTypes';
 
 interface InstructionDetailsSectionProps {
-  formData: ReportData;
+  formData: any;
   styles: any;
 }
 
@@ -14,23 +13,23 @@ export const InstructionDetailsSection = ({ formData, styles }: InstructionDetai
       
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>Agency:</Text>
-          <Text style={styles.fieldValue}>{formData.prefilled.instructingPartyName} ({formData.prefilled.instructingPartyReference || "Not Provided"})</Text>
+          <Text style={styles.fieldLabel}>3.1 Agency</Text>
+          <Text style={styles.fieldValue}>{formData.agency || 'Not provided'}</Text>
         </View>
         <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>Solicitor:</Text>
-          <Text style={styles.fieldValue}>{formData.prefilled.solicitorName}</Text>
+          <Text style={styles.fieldLabel}>3.2 Solicitor</Text>
+          <Text style={styles.fieldValue}>{formData.solicitor || 'Not provided'}</Text>
         </View>
       </View>
       
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>Medco Reference:</Text>
-          <Text style={styles.fieldValue}>{formData.prefilled.medcoReference}</Text>
+          <Text style={styles.fieldLabel}>3.3 Medco Reference</Text>
+          <Text style={styles.fieldValue}>{formData.medcoReference || 'Not provided'}</Text>
         </View>
         <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>Review of Records:</Text>
-          <Text style={styles.fieldValue}>A&E</Text>
+          <Text style={styles.fieldLabel}>3.4 Review of Records</Text>
+          <Text style={styles.fieldValue}>GP Records, A&E Records</Text>
         </View>
       </View>
     </View>
