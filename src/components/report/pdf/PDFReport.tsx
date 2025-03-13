@@ -6,7 +6,8 @@ import {
   Document, 
   Page, 
   StyleSheet, 
-  View 
+  View,
+  Text 
 } from '@react-pdf/renderer';
 import { ReportData } from '@/types/reportTypes';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -79,11 +80,9 @@ const PDFDocument = ({ reportData }: { reportData: ReportData }) => (
   <Document>
     <Page size="A4" style={styles.page}>
       <View style={styles.header}>
-        <View>
-          <View style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
-            Expert Medical Report
-          </View>
-        </View>
+        <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
+          Expert Medical Report
+        </Text>
       </View>
       
       <View style={styles.section}>
@@ -154,7 +153,6 @@ const PDFReport = ({ reportData, isOpen, onClose }: PDFReportProps) => {
             <PDFViewer 
               className="w-full h-full" 
               showToolbar={false}
-              onLoadSuccess={handleLoad}
             >
               <PDFDocument reportData={reportData} />
             </PDFViewer>

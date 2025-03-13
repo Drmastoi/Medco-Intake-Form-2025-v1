@@ -1,3 +1,4 @@
+
 import { FormSchema } from "@/schemas/intakeFormSchema";
 import { 
   PrefilledData, 
@@ -23,6 +24,7 @@ export function convertPrefilledData(formData: FormSchema): PrefilledData {
     dateOfExamination: formData.dateOfExamination || "Not specified",
     dateOfReport: formData.dateOfReport || "Not specified",
     timeSpentWithClaimant: formData.timeSpentWithClaimant || "Not specified",
+    accompaniedBy: formData.accompaniedBy || "Unaccompanied",
     expertName: "Dr. Sam Smith", // Default value
     expertSpecialty: "General Practice", // Default value
     expertTitle: "Consultant", // Default value
