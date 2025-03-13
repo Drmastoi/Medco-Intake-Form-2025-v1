@@ -114,7 +114,7 @@ const PDFReport = ({ reportData, isOpen, onClose }: PDFReportProps) => {
                 {({ blob, url, loading, error }) => (
                   <Button
                     className="w-full"
-                    disabled={loading || error}
+                    disabled={loading || error !== undefined}
                     onClick={() => {
                       if (!loading && !error) {
                         toast({

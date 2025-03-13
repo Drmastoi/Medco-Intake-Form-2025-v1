@@ -1,4 +1,3 @@
-
 export interface PrefilledData {
   solicitorName: string;
   solicitorReference: string;
@@ -9,6 +8,10 @@ export interface PrefilledData {
   dateOfExamination: string;
   dateOfReport: string;
   timeSpentWithClaimant: string;
+  expertName?: string;
+  expertSpecialty?: string;
+  expertTitle?: string;
+  gmcNumber?: string;
 }
 
 export interface PersonalData {
