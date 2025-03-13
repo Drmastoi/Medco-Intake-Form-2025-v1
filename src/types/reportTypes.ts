@@ -1,3 +1,4 @@
+
 export interface PrefilledData {
   solicitorName: string;
   solicitorReference: string;
@@ -8,6 +9,7 @@ export interface PrefilledData {
   dateOfExamination: string;
   dateOfReport: string;
   timeSpentWithClaimant: string;
+  accompaniedBy: string;
   expertName?: string;
   expertSpecialty?: string;
   expertTitle?: string;
@@ -21,6 +23,7 @@ export interface PersonalData {
   address: string;
   occupation: string;
   workType: string;
+  idType?: string;
 }
 
 export interface AccidentData {
@@ -34,7 +37,7 @@ export interface AccidentData {
   claimantPosition?: string;
   claimantVehicle?: string;
   otherVehicle?: string;
-  accidentSummary?: string; // Added field for dynamic summary text
+  accidentSummary?: string;
 }
 
 export interface NeckPainData {
