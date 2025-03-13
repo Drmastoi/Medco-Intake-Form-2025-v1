@@ -218,8 +218,8 @@ export function IntakeFormSection3({
       </div>
       
       {/* Dynamic Summary Text */}
-      {summaryText && <div className="mt-6 p-4 rounded-md border border-gray-200 bg-slate-800">
-          <p className="text-xs text-gray-600 italic">{summaryText}</p>
+      {summaryText && <div className="mt-6 p-4 rounded-md border border-gray-200 bg-slate-200">
+          <p className="text-xs italic text-gray-950">{summaryText}</p>
         </div>}
     </div>;
 }
