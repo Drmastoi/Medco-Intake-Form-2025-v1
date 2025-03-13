@@ -1,28 +1,13 @@
-
 import { FormSchema } from "@/schemas/intakeFormSchema";
-import { ReportData } from "@/types/reportTypes";
-import { 
-  convertPrefilledData,
-  convertPersonalData,
-  convertAccidentData,
-  convertInjuriesData,
-  convertTravelAnxietyData,
-  convertOtherData
-} from "./reportConverters";
 
 /**
- * Converts form data to the format required for PDF report generation
+ * Placeholder for future PDF report utility functions
+ * This file has been reset and will be rebuilt according to new instructions
  */
-export function convertFormDataToReportData(formData: FormSchema): ReportData {
-  return {
-    prefilled: convertPrefilledData(formData),
-    personal: convertPersonalData(formData),
-    accident: convertAccidentData(formData),
-    injuries: convertInjuriesData(formData),
-    travelAnxiety: convertTravelAnxietyData(formData),
-    other: convertOtherData(formData)
-  };
+export function convertFormDataToReportData(formData: FormSchema) {
+  console.log("PDF report generation has been reset", formData);
+  return formData;
 }
 
-// Re-export ReportData type for use in components
+// Types have been kept for reference but functionality has been removed
 export type { ReportData } from "@/types/reportTypes";

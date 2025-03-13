@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { FormSchema } from "@/schemas/intakeFormSchema";
-import { convertFormDataToReportData } from "@/utils/pdfReportUtils";
 import { useToast } from "@/components/ui/use-toast";
 
 export function useReportGeneration(form: UseFormReturn<FormSchema>, setCurrentSection: (section: number) => void) {
@@ -25,19 +24,18 @@ export function useReportGeneration(form: UseFormReturn<FormSchema>, setCurrentS
         return;
       }
 
-      console.log("Generating report with form data:", values);
+      console.log("PDF generation has been reset.");
       
-      // Test convert function to ensure it works
-      const reportData = convertFormDataToReportData(values);
-      console.log("Converted report data:", reportData);
-
-      // Show the PDF report
-      setShowPdfReport(true);
-    } catch (error) {
-      console.error("Error generating report:", error);
       toast({
-        title: "Error Generating Report",
-        description: "There was a problem generating your report. Please try again.",
+        title: "PDF Generation Reset",
+        description: "PDF generation functionality has been removed. Please wait for new instructions.",
+      });
+      
+    } catch (error) {
+      console.error("Error:", error);
+      toast({
+        title: "Error",
+        description: "The PDF generation functionality has been reset.",
         variant: "destructive",
       });
     } finally {

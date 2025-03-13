@@ -1,12 +1,9 @@
-
 import React, { useState } from "react";
 import { FormSchema, formSchema } from "@/schemas/intakeFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { IntakeFormContent } from "@/components/intake-form/IntakeFormContent";
 import { IntakeFormHeader } from "@/components/intake-form/IntakeFormHeader";
-import PDFReport from "@/components/report/pdf/PDFReport";
-import { convertFormDataToReportData } from "@/utils/pdfReportUtils";
 import { useFormPrefill } from "@/hooks/useFormPrefill";
 import { useReportGeneration } from "@/hooks/useReportGeneration";
 
@@ -123,7 +120,7 @@ export function IntakeFormContainer() {
 
   // Use custom hooks for form prefilling and report generation
   useFormPrefill(form);
-  const { showPdfReport, setShowPdfReport, handleGenerateReport } = useReportGeneration(form, setCurrentSection);
+  const { isGenerating, handleGenerateReport } = useReportGeneration(form, setCurrentSection);
 
   return (
     <div className="container mx-auto py-10 px-4">
@@ -139,13 +136,6 @@ export function IntakeFormContainer() {
         currentSection={currentSection}
         totalSections={totalSections}
         setCurrentSection={setCurrentSection}
-      />
-
-      {/* PDF Report Dialog */}
-      <PDFReport 
-        reportData={convertFormDataToReportData(form.getValues())} 
-        isOpen={showPdfReport} 
-        onClose={() => setShowPdfReport(false)} 
       />
     </div>
   );
