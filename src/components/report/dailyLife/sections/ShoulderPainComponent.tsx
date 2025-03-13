@@ -57,16 +57,6 @@ export const ShoulderPainComponent = ({ formData }: ShoulderPainProps) => {
       text += `Currently, my symptoms are ${getSeverityText(formData.shoulderPainCurrentSeverity)}. `;
     }
     
-    // Prior history
-    if (formData.hadPriorShoulderPain === "1") {
-      text += "I had a history of shoulder pain prior to this accident. ";
-      if (formData.accidentShoulderPainPercentage && formData.priorShoulderPainPercentage) {
-        text += `I attribute ${formData.accidentShoulderPainPercentage}% of my current shoulder pain to this accident and ${formData.priorShoulderPainPercentage}% to my previous condition. `;
-      }
-    } else {
-      text += "I had no history of shoulder pain prior to this accident. ";
-    }
-
     return text;
   };
 

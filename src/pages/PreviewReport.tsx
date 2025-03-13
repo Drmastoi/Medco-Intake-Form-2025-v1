@@ -249,7 +249,7 @@ export default function PreviewReport() {
             <>
               <PreviewField 
                 label="Symptoms" 
-                value={getTravelAnxietySymptomsText(form.getValues("travelAnxietySymptoms"))} 
+                value={getTravelAnxietySymptomsText(form.getValues("travelAnxietySymptoms") || [])} 
               />
               <PreviewField 
                 label="Initial Severity" 
@@ -293,10 +293,6 @@ export default function PreviewReport() {
                 value={form.getValues("bruisingLocation") || "Not specified"} 
               />
               <PreviewField 
-                label="When Noticed" 
-                value={getBruisingNoticedText(form.getValues("bruisingNoticed"))} 
-              />
-              <PreviewField 
                 label="Initial Severity" 
                 value={getSeverityText(form.getValues("bruisingInitialSeverity"))} 
               />
@@ -311,11 +307,6 @@ export default function PreviewReport() {
                   value={form.getValues("bruisingResolveDays")} 
                 />
               )}
-              
-              <PreviewField 
-                label="Visible Scar" 
-                value={form.getValues("hasVisibleScar") === "1" ? "Yes" : "No"} 
-              />
               
               <PreviewDynamicSummary>
                 {getBruisingSummaryText(form.getValues())}
@@ -439,17 +430,7 @@ function getVehiclePositionText(value: string | undefined): string {
   }
 }
 
-function getBruisingNoticedText(value: string | undefined): string {
-  if (!value) return "N/A";
-  switch (value) {
-    case "1": return "Same day";
-    case "2": return "Next day";
-    case "3": return "Few days later";
-    default: return "N/A";
-  }
-}
-
-function getTravelAnxietySymptomsText(values: string[] | undefined): string {
+function getTravelAnxietySymptomsText(values: string[]): string {
   if (!values || values.length === 0) return "None";
   
   const symptomsMap: Record<string, string> = {
@@ -595,29 +576,19 @@ function getTravelAnxietySummaryText(formData: Partial<FormSchema>): string {
 
 function getBruisingSummaryText(formData: Partial<FormSchema>): string {
   if (formData.hasBruising === "1") {
-    const noticedText = formData.bruisingNoticed === "1" ? "same day" : 
-                       formData.bruisingNoticed === "2" ? "next day" : 
-                       "few days later";
-                      
     const initialSeverityText = formData.bruisingInitialSeverity === "1" ? "mild" :
-                               formData.bruisingInitialSeverity === "2" ? "moderate" :
-                               "severe";
+                              formData.bruisingInitialSeverity === "2" ? "moderate" :
+                              "severe";
                                
     const currentSeverityText = formData.bruisingCurrentSeverity === "1" ? "mild" :
-                               formData.bruisingCurrentSeverity === "2" ? "moderate" :
-                               formData.bruisingCurrentSeverity === "3" ? "severe" :
-                               "resolved";
+                              formData.bruisingCurrentSeverity === "2" ? "moderate" :
+                              formData.bruisingCurrentSeverity === "3" ? "severe" :
+                              "resolved";
     
-    let text = `Claimant had bruising or scarring at ${formData.bruisingLocation} after the accident. It was noticed on the ${noticedText}, initial severity was ${initialSeverityText}, current severity is ${currentSeverityText}.`;
+    let text = `Claimant had bruising or scarring at ${formData.bruisingLocation || "unspecified location"} after the accident. Initial severity was ${initialSeverityText}, current severity is ${currentSeverityText}.`;
     
     if (formData.bruisingCurrentSeverity === "4" && formData.bruisingResolveDays) {
       text += ` The bruising resolved in ${formData.bruisingResolveDays} days.`;
-    }
-    
-    if (formData.hasVisibleScar === "1") {
-      text += " There is a visible scar remaining.";
-    } else if (formData.hasVisibleScar === "2") {
-      text += " There is no visible scar remaining.";
     }
     
     return text;

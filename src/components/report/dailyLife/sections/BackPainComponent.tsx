@@ -19,7 +19,6 @@ export const BackPainComponent = ({ formData }: BackPainProps) => {
       case "1": return "upper back";
       case "2": return "middle back";
       case "3": return "lower back";
-      case "4": return "all over back";
       default: return "back";
     }
   };

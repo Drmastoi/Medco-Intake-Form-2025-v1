@@ -9,14 +9,14 @@ interface AdditionalInfoProps {
 }
 
 export const AdditionalInfoSection = ({ formData }: AdditionalInfoProps) => {
-  if (formData.additionalInformation !== "1" || !formData.additionalInformationDetails) {
+  if (!formData.additionalInfo) {
     return null;
   }
   
   return (
     <View style={dailyLifeStyles.section}>
       <Text style={dailyLifeStyles.subtitle}>Additional Information:</Text>
-      <Text style={dailyLifeStyles.text}>• {formData.additionalInformationDetails}</Text>
+      <Text style={dailyLifeStyles.text}>• {formData.additionalInfo}</Text>
     </View>
   );
 };
