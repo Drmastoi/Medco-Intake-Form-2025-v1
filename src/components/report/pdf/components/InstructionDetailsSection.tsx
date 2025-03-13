@@ -17,18 +17,18 @@ export const InstructionDetailsSection: React.FC<InstructionDetailsSectionProps>
         <View style={styles.infoRow}>
           <View style={styles.cellContainer}>
             <Text style={styles.infoHeader}>3.1 Agency</Text>
-            <Text style={styles.infoCell}>Sample Agency (122222222)</Text>
+            <Text style={styles.infoCell}>{data.instructingPartyName || "Sample Agency"} ({data.instructingPartyReference || "122222222"})</Text>
           </View>
           <View style={styles.cellContainer}>
             <Text style={styles.infoHeader}>3.2 Solicitor</Text>
-            <Text style={styles.rightCell}>First Plus Law Firm (55555555)</Text>
+            <Text style={styles.rightCell}>{data.solicitorName || "First Plus Law Firm"} ({data.solicitorReference || "55555555"})</Text>
           </View>
         </View>
         
         <View style={styles.infoRow}>
           <View style={styles.cellContainer}>
             <Text style={styles.infoHeader}>3.3 Medco Reference</Text>
-            <Text style={styles.infoCell}>12345/7</Text>
+            <Text style={styles.infoCell}>{data.medcoReference || "12345/7"}</Text>
           </View>
           <View style={styles.cellContainer}>
             <Text style={styles.infoHeader}>3.4 Review of Records</Text>

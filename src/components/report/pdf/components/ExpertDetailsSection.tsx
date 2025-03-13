@@ -28,9 +28,10 @@ export const ExpertDetailsSection: React.FC<ExpertDetailsSectionProps> = ({ data
         <View style={styles.infoRow}>
           <View style={styles.cellContainer}>
             <Text style={styles.infoHeader}>2.3 Medco Registration</Text>
-            <Text style={styles.infoCell}>7788/5</Text>
+            <Text style={styles.infoCell}>{data.medcoReference || "7788/5"}</Text>
           </View>
           <View style={styles.cellContainer}>
+            <Text style={styles.infoHeader}></Text>
             <Text style={styles.rightCell}></Text>
           </View>
         </View>

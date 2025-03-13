@@ -4,75 +4,55 @@ import { View, Text } from '@react-pdf/renderer';
 import { FormSchema } from '@/schemas/intakeFormSchema';
 import { dailyLifeStyles } from '../dailyLifeStyles';
 
-interface ShoulderPainProps {
+interface ShoulderPainComponentProps {
   formData: Partial<FormSchema>;
 }
 
-export const ShoulderPainComponent = ({ formData }: ShoulderPainProps) => {
-  if (formData.shoulderPain !== "1") {
+export const ShoulderPainComponent = ({ formData }: ShoulderPainComponentProps) => {
+  // Helper function to convert severity codes to readable text
+  const getSeverityText = (code: string | undefined) => {
+    switch(code) {
+      case '1': return 'mild';
+      case '2': return 'moderate';
+      case '3': return 'severe';
+      case '4': return 'resolved';
+      default: return 'unknown';
+    }
+  };
+
+  // Helper function to get shoulder side text
+  const getShoulderSideText = (side: string | undefined) => {
+    switch(side) {
+      case '1': return 'right shoulder';
+      case '2': return 'left shoulder';
+      case '3': return 'both shoulders';
+      default: return 'shoulder(s)';
+    }
+  };
+
+  // Early return if no shoulder pain reported
+  if (formData.shoulderPain !== '1') {
     return null;
   }
 
-  // Function to get text description for shoulder side
-  const getShoulderSideText = () => {
-    switch(formData.shoulderSide) {
-      case "1": return "left shoulder";
-      case "2": return "right shoulder";
-      case "3": return "both shoulders";
-      default: return "shoulder";
-    }
-  };
-
-  // Function to get text description for pain start
-  const getPainStartText = () => {
-    switch(formData.shoulderPainStart) {
-      case "1": return "immediately after";
-      case "2": return "the day after";
-      case "3": return "a few days after";
-      default: return "sometime after";
-    }
-  };
-
-  // Function to get severity description
-  const getSeverityText = (severity: string | undefined) => {
-    switch(severity) {
-      case "1": return "mild";
-      case "2": return "moderate";
-      case "3": return "severe";
-      case "4": return "resolved";
-      default: return "unknown";
-    }
-  };
-
-  const generateShoulderPainText = () => {
-    let text = `I experienced ${getShoulderSideText()} pain that began ${getPainStartText()} the accident. `;
-    
-    // Initial severity
-    text += `Initially, my symptoms were ${getSeverityText(formData.shoulderPainInitialSeverity)}. `;
-    
-    // Current status
-    if (formData.shoulderPainCurrentSeverity === "4") {
-      text += `My symptoms have now resolved ${formData.shoulderPainResolveDays ? `after ${formData.shoulderPainResolveDays} days` : ''}. `;
-    } else {
-      text += `Currently, my symptoms are ${getSeverityText(formData.shoulderPainCurrentSeverity)}. `;
-    }
-    
-    // Prior history
-    if (formData.hadPriorShoulderPain === "1") {
-      text += "I had a history of shoulder pain prior to this accident. ";
-      if (formData.accidentShoulderPainPercentage && formData.priorShoulderPainPercentage) {
-        text += `I attribute ${formData.accidentShoulderPainPercentage}% of my current shoulder pain to this accident and ${formData.priorShoulderPainPercentage}% to my previous condition. `;
-      }
-    } else {
-      text += "I had no history of shoulder pain prior to this accident. ";
-    }
-
-    return text;
-  };
-
   return (
-    <View>
-      <Text style={dailyLifeStyles.text}>{generateShoulderPainText()}</Text>
+    <View style={dailyLifeStyles.section}>
+      <Text style={dailyLifeStyles.subtitle}>6.2 Shoulder Pain</Text>
+      <Text style={dailyLifeStyles.text}>
+        The claimant experienced pain in the {getShoulderSideText(formData.shoulderSide)} following the accident.
+        The pain initially started {formData.shoulderPainStart === '1' ? 'on the same day as the accident' : 
+          formData.shoulderPainStart === '2' ? 'the day after the accident' : 
+          formData.shoulderPainStart === '3' ? 'within a week of the accident' : 'at some point after the accident'}.
+      </Text>
+
+      <Text style={dailyLifeStyles.text}>
+        The initial severity of the pain was {getSeverityText(formData.shoulderPainInitialSeverity)}.
+        {formData.shoulderPainCurrentSeverity === '4' ? 
+          ` The shoulder pain has now resolved after approximately ${formData.shoulderPainResolveDays || 'an unknown number of'} days.` : 
+          ` The current severity of the pain is ${getSeverityText(formData.shoulderPainCurrentSeverity)}.`}
+      </Text>
+      
+      {/* Prior shoulder pain history is not available in current schema */}
     </View>
   );
 };

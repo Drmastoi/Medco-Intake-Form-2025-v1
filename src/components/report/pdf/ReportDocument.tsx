@@ -30,8 +30,9 @@ const ReportDocument = ({ data }: { data: ReportData }) => (
       
       {/* Section 5: Statement of Instruction */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>5. Statement of Instruction</Text>
-        <View style={styles.summaryBox}>
+        <Text style={styles.sectionTitle}>Section 5 - Statement of Instruction</Text>
+        
+        <View style={styles.contentSection}>
           <Text style={styles.summaryText}>
             This report is entirely independent and is prepared for the injuries sustained in the accident. The instructing party has requested an examination to be conducted with a report to include the nature and extent of the claimant's injuries, treatment received, effects on lifestyle and whether any further treatment is appropriate.
           </Text>
