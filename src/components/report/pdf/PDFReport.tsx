@@ -18,6 +18,7 @@ const PDFReport = ({ reportData, isOpen, onClose }: PDFReportProps) => {
   const [showPreview, setShowPreview] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   if (!isOpen) return null;
 
@@ -25,6 +26,7 @@ const PDFReport = ({ reportData, isOpen, onClose }: PDFReportProps) => {
   const handleError = (error: any) => {
     console.error("PDF generation error:", error);
     setHasError(true);
+    setErrorMessage(error?.message || "Unknown error");
     toast({
       title: "Error Generating PDF",
       description: "There was a problem generating the PDF. Please try again.",
@@ -38,6 +40,10 @@ const PDFReport = ({ reportData, isOpen, onClose }: PDFReportProps) => {
     
     try {
       console.log("Rendering PDF with data:", reportData);
+      // Check for undefined values in the data that might cause rendering issues
+      if (!reportData || !reportData.personal || !reportData.prefilled) {
+        throw new Error("Missing required report data");
+      }
       setShowPreview(true);
     } catch (error) {
       handleError(error);
@@ -59,7 +65,9 @@ const PDFReport = ({ reportData, isOpen, onClose }: PDFReportProps) => {
         {hasError ? (
           <div className="p-4 mb-4 bg-red-50 text-red-700 rounded">
             <p className="font-semibold">Error generating PDF</p>
-            <p className="text-sm">There was a problem creating your PDF report. Please try again or contact support.</p>
+            <p className="text-sm">
+              {errorMessage || "There was a problem creating your PDF report."}
+            </p>
             <Button 
               variant="outline" 
               onClick={() => setHasError(false)}
@@ -71,9 +79,18 @@ const PDFReport = ({ reportData, isOpen, onClose }: PDFReportProps) => {
         ) : showPreview ? (
           <>
             <div className="h-[calc(100%-8rem)] mb-4">
-              <PDFViewer width="100%" height="100%" className="border border-gray-200 rounded">
-                <ReportDocument data={reportData} />
-              </PDFViewer>
+              {/* Wrap PDFViewer in an error boundary */}
+              <React.Fragment>
+                {/* Use a key to force remount when reportData changes */}
+                <PDFViewer 
+                  width="100%" 
+                  height="100%" 
+                  className="border border-gray-200 rounded"
+                  key={`pdf-viewer-${Date.now()}`}
+                >
+                  <ReportDocument data={reportData} />
+                </PDFViewer>
+              </React.Fragment>
             </div>
             <Button 
               variant="outline" 

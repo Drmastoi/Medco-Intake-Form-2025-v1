@@ -1,323 +1,157 @@
 
 import { StyleSheet } from '@react-pdf/renderer';
 
+// Create styles
 export const styles = StyleSheet.create({
   page: {
     flexDirection: 'column',
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
     padding: 30,
     fontFamily: 'Helvetica',
   },
-  section: {
-    marginBottom: 15,
-  },
-  subsection: {
-    marginBottom: 10,
-    paddingLeft: 5,
-  },
   title: {
-    fontSize: 18,
-    textAlign: 'left',
+    fontSize: 16,
     marginBottom: 20,
-    fontFamily: 'Helvetica-Bold',
-  },
-  header: {
-    fontSize: 14,
-    marginBottom: 8,
-    fontFamily: 'Helvetica-Bold',
-  },
-  subheader: {
-    fontSize: 12,
-    marginBottom: 6,
-    marginTop: 8,
-    fontFamily: 'Helvetica-Bold',
-    borderBottom: '1 solid #CCCCCC',
-    paddingBottom: 2,
-  },
-  row: {
-    flexDirection: 'row',
-    marginBottom: 4,
-  },
-  label: {
-    width: 150,
-    fontSize: 10,
-    fontFamily: 'Helvetica-Bold',
-    textAlign: 'left',
-  },
-  value: {
-    fontSize: 10,
-    fontFamily: 'Helvetica',
-  },
-  footer: {
-    position: 'absolute',
-    fontSize: 10,
-    bottom: 30,
-    left: 0,
-    right: 0,
     textAlign: 'center',
-    color: 'grey',
+    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
   },
-  pageNumber: {
-    position: 'absolute',
-    bottom: 20,
-    left: 0,
-    right: 0,
-    textAlign: 'center',
-    fontSize: 8,
-  },
-  reportFooter: {
-    fontSize: 9,
-    marginTop: 15,
-    textAlign: 'center',
-    fontFamily: 'Helvetica',
-  },
-  summaryBox: {
-    marginBottom: 8,
-    padding: 8,
-    backgroundColor: '#f5f5f5',
-    borderRadius: 0,
-  },
-  summaryText: {
-    fontSize: 9,
-    lineHeight: 1.3,
-    color: '#333333',
-    fontFamily: 'Helvetica',
+  section: {
+    marginBottom: 10,
   },
   sectionTitle: {
     backgroundColor: '#000000',
-    color: '#FFFFFF',
-    padding: 6,
-    marginBottom: 0,
-    fontSize: 11,
+    color: 'white',
+    fontSize: 10,
+    padding: 5,
+    marginBottom: 5,
     fontFamily: 'Helvetica-Bold',
   },
   contentSection: {
     backgroundColor: '#f5f5f5',
-    padding: 8,
-    marginBottom: 15,
+    padding: 5,
+    marginBottom: 5,
+    borderRadius: 2, // Explicitly set border radius to a number
   },
-  infoTable: {
-    display: 'flex',
-    flexDirection: 'column',
-    marginBottom: 15,
-    width: '100%',
-  },
-  infoRow: {
+  row: {
     flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderBottomColor: '#EEEEEE',
-    backgroundColor: '#f5f5f5',
-    width: '100%',
+    marginBottom: 5,
   },
-  cellContainer: {
-    width: '50%',
-    borderRightWidth: 1,
-    borderRightColor: '#EEEEEE',
+  column: {
+    flexDirection: 'column',
+    flex: 1,
   },
-  infoHeader: {
-    fontSize: 9,
+  label: {
+    fontSize: 10,
+    marginRight: 5,
+    fontWeight: 'bold',
     fontFamily: 'Helvetica-Bold',
-    padding: 4,
-    paddingBottom: 2,
-    borderBottomWidth: 1,
-    borderBottomColor: '#EEEEEE',
-    textAlign: 'left',
+    width: '35%',
   },
-  infoCell: {
-    padding: 4,
-    paddingTop: 3,
-    fontSize: 9,
-    fontFamily: 'Helvetica',
-    lineHeight: 1.2,
+  value: {
+    fontSize: 10,
+    flex: 1,
   },
-  rightCell: {
-    padding: 4,
-    paddingTop: 3,
-    fontSize: 9,
-    fontFamily: 'Helvetica',
-    lineHeight: 1.2,
+  summaryText: {
+    fontSize: 10,
+    textAlign: 'justify',
+    lineHeight: 1.4,
+  },
+  header: {
+    marginBottom: 20,
   },
   reportIdentifier: {
     fontSize: 8,
-    color: '#666666',
-    marginTop: 15,
-    marginBottom: 5,
+    color: 'grey',
+    marginTop: 10,
+    textAlign: 'center',
   },
   pageIndicator: {
+    position: 'absolute',
+    bottom: 30,
+    left: 0,
+    right: 0,
+    textAlign: 'center',
+    fontSize: 10,
+  },
+  footer: {
+    position: 'absolute',
+    bottom: 10,
+    left: 30,
+    right: 30,
+    textAlign: 'center',
     fontSize: 8,
-    textAlign: 'right',
+    color: 'grey',
+    borderTop: '1px solid #ccc',
+    paddingTop: 5,
   },
-  compactSubsection: {
-    marginBottom: 8,
-    paddingLeft: 3,
-  },
-  compactRow: {
+  injuryRow: {
     flexDirection: 'row',
     marginBottom: 3,
+    paddingVertical: 3,
   },
-  compactLabel: {
-    width: 120,
-    fontSize: 9,
-    fontFamily: 'Helvetica-Bold',
-    textAlign: 'left',
-  },
-  compactValue: {
-    fontSize: 9,
-    fontFamily: 'Helvetica',
-  },
-  compactSectionTitle: {
-    backgroundColor: '#000000',
-    color: '#FFFFFF',
-    padding: 4,
-    marginBottom: 0,
-    fontSize: 11,
-    fontFamily: 'Helvetica-Bold',
-  },
-  
-  // Accident details section styles
-  accidentSubtitle: {
-    fontSize: 12,
-    fontFamily: 'Helvetica-Bold',
-    marginBottom: 6,
-    marginTop: 4
-  },
-  accidentGrayBox: {
-    backgroundColor: '#f5f5f5',
-    padding: 8,
-    marginBottom: 10,
-  },
-  accidentSectionHeader: {
-    fontSize: 12,
-    fontFamily: 'Helvetica-Bold',
-  },
-  accidentTable: {
-    marginBottom: 10,
-  },
-  accidentRow: {
-    flexDirection: 'row',
-    paddingVertical: 4,
-    backgroundColor: '#f5f5f5',
-    marginBottom: 1,
-  },
-  accidentLabel: {
+  injuryLabel: {
+    fontSize: 10,
     width: '30%',
-    fontSize: 9,
+    fontWeight: 'bold',
     fontFamily: 'Helvetica-Bold',
-    paddingLeft: 4,
-    paddingRight: 2,
-    paddingTop: 2,
-    paddingBottom: 2,
   },
-  accidentValue: {
+  injuryDetails: {
+    fontSize: 10,
     width: '70%',
-    fontSize: 9,
-    fontFamily: 'Helvetica',
-    paddingLeft: 2,
-    paddingRight: 4,
-    paddingTop: 2,
-    paddingBottom: 2,
   },
-  accidentCell: {
-    fontSize: 9,
-    padding: 4,
-    fontFamily: 'Helvetica',
+  injuryTitle: {
+    fontSize: 10,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    fontFamily: 'Helvetica-Bold',
   },
-  
-  // Injury table styles
-  injuryTable: {
-    marginTop: 0,
-    marginBottom: 15,
+  injurySection: {
+    marginBottom: 10,
   },
-  tableRow: {
+  summaryTable: {
+    flexDirection: 'column',
+    marginBottom: 10,
+  },
+  summaryRow: {
     flexDirection: 'row',
     borderBottomWidth: 1,
-    borderBottomColor: '#EEEEEE',
-    minHeight: 22,
-    backgroundColor: '#f5f5f5',
+    borderBottomColor: '#e0e0e0',
+    paddingVertical: 3,
   },
-  tableHeaderRow: {
-    flexDirection: 'row',
-    backgroundColor: '#e0e0e0',
-    minHeight: 22,
-  },
-  tableHeaderCell1: {
-    width: '6%',
-    padding: 3,
-    fontSize: 8,
-    fontFamily: 'Helvetica-Bold',
-  },
-  tableHeaderCell2: {
-    width: '17%',
-    padding: 3,
-    fontSize: 8,
-    fontFamily: 'Helvetica-Bold',
-  },
-  tableHeaderCell3: {
-    width: '15%',
-    padding: 3,
-    fontSize: 8,
-    fontFamily: 'Helvetica-Bold',
-  },
-  tableHeaderCell4: {
-    width: '22%',
-    padding: 3,
-    fontSize: 8,
-    fontFamily: 'Helvetica-Bold',
-  },
-  tableHeaderCell5: {
-    width: '18%',
-    padding: 3,
-    fontSize: 8,
-    fontFamily: 'Helvetica-Bold',
-  },
-  tableHeaderCell6: {
-    width: '22%',
-    padding: 3,
-    fontSize: 8,
-    fontFamily: 'Helvetica-Bold',
-  },
-  tableCell1: {
-    width: '6%',
-    padding: 3,
-    fontSize: 8,
-    fontFamily: 'Helvetica',
-  },
-  tableCell2: {
-    width: '17%',
-    padding: 3,
-    fontSize: 8,
-    fontFamily: 'Helvetica',
-  },
-  tableCell3: {
-    width: '15%',
-    padding: 3,
-    fontSize: 8,
-    fontFamily: 'Helvetica',
-  },
-  tableCell4: {
-    width: '22%',
-    padding: 3,
-    fontSize: 8,
-    fontFamily: 'Helvetica',
-  },
-  tableCell5: {
-    width: '18%',
-    padding: 3,
-    fontSize: 8,
-    fontFamily: 'Helvetica',
-  },
-  tableCell6: {
-    width: '22%',
-    padding: 3,
-    fontSize: 8,
-    fontFamily: 'Helvetica',
-  },
-  tableHeaderText: {
+  summaryColumn: {
     fontSize: 9,
+    padding: 3,
+  },
+  summaryHeader: {
+    fontSize: 9,
+    fontWeight: 'bold',
+    backgroundColor: '#f0f0f0',
+    padding: 3,
     fontFamily: 'Helvetica-Bold',
   },
-  tableCellText: {
-    fontSize: 8,
-    fontFamily: 'Helvetica',
+  declarationText: {
+    fontSize: 10,
+    marginTop: 20,
+    textAlign: 'justify',
+    lineHeight: 1.4,
   },
+  signatureSection: {
+    marginTop: 40,
+    borderTopWidth: 1,
+    borderTopColor: '#e0e0e0',
+    paddingTop: 10,
+    width: '60%',
+  },
+  signatureText: {
+    fontSize: 10,
+    marginTop: 5,
+  },
+  clinicalSection: {
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  clinicalSubsection: {
+    marginTop: 5,
+  }
 });
