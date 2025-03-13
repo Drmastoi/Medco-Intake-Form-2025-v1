@@ -17,11 +17,11 @@ export const ExpertDetailsSection: React.FC<ExpertDetailsSectionProps> = ({ data
         <View style={styles.infoRow}>
           <View style={styles.cellContainer}>
             <Text style={styles.infoHeader}>2.1 Medical Expert</Text>
-            <Text style={styles.infoCell}>Dr. Sam Smith, General Practice, Consultant</Text>
+            <Text style={styles.infoCell}>{data.expertName || "Dr. Sam Smith"}, {data.expertSpecialty || "General Practice"}, {data.expertTitle || "Consultant"}</Text>
           </View>
           <View style={styles.cellContainer}>
             <Text style={styles.infoHeader}>2.2 Regulatory</Text>
-            <Text style={styles.rightCell}>GMC - 1234567</Text>
+            <Text style={styles.rightCell}>{data.gmcNumber || "GMC - 1234567"}</Text>
           </View>
         </View>
         

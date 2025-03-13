@@ -57,11 +57,11 @@ const ReportDocument = ({ data }: { data: ReportData }) => (
       <InjuriesAndSymptomsSection data={data.injuries} />
       <TreatmentSection />
       <DailyLifeImpactSection />
-      <ClinicalExaminationSection />
+      <ClinicalExaminationSection data={data} />
       <DeclarationSection />
       
       <Text style={styles.reportIdentifier}>
-        {data.personal.fullName} report dated {data.prefilled.dateOfReport} | Medical Report | CID 406679
+        {data.personal.fullName || "Claimant"} report dated {data.prefilled.dateOfReport || new Date().toLocaleDateString()} | Medical Report | CID 406679
       </Text>
       
       <Text style={styles.pageIndicator} render={({ pageNumber, totalPages }) => (

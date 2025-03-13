@@ -16,8 +16,35 @@ interface PDFReportProps {
 const PDFReport = ({ reportData, isOpen, onClose }: PDFReportProps) => {
   const { toast } = useToast();
   const [showPreview, setShowPreview] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   if (!isOpen) return null;
+
+  // Handle any errors that might occur during PDF generation
+  const handleError = (error: any) => {
+    console.error("PDF generation error:", error);
+    setHasError(true);
+    toast({
+      title: "Error Generating PDF",
+      description: "There was a problem generating the PDF. Please try again.",
+      variant: "destructive",
+    });
+  };
+
+  const handlePreviewClick = () => {
+    setIsLoading(true);
+    setHasError(false);
+    
+    try {
+      console.log("Rendering PDF with data:", reportData);
+      setShowPreview(true);
+    } catch (error) {
+      handleError(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
@@ -29,7 +56,19 @@ const PDFReport = ({ reportData, isOpen, onClose }: PDFReportProps) => {
           </Button>
         </div>
 
-        {showPreview ? (
+        {hasError ? (
+          <div className="p-4 mb-4 bg-red-50 text-red-700 rounded">
+            <p className="font-semibold">Error generating PDF</p>
+            <p className="text-sm">There was a problem creating your PDF report. Please try again or contact support.</p>
+            <Button 
+              variant="outline" 
+              onClick={() => setHasError(false)}
+              className="mt-2"
+            >
+              Try Again
+            </Button>
+          </div>
+        ) : showPreview ? (
           <>
             <div className="h-[calc(100%-8rem)] mb-4">
               <PDFViewer width="100%" height="100%" className="border border-gray-200 rounded">
@@ -51,10 +90,20 @@ const PDFReport = ({ reportData, isOpen, onClose }: PDFReportProps) => {
             <div className="space-y-4">
               <Button
                 className="w-full bg-black hover:bg-gray-800 text-white"
-                onClick={() => setShowPreview(true)}
+                onClick={handlePreviewClick}
+                disabled={isLoading}
               >
-                <Eye className="mr-2 h-4 w-4" />
-                Preview Report
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Preparing Preview...
+                  </>
+                ) : (
+                  <>
+                    <Eye className="mr-2 h-4 w-4" />
+                    Preview Report
+                  </>
+                )}
               </Button>
 
               <PDFDownloadLink
@@ -65,13 +114,15 @@ const PDFReport = ({ reportData, isOpen, onClose }: PDFReportProps) => {
                 {({ blob, url, loading, error }) => (
                   <Button
                     className="w-full"
-                    disabled={loading}
+                    disabled={loading || error}
                     onClick={() => {
                       if (!loading && !error) {
                         toast({
                           title: "Report Downloaded",
                           description: "Your PDF report has been generated successfully.",
                         });
+                      } else if (error) {
+                        handleError(error);
                       }
                     }}
                   >

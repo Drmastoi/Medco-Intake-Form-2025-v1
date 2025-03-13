@@ -7,28 +7,48 @@ import { useToast } from "@/components/ui/use-toast";
 
 export function useReportGeneration(form: UseFormReturn<FormSchema>, setCurrentSection: (section: number) => void) {
   const [showPdfReport, setShowPdfReport] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
   const { toast } = useToast();
 
   const handleGenerateReport = () => {
-    // Check if we have the minimum required fields
-    const values = form.getValues();
-    if (!values.fullName) {
+    try {
+      setIsGenerating(true);
+      // Check if we have the minimum required fields
+      const values = form.getValues();
+      if (!values.fullName) {
+        toast({
+          title: "Missing Information",
+          description: "Please fill in at least the personal information section before generating a report.",
+          variant: "destructive",
+        });
+        setCurrentSection(1); // Navigate to personal info section
+        return;
+      }
+
+      console.log("Generating report with form data:", values);
+      
+      // Test convert function to ensure it works
+      const reportData = convertFormDataToReportData(values);
+      console.log("Converted report data:", reportData);
+
+      // Show the PDF report
+      setShowPdfReport(true);
+    } catch (error) {
+      console.error("Error generating report:", error);
       toast({
-        title: "Missing Information",
-        description: "Please fill in at least the personal information section before generating a report.",
+        title: "Error Generating Report",
+        description: "There was a problem generating your report. Please try again.",
         variant: "destructive",
       });
-      setCurrentSection(1); // Navigate to personal info section
-      return;
+    } finally {
+      setIsGenerating(false);
     }
-
-    // Show the PDF report
-    setShowPdfReport(true);
   };
 
   return {
     showPdfReport,
     setShowPdfReport,
+    isGenerating,
     handleGenerateReport
   };
 }
