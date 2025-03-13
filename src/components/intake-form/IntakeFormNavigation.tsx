@@ -1,7 +1,7 @@
 
 import * as Tabs from "@radix-ui/react-tabs";
 import { Button } from "@/components/ui/button";
-import { FileText } from "lucide-react";
+import { FileText, Eye } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface IntakeFormNavigationProps {
@@ -9,13 +9,15 @@ interface IntakeFormNavigationProps {
   onTabChange: (value: string) => void;
   tabNames: string[];
   onGenerateReport: () => void;
+  onPreviewReport: () => void;
 }
 
 export function IntakeFormNavigation({ 
   currentSection, 
   onTabChange, 
   tabNames,
-  onGenerateReport 
+  onGenerateReport,
+  onPreviewReport
 }: IntakeFormNavigationProps) {
   return (
     <div className="overflow-x-auto no-scrollbar -mx-3 px-3 mb-4">
@@ -38,15 +40,27 @@ export function IntakeFormNavigation({
           </Tabs.List>
         </Tabs.Root>
         
-        <Button 
-          onClick={onGenerateReport}
-          variant="secondary"
-          size="sm"
-          className="ml-2 text-white bg-black hover:bg-gray-800 whitespace-nowrap"
-        >
-          <FileText className="mr-1 h-4 w-4" />
-          Generate Report
-        </Button>
+        <div className="flex space-x-2">
+          <Button 
+            onClick={onPreviewReport}
+            variant="outline"
+            size="sm"
+            className="whitespace-nowrap"
+          >
+            <Eye className="mr-1 h-4 w-4" />
+            Preview
+          </Button>
+          
+          <Button 
+            onClick={onGenerateReport}
+            variant="secondary"
+            size="sm"
+            className="text-white bg-black hover:bg-gray-800 whitespace-nowrap"
+          >
+            <FileText className="mr-1 h-4 w-4" />
+            Generate Report
+          </Button>
+        </div>
       </div>
     </div>
   );

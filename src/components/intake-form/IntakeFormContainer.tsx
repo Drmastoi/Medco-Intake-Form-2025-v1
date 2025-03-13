@@ -123,7 +123,15 @@ export function IntakeFormContainer() {
 
   // Use custom hooks for form prefilling and report generation
   useFormPrefill(form);
-  const { showPdfReport, setShowPdfReport, isGenerating, handleGenerateReport } = useReportGeneration(form, setCurrentSection);
+  const { 
+    showPdfReport, 
+    setShowPdfReport, 
+    showPdfPreview, 
+    setShowPdfPreview, 
+    isGenerating, 
+    handleGenerateReport,
+    handlePreviewReport 
+  } = useReportGeneration(form, setCurrentSection);
 
   return (
     <div className="container mx-auto py-10 px-4">
@@ -132,6 +140,7 @@ export function IntakeFormContainer() {
         onTabChange={handleTabChange}
         tabNames={tabNames}
         onGenerateReport={handleGenerateReport}
+        onPreviewReport={handlePreviewReport}
       />
       
       <IntakeFormContent 
@@ -145,7 +154,16 @@ export function IntakeFormContainer() {
       <PDFReport 
         reportData={convertFormDataToReportData(form.getValues())} 
         isOpen={showPdfReport} 
-        onClose={() => setShowPdfReport(false)} 
+        onClose={() => setShowPdfReport(false)}
+        isPreview={false}
+      />
+
+      {/* PDF Preview Dialog */}
+      <PDFReport 
+        reportData={convertFormDataToReportData(form.getValues())} 
+        isOpen={showPdfPreview} 
+        onClose={() => setShowPdfPreview(false)}
+        isPreview={true}
       />
     </div>
   );

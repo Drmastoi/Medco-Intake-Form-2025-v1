@@ -8,13 +8,15 @@ interface IntakeFormHeaderProps {
   onTabChange: (value: string) => void;
   tabNames: string[];
   onGenerateReport: () => void;
+  onPreviewReport: () => void;
 }
 
 export function IntakeFormHeader({
   currentSection,
   onTabChange,
   tabNames,
-  onGenerateReport
+  onGenerateReport,
+  onPreviewReport
 }: IntakeFormHeaderProps) {
   return (
     <>
@@ -25,6 +27,7 @@ export function IntakeFormHeader({
         onTabChange={onTabChange}
         tabNames={tabNames}
         onGenerateReport={onGenerateReport}
+        onPreviewReport={onPreviewReport}
       />
     </>
   );

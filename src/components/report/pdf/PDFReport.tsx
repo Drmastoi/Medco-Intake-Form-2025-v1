@@ -268,40 +268,46 @@ interface PDFReportProps {
   reportData: ReportData;
   isOpen: boolean;
   onClose: () => void;
+  isPreview?: boolean;
 }
 
 // PDF Report Dialog Component
-const PDFReport = ({ reportData, isOpen, onClose }: PDFReportProps) => {
+const PDFReport = ({ reportData, isOpen, onClose, isPreview = false }: PDFReportProps) => {
   const [loading, setLoading] = useState(true);
 
   const handleLoad = () => {
     setLoading(false);
   };
 
+  const dialogTitle = isPreview ? "Preview Medical Report" : "Expert Medical Report";
+  const closeButtonText = isPreview ? "Close Preview" : "Close";
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-[90vw] max-h-[90vh] overflow-hidden">
         <DialogHeader>
-          <DialogTitle>Expert Medical Report</DialogTitle>
+          <DialogTitle>{dialogTitle}</DialogTitle>
         </DialogHeader>
         
         <div className="flex flex-col items-center space-y-4 overflow-hidden">
           <div className="flex justify-end w-full space-x-2">
-            <PDFDownloadLink 
-              document={<PDFDocument reportData={reportData} />} 
-              fileName="medical-report.pdf"
-              className="hidden md:block"
-            >
-              {({ blob, url, loading, error }) => (
-                <Button 
-                  variant="outline" 
-                  disabled={loading || error !== undefined}
-                >
-                  {loading ? 'Generating PDF...' : 'Download PDF'}
-                </Button>
-              )}
-            </PDFDownloadLink>
-            <Button variant="outline" onClick={onClose}>Close</Button>
+            {!isPreview && (
+              <PDFDownloadLink 
+                document={<PDFDocument reportData={reportData} />} 
+                fileName="medical-report.pdf"
+                className="hidden md:block"
+              >
+                {({ blob, url, loading, error }) => (
+                  <Button 
+                    variant="outline" 
+                    disabled={loading || error !== undefined}
+                  >
+                    {loading ? 'Generating PDF...' : 'Download PDF'}
+                  </Button>
+                )}
+              </PDFDownloadLink>
+            )}
+            <Button variant="outline" onClick={onClose}>{closeButtonText}</Button>
           </div>
           
           <div className="w-full h-[70vh] border rounded">
