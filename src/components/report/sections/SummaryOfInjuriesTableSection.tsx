@@ -28,7 +28,7 @@ const getSeverityText = (level?: string) => {
 export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInjuriesTableSectionProps) => {
   return (
     <View style={styles.subsection}>
-      <Text style={styles.sectionHeader}>Section 5 - Summary of Injuries</Text>
+      <Text style={styles.sectionHeader}>Section 6 - Summary of Injuries</Text>
       
       <View style={styles.tableContainer}>
         <View style={styles.tableHeader}>
