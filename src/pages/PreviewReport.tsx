@@ -1,12 +1,13 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { FormSchema } from "@/schemas/intakeFormSchema";
 import { useForm } from "react-hook-form";
 import { useFormPrefill } from "@/hooks/useFormPrefill";
 import { convertFormDataToReportData } from "@/utils/pdfReportUtils";
-import { ArrowLeft, FileText } from "lucide-react";
+import { ArrowLeft, FileText, Download } from "lucide-react";
+import { format } from "date-fns";
 
 export default function PreviewReport() {
   const navigate = useNavigate();
@@ -19,6 +20,11 @@ export default function PreviewReport() {
   
   // Convert form data to report format
   const reportData = convertFormDataToReportData(form.getValues());
+
+  useEffect(() => {
+    // Log form data to console for debugging
+    console.log("Form data:", form.getValues());
+  }, [form]);
   
   return (
     <div className="container mx-auto py-10 px-4">
@@ -41,7 +47,7 @@ export default function PreviewReport() {
           size="sm"
           className="text-white bg-black hover:bg-gray-800"
         >
-          <FileText className="mr-1 h-4 w-4" />
+          <Download className="mr-1 h-4 w-4" />
           Generate PDF Report
         </Button>
       </div>
@@ -328,6 +334,11 @@ export default function PreviewReport() {
               value={form.getValues("exceptionalInjuriesDetails") || "None provided"} 
             />
           )}
+          
+          <PreviewField 
+            label="Additional Information" 
+            value={form.getValues("additionalInfo") || "None provided"} 
+          />
         </PreviewSection>
       </div>
     </div>

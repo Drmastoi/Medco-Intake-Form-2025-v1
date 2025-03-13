@@ -1,4 +1,6 @@
+
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
+import { FormSchema } from '@/schemas/intakeFormSchema';
 
 const styles = StyleSheet.create({
   section: {
@@ -16,13 +18,13 @@ const styles = StyleSheet.create({
   },
 });
 
-export const AdditionalInformationSection = ({ formData }: { formData: any }) => (
+export const AdditionalInformationSection = ({ formData }: { formData: Partial<FormSchema> }) => (
   <View style={styles.section}>
     <Text style={styles.subtitle}>Additional Information</Text>
     
-    <Text style={styles.text}>Additional Information: {formData.additionalInformation === "1" ? "Yes" : "No"}</Text>
-    {formData.additionalInformation === "1" && (
-      <Text style={styles.text}>Details: {formData.additionalInformationDetails || "_______"}</Text>
+    <Text style={styles.text}>Additional Information: {formData.additionalInfo ? "Yes" : "No"}</Text>
+    {formData.additionalInfo && (
+      <Text style={styles.text}>Details: {formData.additionalInfo || "_______"}</Text>
     )}
   </View>
 );
