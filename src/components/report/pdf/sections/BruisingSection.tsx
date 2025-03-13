@@ -12,24 +12,23 @@ export const BruisingSection = ({ formData, styles }: BruisingSectionProps) => {
     <View style={styles.subsection}>
       <Text style={styles.sectionHeader}>Section 11 - Bruising</Text>
       
-      {formData.injuries.bruising === "Yes" ? (
+      {formData.other?.bruising?.hasBruising ? (
         <>
           <View style={{ marginBottom: 10 }}>
             <Text style={styles.fieldLabel}>11.1 Location and Severity</Text>
             <Text style={styles.fieldValue}>
               The claimant reported bruising following the accident. 
-              {formData.injuries.bruisingLocation && ` The bruising was located at ${formData.injuries.bruisingLocation}.`}
-              {formData.injuries.bruisingInitialSeverity && ` Initial severity was ${formData.injuries.bruisingInitialSeverity.toLowerCase()}.`}
+              {formData.other?.bruising?.location && ` The bruising was located at ${formData.other.bruising.location}.`}
+              {formData.other?.bruising?.initialSeverity && ` Initial severity was ${formData.other.bruising.initialSeverity.toLowerCase()}.`}
             </Text>
           </View>
           
           <View style={{ marginBottom: 10 }}>
             <Text style={styles.fieldLabel}>11.2 Duration</Text>
             <Text style={styles.fieldValue}>
-              {formData.injuries.bruisingDuration 
-                ? `The bruising lasted approximately ${formData.injuries.bruisingDuration} days.` 
+              {formData.other?.bruising?.resolveDays 
+                ? `The bruising lasted approximately ${formData.other.bruising.resolveDays} days.` 
                 : "The duration of the bruising was not specified."}
-              {formData.injuries.bruisingNotes && ` Additional notes: ${formData.injuries.bruisingNotes}`}
             </Text>
           </View>
         </>

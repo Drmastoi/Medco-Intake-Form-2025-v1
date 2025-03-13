@@ -15,11 +15,11 @@ export const LifestyleImpactSection = ({ formData, styles }: LifestyleImpactSect
       <View style={{ marginBottom: 10 }}>
         <Text style={styles.fieldLabel}>14.1 Work Impact</Text>
         <Text style={styles.fieldValue}>
-          {formData.lifestyle.workImpact === "Yes"
-            ? `The injuries impacted the claimant's ability to work. ${formData.lifestyle.workImpactDetails || ""}`
+          {formData.other?.lifestyle?.impactOnWork
+            ? `The injuries impacted the claimant's ability to work. ${formData.other.lifestyle.workRestrictions?.join(", ") || ""}`
             : "The injuries did not significantly impact the claimant's ability to work."}
-          {formData.lifestyle.timeOffWork 
-            ? ` The claimant took approximately ${formData.lifestyle.timeOffWork} off work.`
+          {formData.other?.lifestyle?.timeOffWork 
+            ? ` The claimant took approximately ${formData.other.lifestyle.timeOffWork} off work.`
             : ""}
         </Text>
       </View>
@@ -27,8 +27,8 @@ export const LifestyleImpactSection = ({ formData, styles }: LifestyleImpactSect
       <View style={{ marginBottom: 10 }}>
         <Text style={styles.fieldLabel}>14.2 Domestic Impact</Text>
         <Text style={styles.fieldValue}>
-          {formData.lifestyle.domesticImpact === "Yes"
-            ? `The injuries impacted the claimant's ability to perform domestic tasks. ${formData.lifestyle.domesticImpactDetails || ""}`
+          {formData.other?.lifestyle?.impactOnDomestic
+            ? `The injuries impacted the claimant's ability to perform domestic tasks. ${formData.other.lifestyle.domesticIssues?.join(", ") || ""}`
             : "The injuries did not significantly impact the claimant's ability to perform domestic tasks."}
         </Text>
       </View>
@@ -36,8 +36,8 @@ export const LifestyleImpactSection = ({ formData, styles }: LifestyleImpactSect
       <View style={{ marginBottom: 10 }}>
         <Text style={styles.fieldLabel}>14.3 Sleep Impact</Text>
         <Text style={styles.fieldValue}>
-          {formData.lifestyle.sleepImpact === "Yes"
-            ? `The injuries disrupted the claimant's sleep. ${formData.lifestyle.sleepImpactDetails || ""}`
+          {formData.other?.lifestyle?.impactOnSleep
+            ? `The injuries disrupted the claimant's sleep. ${formData.other.lifestyle.sleepIssues?.join(", ") || ""}`
             : "The injuries did not significantly impact the claimant's sleep patterns."}
         </Text>
       </View>
@@ -45,8 +45,8 @@ export const LifestyleImpactSection = ({ formData, styles }: LifestyleImpactSect
       <View style={{ marginBottom: 10 }}>
         <Text style={styles.fieldLabel}>14.4 Social Life & Leisure Impact</Text>
         <Text style={styles.fieldValue}>
-          {formData.lifestyle.socialImpact === "Yes"
-            ? `The injuries affected the claimant's social life and leisure activities. ${formData.lifestyle.socialImpactDetails || ""}`
+          {formData.other?.lifestyle?.impactOnSocial
+            ? `The injuries affected the claimant's social life and leisure activities. ${formData.other.lifestyle.socialDetails || ""}`
             : "The injuries did not significantly impact the claimant's social life and leisure activities."}
         </Text>
       </View>

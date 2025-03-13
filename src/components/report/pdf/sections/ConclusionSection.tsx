@@ -12,24 +12,24 @@ export const ConclusionSection = ({ formData, styles }: ConclusionSectionProps) 
   const getMaxRecoveryTime = () => {
     const recoveryTimes = [];
     
-    if (formData.injuries.neckPain === "Yes" && formData.injuries.neckPainCurrentSeverity === "Resolved" && formData.injuries.neckPainResolveDays) {
-      recoveryTimes.push(parseInt(formData.injuries.neckPainResolveDays));
+    if (formData.injuries.neckPain.hasInjury && formData.injuries.neckPain.currentSeverity === "Resolved" && formData.injuries.neckPain.resolveDays) {
+      recoveryTimes.push(parseInt(formData.injuries.neckPain.resolveDays));
     }
     
-    if (formData.injuries.shoulderPain === "Yes" && formData.injuries.shoulderPainCurrentSeverity === "Resolved" && formData.injuries.shoulderPainResolveDays) {
-      recoveryTimes.push(parseInt(formData.injuries.shoulderPainResolveDays));
+    if (formData.injuries.shoulderPain.hasInjury && formData.injuries.shoulderPain.currentSeverity === "Resolved" && formData.injuries.shoulderPain.resolveDays) {
+      recoveryTimes.push(parseInt(formData.injuries.shoulderPain.resolveDays));
     }
     
-    if (formData.injuries.backPain === "Yes" && formData.injuries.backPainCurrentSeverity === "Resolved" && formData.injuries.backPainResolveDays) {
-      recoveryTimes.push(parseInt(formData.injuries.backPainResolveDays));
+    if (formData.injuries.backPain.hasInjury && formData.injuries.backPain.currentSeverity === "Resolved" && formData.injuries.backPain.resolveDays) {
+      recoveryTimes.push(parseInt(formData.injuries.backPain.resolveDays));
     }
     
-    if (formData.injuries.headache === "Yes" && formData.injuries.headacheCurrentSeverity === "Resolved" && formData.injuries.headacheResolveDays) {
-      recoveryTimes.push(parseInt(formData.injuries.headacheResolveDays));
+    if (formData.injuries.headache.hasInjury && formData.injuries.headache.currentSeverity === "Resolved" && formData.injuries.headache.resolveDays) {
+      recoveryTimes.push(parseInt(formData.injuries.headache.resolveDays));
     }
     
-    if (formData.injuries.travelAnxiety === "Yes" && formData.injuries.anxietyCurrentSeverity === "Resolved" && formData.injuries.anxietyResolveDays) {
-      recoveryTimes.push(parseInt(formData.injuries.anxietyResolveDays));
+    if (formData.travelAnxiety.hasAnxiety && formData.travelAnxiety.currentSeverity === "Resolved" && formData.travelAnxiety.resolveDays) {
+      recoveryTimes.push(parseInt(formData.travelAnxiety.resolveDays));
     }
     
     if (recoveryTimes.length === 0) return "unknown duration";
@@ -38,11 +38,11 @@ export const ConclusionSection = ({ formData, styles }: ConclusionSectionProps) 
   
   // Determine if all injuries are resolved
   const allInjuriesResolved = () => {
-    if (formData.injuries.neckPain === "Yes" && formData.injuries.neckPainCurrentSeverity !== "Resolved") return false;
-    if (formData.injuries.shoulderPain === "Yes" && formData.injuries.shoulderPainCurrentSeverity !== "Resolved") return false;
-    if (formData.injuries.backPain === "Yes" && formData.injuries.backPainCurrentSeverity !== "Resolved") return false;
-    if (formData.injuries.headache === "Yes" && formData.injuries.headacheCurrentSeverity !== "Resolved") return false;
-    if (formData.injuries.travelAnxiety === "Yes" && formData.injuries.anxietyCurrentSeverity !== "Resolved") return false;
+    if (formData.injuries.neckPain.hasInjury && formData.injuries.neckPain.currentSeverity !== "Resolved") return false;
+    if (formData.injuries.shoulderPain.hasInjury && formData.injuries.shoulderPain.currentSeverity !== "Resolved") return false;
+    if (formData.injuries.backPain.hasInjury && formData.injuries.backPain.currentSeverity !== "Resolved") return false;
+    if (formData.injuries.headache.hasInjury && formData.injuries.headache.currentSeverity !== "Resolved") return false;
+    if (formData.travelAnxiety.hasAnxiety && formData.travelAnxiety.currentSeverity !== "Resolved") return false;
     
     return true;
   };

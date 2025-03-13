@@ -9,12 +9,12 @@ interface SummaryOfInjuriesTableSectionProps {
 
 export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInjuriesTableSectionProps) => {
   // Determine which injuries are present based on formData
-  const hasNeckPain = formData.injuries.neckPain === "Yes";
-  const hasShoulderPain = formData.injuries.shoulderPain === "Yes";
-  const hasBackPain = formData.injuries.backPain === "Yes";
-  const hasHeadache = formData.injuries.headache === "Yes";
-  const hasTravelAnxiety = formData.injuries.travelAnxiety === "Yes";
-  const hasBruising = formData.injuries.bruising === "Yes";
+  const hasNeckPain = formData.injuries.neckPain.hasInjury;
+  const hasShoulderPain = formData.injuries.shoulderPain.hasInjury;
+  const hasBackPain = formData.injuries.backPain.hasInjury;
+  const hasHeadache = formData.injuries.headache.hasInjury;
+  const hasTravelAnxiety = formData.travelAnxiety.hasAnxiety;
+  const hasBruising = formData.other?.bruising?.hasBruising;
   
   return (
     <View style={styles.subsection}>
@@ -33,40 +33,40 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
           <View style={styles.tableRow}>
             <Text style={[styles.tableCell, { width: '30%' }]}>Neck Pain</Text>
             <Text style={[styles.tableCell, { width: '15%' }]}>WAD II</Text>
-            <Text style={[styles.tableCell, { width: '15%' }]}>{formData.injuries.neckPainStart}</Text>
-            <Text style={[styles.tableCell, { width: '20%' }]}>{formData.injuries.neckPainInitialSeverity}</Text>
+            <Text style={[styles.tableCell, { width: '15%' }]}>{formData.injuries.neckPain.painStart}</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>{formData.injuries.neckPain.initialSeverity}</Text>
             <Text style={[styles.tableCell, { width: '20%' }]}>
-              {formData.injuries.neckPainCurrentSeverity === "Resolved" 
-                ? `${formData.injuries.neckPainResolveDays || "unknown"} days` 
-                : formData.injuries.neckPainCurrentSeverity}
+              {formData.injuries.neckPain.currentSeverity === "Resolved" 
+                ? `${formData.injuries.neckPain.resolveDays || "unknown"} days` 
+                : formData.injuries.neckPain.currentSeverity}
             </Text>
           </View>
         )}
         
         {hasShoulderPain && (
           <View style={styles.tableRow}>
-            <Text style={[styles.tableCell, { width: '30%' }]}>Shoulder Pain ({formData.injuries.shoulderSide})</Text>
+            <Text style={[styles.tableCell, { width: '30%' }]}>Shoulder Pain ({formData.injuries.shoulderPain.side})</Text>
             <Text style={[styles.tableCell, { width: '15%' }]}>WAD II</Text>
-            <Text style={[styles.tableCell, { width: '15%' }]}>{formData.injuries.shoulderPainStart}</Text>
-            <Text style={[styles.tableCell, { width: '20%' }]}>{formData.injuries.shoulderPainInitialSeverity}</Text>
+            <Text style={[styles.tableCell, { width: '15%' }]}>{formData.injuries.shoulderPain.painStart}</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>{formData.injuries.shoulderPain.initialSeverity}</Text>
             <Text style={[styles.tableCell, { width: '20%' }]}>
-              {formData.injuries.shoulderPainCurrentSeverity === "Resolved" 
-                ? `${formData.injuries.shoulderPainResolveDays || "unknown"} days` 
-                : formData.injuries.shoulderPainCurrentSeverity}
+              {formData.injuries.shoulderPain.currentSeverity === "Resolved" 
+                ? `${formData.injuries.shoulderPain.resolveDays || "unknown"} days` 
+                : formData.injuries.shoulderPain.currentSeverity}
             </Text>
           </View>
         )}
         
         {hasBackPain && (
           <View style={styles.tableRow}>
-            <Text style={[styles.tableCell, { width: '30%' }]}>Back Pain ({formData.injuries.backLocation})</Text>
+            <Text style={[styles.tableCell, { width: '30%' }]}>Back Pain ({formData.injuries.backPain.location})</Text>
             <Text style={[styles.tableCell, { width: '15%' }]}>WAD II</Text>
-            <Text style={[styles.tableCell, { width: '15%' }]}>{formData.injuries.backPainStart}</Text>
-            <Text style={[styles.tableCell, { width: '20%' }]}>{formData.injuries.backPainInitialSeverity}</Text>
+            <Text style={[styles.tableCell, { width: '15%' }]}>{formData.injuries.backPain.painStart}</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>{formData.injuries.backPain.initialSeverity}</Text>
             <Text style={[styles.tableCell, { width: '20%' }]}>
-              {formData.injuries.backPainCurrentSeverity === "Resolved" 
-                ? `${formData.injuries.backPainResolveDays || "unknown"} days` 
-                : formData.injuries.backPainCurrentSeverity}
+              {formData.injuries.backPain.currentSeverity === "Resolved" 
+                ? `${formData.injuries.backPain.resolveDays || "unknown"} days` 
+                : formData.injuries.backPain.currentSeverity}
             </Text>
           </View>
         )}
@@ -75,12 +75,12 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
           <View style={styles.tableRow}>
             <Text style={[styles.tableCell, { width: '30%' }]}>Headache</Text>
             <Text style={[styles.tableCell, { width: '15%' }]}>WAD II</Text>
-            <Text style={[styles.tableCell, { width: '15%' }]}>{formData.injuries.headacheStart}</Text>
-            <Text style={[styles.tableCell, { width: '20%' }]}>{formData.injuries.headacheInitialSeverity}</Text>
+            <Text style={[styles.tableCell, { width: '15%' }]}>{formData.injuries.headache.start}</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>{formData.injuries.headache.initialSeverity}</Text>
             <Text style={[styles.tableCell, { width: '20%' }]}>
-              {formData.injuries.headacheCurrentSeverity === "Resolved" 
-                ? `${formData.injuries.headacheResolveDays || "unknown"} days` 
-                : formData.injuries.headacheCurrentSeverity}
+              {formData.injuries.headache.currentSeverity === "Resolved" 
+                ? `${formData.injuries.headache.resolveDays || "unknown"} days` 
+                : formData.injuries.headache.currentSeverity}
             </Text>
           </View>
         )}
@@ -90,11 +90,11 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
             <Text style={[styles.tableCell, { width: '30%' }]}>Travel Anxiety</Text>
             <Text style={[styles.tableCell, { width: '15%' }]}>Psychological</Text>
             <Text style={[styles.tableCell, { width: '15%' }]}>Immediate</Text>
-            <Text style={[styles.tableCell, { width: '20%' }]}>{formData.injuries.anxietyInitialSeverity}</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>{formData.travelAnxiety.initialSeverity}</Text>
             <Text style={[styles.tableCell, { width: '20%' }]}>
-              {formData.injuries.anxietyCurrentSeverity === "Resolved" 
-                ? `${formData.injuries.anxietyResolveDays || "unknown"} days` 
-                : formData.injuries.anxietyCurrentSeverity}
+              {formData.travelAnxiety.currentSeverity === "Resolved" 
+                ? `${formData.travelAnxiety.resolveDays || "unknown"} days` 
+                : formData.travelAnxiety.currentSeverity}
             </Text>
           </View>
         )}
@@ -104,9 +104,9 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
             <Text style={[styles.tableCell, { width: '30%' }]}>Bruising</Text>
             <Text style={[styles.tableCell, { width: '15%' }]}>Physical</Text>
             <Text style={[styles.tableCell, { width: '15%' }]}>Immediate</Text>
-            <Text style={[styles.tableCell, { width: '20%' }]}>{formData.injuries.bruisingInitialSeverity || "Mild"}</Text>
+            <Text style={[styles.tableCell, { width: '20%' }]}>{formData.other?.bruising?.initialSeverity || "Mild"}</Text>
             <Text style={[styles.tableCell, { width: '20%' }]}>
-              {formData.injuries.bruisingDuration ? `${formData.injuries.bruisingDuration} days` : "Unknown"}
+              {formData.other?.bruising?.resolveDays ? `${formData.other.bruising.resolveDays} days` : "Unknown"}
             </Text>
           </View>
         )}
