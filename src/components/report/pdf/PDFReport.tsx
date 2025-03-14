@@ -19,7 +19,6 @@ import { AppointmentDetailsSection } from './sections/AppointmentDetailsSection'
 import { AccidentDetailsSection } from './sections/AccidentDetailsSection';
 import { InjuriesSection } from './sections/InjuriesSection';
 import { TravelAnxietySection } from './sections/TravelAnxietySection';
-import { MedicalExaminationSection } from './sections/MedicalExaminationSection';
 import { TreatmentSection } from './sections/TreatmentSection';
 import { LifestyleImpactSection } from './sections/LifestyleImpactSection';
 import { MedicalHistorySection } from './sections/MedicalHistorySection';
@@ -203,11 +202,11 @@ const PDFDocument = ({ reportData }: { reportData: ReportData }) => {
         <Footer pageNumber={1} />
       </Page>
 
-      {/* Second Page - Injuries, Travel Anxiety + Medical Examination */}
+      {/* Second Page - Injuries, Travel Anxiety */}
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
           <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
-            Injuries, Travel Anxiety and Medical Examination
+            Injuries and Travel Anxiety
           </Text>
         </View>
         
@@ -217,10 +216,6 @@ const PDFDocument = ({ reportData }: { reportData: ReportData }) => {
 
         <View style={styles.section}>
           <TravelAnxietySection formData={reportData} styles={styles} />
-        </View>
-        
-        <View style={styles.section}>
-          <MedicalExaminationSection formData={reportData} styles={styles} />
         </View>
         
         <Footer pageNumber={2} />
@@ -234,7 +229,7 @@ const PDFDocument = ({ reportData }: { reportData: ReportData }) => {
           </Text>
         </View>
         
-        {/* Moved Treatment section to the top as Section 9 */}
+        {/* Section 9 - Treatment */}
         <View style={styles.section}>
           <TreatmentSection formData={reportData} styles={styles} />
         </View>

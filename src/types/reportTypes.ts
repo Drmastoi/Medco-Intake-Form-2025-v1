@@ -103,6 +103,7 @@ export interface BruisingData {
   initialSeverity?: string;
   currentSeverity?: string;
   resolveDays?: string;
+  hasVisibleScar?: boolean; // Added this property to fix the type error
 }
 
 export interface OtherInjuriesData {

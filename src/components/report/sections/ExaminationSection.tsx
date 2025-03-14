@@ -10,7 +10,7 @@ interface ExaminationSectionProps {
 export const ExaminationSection = ({ formData, styles }: ExaminationSectionProps) => {
   return (
     <View style={{ marginBottom: 15 }}>
-      <Text style={styles.sectionHeader}>Section 7 - Medical Examination</Text>
+      <Text style={styles.sectionHeader}>Medical Examination</Text>
       <ExaminationDetailsSection formData={formData} styles={styles} />
     </View>
   );

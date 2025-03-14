@@ -2,6 +2,7 @@
 import { Text, View } from '@react-pdf/renderer';
 import { ReportData } from '@/types/reportTypes';
 
+// This component is no longer used in the PDF report
 interface MedicalExaminationSectionProps {
   formData: ReportData;
   styles: any;
@@ -41,10 +42,10 @@ export const MedicalExaminationSection = ({ formData, styles }: MedicalExaminati
 
   return (
     <View style={styles.subsection}>
-      <Text style={styles.sectionHeader}>Section 10 - Medical Examination</Text>
+      <Text style={styles.sectionHeader}>Medical Examination</Text>
       
       <View style={{ marginBottom: 10 }}>
-        <Text style={styles.fieldLabel}>10.1 Examination Methodology</Text>
+        <Text style={styles.fieldLabel}>Examination Methodology</Text>
         <Text style={styles.fieldValue}>
           The claimant was examined in person on {formData.prefilled.dateOfExamination}. 
           The examination lasted approximately {formData.prefilled.timeSpentWithClaimant} minutes. 
@@ -53,14 +54,14 @@ export const MedicalExaminationSection = ({ formData, styles }: MedicalExaminati
       </View>
       
       <View style={{ marginBottom: 10 }}>
-        <Text style={styles.fieldLabel}>10.2 Physical Examination Findings</Text>
+        <Text style={styles.fieldLabel}>Physical Examination Findings</Text>
         {examinationNotes.map((note, index) => (
           <Text key={index} style={styles.fieldValue}>• {note}</Text>
         ))}
       </View>
       
       <View style={{ marginBottom: 10 }}>
-        <Text style={styles.fieldLabel}>10.3 Clinical Observations</Text>
+        <Text style={styles.fieldLabel}>Clinical Observations</Text>
         <Text style={styles.fieldValue}>
           The claimant's presentation was consistent with the reported injuries and the accident mechanism.
           No evidence of symptom exaggeration or fabrication was observed during the examination.
