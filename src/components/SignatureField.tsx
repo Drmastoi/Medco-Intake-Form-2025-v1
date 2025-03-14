@@ -1,7 +1,7 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { FormLabel } from '@/components/ui/form';
+import { Label } from '@/components/ui/label';
 import { Eraser, Pen } from "lucide-react";
 
 interface SignatureFieldProps {
@@ -108,7 +108,7 @@ export function SignatureField({ value, onChange }: SignatureFieldProps) {
 
   return (
     <div className="space-y-2">
-      <FormLabel>Your Signature</FormLabel>
+      <Label>Your Signature</Label>
       <div className="border border-gray-300 rounded-md p-2 bg-white">
         <canvas
           ref={canvasRef}
