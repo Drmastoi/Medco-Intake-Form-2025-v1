@@ -1,7 +1,7 @@
 
 import * as Tabs from "@radix-ui/react-tabs";
 import { Button } from "@/components/ui/button";
-import { FileText, Eye } from "lucide-react";
+import { FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface IntakeFormNavigationProps {
@@ -9,15 +9,14 @@ interface IntakeFormNavigationProps {
   onTabChange: (value: string) => void;
   tabNames: string[];
   onGenerateReport: () => void;
-  onPreviewReport: () => void;
+  onPreviewReport: () => void; // Keeping the prop even though we're not using it anymore
 }
 
 export function IntakeFormNavigation({ 
   currentSection, 
   onTabChange, 
   tabNames,
-  onGenerateReport,
-  onPreviewReport
+  onGenerateReport
 }: IntakeFormNavigationProps) {
   return (
     <div className="overflow-x-auto no-scrollbar -mx-3 px-3 mb-4">
@@ -41,16 +40,6 @@ export function IntakeFormNavigation({
         </Tabs.Root>
         
         <div className="flex space-x-2">
-          <Button 
-            onClick={onPreviewReport}
-            variant="outline"
-            size="sm"
-            className="whitespace-nowrap bg-gray-50 border-gray-300 hover:bg-gray-100 text-gray-700 font-medium"
-          >
-            <Eye className="mr-1 h-4 w-4 text-blue-500" />
-            Preview Report
-          </Button>
-          
           <Button 
             onClick={onGenerateReport}
             variant="secondary"
