@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { FormSchema, formSchema } from "@/schemas/intakeFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -126,11 +125,8 @@ export function IntakeFormContainer() {
   const { 
     showPdfReport, 
     setShowPdfReport, 
-    showPdfPreview, 
-    setShowPdfPreview, 
     isGenerating, 
-    handleGenerateReport,
-    handlePreviewReport 
+    handleGenerateReport
   } = useReportGeneration(form, setCurrentSection);
 
   return (
@@ -140,7 +136,6 @@ export function IntakeFormContainer() {
         onTabChange={handleTabChange}
         tabNames={tabNames}
         onGenerateReport={handleGenerateReport}
-        onPreviewReport={handlePreviewReport}
       />
       
       <IntakeFormContent 
@@ -156,14 +151,6 @@ export function IntakeFormContainer() {
         isOpen={showPdfReport} 
         onClose={() => setShowPdfReport(false)}
         isPreview={false}
-      />
-
-      {/* PDF Preview Dialog */}
-      <PDFReport 
-        reportData={convertFormDataToReportData(form.getValues())} 
-        isOpen={showPdfPreview} 
-        onClose={() => setShowPdfPreview(false)}
-        isPreview={true}
       />
     </div>
   );
