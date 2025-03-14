@@ -2,12 +2,13 @@
 import { pdf } from '@react-pdf/renderer';
 import PDFDocumentContent from "@/components/report/pdf/components/PDFDocumentContent";
 import { ReportData } from "@/types/reportTypes";
+import React from 'react';
 
 // Generate PDF and convert to base64
 export const generatePdfAsBase64 = async (reportData: ReportData) => {
   try {
     // Create PDF document
-    const pdfDoc = <PDFDocumentContent reportData={reportData} />;
+    const pdfDoc = React.createElement(PDFDocumentContent, { reportData });
     const blob = await pdf(pdfDoc).toBlob();
     
     // Convert blob to base64
