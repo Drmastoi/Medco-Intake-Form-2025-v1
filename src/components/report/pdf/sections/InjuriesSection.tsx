@@ -1,4 +1,3 @@
-
 import { Text, View } from '@react-pdf/renderer';
 import { ReportData } from '@/types/reportTypes';
 import { getOnsetText } from '@/utils/injuryTextUtils';
@@ -35,7 +34,7 @@ export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
   // Helper for prognosis notes
   const getPrognosisNotes = (severity: string, prognosis: string) => {
     if (severity === "Severe" || (prognosis.includes("Month") && parseInt(prognosis) >= 8)) {
-      return " Prolonged prognosis is due to severity of symptoms.";
+      return " (Prolonged prognosis is due to severity of symptoms)";
     }
     return "";
   };
