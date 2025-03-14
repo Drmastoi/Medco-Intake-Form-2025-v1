@@ -1,31 +1,66 @@
 
-import { FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 
-interface AnxietyTimingProps {
-  form: any;
-}
-
-export function AnxietyTiming({ form }: AnxietyTimingProps) {
+export function AnxietyTiming({ form }: { form: any }) {
   return (
-    <FormField
-      control={form.control}
-      name="anxietyResolveDays"
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel>
-            How long did it take for your travel anxiety to resolve? (days)
-          </FormLabel>
-          <FormControl>
-            <Input
-              {...field}
-              type="number"
-              placeholder="Number of days"
-              min="0"
-            />
-          </FormControl>
-        </FormItem>
-      )}
-    />
+    <div className="space-y-4">
+      <FormField
+        control={form.control}
+        name="anxietyStart"
+        render={({ field }) => (
+          <FormItem className="space-y-3">
+            <FormLabel>When did your travel anxiety start?</FormLabel>
+            <FormControl>
+              <div className="flex flex-col space-y-2">
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    checked={field.value === "1"}
+                    onCheckedChange={() => field.onChange("1")}
+                  />
+                  <label>Same day</label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    checked={field.value === "2"}
+                    onCheckedChange={() => field.onChange("2")}
+                  />
+                  <label>Next Day</label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    checked={field.value === "3"}
+                    onCheckedChange={() => field.onChange("3")}
+                  />
+                  <label>Few days Later</label>
+                </div>
+              </div>
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        control={form.control}
+        name="anxietyDuration"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Duration of anxiety (in days)</FormLabel>
+            <FormControl>
+              <Input type="number" placeholder="Enter number of days" {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    </div>
   );
 }
