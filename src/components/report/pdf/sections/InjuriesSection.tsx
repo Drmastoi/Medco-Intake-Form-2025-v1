@@ -1,365 +1,565 @@
-
-import React from 'react';
-import { View, Text } from '@react-pdf/renderer';
+import { Text, View } from '@react-pdf/renderer';
 import { ReportData } from '@/types/reportTypes';
+import { getOnsetText } from '@/utils/injuryTextUtils';
 
-export const InjuriesSection = ({ formData, styles }: { formData: ReportData, styles: any }) => {
-  // Helper function to get pain severity text
-  const getSeverityText = (severity: string) => {
-    switch (severity) {
-      case "1": return "Mild";
-      case "2": return "Moderate";
-      case "3": return "Severe";
-      default: return "Not specified";
+interface InjuriesSectionProps {
+  formData: ReportData;
+  styles: any;
+}
+
+export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
+  // Helper function to determine prognosis based on severity and resolve days
+  const getPrognosis = (severity: string, resolveDays?: string) => {
+    if (severity === "Resolved" && resolveDays) {
+      return `${resolveDays} days`;
+    } else if (severity === "Mild") {
+      return "3 Months";
+    } else if (severity === "Moderate") {
+      return "6 Months";
+    } else if (severity === "Severe") {
+      return "9 Months";
     }
+    return "6 Months"; // Default
   };
 
-  // Helper function to get pain timing text
-  const getTimingText = (timing: string) => {
-    switch (timing) {
-      case "1": return "Same day";
-      case "2": return "Next day";
-      case "3": return "2-3 days later";
-      case "4": return "Over a week later";
-      default: return "Not specified";
+  // Helper function to get examination text based on severity
+  const getExaminationText = (severity: string) => {
+    const restrictionLevel = severity === "Mild" ? "mildly" : 
+                            severity === "Moderate" ? "moderately" : 
+                            severity === "Severe" ? "severely" : "mildly";
+    
+    return `Observation is normal. Flexion extension Movements are ${restrictionLevel} restricted. ${severity} muscular tenderness is present on extreme movements, ${severity.toLowerCase()} muscular spasm is present. No Neurovascular Deficit`;
+  };
+
+  // Helper for prognosis notes
+  const getPrognosisNotes = (severity: string, prognosis: string) => {
+    if (severity === "Severe" || (prognosis.includes("Month") && parseInt(prognosis) >= 8)) {
+      return " (Prolonged prognosis is due to severity of symptoms)";
     }
+    return "";
   };
 
-  // Neck Pain Section
-  const renderNeckPain = () => {
-    if (formData.injuries.neckPain !== "1") return null;
-    
-    return (
-      <View style={styles.subsection}>
-        <Text style={styles.sectionHeader}>8.1 Neck Pain (Cervical Spine)</Text>
-        
-        <View style={styles.fieldRow}>
-          <View style={styles.fieldColumn}>
-            <Text style={styles.fieldLabel}>Onset:</Text>
-            <Text style={styles.fieldValue}>
-              {getTimingText(formData.injuries.neckPainStart)}
-            </Text>
-          </View>
-          
-          <View style={styles.fieldColumn}>
-            <Text style={styles.fieldLabel}>Initial Severity:</Text>
-            <Text style={styles.fieldValue}>
-              {getSeverityText(formData.injuries.neckPainInitialSeverity)}
-            </Text>
-          </View>
-          
-          <View style={styles.fieldColumn}>
-            <Text style={styles.fieldLabel}>Current Severity:</Text>
-            <Text style={styles.fieldValue}>
-              {getSeverityText(formData.injuries.neckPainCurrentSeverity)}
-            </Text>
-          </View>
-        </View>
-        
-        {formData.injuries.neckPainResolveDays ? (
-          <View style={styles.fieldRow}>
-            <View style={{flex: 1}}>
-              <Text style={styles.fieldLabel}>Resolution:</Text>
-              <Text style={styles.fieldValue}>
-                Resolved after approximately {formData.injuries.neckPainResolveDays} days post-accident
-              </Text>
-            </View>
-          </View>
-        ) : (
-          <View style={styles.fieldRow}>
-            <View style={{flex: 1}}>
-              <Text style={styles.fieldLabel}>Resolution:</Text>
-              <Text style={styles.fieldValue}>
-                Not yet resolved at the time of examination
-              </Text>
-            </View>
-          </View>
-        )}
-        
-        {formData.injuries.hadPriorNeckPain === "1" && (
-          <View style={styles.fieldRow}>
-            <View style={{flex: 1}}>
-              <Text style={styles.fieldLabel}>Pre-existing Condition:</Text>
-              <Text style={styles.fieldValue}>
-                Patient reports history of neck pain prior to the accident
-              </Text>
-            </View>
-          </View>
-        )}
-        
-        <View style={styles.fieldRow}>
-          <View style={{flex: 1}}>
-            <Text style={styles.fieldLabel}>Additional Information:</Text>
-            <Text style={styles.fieldValue}>
-              {formData.injuries.additionalInfo || "None provided"}
-            </Text>
-          </View>
-        </View>
-        
-        <View style={styles.summaryText}>
-          <Text>
-            The claimant developed {getSeverityText(formData.injuries.neckPainInitialSeverity).toLowerCase()} neck pain {getTimingText(formData.injuries.neckPainStart).toLowerCase()} following the accident.
-            {formData.injuries.neckPainResolveDays 
-              ? ` The symptoms resolved after approximately ${formData.injuries.neckPainResolveDays} days.` 
-              : ` The symptoms persist at ${getSeverityText(formData.injuries.neckPainCurrentSeverity).toLowerCase()} intensity at the time of examination.`}
-            {formData.injuries.hadPriorNeckPain === "1" 
-              ? ` The claimant reports a prior history of neck pain, which may have been exacerbated by this incident.`
-              : ``}
-          </Text>
-        </View>
-      </View>
-    );
+  // Helper function to get formatted onset text from numeric code
+  const getFormattedOnsetText = (onset: string) => {
+    return getOnsetText(onset);
   };
-  
-  // Shoulder Pain Section
-  const renderShoulderPain = () => {
-    if (formData.injuries.shoulderPain !== "1") return null;
-    
-    // Get shoulder side text
-    const getShoulderSideText = (side: string) => {
-      switch (side) {
-        case "1": return "Left shoulder";
-        case "2": return "Right shoulder";
-        case "3": return "Both shoulders";
-        default: return "Shoulder (side not specified)";
-      }
-    };
-    
-    return (
-      <View style={styles.subsection}>
-        <Text style={styles.sectionHeader}>8.2 Shoulder Pain</Text>
-        
-        <View style={styles.fieldRow}>
-          <View style={styles.fieldColumn}>
-            <Text style={styles.fieldLabel}>Location:</Text>
-            <Text style={styles.fieldValue}>
-              {getShoulderSideText(formData.injuries.shoulderSide)}
-            </Text>
-          </View>
-          
-          <View style={styles.fieldColumn}>
-            <Text style={styles.fieldLabel}>Onset:</Text>
-            <Text style={styles.fieldValue}>
-              {getTimingText(formData.injuries.shoulderPainStart)}
-            </Text>
-          </View>
-        </View>
-        
-        <View style={styles.fieldRow}>
-          <View style={styles.fieldColumn}>
-            <Text style={styles.fieldLabel}>Initial Severity:</Text>
-            <Text style={styles.fieldValue}>
-              {getSeverityText(formData.injuries.shoulderPainInitialSeverity)}
-            </Text>
-          </View>
-          
-          <View style={styles.fieldColumn}>
-            <Text style={styles.fieldLabel}>Current Severity:</Text>
-            <Text style={styles.fieldValue}>
-              {getSeverityText(formData.injuries.shoulderPainCurrentSeverity)}
-            </Text>
-          </View>
-        </View>
-        
-        {formData.injuries.shoulderPainResolveDays ? (
-          <View style={styles.fieldRow}>
-            <View style={{flex: 1}}>
-              <Text style={styles.fieldLabel}>Resolution:</Text>
-              <Text style={styles.fieldValue}>
-                Resolved after approximately {formData.injuries.shoulderPainResolveDays} days post-accident
-              </Text>
-            </View>
-          </View>
-        ) : (
-          <View style={styles.fieldRow}>
-            <View style={{flex: 1}}>
-              <Text style={styles.fieldLabel}>Resolution:</Text>
-              <Text style={styles.fieldValue}>
-                Not yet resolved at the time of examination
-              </Text>
-            </View>
-          </View>
-        )}
-        
-        <View style={styles.summaryText}>
-          <Text>
-            The claimant developed {getSeverityText(formData.injuries.shoulderPainInitialSeverity).toLowerCase()} pain in the {getShoulderSideText(formData.injuries.shoulderSide).toLowerCase()} {getTimingText(formData.injuries.shoulderPainStart).toLowerCase()} after the accident.
-            {formData.injuries.shoulderPainResolveDays 
-              ? ` These symptoms resolved after approximately ${formData.injuries.shoulderPainResolveDays} days.` 
-              : ` The symptoms persist at ${getSeverityText(formData.injuries.shoulderPainCurrentSeverity).toLowerCase()} intensity at the time of examination.`}
-          </Text>
-        </View>
-      </View>
-    );
-  };
-  
-  // Back Pain Section
-  const renderBackPain = () => {
-    if (formData.injuries.backPain !== "1") return null;
-    
-    // Get back location text
-    const getBackLocationText = (location: string) => {
-      switch (location) {
-        case "1": return "Upper back (thoracic)";
-        case "2": return "Lower back (lumbar)";
-        case "3": return "Both upper and lower back";
-        default: return "Back (location not specified)";
-      }
-    };
-    
-    return (
-      <View style={styles.subsection}>
-        <Text style={styles.sectionHeader}>8.3 Back Pain</Text>
-        
-        <View style={styles.fieldRow}>
-          <View style={styles.fieldColumn}>
-            <Text style={styles.fieldLabel}>Location:</Text>
-            <Text style={styles.fieldValue}>
-              {getBackLocationText(formData.injuries.backLocation)}
-            </Text>
-          </View>
-          
-          <View style={styles.fieldColumn}>
-            <Text style={styles.fieldLabel}>Onset:</Text>
-            <Text style={styles.fieldValue}>
-              {getTimingText(formData.injuries.backPainStart)}
-            </Text>
-          </View>
-        </View>
-        
-        <View style={styles.fieldRow}>
-          <View style={styles.fieldColumn}>
-            <Text style={styles.fieldLabel}>Initial Severity:</Text>
-            <Text style={styles.fieldValue}>
-              {getSeverityText(formData.injuries.backPainInitialSeverity)}
-            </Text>
-          </View>
-          
-          <View style={styles.fieldColumn}>
-            <Text style={styles.fieldLabel}>Current Severity:</Text>
-            <Text style={styles.fieldValue}>
-              {getSeverityText(formData.injuries.backPainCurrentSeverity)}
-            </Text>
-          </View>
-        </View>
-        
-        {formData.injuries.backPainResolveDays ? (
-          <View style={styles.fieldRow}>
-            <View style={{flex: 1}}>
-              <Text style={styles.fieldLabel}>Resolution:</Text>
-              <Text style={styles.fieldValue}>
-                Resolved after approximately {formData.injuries.backPainResolveDays} days post-accident
-              </Text>
-            </View>
-          </View>
-        ) : (
-          <View style={styles.fieldRow}>
-            <View style={{flex: 1}}>
-              <Text style={styles.fieldLabel}>Resolution:</Text>
-              <Text style={styles.fieldValue}>
-                Not yet resolved at the time of examination
-              </Text>
-            </View>
-          </View>
-        )}
-        
-        <View style={styles.summaryText}>
-          <Text>
-            The claimant developed {getSeverityText(formData.injuries.backPainInitialSeverity).toLowerCase()} pain in the {getBackLocationText(formData.injuries.backLocation).toLowerCase()} {getTimingText(formData.injuries.backPainStart).toLowerCase()} after the accident.
-            {formData.injuries.backPainResolveDays 
-              ? ` These symptoms resolved after approximately ${formData.injuries.backPainResolveDays} days.` 
-              : ` The symptoms persist at ${getSeverityText(formData.injuries.backPainCurrentSeverity).toLowerCase()} intensity at the time of examination.`}
-          </Text>
-        </View>
-      </View>
-    );
-  };
-  
-  // Headache Section
-  const renderHeadache = () => {
-    if (formData.injuries.headache !== "1") return null;
-    
-    return (
-      <View style={styles.subsection}>
-        <Text style={styles.sectionHeader}>8.4 Headache</Text>
-        
-        <View style={styles.fieldRow}>
-          <View style={styles.fieldColumn}>
-            <Text style={styles.fieldLabel}>Onset:</Text>
-            <Text style={styles.fieldValue}>
-              {getTimingText(formData.injuries.headacheStart)}
-            </Text>
-          </View>
-          
-          <View style={styles.fieldColumn}>
-            <Text style={styles.fieldLabel}>Initial Severity:</Text>
-            <Text style={styles.fieldValue}>
-              {getSeverityText(formData.injuries.headacheInitialSeverity)}
-            </Text>
-          </View>
-          
-          <View style={styles.fieldColumn}>
-            <Text style={styles.fieldLabel}>Current Severity:</Text>
-            <Text style={styles.fieldValue}>
-              {getSeverityText(formData.injuries.headacheCurrentSeverity)}
-            </Text>
-          </View>
-        </View>
-        
-        {formData.injuries.headacheResolveDays ? (
-          <View style={styles.fieldRow}>
-            <View style={{flex: 1}}>
-              <Text style={styles.fieldLabel}>Resolution:</Text>
-              <Text style={styles.fieldValue}>
-                Resolved after approximately {formData.injuries.headacheResolveDays} days post-accident
-              </Text>
-            </View>
-          </View>
-        ) : (
-          <View style={styles.fieldRow}>
-            <View style={{flex: 1}}>
-              <Text style={styles.fieldLabel}>Resolution:</Text>
-              <Text style={styles.fieldValue}>
-                Not yet resolved at the time of examination
-              </Text>
-            </View>
-          </View>
-        )}
-        
-        {formData.injuries.headachePastHistory && (
-          <View style={styles.fieldRow}>
-            <View style={{flex: 1}}>
-              <Text style={styles.fieldLabel}>Previous History:</Text>
-              <Text style={styles.fieldValue}>
-                {formData.injuries.headachePastHistory}
-              </Text>
-            </View>
-          </View>
-        )}
-        
-        <View style={styles.summaryText}>
-          <Text>
-            The claimant developed {getSeverityText(formData.injuries.headacheInitialSeverity).toLowerCase()} headaches {getTimingText(formData.injuries.headacheStart).toLowerCase()} after the accident.
-            {formData.injuries.headacheResolveDays 
-              ? ` These symptoms resolved after approximately ${formData.injuries.headacheResolveDays} days.` 
-              : ` The symptoms persist at ${getSeverityText(formData.injuries.headacheCurrentSeverity).toLowerCase()} intensity at the time of examination.`}
-            {formData.injuries.headachePastHistory 
-              ? ` There is a relevant history of headaches prior to this incident: ${formData.injuries.headachePastHistory}.`
-              : ``}
-          </Text>
-        </View>
-      </View>
-    );
-  };
-  
+
   return (
-    <View style={styles.section}>
-      <Text style={styles.sectionHeader}>8. Injuries and Symptoms</Text>
+    <View style={styles.subsection}>
+      <Text style={styles.sectionHeader}>Section 8 - Injuries and Symptoms</Text>
       
-      {renderNeckPain()}
-      {renderShoulderPain()}
-      {renderBackPain()}
-      {renderHeadache()}
+      {/* 8.1 Neck Pain */}
+      {formData.injuries.neckPain.hasInjury && (
+        <View style={{ marginBottom: 10 }}>
+          <Text style={[styles.fieldLabel, { fontSize: 12, marginBottom: 5, marginTop: 8 }]}>8.1 Neck Pain</Text>
+          
+          <View style={{ marginLeft: 10, marginBottom: 5 }}>
+            {/* Grid-like layout with two columns */}
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Symptoms:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>Pain, stiffness and discomfort</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Onset:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{getFormattedOnsetText(formData.injuries.neckPain.painStart)}</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Initial Severity:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{formData.injuries.neckPain.initialSeverity} Restrictions</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Current Status:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{formData.injuries.neckPain.currentSeverity} Restrictions</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Mechanism of Injury:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>Whiplash injury</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Examination:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{getExaminationText(formData.injuries.neckPain.currentSeverity)}</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Opinion:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>On the balance of probabilities, they are attributable to the index accident. In my opinion, the Claimant's symptoms are due to a whiplash injury.</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Additional Report:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>Not Required</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>History:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>
+                  {formData.injuries.neckPain.hadPrior 
+                    ? "The Claimant reported having similar symptoms before the index accident."
+                    : "The Claimant reported no prior similar symptoms before the index accident."}
+                </Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Treatment Recommendation:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>Physiotherapy, the required number of sessions to be determined by the Physiotherapist.</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Prognosis:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>
+                  From the date of accident: {getPrognosis(formData.injuries.neckPain.currentSeverity, formData.injuries.neckPain.resolveDays)}
+                  {getPrognosisNotes(formData.injuries.neckPain.currentSeverity, getPrognosis(formData.injuries.neckPain.currentSeverity, formData.injuries.neckPain.resolveDays))}
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      )}
+      
+      {/* 8.2 Shoulder Pain - Added detailed section matching 8.1 style */}
+      {formData.injuries.shoulderPain.hasInjury && (
+        <View style={{ marginBottom: 10 }}>
+          <Text style={[styles.fieldLabel, { fontSize: 12, marginBottom: 5, marginTop: 8 }]}>8.2 Shoulder Pain</Text>
+          
+          <View style={{ marginLeft: 10, marginBottom: 5 }}>
+            {/* Grid-like layout with two columns */}
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Symptoms:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>Pain, stiffness and restricted movement in the {formData.injuries.shoulderPain.side.toLowerCase()} shoulder</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Onset:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{getFormattedOnsetText(formData.injuries.shoulderPain.painStart)}</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Initial Severity:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{formData.injuries.shoulderPain.initialSeverity} Restrictions</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Current Status:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{formData.injuries.shoulderPain.currentSeverity} Restrictions</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Affected Side:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{formData.injuries.shoulderPain.side}</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Mechanism of Injury:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>Whiplash injury with referred pain to shoulder</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Examination:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{getExaminationText(formData.injuries.shoulderPain.currentSeverity)}</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Opinion:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>On the balance of probabilities, the shoulder pain is attributable to the index accident. The symptoms are consistent with a whiplash-related shoulder injury.</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Additional Report:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>Not Required</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Treatment Recommendation:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>Physiotherapy, the required number of sessions to be determined by the Physiotherapist.</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Prognosis:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>
+                  From the date of accident: {getPrognosis(formData.injuries.shoulderPain.currentSeverity, formData.injuries.shoulderPain.resolveDays)}
+                  {getPrognosisNotes(formData.injuries.shoulderPain.currentSeverity, getPrognosis(formData.injuries.shoulderPain.currentSeverity, formData.injuries.shoulderPain.resolveDays))}
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      )}
+      
+      {/* 8.3 Back Pain - Adding detailed section matching 8.1 and 8.2 style */}
+      {formData.injuries.backPain.hasInjury && (
+        <View style={{ marginBottom: 10 }}>
+          <Text style={[styles.fieldLabel, { fontSize: 12, marginBottom: 5, marginTop: 8 }]}>8.3 Back Pain</Text>
+          
+          <View style={{ marginLeft: 10, marginBottom: 5 }}>
+            {/* Grid-like layout with two columns */}
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Symptoms:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>Pain, stiffness and discomfort in the {formData.injuries.backPain.location.toLowerCase()} back</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Onset:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{getFormattedOnsetText(formData.injuries.backPain.painStart)}</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Initial Severity:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{formData.injuries.backPain.initialSeverity} Restrictions</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Current Status:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{formData.injuries.backPain.currentSeverity} Restrictions</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Affected Area:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{formData.injuries.backPain.location} Back</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Mechanism of Injury:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>Acceleration/deceleration forces during the accident causing soft tissue injury</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Examination:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{getExaminationText(formData.injuries.backPain.currentSeverity)}</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Opinion:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>On the balance of probabilities, the back pain is attributable to the index accident. The symptoms are consistent with a soft tissue injury caused by the impact.</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Additional Report:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>Not Required</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Treatment Recommendation:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>Physiotherapy and painkillers as needed. The required number of physiotherapy sessions to be determined by the Physiotherapist.</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Prognosis:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>
+                  From the date of accident: {getPrognosis(formData.injuries.backPain.currentSeverity, formData.injuries.backPain.resolveDays)}
+                  {getPrognosisNotes(formData.injuries.backPain.currentSeverity, getPrognosis(formData.injuries.backPain.currentSeverity, formData.injuries.backPain.resolveDays))}
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      )}
+      
+      {/* 8.4 Headache - Updated detailed section matching style of the other sections */}
+      {formData.injuries.headache.hasInjury && (
+        <View style={{ marginBottom: 10 }}>
+          <Text style={[styles.fieldLabel, { fontSize: 12, marginBottom: 5, marginTop: 8 }]}>8.4 Headache</Text>
+          
+          <View style={{ marginLeft: 10, marginBottom: 5 }}>
+            {/* Grid-like layout with two columns */}
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Symptoms:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>Headache</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Onset:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{getFormattedOnsetText(formData.injuries.headache.start)}</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Initial Severity:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{formData.injuries.headache.initialSeverity} Restrictions</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Current Status:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{formData.injuries.headache.currentSeverity} Restrictions</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Mechanism of Injury:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>Due to sudden jolt of the head during the accident</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Examination:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>Observation is normal. Vision normal, No Neurovascular Deficit</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Opinion:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>On the balance of probabilities, they are attributable to the index accident. In my opinion, the Claimant's symptoms are due to Whiplash associated referred pain.</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Additional Report:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>Not Required</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>History:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>
+                  {formData.injuries.headache.pastHistory && formData.injuries.headache.pastHistory !== 'None' 
+                    ? `The Claimant reported having similar symptoms before the index accident: ${formData.injuries.headache.pastHistory}`
+                    : "The Claimant reported no prior similar symptoms before the index accident."}
+                </Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Treatment Recommendation:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>Pain killers as and when required.</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Prognosis:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>
+                  From the date of accident: {getPrognosis(formData.injuries.headache.currentSeverity, formData.injuries.headache.resolveDays)}
+                  {getPrognosisNotes(formData.injuries.headache.currentSeverity, getPrognosis(formData.injuries.headache.currentSeverity, formData.injuries.headache.resolveDays))}
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      )}
+      
+      {/* 8.5 Travel Anxiety */}
+      {formData.travelAnxiety.hasAnxiety && (
+        <View style={{ marginBottom: 10 }}>
+          <Text style={styles.fieldLabel}>8.5 Travel Anxiety</Text>
+          <Text style={styles.fieldValue}>
+            The claimant reported travel anxiety following the accident. 
+            The initial severity was {formData.travelAnxiety.initialSeverity.toLowerCase()}. 
+            {formData.travelAnxiety.currentSeverity === "Resolved" 
+              ? ` The anxiety has now resolved after ${formData.travelAnxiety.resolveDays || "an unspecified number of"} days.` 
+              : ` The current severity is ${formData.travelAnxiety.currentSeverity.toLowerCase()}.`}
+            {formData.travelAnxiety.symptoms && formData.travelAnxiety.symptoms.length > 0 && 
+              ` Symptoms include: ${formData.travelAnxiety.symptoms.join(", ")}.`}
+          </Text>
+        </View>
+      )}
+      
+      {/* 8.6 Bruising */}
+      {formData.other?.bruising?.hasBruising && (
+        <View style={{ marginBottom: 10 }}>
+          <Text style={styles.fieldLabel}>8.6 Bruising</Text>
+          <Text style={styles.fieldValue}>
+            The claimant reported bruising following the accident.
+            {formData.other.bruising.location && ` The bruising was located at ${formData.other.bruising.location}.`}
+            {formData.other.bruising.initialSeverity && ` Initial severity was ${formData.other.bruising.initialSeverity.toLowerCase()}.`}
+            {formData.other.bruising.currentSeverity === "Resolved" 
+              ? ` The bruising has now resolved after ${formData.other.bruising.resolveDays || "an unspecified number of"} days.` 
+              : formData.other.bruising.currentSeverity && ` The current severity is ${formData.other.bruising.currentSeverity.toLowerCase()}.`}
+          </Text>
+        </View>
+      )}
+      
+      {/* 8.7 Other Injuries */}
+      {formData.other?.otherInjuries?.hasOtherInjury && (
+        <View style={{ marginBottom: 10 }}>
+          <Text style={styles.fieldLabel}>8.7 Other Injuries</Text>
+          <Text style={styles.fieldValue}>
+            The claimant reported other injuries following the accident: 
+            {formData.other.otherInjuries.name && ` ${formData.other.otherInjuries.name}.`}
+            {formData.other.otherInjuries.initialSeverity && ` Initial severity was ${formData.other.otherInjuries.initialSeverity.toLowerCase()}.`}
+            {formData.other.otherInjuries.currentSeverity === "Resolved" 
+              ? ` The injury has now resolved after ${formData.other.otherInjuries.resolveDays || "an unspecified number of"} days.` 
+              : formData.other.otherInjuries.currentSeverity && ` The current severity is ${formData.other.otherInjuries.currentSeverity.toLowerCase()}.`}
+          </Text>
+        </View>
+      )}
+      
+      {/* Display a message if no injuries reported */}
+      {!formData.injuries.neckPain.hasInjury && 
+       !formData.injuries.shoulderPain.hasInjury && 
+       !formData.injuries.backPain.hasInjury && 
+       !formData.injuries.headache.hasInjury && 
+       !formData.travelAnxiety.hasAnxiety && 
+       !formData.other?.bruising?.hasBruising && 
+       !formData.other?.otherInjuries?.hasOtherInjury && (
+        <Text style={styles.fieldValue}>No significant injuries were reported by the claimant.</Text>
+      )}
     </View>
   );
 };
