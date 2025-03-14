@@ -1,7 +1,7 @@
 
 import * as Tabs from "@radix-ui/react-tabs";
 import { Button } from "@/components/ui/button";
-import { FileText } from "lucide-react";
+import { FileSignature } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface IntakeFormNavigationProps {
@@ -45,8 +45,8 @@ export function IntakeFormNavigation({
             size="sm"
             className="bg-blue-600 text-white hover:bg-blue-700 border-blue-600 whitespace-nowrap"
           >
-            <FileText className="mr-1 h-4 w-4" />
-            Generate Report
+            <FileSignature className="mr-1 h-4 w-4" />
+            Submit Report
           </Button>
         </div>
       </div>

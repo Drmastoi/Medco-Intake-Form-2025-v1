@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { FormSchema, formSchema } from "@/schemas/intakeFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -6,12 +7,12 @@ import { IntakeFormContent } from "@/components/intake-form/IntakeFormContent";
 import { IntakeFormHeader } from "@/components/intake-form/IntakeFormHeader";
 import { useFormPrefill } from "@/hooks/useFormPrefill";
 import { useReportGeneration } from "@/hooks/useReportGeneration";
-import PDFReport from "@/components/report/pdf/PDFReport";
-import { convertFormDataToReportData } from "@/utils/pdfReportUtils";
+import { ReportSubmissionTab } from "@/components/report/ReportSubmissionTab";
 
 export function IntakeFormContainer() {
   const [currentSection, setCurrentSection] = useState(0);
-  const totalSections = 13; // Kept the same as we're only removing from PDF, not intake form
+  const [showSubmissionTab, setShowSubmissionTab] = useState(false);
+  const totalSections = 13;
 
   const tabNames = [
     "Prefilled Details",
@@ -122,12 +123,23 @@ export function IntakeFormContainer() {
 
   // Use custom hooks for form prefilling and report generation
   useFormPrefill(form);
-  const { 
-    showPdfReport, 
-    setShowPdfReport, 
-    isGenerating, 
-    handleGenerateReport
-  } = useReportGeneration(form, setCurrentSection);
+  const { isGenerating } = useReportGeneration(form, setCurrentSection);
+
+  // Handler for opening submission tab
+  const handleOpenSubmissionTab = () => {
+    // Basic validation check
+    const values = form.getValues();
+    if (!values.fullName) {
+      form.setError("fullName", {
+        type: "manual",
+        message: "Please fill in your full name before submitting",
+      });
+      setCurrentSection(1); // Navigate to personal info section
+      return;
+    }
+    
+    setShowSubmissionTab(true);
+  };
 
   return (
     <div className="container mx-auto py-10 px-4">
@@ -135,7 +147,7 @@ export function IntakeFormContainer() {
         currentSection={currentSection}
         onTabChange={handleTabChange}
         tabNames={tabNames}
-        onGenerateReport={handleGenerateReport}
+        onGenerateReport={handleOpenSubmissionTab}
       />
       
       <IntakeFormContent 
@@ -145,12 +157,11 @@ export function IntakeFormContainer() {
         setCurrentSection={setCurrentSection}
       />
 
-      {/* PDF Report Dialog */}
-      <PDFReport 
-        reportData={convertFormDataToReportData(form.getValues())} 
-        isOpen={showPdfReport} 
-        onClose={() => setShowPdfReport(false)}
-        isPreview={false}
+      {/* Report Submission Tab */}
+      <ReportSubmissionTab 
+        isOpen={showSubmissionTab} 
+        onClose={() => setShowSubmissionTab(false)}
+        formData={form.getValues()}
       />
     </div>
   );
