@@ -25,7 +25,7 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
             `${formData.neckPainResolveDays} DAYS` : 
             formData.neckPainCurrentSeverity === "1" ? "3 MONTHS" :
             formData.neckPainCurrentSeverity === "2" ? "6 MONTHS" :
-            formData.neckPainCurrentSeverity === "3" ? "9 MONTHS" : "6 MONTHS"}`}
+            formData.neckPainCurrentSeverity === "3" ? "9 MONTHS (Prolonged prognosis is due to severity of symptoms)" : "6 MONTHS"}`}
         />
       )}
 
@@ -46,7 +46,7 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
             `${formData.shoulderPainResolveDays} DAYS` : 
             formData.shoulderPainCurrentSeverity === "1" ? "3 MONTHS" :
             formData.shoulderPainCurrentSeverity === "2" ? "6 MONTHS" :
-            formData.shoulderPainCurrentSeverity === "3" ? "9 MONTHS" : "6 MONTHS"}`}
+            formData.shoulderPainCurrentSeverity === "3" ? "9 MONTHS (Prolonged prognosis is due to severity of symptoms)" : "6 MONTHS"}`}
         />
       )}
 
@@ -67,7 +67,7 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
             `${formData.backPainResolveDays} DAYS` : 
             formData.backPainCurrentSeverity === "1" ? "3 MONTHS" :
             formData.backPainCurrentSeverity === "2" ? "6 MONTHS" :
-            formData.backPainCurrentSeverity === "3" ? "9 MONTHS" : "6 MONTHS"}`}
+            formData.backPainCurrentSeverity === "3" ? "9 MONTHS (Prolonged prognosis is due to severity of symptoms)" : "6 MONTHS"}`}
         />
       )}
 
@@ -79,16 +79,16 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
           initialSeverity={getSeverityText(formData.headacheInitialSeverity)}
           currentSeverity={getSeverityText(formData.headacheCurrentSeverity)}
           classification="Non-whiplash injury"
-          mechanism="It is classified as non-whiplash injury and falls within subsection 1.3 of the civil liability act 2018."
-          palpation="Not applicable"
+          mechanism="Due to sudden jolt of the head during the accident"
+          palpation="Observation is normal. Vision normal, No Neurovascular Deficit"
           rangeOfMotion="Not applicable"
           neurologicalAssessment="normal"
-          treatment="Self-Resolving condition. Take simple pain killers as and when required"
+          treatment="Pain killers as and when required"
           prognosis={`From the date of accident: ${formData.headacheCurrentSeverity === "4" ? 
             `${formData.headacheResolveDays} DAYS` : 
             formData.headacheCurrentSeverity === "1" ? "3 MONTHS" :
             formData.headacheCurrentSeverity === "2" ? "6 MONTHS" :
-            formData.headacheCurrentSeverity === "3" ? "9 MONTHS" : "6 MONTHS"}`}
+            formData.headacheCurrentSeverity === "3" ? "9 MONTHS (Prolonged prognosis is due to severity of symptoms)" : "6 MONTHS"}`}
         />
       )}
 
@@ -109,7 +109,7 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
             `${formData.anxietyResolveDays} DAYS` : 
             formData.anxietyCurrentSeverity === "1" ? "3 MONTHS" :
             formData.anxietyCurrentSeverity === "2" ? "6 MONTHS" :
-            formData.anxietyCurrentSeverity === "3" ? "9 MONTHS" : "6 MONTHS"}`}
+            formData.anxietyCurrentSeverity === "3" ? "9 MONTHS (Prolonged prognosis is due to severity of symptoms)" : "6 MONTHS"}`}
         />
       )}
     </View>

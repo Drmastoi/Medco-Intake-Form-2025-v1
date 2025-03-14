@@ -34,6 +34,20 @@ export const HeadacheComponent = ({ formData }: HeadacheProps) => {
     }
   };
 
+  // Get prognosis based on severity
+  const getPrognosis = () => {
+    if (formData.headacheCurrentSeverity === "4" && formData.headacheResolveDays) {
+      return `${formData.headacheResolveDays} days`;
+    } else if (formData.headacheCurrentSeverity === "1") {
+      return "3 months";
+    } else if (formData.headacheCurrentSeverity === "2") {
+      return "6 months";
+    } else if (formData.headacheCurrentSeverity === "3") {
+      return "9 months (Prolonged prognosis is due to severity of symptoms)";
+    }
+    return "6 months";
+  };
+
   const generateHeadacheText = () => {
     let text = `I experienced headaches that began ${getPainStartText()} the accident. `;
     
@@ -54,6 +68,10 @@ export const HeadacheComponent = ({ formData }: HeadacheProps) => {
     } else {
       text += "I had no history of headaches prior to this accident. ";
     }
+
+    // Treatment and prognosis
+    text += "I was advised to take pain medication as needed. ";
+    text += `The doctor estimated a recovery period of ${getPrognosis()}.`;
 
     return text;
   };
