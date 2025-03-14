@@ -32,7 +32,7 @@ const InjurySectionDetail = ({
   };
 
   const prefix = getDataPrefix();
-  const painStart = formData[`${prefix}PainStart`];
+  const painStart = formData[`${prefix}PainStart`] || formData[`${prefix}Start`];
   const initialSeverity = formData[`${prefix}InitialSeverity`];
   const currentSeverity = formData[`${prefix}CurrentSeverity`];
   const resolveDays = formData[`${prefix}ResolveDays`];
@@ -71,7 +71,7 @@ const InjurySectionDetail = ({
           <Text style={styles.injuryLabel}>Symptoms</Text>
           <Text style={styles.injuryValue}>
             {injuryType === 'Travel Anxiety' 
-              ? 'Anxiety, fear of travel, and panic.' 
+              ? 'Anxiety, fear of travel, and panic when traveling in a vehicle.' 
               : 'Pain, Stiffness and Discomfort.'}
           </Text>
         </View>
@@ -114,30 +114,36 @@ const InjurySectionDetail = ({
         <View style={styles.injuryRow}>
           <Text style={styles.injuryLabel}>Mechanism of Injury</Text>
           <Text style={styles.injuryValue}>
-            {getMechanismOfInjury(injuryType, location)}
+            {injuryType === 'Travel Anxiety' ? 
+              "Psychological Impact. The traumatic experience of the accident has led to anxiety when traveling in vehicles." :
+              getMechanismOfInjury(injuryType, location)}
           </Text>
         </View>
         
         <View style={styles.injuryRow}>
           <Text style={styles.injuryLabel}>Examination Findings</Text>
           <Text style={styles.injuryValue}>
-            {getExaminationFindings(injuryType, currentSeverity)}
+            {injuryType === 'Travel Anxiety' ? 
+              "Normal mood, good eye contact, no signs of acute distress during examination. The patient reports anxiety specifically when traveling in vehicles." :
+              getExaminationFindings(injuryType, currentSeverity)}
           </Text>
         </View>
         
         <View style={styles.injuryRow}>
           <Text style={styles.injuryLabel}>Opinion</Text>
           <Text style={styles.injuryValue}>
-            {getOpinion(injuryType, location)}
+            {injuryType === 'Travel Anxiety' ? 
+              "The reported travel anxiety is directly attributed to the index accident. The symptoms are consistent with the history provided and the nature of the accident." :
+              getOpinion(injuryType, location)}
           </Text>
         </View>
         
         <View style={styles.injuryRow}>
           <Text style={styles.injuryLabel}>Similar symptoms</Text>
           <Text style={styles.injuryValue}>
-            The Claimant reported no prior similar symptoms before the index accident,
-            indicating that there were no pre-existing symptoms that could have been
-            exacerbated by the accident.
+            {injuryType === 'Travel Anxiety' && formData.hasAnxietyHistory === "yes" ?
+              `The Claimant reported a prior history of anxiety: ${formData.anxietyPastHistory || "details not specified"}. The current travel anxiety symptoms are distinctly related to this specific accident.` :
+              "The Claimant reported no prior similar symptoms before the index accident, indicating that there were no pre-existing symptoms that could have been exacerbated by the accident."}
           </Text>
         </View>
         
@@ -148,21 +154,36 @@ const InjurySectionDetail = ({
         
         <View style={styles.injuryRow}>
           <Text style={styles.injuryLabel}>OIC Tariff</Text>
-          <Text style={styles.injuryValue}>{getOICTariff(injuryType, location)}</Text>
+          <Text style={styles.injuryValue}>{injuryType === 'Travel Anxiety' ? 
+            "This psychological symptom is not directly included in the OIC Tariff but can be considered alongside the primary injuries." :
+            getOICTariff(injuryType, location)}</Text>
         </View>
         
         <View style={styles.injuryRow}>
           <Text style={styles.injuryLabel}>Prognosis</Text>
           <Text style={styles.injuryValue}>
-            {getPrognosis(currentSeverity)}
-            {currentSeverity === "3" && " - The extended prognosis is due to the severity of the symptoms."}
+            {injuryType === 'Travel Anxiety' ?
+              (currentSeverity === "4" ? 
+                `Resolved within ${resolveDays || "1"} days from the date of accident.` :
+                currentSeverity === "1" ? 
+                  "3 months from the date of accident." :
+                currentSeverity === "2" ? 
+                  "6 months from the date of accident." :
+                currentSeverity === "3" ? 
+                  "9 months from the date of accident. (The extended prognosis is due to the severity of the symptoms.)" :
+                "6 months from the date of accident.") :
+              getPrognosis(currentSeverity)
+            }
+            {currentSeverity === "3" && injuryType !== 'Travel Anxiety' && " - The extended prognosis is due to the severity of the symptoms."}
           </Text>
         </View>
         
         <View style={styles.injuryRow}>
           <Text style={styles.injuryLabel}>Treatment Recommendation</Text>
           <Text style={styles.injuryValue}>
-            {getTreatmentRecommendation(currentSeverity, injuryType)}
+            {injuryType === 'Travel Anxiety' ? 
+              "Self-help measures including gradual exposure to travel situations, relaxation techniques, and breathing exercises. If symptoms persist or worsen, referral for brief psychological intervention may be beneficial." :
+              getTreatmentRecommendation(currentSeverity, injuryType)}
           </Text>
         </View>
       </View>

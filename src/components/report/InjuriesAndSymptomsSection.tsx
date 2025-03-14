@@ -100,11 +100,11 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
           initialSeverity={getSeverityText(formData.anxietyInitialSeverity)}
           currentSeverity={getSeverityText(formData.anxietyCurrentSeverity)}
           classification="Non-whiplash injury"
-          mechanism="It is classified as non-whiplash injury and falls within subsection 1.3 of the civil liability act 2018."
-          palpation="Not applicable"
+          mechanism="Psychological Impact. The traumatic experience of the accident has led to anxiety when traveling in vehicles."
+          palpation="Normal mood, good eye contact, no signs of acute distress during examination."
           rangeOfMotion="Not applicable"
           neurologicalAssessment="normal"
-          treatment="Self-Resolving condition"
+          treatment="Self-help measures including gradual exposure, relaxation techniques, and breathing exercises."
           prognosis={`From the date of accident: ${formData.anxietyCurrentSeverity === "4" ? 
             `${formData.anxietyResolveDays} DAYS` : 
             formData.anxietyCurrentSeverity === "1" ? "3 MONTHS" :
