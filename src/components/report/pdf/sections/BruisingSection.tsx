@@ -20,7 +20,7 @@ export const BruisingSection = ({ formData, styles }: BruisingSectionProps) => {
     const location = formData.other.bruising.location || "Not specified";
     
     // Get the hasVisibleScar value from formData directly since it's not in the bruising object
-    const hasVisibleScar = formData.hasVisibleScar === "1" ? "Yes" : "No";
+    const hasVisibleScar = formData.other.bruising.hasVisibleScar === "1" ? "Yes" : "No";
 
     return (
       <View>

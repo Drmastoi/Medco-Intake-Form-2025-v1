@@ -203,29 +203,18 @@ const PDFDocument = ({ reportData }: { reportData: ReportData }) => {
         <Footer pageNumber={1} />
       </Page>
 
-      {/* Second Page - Injuries */}
+      {/* Second Page - Injuries and Travel Anxiety + Medical Examination */}
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
           <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
-            Injuries and Symptoms
+            Injuries, Travel Anxiety and Medical Examination
           </Text>
         </View>
         
         <View style={styles.section}>
           <InjuriesSection formData={reportData} styles={styles} />
         </View>
-        
-        <Footer pageNumber={2} />
-      </Page>
-      
-      {/* Third Page - Travel Anxiety and Examination */}
-      <Page size="A4" style={styles.page}>
-        <View style={styles.header}>
-          <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
-            Travel Anxiety and Medical Examination
-          </Text>
-        </View>
-        
+
         <View style={styles.section}>
           <TravelAnxietySection formData={reportData} styles={styles} />
         </View>
@@ -234,14 +223,14 @@ const PDFDocument = ({ reportData }: { reportData: ReportData }) => {
           <MedicalExaminationSection formData={reportData} styles={styles} />
         </View>
         
-        <Footer pageNumber={3} />
+        <Footer pageNumber={2} />
       </Page>
       
-      {/* Fourth Page - Bruising and Other Injuries */}
+      {/* Third Page - Treatment, Lifestyle Impact, Medical History and Conclusion */}
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
           <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
-            Bruising and Other Injuries
+            Treatment, Lifestyle Impact, Medical History and Conclusion
           </Text>
         </View>
         
@@ -253,34 +242,12 @@ const PDFDocument = ({ reportData }: { reportData: ReportData }) => {
           <OtherInjuriesSection formData={reportData} styles={styles} />
         </View>
         
-        <Footer pageNumber={4} />
-      </Page>
-      
-      {/* Fifth Page - Treatment and Lifestyle Impact */}
-      <Page size="A4" style={styles.page}>
-        <View style={styles.header}>
-          <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
-            Treatment and Lifestyle Impact
-          </Text>
-        </View>
-        
         <View style={styles.section}>
           <TreatmentSection formData={reportData} styles={styles} />
         </View>
         
         <View style={styles.section}>
           <LifestyleImpactSection formData={reportData} styles={styles} />
-        </View>
-        
-        <Footer pageNumber={5} />
-      </Page>
-      
-      {/* Sixth Page - Medical History and Conclusion */}
-      <Page size="A4" style={styles.page}>
-        <View style={styles.header}>
-          <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
-            Medical History and Conclusion
-          </Text>
         </View>
         
         <View style={styles.section}>
@@ -303,7 +270,7 @@ const PDFDocument = ({ reportData }: { reportData: ReportData }) => {
           </View>
         </View>
         
-        <Footer pageNumber={6} />
+        <Footer pageNumber={3} />
       </Page>
     </Document>
   );
