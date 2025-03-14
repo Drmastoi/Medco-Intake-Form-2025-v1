@@ -265,15 +265,17 @@ interface PDFReportProps {
 const PDFReport = ({ reportData, isOpen, onClose, isPreview = false }: PDFReportProps) => {
   const [loading, setLoading] = useState(true);
   const [viewerReady, setViewerReady] = useState(false);
+  const [renderError, setRenderError] = useState<string | null>(null);
 
   // Reset loading state when dialog opens/closes
   useEffect(() => {
     if (isOpen) {
       setLoading(true);
+      setRenderError(null);
       // Small delay to ensure state update and rendering cycle
       const timer = setTimeout(() => {
         setViewerReady(true);
-      }, 100);
+      }, 300); // Increased timeout for better reliability
       return () => clearTimeout(timer);
     } else {
       setViewerReady(false);
@@ -283,6 +285,25 @@ const PDFReport = ({ reportData, isOpen, onClose, isPreview = false }: PDFReport
   const handleLoad = () => {
     setLoading(false);
   };
+
+  // Add an error handler for the PDF viewer
+  useEffect(() => {
+    const handleError = () => {
+      if (viewerReady && loading) {
+        // If we've been loading for more than 5 seconds, show an error
+        const timer = setTimeout(() => {
+          if (loading) {
+            setRenderError("Failed to load PDF preview. Please try again.");
+            setLoading(false);
+          }
+        }, 5000);
+        
+        return () => clearTimeout(timer);
+      }
+    };
+    
+    handleError();
+  }, [viewerReady, loading]);
 
   const dialogTitle = isPreview ? "Preview Medical Report" : "Expert Medical Report";
   const closeButtonText = isPreview ? "Close Preview" : "Close";
@@ -295,13 +316,13 @@ const PDFReport = ({ reportData, isOpen, onClose, isPreview = false }: PDFReport
         <DialogHeader>
           <DialogTitle>{dialogTitle}</DialogTitle>
           <DialogDescription>
-            {loading ? "Preparing your report..." : "Your medical report is ready."}
+            {loading ? "Preparing your report..." : renderError || "Your medical report is ready."}
           </DialogDescription>
         </DialogHeader>
         
         <div className="flex flex-col items-center space-y-4 overflow-hidden">
           <div className="flex justify-end w-full space-x-2">
-            {!isPreview && viewerReady && !loading && (
+            {!isPreview && viewerReady && !loading && !renderError && (
               <PDFDownloadLink 
                 document={<PDFDocument reportData={reportData} />} 
                 fileName="medical-report.pdf"
@@ -329,11 +350,30 @@ const PDFReport = ({ reportData, isOpen, onClose, isPreview = false }: PDFReport
                 </div>
               </div>
             )}
-            {viewerReady && (
+            {renderError && (
+              <div className="flex justify-center items-center h-full">
+                <div className="flex flex-col items-center text-red-500">
+                  <p>{renderError}</p>
+                  <Button 
+                    variant="outline" 
+                    className="mt-4"
+                    onClick={() => {
+                      setLoading(true);
+                      setRenderError(null);
+                      setViewerReady(false);
+                      setTimeout(() => setViewerReady(true), 300);
+                    }}
+                  >
+                    Try Again
+                  </Button>
+                </div>
+              </div>
+            )}
+            {viewerReady && !renderError && (
               <PDFViewer 
                 className="w-full h-full" 
                 showToolbar={false}
-                onLoadSuccess={handleLoad}
+                onLoad={handleLoad}
               >
                 <PDFDocument reportData={reportData} />
               </PDFViewer>

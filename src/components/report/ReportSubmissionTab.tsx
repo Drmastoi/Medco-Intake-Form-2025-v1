@@ -32,6 +32,7 @@ export function ReportSubmissionTab({
   );
   const [showThankYou, setShowThankYou] = useState(false);
   const [rating, setRating] = useState(0);
+  const [isPdfLoading, setIsPdfLoading] = useState(false);
   const { toast } = useToast();
   
   const reportData = convertFormDataToReportData(formData);
@@ -43,11 +44,13 @@ export function ReportSubmissionTab({
   });
 
   const handlePreviewReport = () => {
+    setIsPdfLoading(true);
     setShowPdfPreview(true);
   };
   
   const handleClosePreview = () => {
     setShowPdfPreview(false);
+    setIsPdfLoading(false);
   };
   
   const handleSubmitReport = () => {
@@ -97,9 +100,10 @@ export function ReportSubmissionTab({
                 onClick={handlePreviewReport}
                 variant="outline"
                 className="w-full"
+                disabled={isPdfLoading}
               >
                 <Eye className="mr-2 h-4 w-4" />
-                Preview Report
+                {isPdfLoading ? "Loading Preview..." : "Preview Report"}
               </Button>
             </div>
             
