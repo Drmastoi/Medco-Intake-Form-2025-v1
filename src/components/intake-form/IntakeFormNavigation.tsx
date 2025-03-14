@@ -9,7 +9,6 @@ interface IntakeFormNavigationProps {
   onTabChange: (value: string) => void;
   tabNames: string[];
   onGenerateReport: () => void;
-  onPreviewReport: () => void; // Keeping the prop even though we're not using it anymore
 }
 
 export function IntakeFormNavigation({ 

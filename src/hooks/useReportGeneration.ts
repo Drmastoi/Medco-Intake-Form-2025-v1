@@ -7,7 +7,6 @@ import { convertFormDataToReportData } from "@/utils/pdfReportUtils";
 
 export function useReportGeneration(form: UseFormReturn<FormSchema>, setCurrentSection: (section: number) => void) {
   const [showPdfReport, setShowPdfReport] = useState(false);
-  const [showPdfPreview, setShowPdfPreview] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const { toast } = useToast();
 
@@ -52,39 +51,10 @@ export function useReportGeneration(form: UseFormReturn<FormSchema>, setCurrentS
     }
   };
 
-  const handlePreviewReport = () => {
-    try {
-      const values = form.getValues();
-      if (!values.fullName) {
-        toast({
-          title: "Missing Information",
-          description: "Please fill in at least the personal information section before previewing a report.",
-          variant: "destructive",
-        });
-        setCurrentSection(1); // Navigate to personal info section
-        return;
-      }
-      
-      // Show the PDF preview
-      setShowPdfPreview(true);
-      
-    } catch (error) {
-      console.error("Error previewing report:", error);
-      toast({
-        title: "Error Previewing Report",
-        description: "There was a problem generating your preview. Please try again.",
-        variant: "destructive",
-      });
-    }
-  };
-
   return {
     showPdfReport,
     setShowPdfReport,
-    showPdfPreview,
-    setShowPdfPreview,
     isGenerating,
-    handleGenerateReport,
-    handlePreviewReport
+    handleGenerateReport
   };
 }
