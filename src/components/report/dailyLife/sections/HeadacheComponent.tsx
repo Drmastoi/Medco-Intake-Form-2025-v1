@@ -70,7 +70,7 @@ export const HeadacheComponent = ({ formData }: HeadacheProps) => {
     }
 
     // Treatment and prognosis
-    text += "I was advised to take pain medication as needed. ";
+    text += "I was advised to take pain killers as and when required. ";
     text += `The doctor estimated a recovery period of ${getPrognosis()}.`;
 
     return text;

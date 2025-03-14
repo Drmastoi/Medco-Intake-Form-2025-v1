@@ -35,6 +35,8 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
   const getTreatmentRecommendation = (injuryType: string, severity: string) => {
     if (severity === "Resolved") {
       return "None - Resolved";
+    } else if (injuryType === "Headache") {
+      return "Pain killers as and when required";
     } else if (injuryType === "Travel Anxiety") {
       return "Self-help strategies, Reassurance";
     } else if (injuryType === "Bruising") {
@@ -92,7 +94,7 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
             <Text style={[styles.tableCell, { width: '30%' }]}>Headache</Text>
             <Text style={[styles.tableCell, { width: '20%' }]}>Whiplash</Text>
             <Text style={[styles.tableCell, { width: '20%' }]}>{formData.injuries.headache.currentSeverity}</Text>
-            <Text style={[styles.tableCell, { width: '30%' }]}>{getTreatmentRecommendation("Headache", formData.injuries.headache.currentSeverity)}</Text>
+            <Text style={[styles.tableCell, { width: '30%' }]}>Pain killers as and when required</Text>
             <Text style={[styles.tableCell, { width: '20%' }]}>{getPrognosisMonths(formData.injuries.headache.currentSeverity, formData.injuries.headache.resolveDays)}</Text>
           </View>
         )}
