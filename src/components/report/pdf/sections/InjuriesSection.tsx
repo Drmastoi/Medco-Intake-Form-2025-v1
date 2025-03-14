@@ -507,59 +507,136 @@ export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
       {/* 8.5 Travel Anxiety */}
       {formData.travelAnxiety.hasAnxiety && (
         <View style={{ marginBottom: 10 }}>
-          <Text style={styles.fieldLabel}>8.5 Travel Anxiety</Text>
-          <Text style={styles.fieldValue}>
-            The claimant reported travel anxiety following the accident. 
-            The initial severity was {formData.travelAnxiety.initialSeverity.toLowerCase()}. 
-            {formData.travelAnxiety.currentSeverity === "Resolved" 
-              ? ` The anxiety has now resolved after ${formData.travelAnxiety.resolveDays || "an unspecified number of"} days.` 
-              : ` The current severity is ${formData.travelAnxiety.currentSeverity.toLowerCase()}.`}
-            {formData.travelAnxiety.symptoms && formData.travelAnxiety.symptoms.length > 0 && 
-              ` Symptoms include: ${formData.travelAnxiety.symptoms.join(", ")}.`}
-          </Text>
+          <Text style={[styles.fieldLabel, { fontSize: 12, marginBottom: 5, marginTop: 8 }]}>8.5 Travel Anxiety</Text>
+          
+          <View style={{ marginLeft: 10, marginBottom: 5 }}>
+            {/* Grid-like layout with two columns */}
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Symptoms:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>
+                  {formData.travelAnxiety.symptoms && formData.travelAnxiety.symptoms.length > 0 
+                    ? formData.travelAnxiety.symptoms.join(", ")
+                    : "Anxiety when traveling"}
+                </Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Onset:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{getFormattedOnsetText(formData.travelAnxiety.onset)}</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Initial Severity:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{formData.travelAnxiety.initialSeverity} Restrictions</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Current Status:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{formData.travelAnxiety.currentSeverity} Restrictions</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Mechanism of Injury:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>Psychological Impact. The traumatic experience of the accident has led to anxiety when traveling in vehicles.</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Examination:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>Normal mood, good eye contact, no signs of acute distress during examination.</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Opinion:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>On the balance of probabilities, the travel anxiety is attributable to the index accident.</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Additional Report:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>Not Required</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Treatment Recommendation:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>Self-help measures including gradual exposure, relaxation techniques, and breathing exercises.</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Prognosis:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>
+                  From the date of accident: {getPrognosis(formData.travelAnxiety.currentSeverity, formData.travelAnxiety.resolveDays)}
+                  {getPrognosisNotes(formData.travelAnxiety.currentSeverity, getPrognosis(formData.travelAnxiety.currentSeverity, formData.travelAnxiety.resolveDays))}
+                </Text>
+              </View>
+            </View>
+          </View>
         </View>
       )}
       
-      {/* 8.6 Bruising */}
+      {/* 8.6 Bruising - Updated to match layout of other sections */}
       {formData.other?.bruising?.hasBruising && (
         <View style={{ marginBottom: 10 }}>
-          <Text style={styles.fieldLabel}>8.6 Bruising</Text>
-          <Text style={styles.fieldValue}>
-            The claimant reported bruising following the accident.
-            {formData.other.bruising.location && ` The bruising was located at ${formData.other.bruising.location}.`}
-            {formData.other.bruising.initialSeverity && ` Initial severity was ${formData.other.bruising.initialSeverity.toLowerCase()}.`}
-            {formData.other.bruising.currentSeverity === "Resolved" 
-              ? ` The bruising has now resolved after ${formData.other.bruising.resolveDays || "an unspecified number of"} days.` 
-              : formData.other.bruising.currentSeverity && ` The current severity is ${formData.other.bruising.currentSeverity.toLowerCase()}.`}
-          </Text>
-        </View>
-      )}
-      
-      {/* 8.7 Other Injuries */}
-      {formData.other?.otherInjuries?.hasOtherInjury && (
-        <View style={{ marginBottom: 10 }}>
-          <Text style={styles.fieldLabel}>8.7 Other Injuries</Text>
-          <Text style={styles.fieldValue}>
-            The claimant reported other injuries following the accident: 
-            {formData.other.otherInjuries.name && ` ${formData.other.otherInjuries.name}.`}
-            {formData.other.otherInjuries.initialSeverity && ` Initial severity was ${formData.other.otherInjuries.initialSeverity.toLowerCase()}.`}
-            {formData.other.otherInjuries.currentSeverity === "Resolved" 
-              ? ` The injury has now resolved after ${formData.other.otherInjuries.resolveDays || "an unspecified number of"} days.` 
-              : formData.other.otherInjuries.currentSeverity && ` The current severity is ${formData.other.otherInjuries.currentSeverity.toLowerCase()}.`}
-          </Text>
-        </View>
-      )}
-      
-      {/* Display a message if no injuries reported */}
-      {!formData.injuries.neckPain.hasInjury && 
-       !formData.injuries.shoulderPain.hasInjury && 
-       !formData.injuries.backPain.hasInjury && 
-       !formData.injuries.headache.hasInjury && 
-       !formData.travelAnxiety.hasAnxiety && 
-       !formData.other?.bruising?.hasBruising && 
-       !formData.other?.otherInjuries?.hasOtherInjury && (
-        <Text style={styles.fieldValue}>No significant injuries were reported by the claimant.</Text>
-      )}
-    </View>
-  );
-};
+          <Text style={[styles.fieldLabel, { fontSize: 12, marginBottom: 5, marginTop: 8 }]}>8.6 Bruising</Text>
+          
+          <View style={{ marginLeft: 10, marginBottom: 5 }}>
+            {/* Grid-like layout with two columns */}
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Symptoms:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>Bruising and soft tissue damage</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Location:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>
+                  {formData.other.bruising.location || "Not specified"}
+                </Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
