@@ -8,6 +8,7 @@ import PDFDocumentContent from './components/PDFDocumentContent';
 import LoadingIndicator from './components/LoadingIndicator';
 import ErrorDisplay from './components/ErrorDisplay';
 import PDFDownloadLink from './components/PDFDownloadLink';
+import { useToast } from '@/components/ui/use-toast';
 
 interface PDFReportProps {
   reportData: ReportData;
@@ -22,6 +23,8 @@ const PDFReport = ({ reportData, isOpen, onClose, isPreview = false }: PDFReport
   const [viewerReady, setViewerReady] = useState(false);
   const [renderError, setRenderError] = useState<string | null>(null);
   const [loadingProgress, setLoadingProgress] = useState(0);
+  const [retryCount, setRetryCount] = useState(0);
+  const { toast } = useToast();
 
   // Reset loading state when dialog opens/closes
   useEffect(() => {
@@ -44,7 +47,7 @@ const PDFReport = ({ reportData, isOpen, onClose, isPreview = false }: PDFReport
       // Small delay to ensure state update and rendering cycle
       const timer = setTimeout(() => {
         setViewerReady(true);
-      }, 500);
+      }, 800); // Increased from 500ms for more stable initialization
       
       return () => {
         clearTimeout(timer);
@@ -53,17 +56,18 @@ const PDFReport = ({ reportData, isOpen, onClose, isPreview = false }: PDFReport
     } else {
       setViewerReady(false);
       setLoadingProgress(0);
+      setRetryCount(0);
     }
   }, [isOpen]);
 
   // Add an event listener to detect when the PDF is loaded
   useEffect(() => {
     if (viewerReady) {
-      // Using a timeout as a fallback since the PDFViewer doesn't have a direct onLoad prop
       const loadingTimeout = setTimeout(() => {
+        console.log("PDF loading completed or timed out");
         setLoading(false);
         setLoadingProgress(100);
-      }, 6000); // Give 6 seconds for the PDF to load, increased from 3 seconds
+      }, 8000); // Increased timeout from 6s to 8s
 
       return () => clearTimeout(loadingTimeout);
     }
@@ -71,28 +75,34 @@ const PDFReport = ({ reportData, isOpen, onClose, isPreview = false }: PDFReport
 
   // Add an error handler for the PDF viewer
   useEffect(() => {
-    const handleError = () => {
-      if (viewerReady && loading) {
-        // If we've been loading for more than 8 seconds, show an error
-        const timer = setTimeout(() => {
-          if (loading) {
-            setRenderError("Failed to load PDF preview. Please try again.");
-            setLoading(false);
-          }
-        }, 8000); // Increased from 5 seconds
-        
-        return () => clearTimeout(timer);
-      }
-    };
-    
-    handleError();
-  }, [viewerReady, loading]);
+    if (viewerReady && loading) {
+      // If we've been loading for too long, show an error
+      const timer = setTimeout(() => {
+        if (loading) {
+          console.log("PDF rendering timed out, showing error");
+          setRenderError("Failed to load PDF preview. Please try again.");
+          setLoading(false);
+          
+          // Show a toast for better feedback
+          toast({
+            title: "PDF Preview Failed",
+            description: "The report couldn't be loaded. Please try again.",
+            variant: "destructive"
+          });
+        }
+      }, 10000); // Increased from 8s to 10s
+      
+      return () => clearTimeout(timer);
+    }
+  }, [viewerReady, loading, toast]);
 
   const tryAgain = () => {
+    console.log("Retrying PDF generation, attempt:", retryCount + 1);
     setLoading(true);
     setRenderError(null);
     setLoadingProgress(0);
     setViewerReady(false);
+    setRetryCount(prev => prev + 1);
     
     // Progressive loading indicator
     const progressInterval = setInterval(() => {
@@ -105,10 +115,30 @@ const PDFReport = ({ reportData, isOpen, onClose, isPreview = false }: PDFReport
       });
     }, 500);
     
+    // Add a small delay before trying again to allow cleanup
     setTimeout(() => {
       setViewerReady(true);
-      clearInterval(progressInterval);
-    }, 1000);
+      
+      // Show a toast for user feedback
+      toast({
+        title: "Retrying",
+        description: "Attempting to generate PDF preview again...",
+      });
+    }, 1500); // Increased delay for better stability
+    
+    clearInterval(progressInterval);
+  };
+
+  const handlePDFError = (error: Error) => {
+    console.error("PDF rendering error:", error);
+    setRenderError("Failed to load PDF preview. Please try again.");
+    setLoading(false);
+    
+    toast({
+      title: "PDF Error",
+      description: "There was a problem rendering the PDF. Please try again.",
+      variant: "destructive"
+    });
   };
 
   const dialogTitle = isPreview ? "Preview Medical Report" : "Expert Medical Report";
@@ -140,12 +170,15 @@ const PDFReport = ({ reportData, isOpen, onClose, isPreview = false }: PDFReport
             {renderError && <ErrorDisplay errorMessage={renderError} onRetry={tryAgain} />}
             
             {viewerReady && !renderError && (
-              <PDFViewer 
-                className="w-full h-full" 
-                showToolbar={false}
-              >
-                <PDFDocumentContent reportData={reportData} />
-              </PDFViewer>
+              <div className="h-full w-full">
+                <PDFViewer 
+                  className="w-full h-full" 
+                  showToolbar={false}
+                  onError={handlePDFError}
+                >
+                  <PDFDocumentContent reportData={reportData} />
+                </PDFViewer>
+              </div>
             )}
           </div>
         </div>

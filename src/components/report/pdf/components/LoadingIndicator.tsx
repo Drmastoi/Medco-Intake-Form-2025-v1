@@ -14,6 +14,7 @@ const LoadingIndicator = ({ loadingProgress }: LoadingIndicatorProps) => {
         <p className="mb-2">Loading PDF preview...</p>
         <Progress value={loadingProgress} className="w-full mb-1" />
         <p className="text-xs text-muted-foreground">This may take a few moments for large reports</p>
+        <p className="text-xs text-muted-foreground mt-2">Please be patient during PDF generation</p>
       </div>
     </div>
   );
