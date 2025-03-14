@@ -1,40 +1,70 @@
 
 import { Text, View } from '@react-pdf/renderer';
-import { ReportData } from '@/types/reportTypes';
+import { styles } from '../../reportStyles';
 
 interface BruisingSectionProps {
-  formData: ReportData;
+  formData: any;
   styles: any;
 }
 
 export const BruisingSection = ({ formData, styles }: BruisingSectionProps) => {
+  if (formData.other?.bruising?.hasBruising) {
+    const bruisingNoticed = {
+      "1": "Same day",
+      "2": "Next day",
+      "3": "Few days later"
+    }[formData.other.bruising.noticed] || "Not specified";
+
+    const initialSeverity = formData.other.bruising.initialSeverity || "Not specified";
+    const currentSeverity = formData.other.bruising.currentSeverity || "Not specified";
+    const location = formData.other.bruising.location || "Not specified";
+    
+    // Get the hasVisibleScar value from formData directly since it's not in the bruising object
+    const hasVisibleScar = formData.hasVisibleScar === "1" ? "Yes" : "No";
+
+    return (
+      <View>
+        <Text style={styles.sectionHeader}>Bruising Information</Text>
+        
+        <View style={styles.subsection}>
+          <Text style={styles.fieldLabel}>Location:</Text>
+          <Text style={styles.fieldValue}>{location}</Text>
+        </View>
+        
+        <View style={styles.subsection}>
+          <Text style={styles.fieldLabel}>When noticed:</Text>
+          <Text style={styles.fieldValue}>{bruisingNoticed}</Text>
+        </View>
+        
+        <View style={styles.subsection}>
+          <Text style={styles.fieldLabel}>Initial Severity:</Text>
+          <Text style={styles.fieldValue}>{initialSeverity}</Text>
+        </View>
+        
+        <View style={styles.subsection}>
+          <Text style={styles.fieldLabel}>Current Severity:</Text>
+          <Text style={styles.fieldValue}>{currentSeverity}</Text>
+        </View>
+        
+        {formData.other.bruising.currentSeverity === "Resolved" && (
+          <View style={styles.subsection}>
+            <Text style={styles.fieldLabel}>Resolved After:</Text>
+            <Text style={styles.fieldValue}>{formData.other.bruising.resolveDays || "Not specified"} days</Text>
+          </View>
+        )}
+        
+        <View style={styles.subsection}>
+          <Text style={styles.fieldLabel}>Visible Scar:</Text>
+          <Text style={styles.fieldValue}>{hasVisibleScar}</Text>
+        </View>
+      </View>
+    );
+  }
+  
   return (
-    <View style={styles.subsection}>
-      <Text style={styles.sectionHeader}>Section 11 - Bruising Details</Text>
-      
-      {formData.other?.bruising?.hasBruising ? (
-        <>
-          <View style={{ marginBottom: 10 }}>
-            <Text style={styles.fieldLabel}>11.1 Location and Severity</Text>
-            <Text style={styles.fieldValue}>
-              The claimant reported bruising following the accident. 
-              {formData.other?.bruising?.location && ` The bruising was located at ${formData.other.bruising.location}.`}
-              {formData.other?.bruising?.initialSeverity && ` Initial severity was ${formData.other.bruising.initialSeverity.toLowerCase()}.`}
-            </Text>
-          </View>
-          
-          <View style={{ marginBottom: 10 }}>
-            <Text style={styles.fieldLabel}>11.2 Duration</Text>
-            <Text style={styles.fieldValue}>
-              {formData.other?.bruising?.resolveDays 
-                ? `The bruising lasted approximately ${formData.other.bruising.resolveDays} days.` 
-                : "The duration of the bruising was not specified."}
-            </Text>
-          </View>
-        </>
-      ) : (
-        <Text style={styles.fieldValue}>The claimant did not report any significant bruising following the accident.</Text>
-      )}
+    <View>
+      <Text style={styles.sectionHeader}>Bruising Information</Text>
+      <Text style={styles.fieldValue}>Claimant has not reported any issues related to bruising or scarring.</Text>
     </View>
   );
 };

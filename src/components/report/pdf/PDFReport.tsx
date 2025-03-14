@@ -6,7 +6,8 @@ import {
   Page, 
   StyleSheet, 
   View,
-  Text 
+  Text,
+  Font 
 } from '@react-pdf/renderer';
 import { ReportData } from '@/types/reportTypes';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -27,6 +28,7 @@ import { BruisingSection } from './sections/BruisingSection';
 import { OtherInjuriesSection } from './sections/OtherInjuriesSection';
 import { StatementOfInstructionSection } from '../../report/sections/StatementOfInstructionSection';
 import { SummaryOfInjuriesTableSection } from '../../report/sections/SummaryOfInjuriesTableSection';
+import { format } from 'date-fns';
 
 // Create styles
 const styles = StyleSheet.create({
@@ -34,6 +36,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: '#f4f4f4',
     padding: 20,
+    paddingBottom: 60, // Add padding at the bottom for the footer
   },
   header: {
     backgroundColor: '#000',
@@ -125,143 +128,186 @@ const styles = StyleSheet.create({
   tableCell: {
     fontSize: 9,
     textAlign: 'left',
-  }
+  },
+  footer: {
+    position: 'absolute',
+    bottom: 20,
+    left: 20,
+    right: 20,
+    textAlign: 'center',
+    paddingTop: 10,
+    borderTop: '1px solid #ddd',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    fontSize: 8,
+    color: '#555',
+  },
+  pageNumber: {
+    fontSize: 8,
+    color: '#555',
+  },
 });
 
-// Define the PDF Document component
-const PDFDocument = ({ reportData }: { reportData: ReportData }) => (
-  <Document>
-    {/* First Page - Basic Information */}
-    <Page size="A4" style={styles.page}>
-      <View style={styles.header}>
-        <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
-          Expert Medical Report
-        </Text>
-      </View>
-      
-      <View style={styles.section}>
-        <ClaimantDetailsSection formData={reportData} styles={styles} />
-      </View>
-      
-      <View style={styles.section}>
-        <ExpertDetailsSection styles={styles} formData={reportData} />
-      </View>
-      
-      <View style={styles.section}>
-        <InstructionDetailsSection formData={reportData} styles={styles} />
-      </View>
-      
-      <View style={styles.section}>
-        <AppointmentDetailsSection formData={reportData} styles={styles} />
-      </View>
-      
-      <View style={styles.section}>
-        <AccidentDetailsSection formData={reportData} styles={styles} />
-      </View>
-      
-      <View style={styles.section}>
-        <SummaryOfInjuriesTableSection formData={reportData} styles={styles} />
-      </View>
-      
-      <View style={styles.section}>
-        <StatementOfInstructionSection styles={styles} formData={reportData} />
-      </View>
-    </Page>
+// Define the PDF Document component with footer
+const PDFDocument = ({ reportData }: { reportData: ReportData }) => {
+  const today = format(new Date(), 'dd-MM-yyyy');
+  const claimantName = reportData.personal?.fullName || 'Not specified';
+  
+  // Function to create a footer component
+  const Footer = ({ pageNumber }: { pageNumber: number }) => (
+    <View style={styles.footer} fixed>
+      <Text>{claimantName}</Text>
+      <Text style={styles.pageNumber}>Page {pageNumber}</Text>
+      <Text>{today}</Text>
+    </View>
+  );
 
-    {/* Second Page - Injuries */}
-    <Page size="A4" style={styles.page}>
-      <View style={styles.header}>
-        <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
-          Injuries and Symptoms
-        </Text>
-      </View>
-      
-      <View style={styles.section}>
-        <InjuriesSection formData={reportData} styles={styles} />
-      </View>
-    </Page>
-    
-    {/* Third Page - Travel Anxiety and Examination */}
-    <Page size="A4" style={styles.page}>
-      <View style={styles.header}>
-        <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
-          Travel Anxiety and Medical Examination
-        </Text>
-      </View>
-      
-      <View style={styles.section}>
-        <TravelAnxietySection formData={reportData} styles={styles} />
-      </View>
-      
-      <View style={styles.section}>
-        <MedicalExaminationSection formData={reportData} styles={styles} />
-      </View>
-    </Page>
-    
-    {/* Fourth Page - Bruising and Other Injuries */}
-    <Page size="A4" style={styles.page}>
-      <View style={styles.header}>
-        <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
-          Bruising and Other Injuries
-        </Text>
-      </View>
-      
-      <View style={styles.section}>
-        <BruisingSection formData={reportData} styles={styles} />
-      </View>
-      
-      <View style={styles.section}>
-        <OtherInjuriesSection formData={reportData} styles={styles} />
-      </View>
-    </Page>
-    
-    {/* Fifth Page - Treatment and Lifestyle Impact */}
-    <Page size="A4" style={styles.page}>
-      <View style={styles.header}>
-        <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
-          Treatment and Lifestyle Impact
-        </Text>
-      </View>
-      
-      <View style={styles.section}>
-        <TreatmentSection formData={reportData} styles={styles} />
-      </View>
-      
-      <View style={styles.section}>
-        <LifestyleImpactSection formData={reportData} styles={styles} />
-      </View>
-    </Page>
-    
-    {/* Sixth Page - Medical History and Conclusion */}
-    <Page size="A4" style={styles.page}>
-      <View style={styles.header}>
-        <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
-          Medical History and Conclusion
-        </Text>
-      </View>
-      
-      <View style={styles.section}>
-        <MedicalHistorySection formData={reportData} styles={styles} />
-      </View>
-      
-      <View style={styles.section}>
-        <ConclusionSection formData={reportData} styles={styles} />
-      </View>
-      
-      <View style={styles.section}>
-        <View style={styles.subsection}>
-          <Text style={styles.sectionHeader}>Expert Declaration</Text>
-          <Text style={styles.fieldValue}>
-            I, {reportData.prefilled.expertName}, declare that the content of this report is true to the best of my knowledge and belief. I understand that this report is to be submitted as expert evidence. I confirm that I have no conflict of interest in this case.
-          </Text>
-          <Text style={styles.fieldValue}>
-            Date: {new Date().toLocaleDateString()}
+  return (
+    <Document>
+      {/* First Page - Basic Information */}
+      <Page size="A4" style={styles.page}>
+        <View style={styles.header}>
+          <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
+            Expert Medical Report
           </Text>
         </View>
-      </View>
-    </Page>
-  </Document>
-);
+        
+        <View style={styles.section}>
+          <ClaimantDetailsSection formData={reportData} styles={styles} />
+        </View>
+        
+        <View style={styles.section}>
+          <ExpertDetailsSection styles={styles} formData={reportData} />
+        </View>
+        
+        <View style={styles.section}>
+          <InstructionDetailsSection formData={reportData} styles={styles} />
+        </View>
+        
+        <View style={styles.section}>
+          <AppointmentDetailsSection formData={reportData} styles={styles} />
+        </View>
+        
+        <View style={styles.section}>
+          <AccidentDetailsSection formData={reportData} styles={styles} />
+        </View>
+        
+        <View style={styles.section}>
+          <SummaryOfInjuriesTableSection formData={reportData} styles={styles} />
+        </View>
+        
+        <View style={styles.section}>
+          <StatementOfInstructionSection styles={styles} formData={reportData} />
+        </View>
+        
+        <Footer pageNumber={1} />
+      </Page>
+
+      {/* Second Page - Injuries */}
+      <Page size="A4" style={styles.page}>
+        <View style={styles.header}>
+          <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
+            Injuries and Symptoms
+          </Text>
+        </View>
+        
+        <View style={styles.section}>
+          <InjuriesSection formData={reportData} styles={styles} />
+        </View>
+        
+        <Footer pageNumber={2} />
+      </Page>
+      
+      {/* Third Page - Travel Anxiety and Examination */}
+      <Page size="A4" style={styles.page}>
+        <View style={styles.header}>
+          <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
+            Travel Anxiety and Medical Examination
+          </Text>
+        </View>
+        
+        <View style={styles.section}>
+          <TravelAnxietySection formData={reportData} styles={styles} />
+        </View>
+        
+        <View style={styles.section}>
+          <MedicalExaminationSection formData={reportData} styles={styles} />
+        </View>
+        
+        <Footer pageNumber={3} />
+      </Page>
+      
+      {/* Fourth Page - Bruising and Other Injuries */}
+      <Page size="A4" style={styles.page}>
+        <View style={styles.header}>
+          <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
+            Bruising and Other Injuries
+          </Text>
+        </View>
+        
+        <View style={styles.section}>
+          <BruisingSection formData={reportData} styles={styles} />
+        </View>
+        
+        <View style={styles.section}>
+          <OtherInjuriesSection formData={reportData} styles={styles} />
+        </View>
+        
+        <Footer pageNumber={4} />
+      </Page>
+      
+      {/* Fifth Page - Treatment and Lifestyle Impact */}
+      <Page size="A4" style={styles.page}>
+        <View style={styles.header}>
+          <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
+            Treatment and Lifestyle Impact
+          </Text>
+        </View>
+        
+        <View style={styles.section}>
+          <TreatmentSection formData={reportData} styles={styles} />
+        </View>
+        
+        <View style={styles.section}>
+          <LifestyleImpactSection formData={reportData} styles={styles} />
+        </View>
+        
+        <Footer pageNumber={5} />
+      </Page>
+      
+      {/* Sixth Page - Medical History and Conclusion */}
+      <Page size="A4" style={styles.page}>
+        <View style={styles.header}>
+          <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
+            Medical History and Conclusion
+          </Text>
+        </View>
+        
+        <View style={styles.section}>
+          <MedicalHistorySection formData={reportData} styles={styles} />
+        </View>
+        
+        <View style={styles.section}>
+          <ConclusionSection formData={reportData} styles={styles} />
+        </View>
+        
+        <View style={styles.section}>
+          <View style={styles.subsection}>
+            <Text style={styles.sectionHeader}>Expert Declaration</Text>
+            <Text style={styles.fieldValue}>
+              I, {reportData.prefilled.expertName}, declare that the content of this report is true to the best of my knowledge and belief. I understand that this report is to be submitted as expert evidence. I confirm that I have no conflict of interest in this case.
+            </Text>
+            <Text style={styles.fieldValue}>
+              Date: {today}
+            </Text>
+          </View>
+        </View>
+        
+        <Footer pageNumber={6} />
+      </Page>
+    </Document>
+  );
+};
 
 interface PDFReportProps {
   reportData: ReportData;
