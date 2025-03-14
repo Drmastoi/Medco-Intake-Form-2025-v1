@@ -62,6 +62,7 @@ export function convertFormDataToReportData(formData: FormSchema): ReportData {
     },
     travelAnxiety: getTravelAnxietyData(formData),
     other: {
+      bruising: getBruisingData(formData),
       otherInjuries: getOtherInjuriesData(formData),
       treatment: getTreatmentData(formData),
       lifestyle: getLifestyleData(formData),

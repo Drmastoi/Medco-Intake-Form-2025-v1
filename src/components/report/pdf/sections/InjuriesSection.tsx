@@ -1,4 +1,3 @@
-
 import { Text, View } from '@react-pdf/renderer';
 import { ReportData } from '@/types/reportTypes';
 import { getOnsetText } from '@/utils/injuryTextUtils';
@@ -641,47 +640,4 @@ export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
                 <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Initial Severity:</Text>
               </View>
               <View style={{ width: '70%' }}>
-                <Text style={styles.fieldValue}>{formData.other.otherInjuries.initialSeverity || "Not specified"}</Text>
-              </View>
-            </View>
-            
-            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
-              <View style={{ width: '30%' }}>
-                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Current Status:</Text>
-              </View>
-              <View style={{ width: '70%' }}>
-                <Text style={styles.fieldValue}>{formData.other.otherInjuries.currentSeverity || "Not specified"}</Text>
-              </View>
-            </View>
-            
-            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
-              <View style={{ width: '30%' }}>
-                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Treatment Recommendation:</Text>
-              </View>
-              <View style={{ width: '70%' }}>
-                <Text style={styles.fieldValue}>Treatment as advised by specialist.</Text>
-              </View>
-            </View>
-            
-            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
-              <View style={{ width: '30%' }}>
-                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Prognosis:</Text>
-              </View>
-              <View style={{ width: '70%' }}>
-                <Text style={styles.fieldValue}>
-                  {formData.other.otherInjuries.currentSeverity === "Resolved" 
-                    ? `Resolved after ${formData.other.otherInjuries.resolveDays || "unspecified number of"} days` 
-                    : `From the date of accident: ${getPrognosis(formData.other.otherInjuries.currentSeverity || "", formData.other.otherInjuries.resolveDays)}`}
-                </Text>
-              </View>
-            </View>
-          </View>
-        ) : (
-          <View style={{ marginLeft: 10 }}>
-            <Text style={styles.fieldValue}>Claimant has not reported any other injuries.</Text>
-          </View>
-        )}
-      </View>
-    </View>
-  );
-};
+                <Text style={styles.field
