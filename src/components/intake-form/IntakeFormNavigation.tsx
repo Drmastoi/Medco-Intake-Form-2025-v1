@@ -42,9 +42,9 @@ export function IntakeFormNavigation({
         <div className="flex space-x-2">
           <Button 
             onClick={onGenerateReport}
-            variant="secondary"
+            variant="outline"
             size="sm"
-            className="text-white bg-black hover:bg-gray-800 whitespace-nowrap"
+            className="bg-blue-600 text-white hover:bg-blue-700 border-blue-600 whitespace-nowrap"
           >
             <FileText className="mr-1 h-4 w-4" />
             Generate Report
