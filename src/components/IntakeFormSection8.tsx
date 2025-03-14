@@ -26,7 +26,7 @@ export function IntakeFormSection8({ form }: { form: any }) {
       
       <BruisingInitial form={form} />
 
-      {hasBruising === "1" && (
+      {hasBruising === "1" ? (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">
@@ -41,6 +41,10 @@ export function IntakeFormSection8({ form }: { form: any }) {
             </div>
           </div>
         </>
+      ) : (
+        <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+          <p className="text-gray-600 italic">Claimant has not reported any issues related to bruising or scarring.</p>
+        </div>
       )}
       
       <BruisingSummary formData={formData} />

@@ -1,5 +1,5 @@
 
-import { View } from '@react-pdf/renderer';
+import { View, Text } from '@react-pdf/renderer';
 import { InjurySection } from './injuryReport/InjurySection';
 import { getOnsetText, getSeverityText, getImpactMechanism } from '../../utils/injuryTextUtils';
 import { getTravelAnxietySymptomLabel } from '../../utils/reportConverters';
@@ -33,7 +33,7 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
 
   return (
     <View>
-      {formData.neckPain === "1" && (
+      {formData.neckPain === "1" ? (
         <InjurySection
           title="NECK PAIN"
           injuryNumber={++injuryCount}
@@ -52,9 +52,14 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
             formData.neckPainCurrentSeverity === "2" ? "6 MONTHS" :
             formData.neckPainCurrentSeverity === "3" ? "9 MONTHS (Prolonged prognosis is due to severity of symptoms)" : "6 MONTHS"}`}
         />
+      ) : (
+        <View style={{ marginBottom: 10 }}>
+          <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>NECK PAIN</Text>
+          <Text style={{ fontSize: 10, marginBottom: 5 }}>Claimant has not reported any injuries related to neck pain.</Text>
+        </View>
       )}
 
-      {formData.shoulderPain === "1" && (
+      {formData.shoulderPain === "1" ? (
         <InjurySection
           title="SHOULDER PAIN"
           injuryNumber={++injuryCount}
@@ -73,9 +78,14 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
             formData.shoulderPainCurrentSeverity === "2" ? "6 MONTHS" :
             formData.shoulderPainCurrentSeverity === "3" ? "9 MONTHS (Prolonged prognosis is due to severity of symptoms)" : "6 MONTHS"}`}
         />
+      ) : (
+        <View style={{ marginBottom: 10 }}>
+          <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>SHOULDER PAIN</Text>
+          <Text style={{ fontSize: 10, marginBottom: 5 }}>Claimant has not reported any injuries related to shoulder pain.</Text>
+        </View>
       )}
 
-      {formData.backPain === "1" && (
+      {formData.backPain === "1" ? (
         <InjurySection
           title="BACK PAIN"
           injuryNumber={++injuryCount}
@@ -94,9 +104,14 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
             formData.backPainCurrentSeverity === "2" ? "6 MONTHS" :
             formData.backPainCurrentSeverity === "3" ? "9 MONTHS (Prolonged prognosis is due to severity of symptoms)" : "6 MONTHS"}`}
         />
+      ) : (
+        <View style={{ marginBottom: 10 }}>
+          <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>BACK PAIN</Text>
+          <Text style={{ fontSize: 10, marginBottom: 5 }}>Claimant has not reported any injuries related to back pain.</Text>
+        </View>
       )}
 
-      {formData.headache === "1" && (
+      {formData.headache === "1" ? (
         <InjurySection
           title="HEADACHE"
           injuryNumber={++injuryCount}
@@ -115,9 +130,14 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
             formData.headacheCurrentSeverity === "2" ? "6 MONTHS" :
             formData.headacheCurrentSeverity === "3" ? "9 MONTHS (Prolonged prognosis is due to severity of symptoms)" : "6 MONTHS"}`}
         />
+      ) : (
+        <View style={{ marginBottom: 10 }}>
+          <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>HEADACHE</Text>
+          <Text style={{ fontSize: 10, marginBottom: 5 }}>Claimant has not reported any injuries related to headache.</Text>
+        </View>
       )}
 
-      {formData.travelAnxiety === "1" && (
+      {formData.travelAnxiety === "1" ? (
         <InjurySection
           title="TRAVEL ANXIETY"
           injuryNumber={++injuryCount}
@@ -140,9 +160,14 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
             formData.anxietyCurrentSeverity === "2" ? "6 MONTHS" :
             formData.anxietyCurrentSeverity === "3" ? "9 MONTHS (Prolonged prognosis is due to severity of symptoms)" : "6 MONTHS"}`}
         />
+      ) : (
+        <View style={{ marginBottom: 10 }}>
+          <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>TRAVEL ANXIETY</Text>
+          <Text style={{ fontSize: 10, marginBottom: 5 }}>Claimant has not reported any issues related to travel anxiety.</Text>
+        </View>
       )}
 
-      {formData.hasBruising === "1" && (
+      {formData.hasBruising === "1" ? (
         <InjurySection
           title="BRUISING"
           injuryNumber={++injuryCount}
@@ -171,6 +196,11 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
               "6 MONTHS"
           }`}
         />
+      ) : (
+        <View style={{ marginBottom: 10 }}>
+          <Text style={{ fontSize: 14, fontWeight: 'bold', marginBottom: 5 }}>BRUISING</Text>
+          <Text style={{ fontSize: 10, marginBottom: 5 }}>Claimant has not reported any issues related to bruising or scarring.</Text>
+        </View>
       )}
     </View>
   );

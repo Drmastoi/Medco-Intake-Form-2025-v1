@@ -1,3 +1,4 @@
+
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
@@ -45,7 +46,7 @@ export const InjuriesSection = ({ formData }: { formData: any }) => (
         )}
       </>
     ) : (
-      <Text style={styles.text}>Claimant has not reported any symptoms related to neck pain</Text>
+      <Text style={styles.text}>Claimant has not reported any injuries related to neck pain.</Text>
     )}
 
     {/* Shoulder Pain */}
@@ -73,7 +74,120 @@ export const InjuriesSection = ({ formData }: { formData: any }) => (
         )}
       </>
     ) : (
-      <Text style={styles.text}>Claimant has not reported any symptoms related to shoulder pain</Text>
+      <Text style={styles.text}>Claimant has not reported any injuries related to shoulder pain.</Text>
+    )}
+
+    {/* Back Pain */}
+    <Text style={styles.subtitle}>Back Pain</Text>
+    {formData.backPain === "1" ? (
+      <>
+        <Text style={styles.text}>Area Affected: {
+          formData.backLocation === "1" ? "Upper" :
+          formData.backLocation === "2" ? "Mid" :
+          formData.backLocation === "3" ? "Lower" : "Claimant has not specified affected area"
+        }</Text>
+        <Text style={styles.text}>Initial Severity: {
+          formData.backPainInitialSeverity === "1" ? "Mild" :
+          formData.backPainInitialSeverity === "2" ? "Moderate" :
+          formData.backPainInitialSeverity === "3" ? "Severe" : "Claimant has not specified initial severity"
+        }</Text>
+        <Text style={styles.text}>Current Severity: {
+          formData.backPainCurrentSeverity === "1" ? "Mild" :
+          formData.backPainCurrentSeverity === "2" ? "Moderate" :
+          formData.backPainCurrentSeverity === "3" ? "Severe" :
+          formData.backPainCurrentSeverity === "4" ? "Resolved" : "Claimant has not specified current severity"
+        }</Text>
+        {formData.backPainCurrentSeverity === "4" && formData.backPainResolveDays && (
+          <Text style={styles.text}>Days to Resolve: {formData.backPainResolveDays}</Text>
+        )}
+      </>
+    ) : (
+      <Text style={styles.text}>Claimant has not reported any injuries related to back pain.</Text>
+    )}
+
+    {/* Headache */}
+    <Text style={styles.subtitle}>Headache</Text>
+    {formData.headache === "1" ? (
+      <>
+        <Text style={styles.text}>Onset: {
+          formData.headacheStart === "1" ? "Same day" :
+          formData.headacheStart === "2" ? "Next day" :
+          formData.headacheStart === "3" ? "Few days later" : "Claimant has not specified onset"
+        }</Text>
+        <Text style={styles.text}>Initial Severity: {
+          formData.headacheInitialSeverity === "1" ? "Mild" :
+          formData.headacheInitialSeverity === "2" ? "Moderate" :
+          formData.headacheInitialSeverity === "3" ? "Severe" : "Claimant has not specified initial severity"
+        }</Text>
+        <Text style={styles.text}>Current Severity: {
+          formData.headacheCurrentSeverity === "1" ? "Mild" :
+          formData.headacheCurrentSeverity === "2" ? "Moderate" :
+          formData.headacheCurrentSeverity === "3" ? "Severe" :
+          formData.headacheCurrentSeverity === "4" ? "Resolved" : "Claimant has not specified current severity"
+        }</Text>
+        {formData.headacheCurrentSeverity === "4" && formData.headacheResolveDays && (
+          <Text style={styles.text}>Days to Resolve: {formData.headacheResolveDays}</Text>
+        )}
+      </>
+    ) : (
+      <Text style={styles.text}>Claimant has not reported any injuries related to headache.</Text>
+    )}
+    
+    {/* Travel Anxiety */}
+    <Text style={styles.subtitle}>Travel Anxiety</Text>
+    {formData.travelAnxiety === "1" ? (
+      <>
+        <Text style={styles.text}>Initial Severity: {
+          formData.anxietyInitialSeverity === "1" ? "Mild" :
+          formData.anxietyInitialSeverity === "2" ? "Moderate" :
+          formData.anxietyInitialSeverity === "3" ? "Severe" : "Claimant has not specified initial severity"
+        }</Text>
+        <Text style={styles.text}>Current Severity: {
+          formData.anxietyCurrentSeverity === "1" ? "Mild" :
+          formData.anxietyCurrentSeverity === "2" ? "Moderate" :
+          formData.anxietyCurrentSeverity === "3" ? "Severe" :
+          formData.anxietyCurrentSeverity === "4" ? "Resolved" : "Claimant has not specified current severity"
+        }</Text>
+        {formData.anxietyCurrentSeverity === "4" && formData.anxietyResolveDays && (
+          <Text style={styles.text}>Days to Resolve: {formData.anxietyResolveDays}</Text>
+        )}
+        {formData.travelAnxietySymptoms && formData.travelAnxietySymptoms.length > 0 && (
+          <Text style={styles.text}>Symptoms: {formData.travelAnxietySymptoms.join(", ")}</Text>
+        )}
+      </>
+    ) : (
+      <Text style={styles.text}>Claimant has not reported any issues related to travel anxiety.</Text>
+    )}
+    
+    {/* Bruising */}
+    <Text style={styles.subtitle}>Bruising</Text>
+    {formData.hasBruising === "1" ? (
+      <>
+        <Text style={styles.text}>Location: {formData.bruisingLocation || "Not specified"}</Text>
+        <Text style={styles.text}>Onset: {
+          formData.bruisingNoticed === "1" ? "Same day" :
+          formData.bruisingNoticed === "2" ? "Next day" :
+          formData.bruisingNoticed === "3" ? "Few days later" : "Not specified"
+        }</Text>
+        <Text style={styles.text}>Initial Severity: {
+          formData.bruisingInitialSeverity === "1" ? "Mild" :
+          formData.bruisingInitialSeverity === "2" ? "Moderate" :
+          formData.bruisingInitialSeverity === "3" ? "Severe" : "Not specified"
+        }</Text>
+        <Text style={styles.text}>Current Severity: {
+          formData.bruisingCurrentSeverity === "1" ? "Mild" :
+          formData.bruisingCurrentSeverity === "2" ? "Moderate" :
+          formData.bruisingCurrentSeverity === "3" ? "Severe" :
+          formData.bruisingCurrentSeverity === "4" ? "Resolved" : "Not specified"
+        }</Text>
+        {formData.bruisingCurrentSeverity === "4" && formData.bruisingResolveDays && (
+          <Text style={styles.text}>Days to Resolve: {formData.bruisingResolveDays}</Text>
+        )}
+        <Text style={styles.text}>Visible Scar: {formData.hasVisibleScar === "1" ? "Yes" : "No"}</Text>
+        <Text style={styles.text}>Mechanism: Direct impact during collision</Text>
+      </>
+    ) : (
+      <Text style={styles.text}>Claimant has not reported any issues related to bruising or scarring.</Text>
     )}
   </View>
 );

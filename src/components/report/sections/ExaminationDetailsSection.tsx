@@ -73,7 +73,7 @@ export const ExaminationDetailsSection = ({ formData, styles }: ExaminationDetai
       );
     }
     
-    return <Text style={styles.text}>No bruising or scarring reported</Text>;
+    return <Text style={styles.text}>Claimant has not reported any issues related to bruising or scarring.</Text>;
   };
   
   return (

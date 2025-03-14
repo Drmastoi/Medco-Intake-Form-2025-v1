@@ -1,3 +1,4 @@
+
 import { Text, View } from '@react-pdf/renderer';
 import { ReportData } from '@/types/reportTypes';
 import { getOnsetText } from '@/utils/injuryTextUtils';
@@ -49,10 +50,10 @@ export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
       <Text style={styles.sectionHeader}>Section 8 - Injuries and Symptoms</Text>
       
       {/* 8.1 Neck Pain */}
-      {formData.injuries.neckPain.hasInjury && (
-        <View style={{ marginBottom: 10 }}>
-          <Text style={[styles.fieldLabel, { fontSize: 12, marginBottom: 5, marginTop: 8 }]}>8.1 Neck Pain</Text>
-          
+      <View style={{ marginBottom: 10 }}>
+        <Text style={[styles.fieldLabel, { fontSize: 12, marginBottom: 5, marginTop: 8 }]}>8.1 Neck Pain</Text>
+        
+        {formData.injuries.neckPain.hasInjury ? (
           <View style={{ marginLeft: 10, marginBottom: 5 }}>
             {/* Grid-like layout with two columns */}
             <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
@@ -161,14 +162,18 @@ export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
               </View>
             </View>
           </View>
-        </View>
-      )}
+        ) : (
+          <View style={{ marginLeft: 10 }}>
+            <Text style={styles.fieldValue}>Claimant has not reported any injuries related to neck pain.</Text>
+          </View>
+        )}
+      </View>
       
-      {/* 8.2 Shoulder Pain - Added detailed section matching 8.1 style */}
-      {formData.injuries.shoulderPain.hasInjury && (
-        <View style={{ marginBottom: 10 }}>
-          <Text style={[styles.fieldLabel, { fontSize: 12, marginBottom: 5, marginTop: 8 }]}>8.2 Shoulder Pain</Text>
-          
+      {/* 8.2 Shoulder Pain */}
+      <View style={{ marginBottom: 10 }}>
+        <Text style={[styles.fieldLabel, { fontSize: 12, marginBottom: 5, marginTop: 8 }]}>8.2 Shoulder Pain</Text>
+        
+        {formData.injuries.shoulderPain.hasInjury ? (
           <View style={{ marginLeft: 10, marginBottom: 5 }}>
             {/* Grid-like layout with two columns */}
             <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
@@ -273,14 +278,18 @@ export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
               </View>
             </View>
           </View>
-        </View>
-      )}
+        ) : (
+          <View style={{ marginLeft: 10 }}>
+            <Text style={styles.fieldValue}>Claimant has not reported any injuries related to shoulder pain.</Text>
+          </View>
+        )}
+      </View>
       
-      {/* 8.3 Back Pain - Adding detailed section matching 8.1 and 8.2 style */}
-      {formData.injuries.backPain.hasInjury && (
-        <View style={{ marginBottom: 10 }}>
-          <Text style={[styles.fieldLabel, { fontSize: 12, marginBottom: 5, marginTop: 8 }]}>8.3 Back Pain</Text>
-          
+      {/* 8.3 Back Pain */}
+      <View style={{ marginBottom: 10 }}>
+        <Text style={[styles.fieldLabel, { fontSize: 12, marginBottom: 5, marginTop: 8 }]}>8.3 Back Pain</Text>
+        
+        {formData.injuries.backPain.hasInjury ? (
           <View style={{ marginLeft: 10, marginBottom: 5 }}>
             {/* Grid-like layout with two columns */}
             <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
@@ -385,14 +394,18 @@ export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
               </View>
             </View>
           </View>
-        </View>
-      )}
+        ) : (
+          <View style={{ marginLeft: 10 }}>
+            <Text style={styles.fieldValue}>Claimant has not reported any injuries related to back pain.</Text>
+          </View>
+        )}
+      </View>
       
-      {/* 8.4 Headache - Updated detailed section matching style of the other sections */}
-      {formData.injuries.headache.hasInjury && (
-        <View style={{ marginBottom: 10 }}>
-          <Text style={[styles.fieldLabel, { fontSize: 12, marginBottom: 5, marginTop: 8 }]}>8.4 Headache</Text>
-          
+      {/* 8.4 Headache */}
+      <View style={{ marginBottom: 10 }}>
+        <Text style={[styles.fieldLabel, { fontSize: 12, marginBottom: 5, marginTop: 8 }]}>8.4 Headache</Text>
+        
+        {formData.injuries.headache.hasInjury ? (
           <View style={{ marginLeft: 10, marginBottom: 5 }}>
             {/* Grid-like layout with two columns */}
             <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
@@ -501,65 +514,248 @@ export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
               </View>
             </View>
           </View>
-        </View>
-      )}
+        ) : (
+          <View style={{ marginLeft: 10 }}>
+            <Text style={styles.fieldValue}>Claimant has not reported any injuries related to headache.</Text>
+          </View>
+        )}
+      </View>
       
       {/* 8.5 Travel Anxiety */}
-      {formData.travelAnxiety.hasAnxiety && (
-        <View style={{ marginBottom: 10 }}>
-          <Text style={styles.fieldLabel}>8.5 Travel Anxiety</Text>
-          <Text style={styles.fieldValue}>
-            The claimant reported travel anxiety following the accident. 
-            The initial severity was {formData.travelAnxiety.initialSeverity.toLowerCase()}. 
-            {formData.travelAnxiety.currentSeverity === "Resolved" 
-              ? ` The anxiety has now resolved after ${formData.travelAnxiety.resolveDays || "an unspecified number of"} days.` 
-              : ` The current severity is ${formData.travelAnxiety.currentSeverity.toLowerCase()}.`}
-            {formData.travelAnxiety.symptoms && formData.travelAnxiety.symptoms.length > 0 && 
-              ` Symptoms include: ${formData.travelAnxiety.symptoms.join(", ")}.`}
-          </Text>
-        </View>
-      )}
+      <View style={{ marginBottom: 10 }}>
+        <Text style={[styles.fieldLabel, { fontSize: 12, marginBottom: 5, marginTop: 8 }]}>8.5 Travel Anxiety</Text>
+        
+        {formData.travelAnxiety.hasAnxiety ? (
+          <View style={{ marginLeft: 10, marginBottom: 5 }}>
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Symptoms:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>
+                  {formData.travelAnxiety.symptoms && formData.travelAnxiety.symptoms.length > 0 
+                    ? formData.travelAnxiety.symptoms.join(', ')
+                    : "No specific symptoms reported"}
+                </Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Initial Severity:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{formData.travelAnxiety.initialSeverity}</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Current Status:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{formData.travelAnxiety.currentSeverity}</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Currently Driving:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{formData.travelAnxiety.currentlyDriving === "1" ? "Yes" : "No"}</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Treatment Recommendation:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>Self-help measures including gradual exposure, relaxation techniques, and breathing exercises.</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Prognosis:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>
+                  From the date of accident: {getPrognosis(formData.travelAnxiety.currentSeverity, formData.travelAnxiety.resolveDays)}
+                  {getPrognosisNotes(formData.travelAnxiety.currentSeverity, getPrognosis(formData.travelAnxiety.currentSeverity, formData.travelAnxiety.resolveDays))}
+                </Text>
+              </View>
+            </View>
+          </View>
+        ) : (
+          <View style={{ marginLeft: 10 }}>
+            <Text style={styles.fieldValue}>Claimant has not reported any travel anxiety issues.</Text>
+          </View>
+        )}
+      </View>
       
       {/* 8.6 Bruising */}
-      {formData.other?.bruising?.hasBruising && (
-        <View style={{ marginBottom: 10 }}>
-          <Text style={styles.fieldLabel}>8.6 Bruising</Text>
-          <Text style={styles.fieldValue}>
-            The claimant reported bruising following the accident.
-            {formData.other.bruising.location && ` The bruising was located at ${formData.other.bruising.location}.`}
-            {formData.other.bruising.initialSeverity && ` Initial severity was ${formData.other.bruising.initialSeverity.toLowerCase()}.`}
-            {formData.other.bruising.currentSeverity === "Resolved" 
-              ? ` The bruising has now resolved after ${formData.other.bruising.resolveDays || "an unspecified number of"} days.` 
-              : formData.other.bruising.currentSeverity && ` The current severity is ${formData.other.bruising.currentSeverity.toLowerCase()}.`}
-          </Text>
-        </View>
-      )}
+      <View style={{ marginBottom: 10 }}>
+        <Text style={[styles.fieldLabel, { fontSize: 12, marginBottom: 5, marginTop: 8 }]}>8.6 Bruising</Text>
+        
+        {formData.other?.bruising?.hasBruising ? (
+          <View style={{ marginLeft: 10, marginBottom: 5 }}>
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Location:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{formData.other.bruising.location || "Not specified"}</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Onset:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{getFormattedOnsetText(formData.other.bruising.noticed || "")}</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Initial Severity:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{formData.other.bruising.initialSeverity || "Not specified"}</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Current Status:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{formData.other.bruising.currentSeverity || "Not specified"}</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Visible Scar:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{formData.other.bruising.hasVisibleScar === true ? "Yes" : "No"}</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Mechanism of Injury:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>Direct impact trauma during the collision</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Treatment Recommendation:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>Self-resolving. Cold compresses and pain management recommended initially.</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Prognosis:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>
+                  {formData.other.bruising.currentSeverity === "Resolved" 
+                    ? `Resolved after ${formData.other.bruising.resolveDays || "unspecified number of"} days` 
+                    : formData.other.bruising.hasVisibleScar 
+                      ? "Permanent scarring visible" 
+                      : `From the date of accident: ${getPrognosis(formData.other.bruising.currentSeverity || "", formData.other.bruising.resolveDays)}`}
+                </Text>
+              </View>
+            </View>
+          </View>
+        ) : (
+          <View style={{ marginLeft: 10 }}>
+            <Text style={styles.fieldValue}>Claimant has not reported any bruising or scarring issues.</Text>
+          </View>
+        )}
+      </View>
       
       {/* 8.7 Other Injuries */}
-      {formData.other?.otherInjuries?.hasOtherInjury && (
-        <View style={{ marginBottom: 10 }}>
-          <Text style={styles.fieldLabel}>8.7 Other Injuries</Text>
-          <Text style={styles.fieldValue}>
-            The claimant reported other injuries following the accident: 
-            {formData.other.otherInjuries.name && ` ${formData.other.otherInjuries.name}.`}
-            {formData.other.otherInjuries.initialSeverity && ` Initial severity was ${formData.other.otherInjuries.initialSeverity.toLowerCase()}.`}
-            {formData.other.otherInjuries.currentSeverity === "Resolved" 
-              ? ` The injury has now resolved after ${formData.other.otherInjuries.resolveDays || "an unspecified number of"} days.` 
-              : formData.other.otherInjuries.currentSeverity && ` The current severity is ${formData.other.otherInjuries.currentSeverity.toLowerCase()}.`}
-          </Text>
-        </View>
-      )}
-      
-      {/* Display a message if no injuries reported */}
-      {!formData.injuries.neckPain.hasInjury && 
-       !formData.injuries.shoulderPain.hasInjury && 
-       !formData.injuries.backPain.hasInjury && 
-       !formData.injuries.headache.hasInjury && 
-       !formData.travelAnxiety.hasAnxiety && 
-       !formData.other?.bruising?.hasBruising && 
-       !formData.other?.otherInjuries?.hasOtherInjury && (
-        <Text style={styles.fieldValue}>No significant injuries were reported by the claimant.</Text>
-      )}
+      <View style={{ marginBottom: 10 }}>
+        <Text style={[styles.fieldLabel, { fontSize: 12, marginBottom: 5, marginTop: 8 }]}>8.7 Other Injuries</Text>
+        
+        {formData.other?.otherInjuries?.hasOtherInjury ? (
+          <View style={{ marginLeft: 10, marginBottom: 5 }}>
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Injury:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{formData.other.otherInjuries.name || "Not specified"}</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Onset:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{getFormattedOnsetText(formData.other.otherInjuries.start || "")}</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Initial Severity:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{formData.other.otherInjuries.initialSeverity || "Not specified"}</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Current Status:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>{formData.other.otherInjuries.currentSeverity || "Not specified"}</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Treatment Recommendation:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>Treatment as advised by specialist.</Text>
+              </View>
+            </View>
+            
+            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
+              <View style={{ width: '30%' }}>
+                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Prognosis:</Text>
+              </View>
+              <View style={{ width: '70%' }}>
+                <Text style={styles.fieldValue}>
+                  {formData.other.otherInjuries.currentSeverity === "Resolved" 
+                    ? `Resolved after ${formData.other.otherInjuries.resolveDays || "unspecified number of"} days` 
+                    : `From the date of accident: ${getPrognosis(formData.other.otherInjuries.currentSeverity || "", formData.other.otherInjuries.resolveDays)}`}
+                </Text>
+              </View>
+            </View>
+          </View>
+        ) : (
+          <View style={{ marginLeft: 10 }}>
+            <Text style={styles.fieldValue}>Claimant has not reported any other injuries.</Text>
+          </View>
+        )}
+      </View>
     </View>
   );
 };
