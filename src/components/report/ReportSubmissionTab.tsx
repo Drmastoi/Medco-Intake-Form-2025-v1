@@ -11,6 +11,7 @@ import { convertFormDataToReportData } from "@/utils/pdfReportUtils";
 import { RatingDialog } from "@/components/RatingDialog";
 import PDFReport from "@/components/report/pdf/PDFReport";
 import { useReportSubmission } from "@/hooks/useReportSubmission";
+import { useToast } from "@/components/ui/use-toast";
 
 interface ReportSubmissionTabProps {
   isOpen: boolean;
@@ -31,6 +32,7 @@ export function ReportSubmissionTab({
   );
   const [showThankYou, setShowThankYou] = useState(false);
   const [rating, setRating] = useState(0);
+  const { toast } = useToast();
   
   const reportData = convertFormDataToReportData(formData);
   
@@ -49,11 +51,20 @@ export function ReportSubmissionTab({
   };
   
   const handleSubmitReport = () => {
-    // Generate final PDFs
-    const claimantPdfUrl = "YOUR_PDF_URL"; // In a real app, we'd generate this
-    const fullPdfUrl = "YOUR_PDF_URL"; // In a real app, we'd generate this
-    
-    handleSubmit(signature, formData, claimantPdfUrl, fullPdfUrl);
+    try {
+      // Generate final PDFs
+      const claimantPdfUrl = "YOUR_PDF_URL"; // In a real app, we'd generate this
+      const fullPdfUrl = "YOUR_PDF_URL"; // In a real app, we'd generate this
+      
+      handleSubmit(signature, formData, claimantPdfUrl, fullPdfUrl);
+    } catch (error) {
+      console.error("Submission error:", error);
+      toast({
+        title: "Error",
+        description: "Failed to submit the report. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
   
   const handleRatingSubmit = () => {
@@ -130,12 +141,14 @@ export function ReportSubmissionTab({
       </Dialog>
       
       {/* PDF Preview Dialog */}
-      <PDFReport 
-        reportData={reportData}
-        isOpen={showPdfPreview}
-        onClose={handleClosePreview}
-        isPreview={true}
-      />
+      {showPdfPreview && (
+        <PDFReport 
+          reportData={reportData}
+          isOpen={showPdfPreview}
+          onClose={handleClosePreview}
+          isPreview={true}
+        />
+      )}
       
       {/* Thank you and Rating Dialog */}
       <RatingDialog
