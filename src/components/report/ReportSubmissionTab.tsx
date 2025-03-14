@@ -162,6 +162,12 @@ export function ReportSubmissionTab({
   const handleRatingSubmit = () => {
     console.log("User rating:", rating);
     setShowThankYou(false);
+    
+    // Show a thank you toast
+    toast({
+      title: "Thank You",
+      description: `Thanks for rating our service with ${rating} stars! We appreciate your feedback.`,
+    });
   };
 
   return (
