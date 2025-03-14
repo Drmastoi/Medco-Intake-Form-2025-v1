@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { 
   PDFDownloadLink, 
@@ -282,9 +281,17 @@ const PDFReport = ({ reportData, isOpen, onClose, isPreview = false }: PDFReport
     }
   }, [isOpen]);
 
-  const handleLoad = () => {
-    setLoading(false);
-  };
+  // Add an event listener to detect when the PDF is loaded
+  useEffect(() => {
+    if (viewerReady) {
+      // Using a timeout as a fallback since the PDFViewer doesn't have a direct onLoad prop
+      const loadingTimeout = setTimeout(() => {
+        setLoading(false);
+      }, 3000); // Give 3 seconds for the PDF to load
+
+      return () => clearTimeout(loadingTimeout);
+    }
+  }, [viewerReady]);
 
   // Add an error handler for the PDF viewer
   useEffect(() => {
@@ -373,7 +380,6 @@ const PDFReport = ({ reportData, isOpen, onClose, isPreview = false }: PDFReport
               <PDFViewer 
                 className="w-full h-full" 
                 showToolbar={false}
-                onLoad={handleLoad}
               >
                 <PDFDocument reportData={reportData} />
               </PDFViewer>
