@@ -214,7 +214,7 @@ const PDFDocument = ({ reportData }: { reportData: ReportData }) => {
         <Footer pageNumber={2} />
       </Page>
       
-      {/* Third Page - Treatment, Bruising, Lifestyle Impact, Medical History */}
+      {/* Third Page - Treatment, Lifestyle Impact, Medical History */}
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
           <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
@@ -225,10 +225,6 @@ const PDFDocument = ({ reportData }: { reportData: ReportData }) => {
         {/* Section 9 - Treatment */}
         <View style={styles.section}>
           <TreatmentSection formData={reportData} styles={styles} />
-        </View>
-        
-        <View style={styles.section}>
-          <BruisingSection formData={reportData} styles={styles} />
         </View>
         
         <View style={styles.section}>
