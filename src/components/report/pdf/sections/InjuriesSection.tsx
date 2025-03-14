@@ -521,83 +521,9 @@ export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
         )}
       </View>
       
-      {/* 8.5 Travel Anxiety */}
+      {/* 8.5 Bruising */}
       <View style={{ marginBottom: 10 }}>
-        <Text style={[styles.fieldLabel, { fontSize: 12, marginBottom: 5, marginTop: 8 }]}>8.5 Travel Anxiety</Text>
-        
-        {formData.travelAnxiety.hasAnxiety ? (
-          <View style={{ marginLeft: 10, marginBottom: 5 }}>
-            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
-              <View style={{ width: '30%' }}>
-                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Symptoms:</Text>
-              </View>
-              <View style={{ width: '70%' }}>
-                <Text style={styles.fieldValue}>
-                  {formData.travelAnxiety.symptoms && formData.travelAnxiety.symptoms.length > 0 
-                    ? formData.travelAnxiety.symptoms.join(', ')
-                    : "No specific symptoms reported"}
-                </Text>
-              </View>
-            </View>
-            
-            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
-              <View style={{ width: '30%' }}>
-                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Initial Severity:</Text>
-              </View>
-              <View style={{ width: '70%' }}>
-                <Text style={styles.fieldValue}>{formData.travelAnxiety.initialSeverity}</Text>
-              </View>
-            </View>
-            
-            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
-              <View style={{ width: '30%' }}>
-                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Current Status:</Text>
-              </View>
-              <View style={{ width: '70%' }}>
-                <Text style={styles.fieldValue}>{formData.travelAnxiety.currentSeverity}</Text>
-              </View>
-            </View>
-            
-            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
-              <View style={{ width: '30%' }}>
-                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Currently Driving:</Text>
-              </View>
-              <View style={{ width: '70%' }}>
-                <Text style={styles.fieldValue}>{formData.travelAnxiety.currentlyDriving === "1" ? "Yes" : "No"}</Text>
-              </View>
-            </View>
-            
-            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
-              <View style={{ width: '30%' }}>
-                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Treatment Recommendation:</Text>
-              </View>
-              <View style={{ width: '70%' }}>
-                <Text style={styles.fieldValue}>Self-help measures including gradual exposure, relaxation techniques, and breathing exercises.</Text>
-              </View>
-            </View>
-            
-            <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 4 }}>
-              <View style={{ width: '30%' }}>
-                <Text style={[styles.fieldLabel, { fontSize: 10 }]}>Prognosis:</Text>
-              </View>
-              <View style={{ width: '70%' }}>
-                <Text style={styles.fieldValue}>
-                  From the date of accident: {getPrognosis(formData.travelAnxiety.currentSeverity, formData.travelAnxiety.resolveDays)}
-                  {getPrognosisNotes(formData.travelAnxiety.currentSeverity, getPrognosis(formData.travelAnxiety.currentSeverity, formData.travelAnxiety.resolveDays))}
-                </Text>
-              </View>
-            </View>
-          </View>
-        ) : (
-          <View style={{ marginLeft: 10 }}>
-            <Text style={styles.fieldValue}>Claimant has not reported any travel anxiety issues.</Text>
-          </View>
-        )}
-      </View>
-      
-      {/* 8.6 Bruising */}
-      <View style={{ marginBottom: 10 }}>
-        <Text style={[styles.fieldLabel, { fontSize: 12, marginBottom: 5, marginTop: 8 }]}>8.6 Bruising</Text>
+        <Text style={[styles.fieldLabel, { fontSize: 12, marginBottom: 5, marginTop: 8 }]}>8.5 Bruising</Text>
         
         {formData.other?.bruising?.hasBruising ? (
           <View style={{ marginLeft: 10, marginBottom: 5 }}>
@@ -686,9 +612,9 @@ export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
         )}
       </View>
       
-      {/* 8.7 Other Injuries */}
+      {/* 8.6 Other Injuries */}
       <View style={{ marginBottom: 10 }}>
-        <Text style={[styles.fieldLabel, { fontSize: 12, marginBottom: 5, marginTop: 8 }]}>8.7 Other Injuries</Text>
+        <Text style={[styles.fieldLabel, { fontSize: 12, marginBottom: 5, marginTop: 8 }]}>8.6 Other Injuries</Text>
         
         {formData.other?.otherInjuries?.hasOtherInjury ? (
           <View style={{ marginLeft: 10, marginBottom: 5 }}>

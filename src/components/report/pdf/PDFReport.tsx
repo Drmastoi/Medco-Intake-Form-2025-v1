@@ -18,7 +18,6 @@ import { InstructionDetailsSection } from './sections/InstructionDetailsSection'
 import { AppointmentDetailsSection } from './sections/AppointmentDetailsSection';
 import { AccidentDetailsSection } from './sections/AccidentDetailsSection';
 import { InjuriesSection } from './sections/InjuriesSection';
-import { TravelAnxietySection } from './sections/TravelAnxietySection';
 import { TreatmentSection } from './sections/TreatmentSection';
 import { LifestyleImpactSection } from './sections/LifestyleImpactSection';
 import { MedicalHistorySection } from './sections/MedicalHistorySection';
@@ -200,20 +199,16 @@ const PDFDocument = ({ reportData }: { reportData: ReportData }) => {
         <Footer pageNumber={1} />
       </Page>
 
-      {/* Second Page - Injuries, Travel Anxiety */}
+      {/* Second Page - Injuries */}
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
           <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
-            Injuries and Travel Anxiety
+            Injuries
           </Text>
         </View>
         
         <View style={styles.section}>
           <InjuriesSection formData={reportData} styles={styles} />
-        </View>
-
-        <View style={styles.section}>
-          <TravelAnxietySection formData={reportData} styles={styles} />
         </View>
         
         <Footer pageNumber={2} />
