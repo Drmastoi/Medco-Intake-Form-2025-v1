@@ -18,6 +18,19 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
     return symptomsList;
   };
 
+  // Helper function to determine bruising mechanism
+  const getBruisingMechanism = () => {
+    if (formData.vehicleStatus === "1") {
+      return "Impact against seat belt during collision";
+    } else if (formData.vehicleStatus === "2") {
+      return "Impact against vehicle interior during collision";
+    } else if (formData.vehicleStatus === "3") {
+      return "Deployment of airbag during collision";
+    } else {
+      return "Direct impact trauma during the collision";
+    }
+  };
+
   return (
     <View>
       {formData.neckPain === "1" && (
@@ -126,6 +139,37 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
             formData.anxietyCurrentSeverity === "1" ? "3 MONTHS" :
             formData.anxietyCurrentSeverity === "2" ? "6 MONTHS" :
             formData.anxietyCurrentSeverity === "3" ? "9 MONTHS (Prolonged prognosis is due to severity of symptoms)" : "6 MONTHS"}`}
+        />
+      )}
+
+      {formData.hasBruising === "1" && (
+        <InjurySection
+          title="BRUISING"
+          injuryNumber={++injuryCount}
+          onset={getOnsetText(formData.bruisingNoticed)}
+          initialSeverity={getSeverityText(formData.bruisingInitialSeverity)}
+          currentSeverity={getSeverityText(formData.bruisingCurrentSeverity)}
+          classification="Physical injury"
+          mechanism={getBruisingMechanism()}
+          palpation={`${formData.bruisingLocation ? `Located at ${formData.bruisingLocation}. ` : ''}${
+            formData.hasVisibleScar === "1" ? "Visible scarring present. " : "No visible scarring. "
+          }${getSeverityText(formData.bruisingCurrentSeverity)} tenderness in affected area.`}
+          rangeOfMotion="Not applicable"
+          neurologicalAssessment="normal"
+          treatment="Self-resolving. Cold compresses and pain management recommended initially."
+          prognosis={`From the date of accident: ${
+            formData.bruisingCurrentSeverity === "4" ? 
+              `${formData.bruisingResolveDays} DAYS` : 
+            formData.hasVisibleScar === "1" ? 
+              "PERMANENT SCARRING VISIBLE" :
+            formData.bruisingCurrentSeverity === "1" ? 
+              "3 MONTHS" :
+            formData.bruisingCurrentSeverity === "2" ? 
+              "6 MONTHS" :
+            formData.bruisingCurrentSeverity === "3" ? 
+              "9 MONTHS (Prolonged prognosis is due to severity of symptoms)" : 
+              "6 MONTHS"
+          }`}
         />
       )}
     </View>
