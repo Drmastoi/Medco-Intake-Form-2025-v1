@@ -11,6 +11,26 @@ import {
 import { getSeverityText, getTimeOfDayText, getYesNo } from "./formatUtils";
 
 /**
+ * Returns a readable label for travel anxiety symptom IDs
+ */
+export function getTravelAnxietySymptomLabel(id: string): string {
+  const labels: { [key: string]: string } = {
+    "cautious-driver": "Being a more cautious driver",
+    "frequent-mirror-checking": "Looking in the mirror more frequently",
+    "avoid-accident-road": "Avoiding the road where the accident happened",
+    "avoid-passenger": "Avoiding being a passenger in a car",
+    "avoid-driving": "Avoiding driving a car",
+    "panic-attacks": "Getting panic attacks when in a car",
+    "passenger-anxiety": "Anxiety when traveling as a passenger",
+    "busy-road-anxiety": "Anxiety on busy roads or highways",
+    "prevented-driving": "Being prevented from driving for leisure or work",
+    "other": "Other symptoms"
+  };
+  
+  return labels[id] || id;
+}
+
+/**
  * Converts form data to prefilled section
  */
 export function convertPrefilledData(formData: FormSchema): PrefilledData {
@@ -112,7 +132,7 @@ export function convertInjuriesData(formData: FormSchema): InjuriesData {
 export function convertTravelAnxietyData(formData: FormSchema): TravelAnxietyData {
   return {
     hasAnxiety: formData.travelAnxiety === "1",
-    symptoms: formData.travelAnxietySymptoms || [],
+    symptoms: formData.travelAnxietySymptoms?.map(symptom => getTravelAnxietySymptomLabel(symptom)) || [],
     currentlyDriving: formData.currentlyDriving || "Not specified",
     initialSeverity: getSeverityText(formData.anxietyInitialSeverity),
     currentSeverity: getSeverityText(formData.anxietyCurrentSeverity),

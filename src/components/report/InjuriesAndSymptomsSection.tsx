@@ -2,9 +2,21 @@
 import { View } from '@react-pdf/renderer';
 import { InjurySection } from './injuryReport/InjurySection';
 import { getOnsetText, getSeverityText, getImpactMechanism } from '../../utils/injuryTextUtils';
+import { getTravelAnxietySymptomLabel } from '../../utils/reportConverters';
 
 export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
   let injuryCount = 0;
+
+  // Format travel anxiety symptoms for display
+  const formatAnxietySymptoms = (symptoms: string[] = []) => {
+    if (!symptoms || symptoms.length === 0) return "No specific symptoms reported";
+    
+    const symptomsList = symptoms.map(symptom => 
+      getTravelAnxietySymptomLabel(symptom)
+    ).join(", ");
+    
+    return symptomsList;
+  };
 
   return (
     <View>
@@ -101,7 +113,11 @@ export const InjuriesAndSymptomsSection = ({ formData }: { formData: any }) => {
           currentSeverity={getSeverityText(formData.anxietyCurrentSeverity)}
           classification="Non-whiplash injury"
           mechanism="Psychological Impact. The traumatic experience of the accident has led to anxiety when traveling in vehicles."
-          palpation="Normal mood, good eye contact, no signs of acute distress during examination."
+          palpation={`Normal mood, good eye contact, no signs of acute distress during examination. ${
+            formData.travelAnxietySymptoms && formData.travelAnxietySymptoms.length > 0 
+              ? `Reported symptoms include: ${formatAnxietySymptoms(formData.travelAnxietySymptoms)}.` 
+              : ""
+          }`}
           rangeOfMotion="Not applicable"
           neurologicalAssessment="normal"
           treatment="Self-help measures including gradual exposure, relaxation techniques, and breathing exercises."
