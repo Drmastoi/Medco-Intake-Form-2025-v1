@@ -129,17 +129,35 @@ const PDFReport = ({ reportData, isOpen, onClose, isPreview = false }: PDFReport
     clearInterval(progressInterval);
   };
 
-  const handlePDFError = (error: Error) => {
-    console.error("PDF rendering error:", error);
+  // Modified to handle PDF errors without the onError prop
+  const handlePDFError = () => {
+    console.error("PDF rendering error detected");
     setRenderError("Failed to load PDF preview. Please try again.");
     setLoading(false);
     
     toast({
       title: "PDF Error",
-      description: "There was a problem rendering the PDF. Please try again.",
+      description: "There was a problem rendering the PDF. Please try the download option instead.",
       variant: "destructive"
     });
   };
+
+  // Error boundary for PDF viewer
+  useEffect(() => {
+    const handleError = (event: ErrorEvent) => {
+      // Only handle PDF renderer errors
+      if (event.message && (
+        event.message.includes("PDF") || 
+        event.message.includes("render") ||
+        event.message.includes("blob")
+      )) {
+        handlePDFError();
+      }
+    };
+
+    window.addEventListener('error', handleError);
+    return () => window.removeEventListener('error', handleError);
+  }, []);
 
   const dialogTitle = isPreview ? "Preview Medical Report" : "Expert Medical Report";
   const closeButtonText = isPreview ? "Close Preview" : "Close";
@@ -174,7 +192,6 @@ const PDFReport = ({ reportData, isOpen, onClose, isPreview = false }: PDFReport
                 <PDFViewer 
                   className="w-full h-full" 
                   showToolbar={false}
-                  onError={handlePDFError}
                 >
                   <PDFDocumentContent reportData={reportData} />
                 </PDFViewer>

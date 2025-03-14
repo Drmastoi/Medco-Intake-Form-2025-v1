@@ -12,6 +12,9 @@ import { RatingDialog } from "@/components/RatingDialog";
 import PDFReport from "@/components/report/pdf/PDFReport";
 import { useReportSubmission } from "@/hooks/useReportSubmission";
 import { useToast } from "@/components/ui/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { pdf } from '@react-pdf/renderer';
+import PDFDocumentContent from "./pdf/components/PDFDocumentContent";
 
 interface ReportSubmissionTabProps {
   isOpen: boolean;
@@ -33,6 +36,7 @@ export function ReportSubmissionTab({
   const [showThankYou, setShowThankYou] = useState(false);
   const [rating, setRating] = useState(0);
   const [isPdfLoading, setIsPdfLoading] = useState(false);
+  const [isSendingEmail, setIsSendingEmail] = useState(false);
   const { toast } = useToast();
   
   const reportData = convertFormDataToReportData(formData);
@@ -53,7 +57,32 @@ export function ReportSubmissionTab({
     setIsPdfLoading(false);
   };
   
-  const handleSubmitReport = () => {
+  // Generate PDF and convert to base64
+  const generatePdfAsBase64 = async () => {
+    try {
+      // Create PDF document
+      const pdfDoc = <PDFDocumentContent reportData={reportData} />;
+      const blob = await pdf(pdfDoc).toBlob();
+      
+      // Convert blob to base64
+      return new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const base64String = reader.result as string;
+          // Extract the base64 data part from the data URL
+          const base64Data = base64String.split(',')[1];
+          resolve(base64Data);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+      throw error;
+    }
+  };
+  
+  const handleSubmitReport = async () => {
     if (!signature) {
       toast({
         title: "Signature Required",
@@ -63,19 +92,70 @@ export function ReportSubmissionTab({
       return;
     }
     
-    try {
-      // Generate final PDFs
-      const claimantPdfUrl = "YOUR_PDF_URL"; // In a real app, we'd generate this
-      const fullPdfUrl = "YOUR_PDF_URL"; // In a real app, we'd generate this
-      
-      handleSubmit(signature, formData, claimantPdfUrl, fullPdfUrl);
-    } catch (error) {
-      console.error("Submission error:", error);
+    if (!hasAcceptedTerms) {
       toast({
-        title: "Error",
-        description: "Failed to submit the report. Please try again.",
+        title: "Terms Not Accepted",
+        description: "Please accept the terms before submitting.",
         variant: "destructive"
       });
+      return;
+    }
+    
+    setIsSendingEmail(true);
+    
+    try {
+      // Generate PDF and convert to base64
+      const pdfBase64 = await generatePdfAsBase64();
+      
+      // Send PDF via email using Supabase Edge Function
+      const { data, error } = await supabase.functions.invoke('send-report', {
+        body: {
+          to: "drawais@gmail.com", // Expert's email
+          pdfBase64,
+          patientName: formData.fullName || "Not specified",
+          referenceNumber: formData.medcoReference || `REF-${Date.now()}`,
+          isClaimantCopy: false,
+          signature: signature,
+          signatureDate: submissionDate
+        },
+      });
+      
+      if (error) throw error;
+      
+      // Also send a copy to the claimant if email is available
+      if (formData.emailId) {
+        await supabase.functions.invoke('send-report', {
+          body: {
+            to: formData.emailId,
+            pdfBase64,
+            patientName: formData.fullName || "Not specified",
+            referenceNumber: formData.medcoReference || `REF-${Date.now()}`,
+            isClaimantCopy: true,
+            signature: signature,
+            signatureDate: submissionDate
+          },
+        });
+      }
+      
+      // Call handleSubmit to save to database
+      const claimantPdfUrl = `data:application/pdf;base64,${pdfBase64}`;
+      const fullPdfUrl = claimantPdfUrl; // Same PDF for this implementation
+      
+      handleSubmit(signature, formData, claimantPdfUrl, fullPdfUrl);
+      
+      toast({
+        title: "Report Sent Successfully",
+        description: "Your medical report has been sent to the expert and saved.",
+      });
+    } catch (error) {
+      console.error("Email sending error:", error);
+      toast({
+        title: "Error",
+        description: "Failed to send the report. Please try again later.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSendingEmail(false);
     }
   };
   
@@ -145,12 +225,11 @@ export function ReportSubmissionTab({
             {/* Submit Button */}
             <Button 
               onClick={handleSubmitReport}
-              disabled={!hasAcceptedTerms || isSubmitting}
+              disabled={!hasAcceptedTerms || isSubmitting || isSendingEmail}
               className="w-full"
             >
               <Send className="mr-2 h-4 w-4" />
-              Submit Report to Medical Expert
-              {isSubmitting && "..."}
+              {isSendingEmail ? "Sending Report..." : "Submit Report to Medical Expert"}
             </Button>
           </div>
         </DialogContent>

@@ -25,7 +25,7 @@ const PDFDownloadLink = ({ reportData, isLoading }: PDFDownloadLinkProps) => {
   return (
     <ReactPDFDownloadLink 
       document={<PDFDocumentContent reportData={reportData} />} 
-      fileName="medical-report.pdf"
+      fileName={`medical-report-${reportData.prefilled?.medcoReference || 'report'}.pdf`}
       className="hidden md:block"
       onClick={handleDownloadStart}
     >
@@ -36,7 +36,7 @@ const PDFDownloadLink = ({ reportData, isLoading }: PDFDownloadLinkProps) => {
           className="flex items-center"
         >
           <Download className="h-4 w-4 mr-2" />
-          {loading ? 'Generating PDF...' : 'Download PDF'}
+          {loading ? 'Generating PDF...' : error ? 'Try Download Again' : 'Download PDF'}
         </Button>
       )}
     </ReactPDFDownloadLink>
