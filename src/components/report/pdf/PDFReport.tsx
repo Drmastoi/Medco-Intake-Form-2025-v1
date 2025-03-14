@@ -22,9 +22,7 @@ import { TravelAnxietySection } from './sections/TravelAnxietySection';
 import { TreatmentSection } from './sections/TreatmentSection';
 import { LifestyleImpactSection } from './sections/LifestyleImpactSection';
 import { MedicalHistorySection } from './sections/MedicalHistorySection';
-import { ConclusionSection } from './sections/ConclusionSection';
 import { BruisingSection } from './sections/BruisingSection';
-import { OtherInjuriesSection } from './sections/OtherInjuriesSection';
 import { StatementOfInstructionSection } from '../../report/sections/StatementOfInstructionSection';
 import { SummaryOfInjuriesTableSection } from '../../report/sections/SummaryOfInjuriesTableSection';
 import { format } from 'date-fns';
@@ -221,11 +219,11 @@ const PDFDocument = ({ reportData }: { reportData: ReportData }) => {
         <Footer pageNumber={2} />
       </Page>
       
-      {/* Third Page - Treatment, Bruising, Other Injuries, Lifestyle Impact, Medical History and Conclusion */}
+      {/* Third Page - Treatment, Bruising, Lifestyle Impact, Medical History */}
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
           <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
-            Treatment, Lifestyle Impact, Medical History and Conclusion
+            Treatment, Lifestyle Impact and Medical History
           </Text>
         </View>
         
@@ -239,19 +237,11 @@ const PDFDocument = ({ reportData }: { reportData: ReportData }) => {
         </View>
         
         <View style={styles.section}>
-          <OtherInjuriesSection formData={reportData} styles={styles} />
-        </View>
-        
-        <View style={styles.section}>
           <LifestyleImpactSection formData={reportData} styles={styles} />
         </View>
         
         <View style={styles.section}>
           <MedicalHistorySection formData={reportData} styles={styles} />
-        </View>
-        
-        <View style={styles.section}>
-          <ConclusionSection formData={reportData} styles={styles} />
         </View>
         
         <View style={styles.section}>
