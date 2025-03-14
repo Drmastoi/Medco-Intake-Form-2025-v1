@@ -18,7 +18,6 @@ import { InstructionDetailsSection } from './sections/InstructionDetailsSection'
 import { AppointmentDetailsSection } from './sections/AppointmentDetailsSection';
 import { AccidentDetailsSection } from './sections/AccidentDetailsSection';
 import { InjuriesSection } from './sections/InjuriesSection';
-import { TravelAnxietySection } from './sections/TravelAnxietySection';
 import { MedicalExaminationSection } from './sections/MedicalExaminationSection';
 import { TreatmentSection } from './sections/TreatmentSection';
 import { LifestyleImpactSection } from './sections/LifestyleImpactSection';
@@ -203,20 +202,16 @@ const PDFDocument = ({ reportData }: { reportData: ReportData }) => {
         <Footer pageNumber={1} />
       </Page>
 
-      {/* Second Page - Injuries, Travel Anxiety + Medical Examination */}
+      {/* Second Page - Injuries + Medical Examination */}
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
           <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
-            Injuries, Travel Anxiety and Medical Examination
+            Injuries and Medical Examination
           </Text>
         </View>
         
         <View style={styles.section}>
           <InjuriesSection formData={reportData} styles={styles} />
-        </View>
-
-        <View style={styles.section}>
-          <TravelAnxietySection formData={reportData} styles={styles} />
         </View>
         
         <View style={styles.section}>
@@ -226,7 +221,7 @@ const PDFDocument = ({ reportData }: { reportData: ReportData }) => {
         <Footer pageNumber={2} />
       </Page>
       
-      {/* Third Page - Treatment, Bruising, Other Injuries, Lifestyle Impact, Medical History and Conclusion */}
+      {/* Third Page - Treatment, Lifestyle Impact, Medical History and Conclusion */}
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
           <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
@@ -234,7 +229,7 @@ const PDFDocument = ({ reportData }: { reportData: ReportData }) => {
           </Text>
         </View>
         
-        {/* Moved Treatment section to the top as Section 9 */}
+        {/* Treatment section remains as Section 9 */}
         <View style={styles.section}>
           <TreatmentSection formData={reportData} styles={styles} />
         </View>
