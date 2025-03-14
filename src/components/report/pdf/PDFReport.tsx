@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { 
   PDFDownloadLink, 
@@ -12,6 +13,7 @@ import {
 import { ReportData } from '@/types/reportTypes';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
 import { ClaimantDetailsSection } from './sections/ClaimantDetailsSection';
 import { ExpertDetailsSection } from './sections/ExpertDetailsSection';
 import { InstructionDetailsSection } from './sections/InstructionDetailsSection';
@@ -265,19 +267,38 @@ const PDFReport = ({ reportData, isOpen, onClose, isPreview = false }: PDFReport
   const [loading, setLoading] = useState(true);
   const [viewerReady, setViewerReady] = useState(false);
   const [renderError, setRenderError] = useState<string | null>(null);
+  const [loadingProgress, setLoadingProgress] = useState(0);
 
   // Reset loading state when dialog opens/closes
   useEffect(() => {
     if (isOpen) {
       setLoading(true);
       setRenderError(null);
+      setLoadingProgress(0);
+      
+      // Progressive loading indicator
+      const progressInterval = setInterval(() => {
+        setLoadingProgress(current => {
+          if (current >= 90) {
+            clearInterval(progressInterval);
+            return current;
+          }
+          return current + 10;
+        });
+      }, 500);
+      
       // Small delay to ensure state update and rendering cycle
       const timer = setTimeout(() => {
         setViewerReady(true);
-      }, 300); // Increased timeout for better reliability
-      return () => clearTimeout(timer);
+      }, 500);
+      
+      return () => {
+        clearTimeout(timer);
+        clearInterval(progressInterval);
+      };
     } else {
       setViewerReady(false);
+      setLoadingProgress(0);
     }
   }, [isOpen]);
 
@@ -287,7 +308,8 @@ const PDFReport = ({ reportData, isOpen, onClose, isPreview = false }: PDFReport
       // Using a timeout as a fallback since the PDFViewer doesn't have a direct onLoad prop
       const loadingTimeout = setTimeout(() => {
         setLoading(false);
-      }, 3000); // Give 3 seconds for the PDF to load
+        setLoadingProgress(100);
+      }, 6000); // Give 6 seconds for the PDF to load, increased from 3 seconds
 
       return () => clearTimeout(loadingTimeout);
     }
@@ -297,13 +319,13 @@ const PDFReport = ({ reportData, isOpen, onClose, isPreview = false }: PDFReport
   useEffect(() => {
     const handleError = () => {
       if (viewerReady && loading) {
-        // If we've been loading for more than 5 seconds, show an error
+        // If we've been loading for more than 8 seconds, show an error
         const timer = setTimeout(() => {
           if (loading) {
             setRenderError("Failed to load PDF preview. Please try again.");
             setLoading(false);
           }
-        }, 5000);
+        }, 8000); // Increased from 5 seconds
         
         return () => clearTimeout(timer);
       }
@@ -311,6 +333,29 @@ const PDFReport = ({ reportData, isOpen, onClose, isPreview = false }: PDFReport
     
     handleError();
   }, [viewerReady, loading]);
+
+  const tryAgain = () => {
+    setLoading(true);
+    setRenderError(null);
+    setLoadingProgress(0);
+    setViewerReady(false);
+    
+    // Progressive loading indicator
+    const progressInterval = setInterval(() => {
+      setLoadingProgress(current => {
+        if (current >= 90) {
+          clearInterval(progressInterval);
+          return current;
+        }
+        return current + 10;
+      });
+    }, 500);
+    
+    setTimeout(() => {
+      setViewerReady(true);
+      clearInterval(progressInterval);
+    }, 1000);
+  };
 
   const dialogTitle = isPreview ? "Preview Medical Report" : "Expert Medical Report";
   const closeButtonText = isPreview ? "Close Preview" : "Close";
@@ -350,26 +395,25 @@ const PDFReport = ({ reportData, isOpen, onClose, isPreview = false }: PDFReport
           
           <div className="w-full h-[70vh] border rounded">
             {loading && (
-              <div className="flex justify-center items-center h-full">
-                <div className="flex flex-col items-center">
+              <div className="flex flex-col justify-center items-center h-full">
+                <div className="flex flex-col items-center w-full max-w-md">
                   <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-2"></div>
-                  <p>Loading PDF preview...</p>
+                  <p className="mb-2">Loading PDF preview...</p>
+                  <Progress value={loadingProgress} className="w-full mb-1" />
+                  <p className="text-xs text-muted-foreground">This may take a few moments for large reports</p>
                 </div>
               </div>
             )}
             {renderError && (
               <div className="flex justify-center items-center h-full">
-                <div className="flex flex-col items-center text-red-500">
-                  <p>{renderError}</p>
+                <div className="flex flex-col items-center text-red-500 p-4">
+                  <p className="mb-4">{renderError}</p>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    This could be due to the report size or temporary resource constraints.
+                  </p>
                   <Button 
                     variant="outline" 
-                    className="mt-4"
-                    onClick={() => {
-                      setLoading(true);
-                      setRenderError(null);
-                      setViewerReady(false);
-                      setTimeout(() => setViewerReady(true), 300);
-                    }}
+                    onClick={tryAgain}
                   >
                     Try Again
                   </Button>
