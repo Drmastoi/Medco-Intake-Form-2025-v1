@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { FormSchema } from "@/schemas/intakeFormSchema";
@@ -51,6 +51,15 @@ export function ReportSubmissionTab({
   };
   
   const handleSubmitReport = () => {
+    if (!signature) {
+      toast({
+        title: "Signature Required",
+        description: "Please sign the form before submitting.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     try {
       // Generate final PDFs
       const claimantPdfUrl = "YOUR_PDF_URL"; // In a real app, we'd generate this
@@ -77,6 +86,9 @@ export function ReportSubmissionTab({
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent className="sm:max-w-2xl">
           <DialogTitle>Report Submission</DialogTitle>
+          <DialogDescription>
+            Review and submit your medical report
+          </DialogDescription>
           
           <div className="space-y-6 py-2">
             {/* Preview Report Option */}
@@ -129,7 +141,7 @@ export function ReportSubmissionTab({
             {/* Submit Button */}
             <Button 
               onClick={handleSubmitReport}
-              disabled={!hasAcceptedTerms || !signature || isSubmitting}
+              disabled={!hasAcceptedTerms || isSubmitting}
               className="w-full"
             >
               <Send className="mr-2 h-4 w-4" />
@@ -140,7 +152,7 @@ export function ReportSubmissionTab({
         </DialogContent>
       </Dialog>
       
-      {/* PDF Preview Dialog */}
+      {/* PDF Preview Dialog - Only render when needed */}
       {showPdfPreview && (
         <PDFReport 
           reportData={reportData}

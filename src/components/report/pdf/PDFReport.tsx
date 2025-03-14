@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { 
   PDFDownloadLink, 
   PDFViewer,
@@ -10,7 +11,7 @@ import {
   Font 
 } from '@react-pdf/renderer';
 import { ReportData } from '@/types/reportTypes';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { ClaimantDetailsSection } from './sections/ClaimantDetailsSection';
 import { ExpertDetailsSection } from './sections/ExpertDetailsSection';
@@ -263,6 +264,21 @@ interface PDFReportProps {
 // PDF Report Dialog Component
 const PDFReport = ({ reportData, isOpen, onClose, isPreview = false }: PDFReportProps) => {
   const [loading, setLoading] = useState(true);
+  const [viewerReady, setViewerReady] = useState(false);
+
+  // Reset loading state when dialog opens/closes
+  useEffect(() => {
+    if (isOpen) {
+      setLoading(true);
+      // Small delay to ensure state update and rendering cycle
+      const timer = setTimeout(() => {
+        setViewerReady(true);
+      }, 100);
+      return () => clearTimeout(timer);
+    } else {
+      setViewerReady(false);
+    }
+  }, [isOpen]);
 
   const handleLoad = () => {
     setLoading(false);
@@ -271,16 +287,21 @@ const PDFReport = ({ reportData, isOpen, onClose, isPreview = false }: PDFReport
   const dialogTitle = isPreview ? "Preview Medical Report" : "Expert Medical Report";
   const closeButtonText = isPreview ? "Close Preview" : "Close";
 
+  if (!isOpen) return null;
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-[90vw] max-h-[90vh] overflow-hidden">
         <DialogHeader>
           <DialogTitle>{dialogTitle}</DialogTitle>
+          <DialogDescription>
+            {loading ? "Preparing your report..." : "Your medical report is ready."}
+          </DialogDescription>
         </DialogHeader>
         
         <div className="flex flex-col items-center space-y-4 overflow-hidden">
           <div className="flex justify-end w-full space-x-2">
-            {!isPreview && (
+            {!isPreview && viewerReady && !loading && (
               <PDFDownloadLink 
                 document={<PDFDocument reportData={reportData} />} 
                 fileName="medical-report.pdf"
@@ -300,13 +321,23 @@ const PDFReport = ({ reportData, isOpen, onClose, isPreview = false }: PDFReport
           </div>
           
           <div className="w-full h-[70vh] border rounded">
-            {loading && <div className="flex justify-center items-center h-full">Loading PDF preview...</div>}
-            <PDFViewer 
-              className="w-full h-full" 
-              showToolbar={false}
-            >
-              <PDFDocument reportData={reportData} />
-            </PDFViewer>
+            {loading && (
+              <div className="flex justify-center items-center h-full">
+                <div className="flex flex-col items-center">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-2"></div>
+                  <p>Loading PDF preview...</p>
+                </div>
+              </div>
+            )}
+            {viewerReady && (
+              <PDFViewer 
+                className="w-full h-full" 
+                showToolbar={false}
+                onLoadSuccess={handleLoad}
+              >
+                <PDFDocument reportData={reportData} />
+              </PDFViewer>
+            )}
           </div>
         </div>
       </DialogContent>
