@@ -12,7 +12,7 @@ import { convertFormDataToReportData } from "@/utils/pdfReportUtils";
 
 export function IntakeFormContainer() {
   const [currentSection, setCurrentSection] = useState(0);
-  const totalSections = 13; // Reduced by 1 after removing summary report
+  const totalSections = 13; // Kept the same as we're only removing from PDF, not intake form
 
   const tabNames = [
     "Prefilled Details",
