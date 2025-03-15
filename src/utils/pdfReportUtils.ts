@@ -317,6 +317,11 @@ function getLifestyleData(formData: FormSchema) {
     }
   }
   
+  // If we have regular workRestrictions array from the form, use those
+  if (!workRestrictions.length && formData.workRestrictions && Array.isArray(formData.workRestrictions)) {
+    workRestrictions = formData.workRestrictions;
+  }
+  
   // Process sleep issues
   let sleepIssues: string[] = [];
   if (formData.sleepDisturbances && Array.isArray(formData.sleepDisturbances)) {
@@ -336,6 +341,11 @@ function getLifestyleData(formData: FormSchema) {
     if (formData.sleepDisturbances.includes("other") && formData.otherSleepDisturbances) {
       sleepIssues.push(formData.otherSleepDisturbances);
     }
+  }
+  
+  // If we have regular sleepIssues array from the form, use those
+  if (!sleepIssues.length && formData.sleepIssues && Array.isArray(formData.sleepIssues)) {
+    sleepIssues = formData.sleepIssues;
   }
   
   // Process domestic issues
@@ -358,6 +368,11 @@ function getLifestyleData(formData: FormSchema) {
     if (formData.domesticEffects.includes("other") && formData.otherDomesticEffects) {
       domesticIssues.push(formData.otherDomesticEffects);
     }
+  }
+  
+  // If we have regular domesticIssues array from the form, use those
+  if (!domesticIssues.length && formData.domesticIssues && Array.isArray(formData.domesticIssues)) {
+    domesticIssues = formData.domesticIssues;
   }
   
   // Process social life issues
@@ -412,28 +427,33 @@ function getLifestyleData(formData: FormSchema) {
     }
   }
 
+  // Convert string "1" to boolean true for impact fields
+  const impactOnWork = formData.impactOnWork === "1" ? true : false;
+  const impactOnSleep = formData.impactOnSleep === "1" ? true : false;
+  const impactOnDomestic = formData.impactOnDomestic === "1" ? true : false;
+  const impactOnSports = formData.impactOnSports === "1" ? true : false;
+  const impactOnSocial = formData.impactOnSocial === "1" ? true : false;
+
   return {
-    impactOnWork: formData.daysOffWork || formData.daysLightDuties || 
-                 (formData.workDifficulties && formData.workDifficulties.length > 0) || 
-                 formData.effectOnWork === "1",
-    timeOffWork: formData.daysOffWork || "Not Specified",
+    impactOnWork: impactOnWork,
+    timeOffWork: formData.timeOffWork || "Not Specified",
     workRestrictions: workRestrictions,
     workImpactDate: formData.workImpactDate || "",
     
-    impactOnSleep: formData.sleepDisturbance === "1",
+    impactOnSleep: impactOnSleep,
     sleepIssues: sleepIssues,
     sleepImpactDate: formData.sleepImpactDate || "",
     
-    impactOnDomestic: formData.effectOnDomesticLiving === "1",
+    impactOnDomestic: impactOnDomestic,
     domesticIssues: domesticIssues,
     domesticImpactDate: formData.domesticImpactDate || "",
     
-    impactOnSports: formData.effectOnSportLeisure === "1",
+    impactOnSports: impactOnSports,
     sportsActivities: sportsActivities,
     sportsDuration: formData.sportsDuration || "",
     sportsImpactDate: formData.sportsImpactDate || "",
     
-    impactOnSocial: formData.effectOnSocialLife === "1",
+    impactOnSocial: impactOnSocial,
     socialDetails: socialLifeDetails,
     socialImpactDate: formData.socialImpactDate || ""
   };

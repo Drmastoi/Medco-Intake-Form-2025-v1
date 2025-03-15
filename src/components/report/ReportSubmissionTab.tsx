@@ -1,152 +1,130 @@
-
-import React, { useState } from "react";
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { FormSchema } from "@/schemas/intakeFormSchema";
-import { SignatureField } from "@/components/SignatureField";
-import { convertFormDataToReportData } from "@/utils/pdfReportUtils";
-import { RatingDialog } from "@/components/RatingDialog";
-import PDFReport from "@/components/report/pdf/PDFReport";
-import { useReportSubmission } from "@/hooks/useReportSubmission";
-import { useToast } from "@/components/ui/use-toast";
-import { useReportEmailSubmission } from "@/hooks/useReportEmailSubmission";
-import { DisclaimerSection } from "./components/DisclaimerSection";
-import { DateField } from "./components/DateField";
-import { PreviewButton } from "./components/PreviewButton";
-import { SubmitButton } from "./components/SubmitButton";
+import React, { useState } from 'react';
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import PDFReport from './pdf/PDFReport';
+import { ReportData } from '@/types/reportTypes';
+import { useReportEmailSubmission } from '@/hooks/useReportEmailSubmission';
 
 interface ReportSubmissionTabProps {
-  isOpen: boolean;
-  onClose: () => void;
-  formData: FormSchema;
+  reportData: ReportData;
 }
 
-export function ReportSubmissionTab({ 
-  isOpen, 
-  onClose,
-  formData 
-}: ReportSubmissionTabProps) {
-  const [showPdfPreview, setShowPdfPreview] = useState(false);
-  const [signature, setSignature] = useState("");
-  const [hasAcceptedTerms, setHasAcceptedTerms] = useState(false);
-  const [submissionDate, setSubmissionDate] = useState<string>(
-    new Date().toISOString().split('T')[0]
-  );
-  const [showThankYou, setShowThankYou] = useState(false);
-  const [rating, setRating] = useState(0);
-  const [isPdfLoading, setIsPdfLoading] = useState(false);
-  const { toast } = useToast();
+const ReportSubmissionTab = ({ reportData }: ReportSubmissionTabProps) => {
+  const [sendToEmail, setSendToEmail] = useState('');
+  const [recipientName, setRecipientName] = useState('');
+  const [emailDialogOpen, setEmailDialogOpen] = useState(false);
   
-  const reportData = convertFormDataToReportData(formData);
+  // Use report email submission hook
+  const { isSubmitting, isSuccess, submitReportViaEmail } = useReportEmailSubmission(reportData);
   
-  // Use the report submission hook
-  const { isSubmitting, handleSubmit } = useReportSubmission(() => {
-    onClose();
-    setShowThankYou(true);
-  });
-
-  // Use the email submission hook
-  const { isSendingEmail, sendReportEmail } = useReportEmailSubmission();
-
-  const handlePreviewReport = () => {
-    setIsPdfLoading(true);
-    setShowPdfPreview(true);
+  // Custom validation for email
+  const validateEmail = (email: string) => {
+    if (!email) return "Email is required";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "Please enter a valid email";
+    return null;
   };
   
-  const handleClosePreview = () => {
-    setShowPdfPreview(false);
-    setIsPdfLoading(false);
-  };
+  // Email validation state
+  const [emailError, setEmailError] = useState<string | null>(null);
   
-  const handleSubmitReport = async () => {
-    if (!hasAcceptedTerms) {
-      toast({
-        title: "Terms Not Accepted",
-        description: "Please accept the terms before submitting.",
-        variant: "destructive"
-      });
+  const handleSendEmail = () => {
+    // Validate email before sending
+    const validationError = validateEmail(sendToEmail);
+    if (validationError) {
+      setEmailError(validationError);
       return;
     }
     
-    await sendReportEmail(
-      signature,
-      formData,
-      submissionDate,
-      handleSubmit
-    );
-  };
-  
-  const handleRatingSubmit = () => {
-    console.log("User rating:", rating);
-    setShowThankYou(false);
+    // Clear any previous errors
+    setEmailError(null);
     
-    // Show a thank you toast
-    toast({
-      title: "Thank You",
-      description: `Thanks for rating our service with ${rating} stars! We appreciate your feedback.`,
-    });
+    // Send the report
+    submitReportViaEmail(sendToEmail, recipientName);
   };
 
   return (
-    <>
-      <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="sm:max-w-2xl">
-          <DialogTitle>Report Submission</DialogTitle>
-          <DialogDescription>
-            Review and submit your medical report
-          </DialogDescription>
-          
-          <div className="space-y-6 py-2">
-            {/* Preview Report Option */}
-            <div>
-              <PreviewButton 
-                onClick={handlePreviewReport}
-                isLoading={isPdfLoading}
-              />
-            </div>
-            
-            {/* Disclaimer Section */}
-            <DisclaimerSection 
-              hasAcceptedTerms={hasAcceptedTerms}
-              setHasAcceptedTerms={setHasAcceptedTerms}
-            />
-            
-            {/* Signature Field */}
-            <SignatureField value={signature} onChange={setSignature} />
-            
-            {/* Date Field */}
-            <DateField 
-              submissionDate={submissionDate}
-              setSubmissionDate={setSubmissionDate}
-            />
-            
-            {/* Submit Button */}
-            <SubmitButton 
-              onClick={handleSubmitReport}
-              disabled={!hasAcceptedTerms || isSubmitting || isSendingEmail}
-              isSending={isSendingEmail}
-            />
-          </div>
-        </DialogContent>
-      </Dialog>
-      
-      {/* PDF Preview Dialog - Only render when needed */}
-      {showPdfPreview && (
+    <div className="flex flex-col space-y-4">
+      <div className="rounded-md border p-4">
+        <h2 className="text-lg font-semibold mb-2">Download Report</h2>
+        <p className="text-sm text-gray-500">
+          Download the report as a PDF file.
+        </p>
         <PDFReport 
-          reportData={reportData}
-          isOpen={showPdfPreview}
-          onClose={handleClosePreview}
-          isPreview={true}
+          reportData={reportData} 
+          isOpen={true} 
+          onClose={() => {}} 
+          isPreview={true} 
         />
-      )}
-      
-      {/* Thank you and Rating Dialog */}
-      <RatingDialog
-        open={showThankYou}
-        onOpenChange={setShowThankYou}
-        rating={rating}
-        setRating={setRating}
-        onSubmit={handleRatingSubmit}
-      />
-    </>
+      </div>
+
+      <div className="rounded-md border p-4">
+        <h2 className="text-lg font-semibold mb-2">Send Report via Email</h2>
+          <Dialog open={emailDialogOpen} onOpenChange={setEmailDialogOpen}>
+            <DialogTrigger asChild>
+              <Button variant="outline">Send via Email</Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Send Report via Email</DialogTitle>
+                <DialogDescription>
+                  Enter the recipient's email address and name to send the report.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="email" className="text-right">
+                    Email
+                  </Label>
+                  <Input 
+                    type="email" 
+                    id="email" 
+                    value={sendToEmail}
+                    onChange={(e) => {
+                      setSendToEmail(e.target.value);
+                      setEmailError(null); // Clear error on input change
+                    }}
+                    className="col-span-3" 
+                  />
+                </div>
+                {emailError && <p className="text-red-500 text-sm">{emailError}</p>}
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="name" className="text-right">
+                    Recipient Name
+                  </Label>
+                  <Input 
+                    type="text" 
+                    id="name" 
+                    value={recipientName}
+                    onChange={(e) => setRecipientName(e.target.value)}
+                    className="col-span-3" 
+                  />
+                </div>
+              </div>
+              <div className="flex justify-end">
+                <Button 
+                  type="button" 
+                  onClick={handleSendEmail}
+                  disabled={isSubmitting}
+                  isLoading={isSubmitting}
+                >
+                  {isSubmitting ? 'Sending...' : 'Send Email'}
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        {isSuccess && <p className="text-green-500 text-sm">Report sent successfully!</p>}
+      </div>
+    </div>
   );
-}
+};
+
+export default ReportSubmissionTab;
