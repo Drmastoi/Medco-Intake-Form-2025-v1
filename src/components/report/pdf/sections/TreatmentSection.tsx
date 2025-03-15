@@ -11,28 +11,6 @@ export const TreatmentSection = ({ formData, styles }: TreatmentSectionProps) =>
   // Extract treatment-related data for easier access
   const treatmentData = formData.other?.treatment;
   
-  // Extract questionnaire-specific treatment data
-  const sceneOfAccidentTreatment = formData.other?.treatment?.sceneOfAccidentTreatment === "1";
-  const sceneOfAccidentTreatmentTypes = formData.other?.treatment?.sceneOfAccidentTreatmentTypes || [];
-  const wentToAE = formData.other?.treatment?.wentToAE === "1";
-  const hospitalName = formData.other?.treatment?.hospitalName;
-  const hospitalTreatment = formData.other?.treatment?.hospitalTreatment || [];
-  const wentToWalkInGP = formData.other?.treatment?.wentToWalkInGP === "1";
-  const daysBeforeGPVisit = formData.other?.treatment?.daysBeforeGPVisit;
-  const currentTreatment = formData.other?.treatment?.currentTreatment;
-  const physiotherapySessions = formData.other?.treatment?.physiotherapySessions;
-
-  // Function to get readable text for current treatment
-  const getCurrentTreatmentText = (treatment: string | undefined) => {
-    switch (treatment) {
-      case "1": return "Paracetamol";
-      case "2": return "Ibuprofen/Naproxen";
-      case "3": return "Codeine";
-      case "4": return "other prescribed medicines";
-      default: return "unspecified medication";
-    }
-  };
-
   return (
     <View style={styles.subsection}>
       <Text style={styles.sectionHeader}>Section 9 - Treatment</Text>
@@ -46,35 +24,35 @@ export const TreatmentSection = ({ formData, styles }: TreatmentSectionProps) =>
         </Text>
 
         {/* Treatment at scene of accident */}
-        {sceneOfAccidentTreatment && (
+        {treatmentData?.sceneOfAccidentTreatment === "1" && (
           <Text style={styles.fieldValue}>
             The claimant received treatment at the scene of the accident. 
-            {sceneOfAccidentTreatmentTypes.length > 0 && 
-              ` This included ${sceneOfAccidentTreatmentTypes.join(", ")}.`}
+            {treatmentData.sceneOfAccidentTreatmentTypes && treatmentData.sceneOfAccidentTreatmentTypes.length > 0 && 
+              ` This included ${treatmentData.sceneOfAccidentTreatmentTypes.join(", ")}.`}
           </Text>
         )}
 
         {/* A&E attendance */}
-        {wentToAE && (
+        {treatmentData?.wentToAE === "1" && (
           <Text style={styles.fieldValue}>
-            The claimant attended A&E at {hospitalName || "the hospital"}.
-            {hospitalTreatment.length > 0 && 
-              ` Hospital treatment included ${hospitalTreatment.join(", ")}.`}
+            The claimant attended A&E at {treatmentData.hospitalName || "the hospital"}.
+            {treatmentData.hospitalTreatment && treatmentData.hospitalTreatment.length > 0 && 
+              ` Hospital treatment included ${treatmentData.hospitalTreatment.join(", ")}.`}
           </Text>
         )}
 
         {/* GP/Walk-in center attendance */}
-        {wentToWalkInGP && (
+        {treatmentData?.wentToWalkInGP === "1" && (
           <Text style={styles.fieldValue}>
-            The claimant visited their GP/Walk-in center {daysBeforeGPVisit || "some"} days after the accident.
-            {currentTreatment && ` They are currently taking ${getCurrentTreatmentText(currentTreatment)} for pain relief.`}
+            The claimant visited their GP/Walk-in center {treatmentData.daysBeforeGPVisit || "some"} days after the accident.
+            {treatmentData.currentTreatment && ` They are currently taking ${getCurrentTreatmentText(treatmentData.currentTreatment)} for pain relief.`}
           </Text>
         )}
 
         {/* Physiotherapy */}
-        {physiotherapySessions && parseInt(physiotherapySessions) > 0 && (
+        {treatmentData?.physiotherapySessions && parseInt(treatmentData.physiotherapySessions) > 0 && (
           <Text style={styles.fieldValue}>
-            The claimant has attended {physiotherapySessions} physiotherapy sessions to date.
+            The claimant has attended {treatmentData.physiotherapySessions} physiotherapy sessions to date.
           </Text>
         )}
       </View>
@@ -107,4 +85,15 @@ export const TreatmentSection = ({ formData, styles }: TreatmentSectionProps) =>
       )}
     </View>
   );
+};
+
+// Function to get readable text for current treatment
+const getCurrentTreatmentText = (treatment: string | undefined) => {
+  switch (treatment) {
+    case "1": return "Paracetamol";
+    case "2": return "Ibuprofen/Naproxen";
+    case "3": return "Codeine";
+    case "4": return "other prescribed medicines";
+    default: return "unspecified medication";
+  }
 };
