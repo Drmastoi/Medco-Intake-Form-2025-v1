@@ -1,90 +1,67 @@
 
-import { useState } from "react";
-import { useToast } from "@/components/ui/use-toast";
-import { supabase } from "@/integrations/supabase/client";
-import { FormSchema } from "@/schemas/intakeFormSchema";
-import { generatePdfAsBase64 } from "@/utils/pdfGenerationUtils";
+import { useState } from 'react';
+import { ReportData } from '@/types/reportTypes';
+import { FormSchema } from '@/schemas/intakeFormSchema';
+import { convertFormDataToReportData } from '@/utils/pdfReportUtils';
+import { generatePdfAsBase64 } from '@/utils/pdfGenerationUtils';
+import { supabaseClient } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
-export function useReportEmailSubmission() {
-  const [isSendingEmail, setIsSendingEmail] = useState(false);
+interface UseReportEmailSubmissionProps {
+  formData: FormSchema;
+}
+
+export function useReportEmailSubmission({ formData }: UseReportEmailSubmissionProps) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const { toast } = useToast();
 
-  const sendReportEmail = async (
-    signature: string,
-    formData: FormSchema,
-    submissionDate: string,
-    handleSubmitToDb: (signature: string, formData: FormSchema, claimantPdfUrl: string, fullPdfUrl: string) => void,
-    pdfBase64?: string
-  ) => {
-    if (!signature) {
-      toast({
-        title: "Signature Required",
-        description: "Please sign the form before submitting.",
-        variant: "destructive"
-      });
-      return;
-    }
-    
-    setIsSendingEmail(true);
-    
+  const submitReportViaEmail = async (recipientEmail: string, recipientName: string) => {
     try {
-      // Generate PDF and convert to base64 if not provided
-      const pdfData = pdfBase64 || await generatePdfAsBase64(formData);
-      
-      // Send PDF via email using Supabase Edge Function
-      const { data, error } = await supabase.functions.invoke('send-report', {
+      setIsSubmitting(true);
+      setIsSuccess(false);
+
+      // Convert form data to report data format
+      const reportData: ReportData = convertFormDataToReportData(formData);
+
+      // Generate PDF as base64
+      const pdfBase64 = await generatePdfAsBase64(reportData);
+
+      // Call Supabase edge function to send email
+      const { error } = await supabaseClient.functions.invoke('send-report', {
         body: {
-          to: "drawais@gmail.com", // Expert's email
-          pdfBase64: pdfData,
-          patientName: formData.fullName || "Not specified",
-          referenceNumber: formData.medcoReference || `REF-${Date.now()}`,
-          isClaimantCopy: false,
-          signature: signature,
-          signatureDate: submissionDate
-        },
-      });
-      
-      if (error) throw error;
-      
-      // Also send a copy to the claimant if email is available
-      if (formData.emailId) {
-        await supabase.functions.invoke('send-report', {
-          body: {
-            to: formData.emailId,
-            pdfBase64: pdfData,
-            patientName: formData.fullName || "Not specified",
-            referenceNumber: formData.medcoReference || `REF-${Date.now()}`,
-            isClaimantCopy: true,
-            signature: signature,
-            signatureDate: submissionDate
-          },
-        });
-      }
-      
-      // Call handleSubmit to save to database
-      const claimantPdfUrl = `data:application/pdf;base64,${pdfData}`;
-      const fullPdfUrl = claimantPdfUrl; // Same PDF for this implementation
-      
-      handleSubmitToDb(signature, formData, claimantPdfUrl, fullPdfUrl);
-      
-      toast({
-        title: "Report Sent Successfully",
-        description: "Your medical report has been sent to the expert and saved.",
+          recipientEmail,
+          recipientName,
+          reportData,
+          pdfBase64
+        }
       });
 
-      return true;
-    } catch (error) {
-      console.error("Email sending error:", error);
+      if (error) {
+        throw new Error(`Error sending report: ${error.message}`);
+      }
+
+      setIsSuccess(true);
       toast({
-        title: "Error",
-        description: "Failed to send the report. Please try again later.",
-        variant: "destructive"
+        title: "Report Email Sent",
+        description: `The report has been sent to ${recipientEmail}`,
       });
-      return false;
+
+    } catch (error) {
+      console.error("Error submitting report via email:", error);
+      toast({
+        variant: "destructive",
+        title: "Failed to send report",
+        description: error instanceof Error ? error.message : "An unknown error occurred",
+      });
     } finally {
-      setIsSendingEmail(false);
+      setIsSubmitting(false);
     }
   };
 
-  return { isSendingEmail, sendReportEmail };
+  return {
+    isSubmitting,
+    isSuccess,
+    submitReportViaEmail
+  };
 }

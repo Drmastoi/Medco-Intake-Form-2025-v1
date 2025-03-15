@@ -1,3 +1,4 @@
+
 import { FormSchema } from "@/schemas/intakeFormSchema";
 import { ReportData } from "@/types/reportTypes";
 
@@ -291,28 +292,57 @@ function getTreatmentData(formData: FormSchema) {
 }
 
 function getLifestyleData(formData: FormSchema) {
-  // Add date fields for lifestyle impacts
+  // Process work restrictions array from string or array
+  let workRestrictions: string[] = [];
+  if (formData.workRestrictions) {
+    if (typeof formData.workRestrictions === 'string') {
+      workRestrictions.push(formData.workRestrictions);
+    } else if (Array.isArray(formData.workRestrictions)) {
+      workRestrictions = formData.workRestrictions;
+    }
+  }
+  
+  // Process sleep issues array from string or array
+  let sleepIssues: string[] = [];
+  if (formData.sleepIssues) {
+    if (typeof formData.sleepIssues === 'string') {
+      sleepIssues.push(formData.sleepIssues);
+    } else if (Array.isArray(formData.sleepIssues)) {
+      sleepIssues = formData.sleepIssues;
+    }
+  }
+  
+  // Process domestic issues array from string or array
+  let domesticIssues: string[] = [];
+  if (formData.domesticIssues) {
+    if (typeof formData.domesticIssues === 'string') {
+      domesticIssues.push(formData.domesticIssues);
+    } else if (Array.isArray(formData.domesticIssues)) {
+      domesticIssues = formData.domesticIssues;
+    }
+  }
+
   return {
     impactOnWork: formData.impactOnWork === "1",
-    timeOffWork: formData.timeOffWork || "Not Specified",
-    workRestrictions: formData.workRestrictions || [],
+    timeOffWork: formData.timeOffWork || "",
+    workRestrictions: workRestrictions,
     workImpactDate: formData.workImpactDate || "",
     
     impactOnSleep: formData.impactOnSleep === "1",
-    sleepIssues: formData.sleepIssues || [],
+    sleepIssues: sleepIssues,
     sleepImpactDate: formData.sleepImpactDate || "",
     
     impactOnDomestic: formData.impactOnDomestic === "1",
-    domesticIssues: formData.domesticIssues || [],
+    domesticIssues: domesticIssues,
     domesticImpactDate: formData.domesticImpactDate || "",
     
     impactOnSports: formData.impactOnSports === "1",
-    sportsActivities: formData.sportsActivities || "Not Specified",
-    sportsDuration: formData.sportsDuration || "Not Specified",
+    sportsActivities: formData.sportsActivities || "",
+    sportsDuration: formData.sportsDuration || "",
     sportsImpactDate: formData.sportsImpactDate || "",
     
     impactOnSocial: formData.impactOnSocial === "1",
-    socialDetails: formData.socialDetails || "Not Specified",
+    socialDetails: formData.socialDetails || "",
     socialImpactDate: formData.socialImpactDate || ""
   };
 }
