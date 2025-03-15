@@ -1,3 +1,4 @@
+
 import { FormSchema } from "@/schemas/intakeFormSchema";
 import { ReportData } from "@/types/reportTypes";
 
@@ -277,7 +278,7 @@ function getTreatmentData(formData: FormSchema) {
     frequency: formData.treatmentFrequency || "Not Specified",
     duration: formData.treatmentDuration || "Not Specified",
     ongoing: formData.ongoingTreatment === "1",
-    // Add additional questionnaire treatment data
+    // Add treatment questionnaire fields
     sceneOfAccidentTreatment: formData.sceneOfAccidentTreatment,
     sceneOfAccidentTreatmentTypes: formData.sceneOfAccidentTreatmentTypes,
     wentToAE: formData.wentToAE,
@@ -295,15 +296,24 @@ function getLifestyleData(formData: FormSchema) {
     impactOnWork: formData.impactOnWork === "1",
     timeOffWork: formData.timeOffWork || "Not Specified",
     workRestrictions: formData.workRestrictions || [],
+    workImpactDate: formData.workImpactDate || "",
+    
     impactOnSleep: formData.impactOnSleep === "1",
     sleepIssues: formData.sleepIssues || [],
+    sleepImpactDate: formData.sleepImpactDate || "",
+    
     impactOnDomestic: formData.impactOnDomestic === "1",
     domesticIssues: formData.domesticIssues || [],
+    domesticImpactDate: formData.domesticImpactDate || "",
+    
     impactOnSports: formData.impactOnSports === "1",
     sportsActivities: formData.sportsActivities || "Not Specified",
     sportsDuration: formData.sportsDuration || "Not Specified",
+    sportsImpactDate: formData.sportsImpactDate || "",
+    
     impactOnSocial: formData.impactOnSocial === "1",
-    socialDetails: formData.socialDetails || "Not Specified"
+    socialDetails: formData.socialDetails || "Not Specified",
+    socialImpactDate: formData.socialImpactDate || ""
   };
 }
 
