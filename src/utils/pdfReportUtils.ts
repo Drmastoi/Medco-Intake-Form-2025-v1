@@ -50,6 +50,9 @@ export function convertFormDataToReportData(formData: FormSchema): ReportData {
     gmcNumber: "1234567", // Default GMC number
   };
 
+  // Process form data for lifestyle impact
+  const lifestyle = getLifestyleData(formData);
+
   // Combine all sections into the final report data structure
   return {
     prefilled,
@@ -66,7 +69,7 @@ export function convertFormDataToReportData(formData: FormSchema): ReportData {
       bruising: getBruisingData(formData),
       otherInjuries: getOtherInjuriesData(formData),
       treatment: getTreatmentData(formData),
-      lifestyle: getLifestyleData(formData),
+      lifestyle: lifestyle,
       medicalHistory: getMedicalHistoryData(formData)
     }
   };
@@ -292,57 +295,146 @@ function getTreatmentData(formData: FormSchema) {
 }
 
 function getLifestyleData(formData: FormSchema) {
-  // Process work restrictions array from string or array
+  // Process work restrictions
   let workRestrictions: string[] = [];
-  if (formData.workRestrictions) {
-    if (typeof formData.workRestrictions === 'string') {
-      workRestrictions.push(formData.workRestrictions);
-    } else if (Array.isArray(formData.workRestrictions)) {
-      workRestrictions = formData.workRestrictions;
+  if (formData.workDifficulties && Array.isArray(formData.workDifficulties)) {
+    workRestrictions = formData.workDifficulties.map(id => {
+      switch (id) {
+        case "sitting": return "sitting for long periods";
+        case "standing": return "standing for long periods";
+        case "lifting": return "lifting heavy objects";
+        case "bending": return "bending or twisting";
+        case "typing": return "typing/computer work";
+        case "concentration": return "concentration";
+        case "driving": return "driving";
+        default: return id;
+      }
+    });
+    
+    // Add "other" description if present
+    if (formData.workDifficulties.includes("other") && formData.otherWorkDifficulties) {
+      workRestrictions.push(formData.otherWorkDifficulties);
     }
   }
   
-  // Process sleep issues array from string or array
+  // Process sleep issues
   let sleepIssues: string[] = [];
-  if (formData.sleepIssues) {
-    if (typeof formData.sleepIssues === 'string') {
-      sleepIssues.push(formData.sleepIssues);
-    } else if (Array.isArray(formData.sleepIssues)) {
-      sleepIssues = formData.sleepIssues;
+  if (formData.sleepDisturbances && Array.isArray(formData.sleepDisturbances)) {
+    sleepIssues = formData.sleepDisturbances.map(id => {
+      switch (id) {
+        case "fallingAsleep": return "difficulty falling asleep";
+        case "stayingAsleep": return "difficulty staying asleep";
+        case "earlyWaking": return "early morning waking";
+        case "nightmares": return "nightmares";
+        case "painDisturbs": return "pain disturbs sleep";
+        case "restlessness": return "restlessness";
+        default: return id;
+      }
+    });
+    
+    // Add "other" description if present
+    if (formData.sleepDisturbances.includes("other") && formData.otherSleepDisturbances) {
+      sleepIssues.push(formData.otherSleepDisturbances);
     }
   }
   
-  // Process domestic issues array from string or array
+  // Process domestic issues
   let domesticIssues: string[] = [];
-  if (formData.domesticIssues) {
-    if (typeof formData.domesticIssues === 'string') {
-      domesticIssues.push(formData.domesticIssues);
-    } else if (Array.isArray(formData.domesticIssues)) {
-      domesticIssues = formData.domesticIssues;
+  if (formData.domesticEffects && Array.isArray(formData.domesticEffects)) {
+    domesticIssues = formData.domesticEffects.map(id => {
+      switch (id) {
+        case "cleaning": return "house cleaning";
+        case "cooking": return "cooking meals";
+        case "laundry": return "doing laundry";
+        case "shopping": return "grocery shopping";
+        case "childcare": return "childcare duties";
+        case "gardening": return "gardening/yard work";
+        case "petCare": return "pet care";
+        default: return id;
+      }
+    });
+    
+    // Add "other" description if present
+    if (formData.domesticEffects.includes("other") && formData.otherDomesticEffects) {
+      domesticIssues.push(formData.otherDomesticEffects);
+    }
+  }
+  
+  // Process social life issues
+  let socialLifeDetails = formData.socialDetails || "";
+  if (formData.socialLifeEffects && Array.isArray(formData.socialLifeEffects)) {
+    const socialLifeIssues = formData.socialLifeEffects.map(id => {
+      switch (id) {
+        case "meetingFriends": return "meeting friends";
+        case "familyGatherings": return "family gatherings";
+        case "dining": return "dining out";
+        case "parties": return "attending parties";
+        case "concerts": return "concerts/events";
+        case "traveling": return "traveling";
+        case "hobbies": return "group hobbies";
+        default: return id;
+      }
+    });
+    
+    if (socialLifeIssues.length > 0) {
+      socialLifeDetails = socialLifeIssues.join(", ");
+      
+      // Add "other" description if present
+      if (formData.socialLifeEffects.includes("other") && formData.otherSocialLifeEffects) {
+        socialLifeDetails += ", " + formData.otherSocialLifeEffects;
+      }
+    }
+  }
+  
+  // Process sports activities
+  let sportsActivities = formData.sportsActivities || "";
+  if (formData.sportLeisureEffects && Array.isArray(formData.sportLeisureEffects)) {
+    const sportLeisureIssues = formData.sportLeisureEffects.map(id => {
+      switch (id) {
+        case "gym": return "going to the gym";
+        case "running": return "running/jogging";
+        case "swimming": return "swimming";
+        case "cycling": return "cycling";
+        case "teamSports": return "team sports";
+        case "hiking": return "hiking";
+        case "yoga": return "yoga/stretching";
+        default: return id;
+      }
+    });
+    
+    if (sportLeisureIssues.length > 0) {
+      sportsActivities = sportLeisureIssues.join(", ");
+      
+      // Add "other" description if present
+      if (formData.sportLeisureEffects.includes("other") && formData.otherSportLeisureEffects) {
+        sportsActivities += ", " + formData.otherSportLeisureEffects;
+      }
     }
   }
 
   return {
-    impactOnWork: formData.impactOnWork === "1",
-    timeOffWork: formData.timeOffWork || "",
+    impactOnWork: formData.daysOffWork || formData.daysLightDuties || 
+                 (formData.workDifficulties && formData.workDifficulties.length > 0) || 
+                 formData.effectOnWork === "1",
+    timeOffWork: formData.daysOffWork || "Not Specified",
     workRestrictions: workRestrictions,
     workImpactDate: formData.workImpactDate || "",
     
-    impactOnSleep: formData.impactOnSleep === "1",
+    impactOnSleep: formData.sleepDisturbance === "1",
     sleepIssues: sleepIssues,
     sleepImpactDate: formData.sleepImpactDate || "",
     
-    impactOnDomestic: formData.impactOnDomestic === "1",
+    impactOnDomestic: formData.effectOnDomesticLiving === "1",
     domesticIssues: domesticIssues,
     domesticImpactDate: formData.domesticImpactDate || "",
     
-    impactOnSports: formData.impactOnSports === "1",
-    sportsActivities: formData.sportsActivities || "",
+    impactOnSports: formData.effectOnSportLeisure === "1",
+    sportsActivities: sportsActivities,
     sportsDuration: formData.sportsDuration || "",
     sportsImpactDate: formData.sportsImpactDate || "",
     
-    impactOnSocial: formData.impactOnSocial === "1",
-    socialDetails: formData.socialDetails || "",
+    impactOnSocial: formData.effectOnSocialLife === "1",
+    socialDetails: socialLifeDetails,
     socialImpactDate: formData.socialImpactDate || ""
   };
 }

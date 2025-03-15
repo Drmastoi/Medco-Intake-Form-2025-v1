@@ -145,6 +145,28 @@ export const formSchema = z.object({
   impactOnSocial: z.enum(["1", "2"]).default("2"),
   socialDetails: z.string().optional(),
   socialImpactDate: z.string().optional(),
+  
+  // Section 11 - New Daily Life Impact Fields
+  daysOffWork: z.string().optional(),
+  daysLightDuties: z.string().optional(),
+  workDifficulties: z.string().array().optional(),
+  otherWorkDifficulties: z.string().optional(),
+  
+  sleepDisturbance: z.enum(["1", "2"]).optional(),
+  sleepDisturbances: z.string().array().optional(),
+  otherSleepDisturbances: z.string().optional(),
+  
+  effectOnDomesticLiving: z.enum(["1", "2"]).optional(),
+  domesticEffects: z.string().array().optional(),
+  otherDomesticEffects: z.string().optional(),
+  
+  effectOnSportLeisure: z.enum(["1", "2"]).optional(),
+  sportLeisureEffects: z.string().array().optional(),
+  otherSportLeisureEffects: z.string().optional(),
+  
+  effectOnSocialLife: z.enum(["1", "2"]).optional(),
+  socialLifeEffects: z.string().array().optional(),
+  otherSocialLifeEffects: z.string().optional(),
 
   // Section 13 - Previous Medical History
   exceptionalInjuries: z.enum(["1", "2"]).default("2"),
