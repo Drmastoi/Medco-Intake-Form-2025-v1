@@ -160,6 +160,8 @@ interface PDFDocumentContentProps {
 const PDFDocumentContent = ({ reportData }: PDFDocumentContentProps) => {
   const today = format(new Date(), 'dd-MM-yyyy');
   const claimantName = reportData.personal?.fullName || 'Not specified';
+  
+  console.log("Rendering PDF with lifestyle data:", JSON.stringify(reportData.other.lifestyle));
 
   return (
     <Document>
@@ -230,6 +232,7 @@ const PDFDocumentContent = ({ reportData }: PDFDocumentContentProps) => {
           <TreatmentSection formData={reportData} styles={styles} />
         </View>
         
+        {/* Section 10 - Lifestyle Impact */}
         <View style={styles.section}>
           <LifestyleImpactSection formData={reportData} styles={styles} />
         </View>

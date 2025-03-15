@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -13,6 +14,7 @@ import {
 import PDFReport from './pdf/PDFReport';
 import { ReportData } from '@/types/reportTypes';
 import { useReportEmailSubmission } from '@/hooks/useReportEmailSubmission';
+import { Loader2 } from 'lucide-react';
 
 interface ReportSubmissionTabProps {
   reportData: ReportData;
@@ -114,9 +116,13 @@ const ReportSubmissionTab = ({ reportData }: ReportSubmissionTabProps) => {
                   type="button" 
                   onClick={handleSendEmail}
                   disabled={isSubmitting}
-                  isLoading={isSubmitting}
                 >
-                  {isSubmitting ? 'Sending...' : 'Send Email'}
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" /> 
+                      Sending...
+                    </>
+                  ) : 'Send Email'}
                 </Button>
               </div>
             </DialogContent>

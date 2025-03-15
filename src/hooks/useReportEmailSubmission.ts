@@ -15,6 +15,7 @@ export const useReportEmailSubmission = (reportData: ReportData) => {
     queryKey: ['pdfBase64', reportData],
     queryFn: async () => {
       try {
+        console.log("Generating PDF with report data:", JSON.stringify(reportData.other.lifestyle));
         return await generatePdfAsBase64(reportData);
       } catch (error) {
         console.error("Error generating PDF:", error);
@@ -27,6 +28,9 @@ export const useReportEmailSubmission = (reportData: ReportData) => {
   const submitReportViaEmail = async (recipientEmail: string, recipientName: string) => {
     try {
       setIsSubmitting(true);
+      
+      // Log report data before PDF generation to debug lifestyle data
+      console.log("Report data before PDF generation:", JSON.stringify(reportData.other.lifestyle));
       
       // Regenerate PDF with latest data
       const { data: freshPdfBase64 } = await regeneratePdf();
