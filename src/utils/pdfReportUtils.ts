@@ -276,7 +276,17 @@ function getTreatmentData(formData: FormSchema) {
     type: treatmentTypes,
     frequency: formData.treatmentFrequency || "Not Specified",
     duration: formData.treatmentDuration || "Not Specified",
-    ongoing: formData.ongoingTreatment === "1"
+    ongoing: formData.ongoingTreatment === "1",
+    // Add additional questionnaire treatment data
+    sceneOfAccidentTreatment: formData.sceneOfAccidentTreatment,
+    sceneOfAccidentTreatmentTypes: formData.sceneOfAccidentTreatmentTypes,
+    wentToAE: formData.wentToAE,
+    hospitalName: formData.hospitalName,
+    hospitalTreatment: formData.hospitalTreatment,
+    wentToWalkInGP: formData.wentToWalkInGP,
+    daysBeforeGPVisit: formData.daysBeforeGPVisit,
+    currentTreatment: formData.currentTreatment,
+    physiotherapySessions: formData.physiotherapySessions
   };
 }
 
