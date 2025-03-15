@@ -112,20 +112,39 @@ export const formSchema = z.object({
   treatmentFrequency: z.string().optional(),
   treatmentDuration: z.string().optional(),
   ongoingTreatment: z.enum(["1", "2"]).optional(),
+  // Treatment questionnaire fields
+  sceneOfAccidentTreatment: z.string().optional(),
+  sceneOfAccidentTreatmentTypes: z.string().array().optional(),
+  wentToAE: z.string().optional(),
+  hospitalName: z.string().optional(),
+  hospitalTreatment: z.string().array().optional(),
+  wentToWalkInGP: z.string().optional(),
+  daysBeforeGPVisit: z.string().optional(),
+  currentTreatment: z.string().optional(),
+  physiotherapySessions: z.string().optional(),
 
   // Section 12 - Impact on Lifestyle
   impactOnWork: z.enum(["1", "2"]).default("2"),
   timeOffWork: z.string().optional(),
   workRestrictions: z.string().array().optional(),
+  workImpactDate: z.string().optional(),
+  
   impactOnSleep: z.enum(["1", "2"]).default("2"),
   sleepIssues: z.string().array().optional(),
+  sleepImpactDate: z.string().optional(),
+  
   impactOnDomestic: z.enum(["1", "2"]).default("2"),
   domesticIssues: z.string().array().optional(),
+  domesticImpactDate: z.string().optional(),
+  
   impactOnSports: z.enum(["1", "2"]).default("2"),
   sportsActivities: z.string().optional(),
   sportsDuration: z.string().optional(),
+  sportsImpactDate: z.string().optional(),
+  
   impactOnSocial: z.enum(["1", "2"]).default("2"),
   socialDetails: z.string().optional(),
+  socialImpactDate: z.string().optional(),
 
   // Section 13 - Previous Medical History
   exceptionalInjuries: z.enum(["1", "2"]).default("2"),

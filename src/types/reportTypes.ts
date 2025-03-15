@@ -103,7 +103,7 @@ export interface BruisingData {
   initialSeverity?: string;
   currentSeverity?: string;
   resolveDays?: string;
-  hasVisibleScar?: boolean; // Added this property to fix the type error
+  hasVisibleScar?: boolean;
 }
 
 export interface OtherInjuriesData {
@@ -121,21 +121,35 @@ export interface TreatmentData {
   frequency?: string;
   duration?: string;
   ongoing?: boolean;
+  sceneOfAccidentTreatment?: string;
+  sceneOfAccidentTreatmentTypes?: string[];
+  wentToAE?: string;
+  hospitalName?: string;
+  hospitalTreatment?: string[];
+  wentToWalkInGP?: string;
+  daysBeforeGPVisit?: string;
+  currentTreatment?: string;
+  physiotherapySessions?: string;
 }
 
 export interface LifestyleData {
   impactOnWork: boolean;
   timeOffWork?: string;
   workRestrictions?: string[];
+  workImpactDate?: string;
   impactOnSleep: boolean;
   sleepIssues?: string[];
+  sleepImpactDate?: string;
   impactOnDomestic: boolean;
   domesticIssues?: string[];
+  domesticImpactDate?: string;
   impactOnSports: boolean;
   sportsActivities?: string;
   sportsDuration?: string;
+  sportsImpactDate?: string;
   impactOnSocial: boolean;
   socialDetails?: string;
+  socialImpactDate?: string;
 }
 
 export interface MedicalHistoryData {

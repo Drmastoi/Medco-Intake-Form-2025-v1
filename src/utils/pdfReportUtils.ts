@@ -1,4 +1,3 @@
-
 import { FormSchema } from "@/schemas/intakeFormSchema";
 import { ReportData } from "@/types/reportTypes";
 
@@ -292,6 +291,7 @@ function getTreatmentData(formData: FormSchema) {
 }
 
 function getLifestyleData(formData: FormSchema) {
+  // Add date fields for lifestyle impacts
   return {
     impactOnWork: formData.impactOnWork === "1",
     timeOffWork: formData.timeOffWork || "Not Specified",
