@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   Document, 
@@ -202,7 +201,7 @@ const PDFDocumentContent = ({ reportData }: PDFDocumentContentProps) => {
       initialSeverity: '',
       currentSeverity: '',
       symptoms: [],
-      startDate: '',
+      start: '',
       startDateEstimated: false,
       resolveDate: '',
       resolveDateEstimated: false,

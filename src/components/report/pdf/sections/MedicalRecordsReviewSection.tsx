@@ -20,6 +20,14 @@ export const MedicalRecordsReviewSection = ({ styles }: MedicalRecordsReviewSect
       </View>
       
       <View style={{ marginTop: 15 }}>
+        <Text style={styles.fieldLabel}>Re-examination</Text>
+        <Text style={styles.fieldValue}>
+          If the claimant does not recover within the anticipated recovery timescale then I would recommend a
+          re-examination by orthopedic doctor.
+        </Text>
+      </View>
+      
+      <View style={{ marginTop: 15 }}>
         <Text style={styles.sectionHeader}>PROSPECTS ON THE OPEN JOB MARKET</Text>
         <Text style={styles.fieldValue}>
           Employment prospects in the open job market would be unaffected because of the injuries.
