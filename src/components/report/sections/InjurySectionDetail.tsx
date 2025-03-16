@@ -51,8 +51,8 @@ const InjurySectionDetail = ({
   const resolveDays = formData[`${prefix}ResolveDays`];
 
   return (
-    <View style={{ marginBottom: 15 }}>
-      <Text style={styles.injuriesSectionTitle}>6.{sectionCount} Expert Medical Assessment - {title}</Text>
+    <View style={{ marginBottom: 10 }}>
+      <Text style={[styles.injuriesSectionTitle, { fontSize: 11 }]}>6.{sectionCount} Expert Medical Assessment - {title}</Text>
       
       {/* Add General Physical Examination section before the first injury */}
       {sectionCount === 1 && <GeneralPhysicalExam styles={styles} />}
@@ -98,23 +98,27 @@ const InjurySectionDetail = ({
           anxietyPastHistory={formData.anxietyPastHistory} 
           styles={styles} 
         />
-        <AdditionalReportRow styles={styles} />
-        <OICTariffRow 
-          injuryType={injuryType} 
-          location={location} 
-          styles={styles} 
-        />
-        <PrognosisRow 
-          injuryType={injuryType} 
-          currentSeverity={currentSeverity} 
-          resolveDays={resolveDays} 
-          styles={styles} 
-        />
-        <TreatmentRow 
-          injuryType={injuryType} 
-          severity={currentSeverity} // Changed from 'currentSeverity' to 'severity' to match the prop name expected by TreatmentRow
-          styles={styles} 
-        />
+        
+        {/* Combine these into more compact rows */}
+        <View style={{ marginTop: 5 }}>
+          <AdditionalReportRow styles={styles} />
+          <OICTariffRow 
+            injuryType={injuryType} 
+            location={location} 
+            styles={styles} 
+          />
+          <PrognosisRow 
+            injuryType={injuryType} 
+            currentSeverity={currentSeverity} 
+            resolveDays={resolveDays} 
+            styles={styles} 
+          />
+          <TreatmentRow 
+            injuryType={injuryType} 
+            severity={currentSeverity}
+            styles={styles} 
+          />
+        </View>
       </View>
     </View>
   );

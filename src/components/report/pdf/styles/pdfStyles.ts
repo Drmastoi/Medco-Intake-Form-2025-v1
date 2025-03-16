@@ -4,36 +4,36 @@ import { colorScheme } from './colorScheme';
 
 export const pdfStyles = StyleSheet.create({
   page: {
-    padding: 30,
-    fontSize: 12,
+    padding: 25, // Reduced padding
+    fontSize: 10, // Smaller base font size
     fontFamily: 'Helvetica',
-    lineHeight: 1.5,
+    lineHeight: 1.3, // Tighter line height
     backgroundColor: '#ffffff'
   },
   header: {
     backgroundColor: colorScheme.primary,
-    padding: 10,
-    marginBottom: 20,
+    padding: 8, // Reduced padding
+    marginBottom: 15, // Reduced margin
     borderRadius: 3
   },
   section: {
-    marginBottom: 15
+    marginBottom: 12 // Reduced margin
   },
   subsection: {
-    marginBottom: 10,
+    marginBottom: 8, // Reduced margin
     borderBottom: `1px solid ${colorScheme.borderColor}`,
-    paddingBottom: 10
+    paddingBottom: 8 // Reduced padding
   },
   sectionHeader: {
-    fontSize: 14,
+    fontSize: 12, // Reduced font size
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 8, // Reduced margin
     color: colorScheme.primary,
     fontFamily: 'Helvetica-Bold'
   },
   fieldRow: {
     flexDirection: 'row',
-    marginBottom: 5
+    marginBottom: 4 // Reduced margin
   },
   fieldColumn: {
     width: '50%',
@@ -41,24 +41,24 @@ export const pdfStyles = StyleSheet.create({
   },
   fieldLabel: {
     fontWeight: 'bold',
-    fontSize: 11,
-    marginBottom: 2,
+    fontSize: 9, // Reduced font size
+    marginBottom: 1, // Reduced margin
     fontFamily: 'Helvetica-Bold'
   },
   fieldValue: {
-    fontSize: 11,
-    marginBottom: 5
+    fontSize: 9, // Reduced font size
+    marginBottom: 4 // Reduced margin
   },
   footer: {
     position: 'absolute',
-    bottom: 30,
-    left: 30,
-    right: 30,
-    fontSize: 10,
+    bottom: 20, // Moved up
+    left: 25,
+    right: 25,
+    fontSize: 8, // Smaller font
     textAlign: 'center',
     color: colorScheme.textLight,
     borderTop: `1px solid ${colorScheme.borderColor}`,
-    paddingTop: 5
+    paddingTop: 4 // Reduced padding
   },
   inlineLabel: {
     fontWeight: 'bold',
@@ -68,19 +68,19 @@ export const pdfStyles = StyleSheet.create({
   twoColumns: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    margin: 10
+    margin: 8 // Reduced margin
   },
   column: {
     width: '48%'
   },
   // Add additional styles for status badges
   statusBadge: {
-    padding: 3,
-    paddingHorizontal: 8,
-    borderRadius: 10,
-    fontSize: 8,
+    padding: 2, // Reduced padding
+    paddingHorizontal: 6, // Reduced padding
+    borderRadius: 8, // Smaller radius
+    fontSize: 7, // Smaller font
     alignSelf: 'flex-start',
-    marginLeft: 5
+    marginLeft: 4 // Reduced margin
   },
   statusMild: {
     backgroundColor: colorScheme.info,
@@ -97,5 +97,27 @@ export const pdfStyles = StyleSheet.create({
   statusResolved: {
     backgroundColor: colorScheme.success,
     color: colorScheme.textInverted
+  },
+  // New compact styles
+  compactTable: {
+    borderSpacing: 0,
+    width: '100%',
+    marginBottom: 8
+  },
+  compactRow: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderBottomColor: colorScheme.borderColor,
+    paddingVertical: 3 // Reduced padding
+  },
+  compactCell: {
+    fontSize: 9,
+    padding: 3 // Reduced padding
+  },
+  compactHeader: {
+    fontSize: 10,
+    fontWeight: 'bold',
+    backgroundColor: colorScheme.tableHeaderBg,
+    padding: 4 // Reduced padding
   }
 });

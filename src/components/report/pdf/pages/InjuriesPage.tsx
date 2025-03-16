@@ -53,47 +53,57 @@ const InjuriesPage: React.FC<InjuriesPageProps> = ({
   return (
     <Page size="A4" style={pdfStyles.page}>
       <View style={pdfStyles.header}>
-        <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
+        <Text style={{color: 'white', fontSize: 14, textAlign: 'center'}}>
           Injuries Assessment
         </Text>
       </View>
       
-      {/* Summary box highlighting key injury information */}
+      {/* Compact summary box highlighting key injury information */}
       <View style={{ 
         backgroundColor: colorScheme.altSectionBg, 
-        margin: 10, 
-        padding: 10, 
+        margin: 8, 
+        padding: 8, 
         borderRadius: 3,
-        borderLeft: `4px solid ${colorScheme.accent}`
+        borderLeft: `3px solid ${colorScheme.accent}`
       }}>
-        <Text style={{ fontSize: 12, fontWeight: 'bold', marginBottom: 5, color: colorScheme.primary }}>
+        <Text style={{ fontSize: 10, fontWeight: 'bold', marginBottom: 4, color: colorScheme.primary }}>
           Injuries Summary
         </Text>
-        <View style={{ flexDirection: 'row', marginBottom: 5 }}>
-          <Text style={{ width: '50%', fontSize: 10, fontWeight: 'bold' }}>Number of injuries reported:</Text>
-          <Text style={{ width: '50%', fontSize: 10 }}>{activeInjuries}</Text>
-        </View>
-        <View style={{ flexDirection: 'row', marginBottom: 5 }}>
-          <Text style={{ width: '50%', fontSize: 10, fontWeight: 'bold' }}>Most severe injury:</Text>
-          <Text style={{ width: '50%', fontSize: 10 }}>{mostSevereInjury.type} ({mostSevereInjury.severity})</Text>
-        </View>
+        
+        {/* Two-column layout for injury summary */}
         <View style={{ flexDirection: 'row' }}>
-          <Text style={{ width: '50%', fontSize: 10, fontWeight: 'bold' }}>Physical injuries:</Text>
-          <Text style={{ width: '50%', fontSize: 10 }}>
-            {[
-              reportData.injuries.neckPain?.hasInjury ? "Neck Pain" : null,
-              reportData.injuries.backPain?.hasInjury ? "Back Pain" : null,
-              reportData.injuries.shoulderPain?.hasInjury ? "Shoulder Pain" : null,
-              reportData.injuries.headache?.hasInjury ? "Headache" : null
-            ].filter(Boolean).join(", ") || "None"}
-          </Text>
-        </View>
-        {reportData.travelAnxiety?.hasAnxiety && (
-          <View style={{ flexDirection: 'row', marginTop: 5 }}>
-            <Text style={{ width: '50%', fontSize: 10, fontWeight: 'bold' }}>Psychological impacts:</Text>
-            <Text style={{ width: '50%', fontSize: 10 }}>Travel Anxiety</Text>
+          <View style={{ width: '50%' }}>
+            <View style={{ flexDirection: 'row', marginBottom: 3 }}>
+              <Text style={{ width: '50%', fontSize: 9, fontWeight: 'bold' }}>Injuries reported:</Text>
+              <Text style={{ width: '50%', fontSize: 9 }}>{activeInjuries}</Text>
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={{ width: '50%', fontSize: 9, fontWeight: 'bold' }}>Most severe:</Text>
+              <Text style={{ width: '50%', fontSize: 9 }}>{mostSevereInjury.type} ({mostSevereInjury.severity})</Text>
+            </View>
           </View>
-        )}
+          
+          <View style={{ width: '50%' }}>
+            <View style={{ flexDirection: 'row', marginBottom: 3 }}>
+              <Text style={{ width: '40%', fontSize: 9, fontWeight: 'bold' }}>Physical:</Text>
+              <Text style={{ width: '60%', fontSize: 9 }}>
+                {[
+                  reportData.injuries.neckPain?.hasInjury ? "Neck" : null,
+                  reportData.injuries.backPain?.hasInjury ? "Back" : null,
+                  reportData.injuries.shoulderPain?.hasInjury ? "Shoulder" : null,
+                  reportData.injuries.headache?.hasInjury ? "Headache" : null
+                ].filter(Boolean).join(", ") || "None"}
+              </Text>
+            </View>
+            
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={{ width: '40%', fontSize: 9, fontWeight: 'bold' }}>Psychological:</Text>
+              <Text style={{ width: '60%', fontSize: 9 }}>
+                {reportData.travelAnxiety?.hasAnxiety ? "Travel Anxiety" : "None"}
+              </Text>
+            </View>
+          </View>
+        </View>
       </View>
       
       <View style={pdfStyles.section}>

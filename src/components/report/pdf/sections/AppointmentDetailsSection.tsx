@@ -10,8 +10,8 @@ interface AppointmentDetailsSectionProps {
 
 export const AppointmentDetailsSection = ({ formData, styles }: AppointmentDetailsSectionProps) => {
   return (
-    <View style={styles.subsection}>
-      <Text style={styles.sectionHeader}>Section 4 - Appointment Details</Text>
+    <View style={[styles.subsection, { marginBottom: 10 }]}>
+      <Text style={[styles.sectionHeader, { marginBottom: 8 }]}>Section 4 - Appointment Details</Text>
       
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>

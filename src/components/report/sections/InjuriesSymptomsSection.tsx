@@ -1,7 +1,6 @@
 
 import { Text, View } from '@react-pdf/renderer';
 import InjurySectionDetail from './InjurySectionDetail';
-import { getTreatmentRecommendation } from '../utils/injuryClassification';
 
 interface InjuriesSymptomsSectionProps {
   formData: any;
@@ -13,26 +12,26 @@ export const InjuriesSymptomsSection = ({ formData, styles }: InjuriesSymptomsSe
   
   return (
     <View>
-      <Text style={styles.sectionHeader}>Section 6 - Injuries / Symptoms</Text>
+      <Text style={[styles.sectionHeader, { marginBottom: 8 }]}>Section 6 - Injuries / Symptoms</Text>
       
-      {/* Accident Information Summary at the beginning */}
-      <View style={{ marginBottom: 12, marginTop: 5 }}>
-        <Text style={[styles.text, { fontWeight: 'bold', marginBottom: 4 }]}>
-          Accident Information Summary:
+      {/* Compact accident summary */}
+      <View style={{ marginBottom: 8 }}>
+        <Text style={[styles.text, { fontWeight: 'bold', fontSize: 10 }]}>
+          Accident Summary:
         </Text>
-        <Text style={[styles.text, { marginBottom: 8 }]}>
+        <Text style={[styles.text, { fontSize: 9, marginBottom: 6 }]}>
           {formData.accidentSummary || 
-            `The accident occurred on ${formData.accidentDate ? new Date(formData.accidentDate).toLocaleDateString('en-GB', {day: 'numeric', month: 'long', year: 'numeric'}) : '[date not specified]'} in a ${formData.claimantVehicle === "1" ? "car" : formData.claimantVehicle === "2" ? "van" : formData.claimantVehicle === "3" ? "bus" : "vehicle"}. ${formData.impactLocation === "1" ? "The vehicle was hit from behind" : formData.impactLocation === "2" ? "The vehicle was hit from the front" : formData.impactLocation === "3" ? "The vehicle was hit on the passenger side" : formData.impactLocation === "4" ? "The vehicle was hit on the driver side" : "The vehicle was impacted"}.`
+            `The accident occurred on ${formData.accidentDate ? new Date(formData.accidentDate).toLocaleDateString('en-GB', {day: 'numeric', month: 'long', year: 'numeric'}) : '[date not specified]'}. ${formData.impactLocation === "1" ? "The vehicle was hit from behind" : formData.impactLocation === "2" ? "The vehicle was hit from the front" : formData.impactLocation === "3" ? "The vehicle was hit on the passenger side" : formData.impactLocation === "4" ? "The vehicle was hit on the driver side" : "The vehicle was impacted"}.`
           }
         </Text>
       </View>
       
-      {/* Acknowledgment statement after accident summary */}
-      <Text style={[styles.text, { marginBottom: 12, fontStyle: 'italic' }]}>
-        I have acknowledged the Letter of Instruction and I confirm there were no other injuries suffered by the claimant as told to me during the examination after direct questioning
+      {/* Compact acknowledgment statement */}
+      <Text style={[styles.text, { marginBottom: 8, fontStyle: 'italic', fontSize: 9 }]}>
+        I have acknowledged the Letter of Instruction and confirm there were no other injuries suffered by the claimant as told to me during the examination after direct questioning.
       </Text>
       
-      {/* Neck Injury - Only show if selected */}
+      {/* Neck Injury */}
       {formData.neckPain === "1" && (
         <InjurySectionDetail
           title="Neck"
@@ -45,13 +44,12 @@ export const InjuriesSymptomsSection = ({ formData, styles }: InjuriesSymptomsSe
       
       {/* Display prior neck pain information if applicable */}
       {formData.neckPain === "1" && formData.hadPriorNeckPain === "1" && (
-        <View style={{ marginBottom: 10 }}>
-          <Text style={styles.text}>
-            <Text style={{ fontWeight: 'bold' }}>Prior Neck Pain History: </Text>
-            The patient reported experiencing neck pain before this accident. 
-            {formData.accidentNeckPainPercentage && formData.priorNeckPainPercentage && (
-              ` They attribute approximately ${formData.accidentNeckPainPercentage}% of their current neck pain to this accident and ${formData.priorNeckPainPercentage}% to their previous condition.`
-            )}
+        <View style={{ marginBottom: 8 }}>
+          <Text style={[styles.text, { fontSize: 9 }]}>
+            <Text style={{ fontWeight: 'bold' }}>Prior Neck Pain: </Text>
+            {formData.accidentNeckPainPercentage && formData.priorNeckPainPercentage 
+              ? `Attribution: ${formData.accidentNeckPainPercentage}% to this accident, ${formData.priorNeckPainPercentage}% to previous condition.`
+              : "The patient reported experiencing neck pain before this accident."}
           </Text>
         </View>
       )}
