@@ -54,13 +54,9 @@ const PDFDocumentContent = ({ reportData }: PDFDocumentContentProps) => {
       initialSeverity: '',
       currentSeverity: '',
       symptoms: [],
-      start: '', // Use 'start' instead of 'startDate' to match the type definition
-      startDateEstimated: false,
-      resolveDate: '',
-      resolveDateEstimated: false,
+      duration: '',
       resolveDays: '',
       pastHistory: '',
-      duration: '',
       hasHistory: '',
       currentlyDriving: ''
     };
