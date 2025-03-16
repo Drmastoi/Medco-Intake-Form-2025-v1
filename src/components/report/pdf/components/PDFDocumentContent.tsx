@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   Document, 
@@ -203,8 +202,8 @@ const PDFDocumentContent = ({ reportData }: PDFDocumentContentProps) => {
       initialSeverity: '',
       currentSeverity: '',
       symptoms: [],
-      // Fix property name as per TravelAnxietyData type
-      startDate: '',
+      // Using the correct property name from TravelAnxietyData type
+      start: '',
       startDateEstimated: false,
       resolveDate: '',
       resolveDateEstimated: false,

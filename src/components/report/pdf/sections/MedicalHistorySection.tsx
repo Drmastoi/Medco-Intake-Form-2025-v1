@@ -31,7 +31,15 @@ export const MedicalHistorySection = ({ formData, styles }: MedicalHistorySectio
       </View>
       
       <View style={{ marginBottom: 10 }}>
-        <Text style={styles.fieldLabel}>15.3 General Medical History</Text>
+        <Text style={styles.fieldLabel}>15.3 Expert Agreement on Exceptional Circumstances</Text>
+        <Text style={styles.fieldValue}>
+          Claimant has not claimed for any exceptional physical or psychological circumstances and injuries. I
+          agree with it considering history, examination and prognosis of the current injuries.
+        </Text>
+      </View>
+      
+      <View style={{ marginBottom: 10 }}>
+        <Text style={styles.fieldLabel}>15.4 General Medical History</Text>
         <Text style={styles.fieldValue}>
           The claimant's general medical history is unremarkable with respect to the current injuries. No significant pre-existing conditions that would have contributed to or exacerbated the injuries sustained in this accident were reported.
         </Text>
