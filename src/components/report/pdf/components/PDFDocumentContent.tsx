@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { 
   Document, 
@@ -22,6 +23,7 @@ import { SummaryOfInjuriesTableSection } from '../../sections/SummaryOfInjuriesT
 import { ConclusionSection } from '../sections/ConclusionSection';
 import { AgreementSection } from '../sections/AgreementSection';
 import { WriterInfoSection } from '../sections/WriterInfoSection';
+import { MedicalRecordsReviewSection } from '../sections/MedicalRecordsReviewSection';
 import { format } from 'date-fns';
 
 // Create styles
@@ -288,6 +290,11 @@ const PDFDocumentContent = ({ reportData }: PDFDocumentContentProps) => {
         {/* Section 10 - Lifestyle Impact */}
         <View style={styles.section}>
           <LifestyleImpactSection formData={reportData} />
+        </View>
+        
+        {/* Medical Records Review Section */}
+        <View style={styles.section}>
+          <MedicalRecordsReviewSection styles={styles} />
         </View>
         
         <View style={styles.section}>
