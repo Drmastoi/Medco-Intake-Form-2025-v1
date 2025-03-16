@@ -47,7 +47,7 @@ export const TreatmentDetailsSection = ({ formData }: { formData: any }) => {
 
   return (
     <View style={styles.section}>
-      <Text style={styles.sectionTitle}>Treatment Details</Text>
+      <Text style={styles.sectionTitle}>Section 7 - Treatment Details</Text>
       <View style={styles.grid}>
         <View style={styles.column}>
           {/* Scene of accident treatment */}

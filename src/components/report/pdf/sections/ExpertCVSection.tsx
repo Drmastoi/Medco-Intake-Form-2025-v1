@@ -9,7 +9,7 @@ interface ExpertCVSectionProps {
 export const ExpertCVSection = ({ styles }: ExpertCVSectionProps) => {
   return (
     <View style={styles.subsection}>
-      <Text style={styles.sectionHeader}>Medical Expert's Curriculum Vitae</Text>
+      <Text style={styles.sectionHeader}>Section 13 - Medical Expert's Curriculum Vitae</Text>
       
       <View style={{ marginTop: 10 }}>
         <Text style={styles.fieldLabel}>Professional Registration Details:</Text>

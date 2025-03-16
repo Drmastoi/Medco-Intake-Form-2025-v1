@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
 
 export const DeclarationSection = () => (
   <View style={styles.section}>
-    <Text style={styles.heading}>G.3 Statement of Truth</Text>
+    <Text style={styles.heading}>12.3 Statement of Truth</Text>
     <Text style={styles.text}>
       I understand that my overriding duty is to the court, both in preparing reports and in giving oral evidence. I
       have complied and will continue to comply with that duty.

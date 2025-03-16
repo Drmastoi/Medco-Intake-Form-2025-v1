@@ -1,3 +1,4 @@
+
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
 import { formatDate } from '../../utils/dateUtils';
 
@@ -22,11 +23,11 @@ const styles = StyleSheet.create({
 
 export const PreviousMedicalHistorySection = ({ formData }: { formData: any }) => (
   <View style={styles.section}>
-    <Text style={styles.subtitle}>Previous Medical History</Text>
+    <Text style={styles.subtitle}>Section 10 - Previous Medical History</Text>
     
     {/* Previous RTA */}
     <View style={styles.subsection}>
-      <Text style={styles.subtitle}>1. Previous Road Traffic Accident</Text>
+      <Text style={styles.subtitle}>10.1 Previous Road Traffic Accident</Text>
       <Text style={styles.text}>Previous RTA: {formData.previousAccident === "1" ? "Yes" : "No"}</Text>
       {formData.previousAccident === "1" && (
         <>
@@ -40,7 +41,7 @@ export const PreviousMedicalHistorySection = ({ formData }: { formData: any }) =
 
     {/* Previous Injuries Made Worse */}
     <View style={styles.subsection}>
-      <Text style={styles.subtitle}>2. Impact on Previous Injuries</Text>
+      <Text style={styles.subtitle}>10.2 Impact on Previous Injuries</Text>
       <Text style={styles.text}>Previous Injuries Made Worse: {formData.previousInjuriesWorse === "1" ? "Yes" : "No"}</Text>
       {formData.previousInjuriesWorse === "1" && (
         <>
@@ -53,7 +54,7 @@ export const PreviousMedicalHistorySection = ({ formData }: { formData: any }) =
 
     {/* Previous Medical Conditions */}
     <View style={styles.subsection}>
-      <Text style={styles.subtitle}>3. Pre-existing Medical Conditions</Text>
+      <Text style={styles.subtitle}>10.3 Pre-existing Medical Conditions</Text>
       <Text style={styles.text}>Conditions Made Worse: {formData.previousConditionWorse || "None reported"}</Text>
       {formData.previousConditionWorse && (
         <>

@@ -20,10 +20,10 @@ const LifestyleImpactSection: React.FC<LifestyleImpactSectionProps> = ({ formDat
   
   return (
     <View style={pdfStyles.subsection}>
-      <Text style={pdfStyles.sectionHeader}>Section 13 - Impact on Daily Life</Text>
+      <Text style={pdfStyles.sectionHeader}>Section 8 - Impact on Daily Life</Text>
 
       {/* Work Impact */}
-      <Text style={{ ...pdfStyles.fieldLabel, fontSize: 12, marginTop: 6, marginBottom: 4 }}>13.1 Work Capabilities</Text>
+      <Text style={{ ...pdfStyles.fieldLabel, fontSize: 12, marginTop: 6, marginBottom: 4 }}>8.1 Work Capabilities</Text>
       {lifestyle.impactOnWork ? (
         <Text style={pdfStyles.fieldValue}>
           The claimant's work capabilities were affected. 
@@ -40,7 +40,7 @@ const LifestyleImpactSection: React.FC<LifestyleImpactSectionProps> = ({ formDat
       ) : null}
 
       {/* Domestic Activities */}
-      <Text style={{ ...pdfStyles.fieldLabel, fontSize: 12, marginTop: 6, marginBottom: 4 }}>13.2 Domestic Activities</Text>
+      <Text style={{ ...pdfStyles.fieldLabel, fontSize: 12, marginTop: 6, marginBottom: 4 }}>8.2 Domestic Activities</Text>
       {lifestyle.impactOnDomestic ? (
         <Text style={pdfStyles.fieldValue}>
           The claimant's domestic activities were affected. 
@@ -53,7 +53,7 @@ const LifestyleImpactSection: React.FC<LifestyleImpactSectionProps> = ({ formDat
       )}
 
       {/* Sleep */}
-      <Text style={{ ...pdfStyles.fieldLabel, fontSize: 12, marginTop: 6, marginBottom: 4 }}>13.3 Sleep</Text>
+      <Text style={{ ...pdfStyles.fieldLabel, fontSize: 12, marginTop: 6, marginBottom: 4 }}>8.3 Sleep</Text>
       {lifestyle.impactOnSleep ? (
         <Text style={pdfStyles.fieldValue}>
           The claimant's sleep was disrupted. 
@@ -66,7 +66,7 @@ const LifestyleImpactSection: React.FC<LifestyleImpactSectionProps> = ({ formDat
       )}
 
       {/* Social Life */}
-      <Text style={{ ...pdfStyles.fieldLabel, fontSize: 12, marginTop: 6, marginBottom: 4 }}>13.4 Social Life</Text>
+      <Text style={{ ...pdfStyles.fieldLabel, fontSize: 12, marginTop: 6, marginBottom: 4 }}>8.4 Social Life</Text>
       {lifestyle.impactOnSocial ? (
         <Text style={pdfStyles.fieldValue}>
           The claimant's social life was affected. 
@@ -78,7 +78,7 @@ const LifestyleImpactSection: React.FC<LifestyleImpactSectionProps> = ({ formDat
       )}
 
       {/* Sports and Leisure */}
-      <Text style={{ ...pdfStyles.fieldLabel, fontSize: 12, marginTop: 6, marginBottom: 4 }}>13.5 Sports and Leisure</Text>
+      <Text style={{ ...pdfStyles.fieldLabel, fontSize: 12, marginTop: 6, marginBottom: 4 }}>8.5 Sports and Leisure</Text>
       {lifestyle.impactOnSports ? (
         <Text style={pdfStyles.fieldValue}>
           The claimant's sports and leisure activities were affected. 

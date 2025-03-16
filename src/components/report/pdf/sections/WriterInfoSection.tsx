@@ -9,7 +9,7 @@ interface WriterInfoSectionProps {
 export const WriterInfoSection = ({ styles }: WriterInfoSectionProps) => {
   return (
     <View style={styles.subsection}>
-      <Text style={styles.sectionHeader}>The Writer</Text>
+      <Text style={styles.sectionHeader}>Section 11 - The Writer</Text>
       
       <View style={styles.fieldRow}>
         <View style={[styles.fieldColumn, { flex: 1 }]}>
