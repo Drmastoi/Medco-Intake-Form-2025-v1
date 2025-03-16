@@ -1,24 +1,38 @@
 
 import React from 'react';
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
+import { colorScheme } from '../styles/colorScheme';
+import { typography } from '../styles/typography';
+import { spacing } from '../styles/spacing';
 
 const styles = StyleSheet.create({
   footer: {
     position: 'absolute',
-    bottom: 20,
-    left: 20,
-    right: 20,
+    bottom: spacing.md,
+    left: spacing.pageMargin,
+    right: spacing.pageMargin,
     textAlign: 'center',
-    paddingTop: 10,
-    borderTop: '1px solid #ddd',
+    paddingTop: spacing.md,
+    borderTop: `1px solid ${colorScheme.borderLight}`,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    fontSize: 8,
-    color: '#555',
+    alignItems: 'center',
+    fontSize: typography.fontSize.xs,
+    color: colorScheme.textLight,
   },
   pageNumber: {
-    fontSize: 8,
-    color: '#555',
+    fontSize: typography.fontSize.xs,
+    color: colorScheme.textSecondary,
+  },
+  confidential: {
+    fontSize: typography.fontSize.xs,
+    fontStyle: 'italic',
+    color: colorScheme.textLight,
+  },
+  logo: {
+    fontSize: typography.fontSize.sm,
+    fontWeight: typography.fontWeight.bold,
+    color: colorScheme.primary,
   },
 });
 
@@ -30,9 +44,16 @@ interface PDFFooterProps {
 
 const PDFFooter = ({ pageNumber, claimantName, today }: PDFFooterProps) => (
   <View style={styles.footer} fixed>
-    <Text>{claimantName}</Text>
-    <Text style={styles.pageNumber}>Page {pageNumber}</Text>
-    <Text>{today}</Text>
+    <View>
+      <Text style={styles.confidential}>CONFIDENTIAL</Text>
+    </View>
+    <View style={{ alignItems: 'center' }}>
+      <Text style={styles.pageNumber}>Page {pageNumber}</Text>
+      <Text>{claimantName} | {today}</Text>
+    </View>
+    <View>
+      <Text style={styles.logo}>MedLegal Report</Text>
+    </View>
   </View>
 );
 

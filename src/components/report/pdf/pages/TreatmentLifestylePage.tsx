@@ -9,6 +9,7 @@ import { MedicalHistorySection } from '../sections/MedicalHistorySection';
 import { ConclusionSection } from '../sections/ConclusionSection';
 import PDFFooter from '../components/PDFFooter';
 import { pdfStyles } from '../styles/pdfStyles';
+import { colorScheme } from '../styles/colorScheme';
 
 interface TreatmentLifestylePageProps {
   reportData: ReportData;
@@ -21,6 +22,19 @@ const TreatmentLifestylePage: React.FC<TreatmentLifestylePageProps> = ({
   claimantName, 
   today 
 }) => {
+  // Get treatment summary
+  const treatment = reportData.other?.treatment || {};
+  const hasTreatment = treatment.hasTreatment || false;
+  const treatmentOngoing = treatment.ongoing || false;
+  
+  // Get lifestyle impact summary
+  const lifestyle = reportData.other?.lifestyle || {};
+  const hasLifestyleImpact = lifestyle.impactOnWork || 
+                             lifestyle.impactOnSleep || 
+                             lifestyle.impactOnDomestic || 
+                             lifestyle.impactOnSports || 
+                             lifestyle.impactOnSocial || false;
+  
   return (
     <Page size="A4" style={pdfStyles.page}>
       <View style={pdfStyles.header}>
@@ -29,14 +43,56 @@ const TreatmentLifestylePage: React.FC<TreatmentLifestylePageProps> = ({
         </Text>
       </View>
       
-      {/* Section 9 - Treatment */}
-      <View style={pdfStyles.section}>
-        <TreatmentSection formData={reportData} styles={pdfStyles} />
+      {/* Summary box highlighting key treatment and lifestyle information */}
+      <View style={{ 
+        backgroundColor: colorScheme.altSectionBg, 
+        margin: 10, 
+        padding: 10, 
+        borderRadius: 3,
+        borderLeft: `4px solid ${colorScheme.accent}`
+      }}>
+        <Text style={{ fontSize: 12, fontWeight: 'bold', marginBottom: 5, color: colorScheme.primary }}>
+          Treatment & Impact Summary
+        </Text>
+        <View style={{ flexDirection: 'row', marginBottom: 5 }}>
+          <Text style={{ width: '50%', fontSize: 10, fontWeight: 'bold' }}>Treatment received:</Text>
+          <Text style={{ width: '50%', fontSize: 10 }}>{hasTreatment ? 'Yes' : 'No'}</Text>
+        </View>
+        {hasTreatment && (
+          <View style={{ flexDirection: 'row', marginBottom: 5 }}>
+            <Text style={{ width: '50%', fontSize: 10, fontWeight: 'bold' }}>Treatment status:</Text>
+            <Text style={{ width: '50%', fontSize: 10 }}>{treatmentOngoing ? 'Ongoing' : 'Completed'}</Text>
+          </View>
+        )}
+        <View style={{ flexDirection: 'row', marginBottom: 5 }}>
+          <Text style={{ width: '50%', fontSize: 10, fontWeight: 'bold' }}>Daily life impact:</Text>
+          <Text style={{ width: '50%', fontSize: 10 }}>{hasLifestyleImpact ? 'Yes' : 'No impact reported'}</Text>
+        </View>
+        {hasLifestyleImpact && (
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={{ width: '50%', fontSize: 10, fontWeight: 'bold' }}>Areas affected:</Text>
+            <Text style={{ width: '50%', fontSize: 10 }}>
+              {[
+                lifestyle.impactOnWork ? "Work" : null,
+                lifestyle.impactOnSleep ? "Sleep" : null,
+                lifestyle.impactOnDomestic ? "Domestic activities" : null,
+                lifestyle.impactOnSports ? "Sports/leisure" : null,
+                lifestyle.impactOnSocial ? "Social life" : null
+              ].filter(Boolean).join(", ")}
+            </Text>
+          </View>
+        )}
       </View>
       
-      {/* Section 10 - Lifestyle Impact */}
-      <View style={pdfStyles.section}>
-        <LifestyleImpactSection formData={reportData} />
+      {/* Use two-column layout for treatment and lifestyle sections */}
+      <View style={pdfStyles.twoColumns}>
+        <View style={[pdfStyles.section, pdfStyles.column]}>
+          <TreatmentSection formData={reportData} styles={pdfStyles} />
+        </View>
+        
+        <View style={[pdfStyles.section, pdfStyles.column]}>
+          <LifestyleImpactSection formData={reportData} />
+        </View>
       </View>
       
       {/* Medical Records Review Section */}

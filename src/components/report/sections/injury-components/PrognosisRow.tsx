@@ -1,6 +1,6 @@
 
 import { Text, View } from '@react-pdf/renderer';
-import { getPrognosis } from '../../utils/injuryClassification';
+import { colorScheme } from '../../pdf/styles/colorScheme';
 
 interface PrognosisRowProps {
   injuryType: string;
@@ -9,30 +9,77 @@ interface PrognosisRowProps {
   styles: any;
 }
 
-export const PrognosisRow = ({ 
-  injuryType, 
-  currentSeverity, 
-  resolveDays,
-  styles 
-}: PrognosisRowProps) => {
+export const PrognosisRow = ({ injuryType, currentSeverity, resolveDays, styles }: PrognosisRowProps) => {
+  const isResolved = currentSeverity === "4";
+  
+  const getPrognosis = (currentSeverity: string | undefined, injuryType: string): string => {
+    if (isResolved) {
+      return `Resolved after ${resolveDays || "unknown"} days.`;
+    }
+    
+    switch (currentSeverity) {
+      case "1": // Mild
+        return injuryType === "Travel Anxiety" 
+          ? "Expected to resolve within 3-6 months with appropriate support." 
+          : "Expected to resolve within 3-6 months.";
+      case "2": // Moderate
+        return injuryType === "Travel Anxiety"
+          ? "Expected to resolve within 6-9 months with appropriate psychological support."
+          : "Expected to resolve within 6-9 months with appropriate treatment.";
+      case "3": // Severe
+        return injuryType === "Travel Anxiety"
+          ? "May take 9-12 months or longer to resolve with appropriate psychological support. Some residual effects may persist."
+          : "May take 9-12 months to resolve with appropriate treatment.";
+      default:
+        return "Prognosis cannot be determined with available information.";
+    }
+  };
+  
+  // Additional details based on injury type
+  const getAdditionalPrognosisDetails = (injuryType: string, currentSeverity: string | undefined): string => {
+    if (isResolved) return "No ongoing symptoms or functional limitations remain.";
+    
+    switch (injuryType) {
+      case "Neck":
+      case "Back":
+        return currentSeverity === "3" 
+          ? "Physiotherapy recommended to aid recovery and prevent chronic issues."
+          : "Regular stretching and maintaining good posture will aid recovery.";
+      case "Shoulder":
+        return currentSeverity === "3"
+          ? "Physiotherapy and targeted exercises recommended to restore full range of motion."
+          : "Gentle shoulder exercises and avoiding heavy lifting will aid recovery.";
+      case "Headache":
+        return "Managing stress levels and ensuring adequate hydration and rest will aid recovery.";
+      case "Travel Anxiety":
+        return "Gradual exposure to travel situations and potentially CBT (Cognitive Behavioral Therapy) may be beneficial.";
+      default:
+        return "";
+    }
+  };
+
+  const prognosis = getPrognosis(currentSeverity, injuryType);
+  const additionalDetails = getAdditionalPrognosisDetails(injuryType, currentSeverity);
+  
   return (
     <View style={styles.injuryRow}>
       <Text style={styles.injuryLabel}>Prognosis</Text>
-      <Text style={styles.injuryValue}>
-        {injuryType === 'Travel Anxiety' ?
-          (currentSeverity === "4" ? 
-            `Resolved within ${resolveDays || "1"} days from the date of accident.` :
-            currentSeverity === "1" ? 
-              "3 months from the date of accident." :
-            currentSeverity === "2" ? 
-              "6 months from the date of accident." :
-            currentSeverity === "3" ? 
-              "9 months from the date of accident. (The extended prognosis is due to the severity of the symptoms.)" :
-            "6 months from the date of accident.") :
-          getPrognosis(currentSeverity || "")
-        }
-        {currentSeverity === "3" && injuryType !== 'Travel Anxiety' && " - The extended prognosis is due to the severity of the symptoms."}
-      </Text>
+      <View style={{ width: '70%' }}>
+        <Text style={styles.injuryValue}>{prognosis}</Text>
+        {!isResolved && (
+          <View style={{ 
+            marginTop: 3,
+            backgroundColor: colorScheme.altSectionBg,
+            padding: 5,
+            borderRadius: 2,
+            borderLeft: `3px solid ${colorScheme.info}`
+          }}>
+            <Text style={{ fontSize: 8, color: colorScheme.textSecondary }}>
+              {additionalDetails}
+            </Text>
+          </View>
+        )}
+      </View>
     </View>
   );
 };
