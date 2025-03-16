@@ -4,74 +4,55 @@ import { colorScheme } from '../../pdf/styles/colorScheme';
 
 interface TreatmentRowProps {
   injuryType: string;
-  currentSeverity: string | undefined;
+  severity: string | undefined;
   styles: any;
 }
 
-export const TreatmentRow = ({ injuryType, currentSeverity, styles }: TreatmentRowProps) => {
-  const isResolved = currentSeverity === "4";
+export const TreatmentRow = ({ injuryType, severity, styles }: TreatmentRowProps) => {
   
-  const getTreatmentRecommendation = (currentSeverity: string | undefined, injuryType: string): string => {
-    if (isResolved) {
-      return "No further treatment required.";
-    }
+  const getTreatmentRecommendation = (type: string, severity: string | undefined): string => {
+    const severityLevel = severity ? parseInt(severity) : 1;
     
-    const severityLevel = currentSeverity === "3" ? "severe" : 
-                           currentSeverity === "2" ? "moderate" :
-                           "mild";
-    
-    switch (injuryType) {
-      case "Neck":
-        return `For ${severityLevel} neck pain: Analgesics, heat/cold therapy, gentle stretching exercises. ${severityLevel === "severe" || severityLevel === "moderate" ? "Physiotherapy recommended." : ""}`;
-      case "Back":
-        return `For ${severityLevel} back pain: Analgesics, heat/cold therapy, maintaining good posture. ${severityLevel === "severe" || severityLevel === "moderate" ? "Physiotherapy recommended." : ""}`;
-      case "Shoulder":
-        return `For ${severityLevel} shoulder pain: Analgesics, heat/cold therapy, gentle mobility exercises. ${severityLevel === "severe" || severityLevel === "moderate" ? "Physiotherapy recommended." : ""}`;
-      case "Headache":
-        return `For ${severityLevel} headache: Analgesics, ensuring adequate hydration, rest, and stress management. ${severityLevel === "severe" ? "GP consultation recommended if persistent." : ""}`;
-      case "Travel Anxiety":
-        return `For ${severityLevel} travel anxiety: ${severityLevel === "severe" ? "Psychological therapy recommended (CBT)." : "Gradual exposure techniques, relaxation methods, and possibly counseling."}`;
+    switch (type) {
+      case 'Neck':
+        return severityLevel === 3 
+          ? 'Physiotherapy recommended. In the interim, over-the-counter analgesics as needed for pain relief.' 
+          : 'Self-management with gentle stretching exercises. Over-the-counter analgesics as needed for pain relief.';
+      case 'Back':
+        return severityLevel === 3 
+          ? 'Physiotherapy recommended. In the interim, over-the-counter analgesics as needed for pain relief.'
+          : 'Self-management with core strengthening exercises. Over-the-counter analgesics as needed for pain relief.';
+      case 'Shoulder':
+        return severityLevel === 3 
+          ? 'Physiotherapy recommended with targeted range-of-motion exercises. Over-the-counter analgesics as needed for pain relief.'
+          : 'Self-management with gentle shoulder exercises. Over-the-counter analgesics as needed for pain relief.';
+      case 'Headache':
+        return 'Over-the-counter analgesics as needed. Stress management techniques and adequate hydration recommended.';
+      case 'Travel Anxiety':
+        return severityLevel === 3 
+          ? 'Referral to psychological services for Cognitive Behavioral Therapy should be considered if symptoms persist beyond 3 months.'
+          : 'Self-help strategies including gradual exposure techniques and relaxation exercises.';
       default:
-        return "Standard pain management recommended.";
-    }
-  };
-  
-  // Additional self-care advice based on injury type
-  const getSelfCareAdvice = (injuryType: string): string => {
-    switch (injuryType) {
-      case "Neck":
-        return "Maintain good posture, take regular breaks from prolonged sitting, use suitable pillow height when sleeping.";
-      case "Back":
-        return "Maintain good posture, use proper lifting techniques, consider ergonomic adjustments in workplace setup.";
-      case "Shoulder":
-        return "Avoid heavy lifting, take regular breaks from repetitive movements, use proper technique during activities.";
-      case "Headache":
-        return "Ensure regular sleep patterns, stay hydrated, manage stress levels, limit screen time.";
-      case "Travel Anxiety":
-        return "Practice relaxation techniques, gradually expose yourself to travel situations, develop a coping strategy.";
-      default:
-        return "";
+        return 'Symptomatic management with over-the-counter medications as needed.';
     }
   };
 
-  const treatment = getTreatmentRecommendation(currentSeverity, injuryType);
-  const selfCare = !isResolved ? getSelfCareAdvice(injuryType) : "";
+  const treatment = getTreatmentRecommendation(injuryType, severity);
   
   return (
     <View style={styles.injuryRow}>
       <Text style={styles.injuryLabel}>Treatment</Text>
       <View style={{ width: '70%' }}>
         <Text style={styles.injuryValue}>{treatment}</Text>
-        {!isResolved && selfCare && (
+        {(injuryType === 'Neck' || injuryType === 'Back' || injuryType === 'Shoulder') && severity === "3" && (
           <View style={{ 
-            marginTop: 3,
-            backgroundColor: colorScheme.altSectionBg,
-            padding: 5,
-            borderRadius: 2
+            backgroundColor: colorScheme.altSectionBg, 
+            padding: 5, 
+            marginTop: 3, 
+            borderRadius: 2 
           }}>
             <Text style={{ fontSize: 8, fontStyle: 'italic', color: colorScheme.textSecondary }}>
-              <Text style={{ fontWeight: 'bold' }}>Self-care advice: </Text>
-              {selfCare}
+              Note: Early intervention with physiotherapy may reduce recovery time and improve long-term outcomes.
             </Text>
           </View>
         )}

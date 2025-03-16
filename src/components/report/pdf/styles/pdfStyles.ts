@@ -63,5 +63,39 @@ export const pdfStyles = StyleSheet.create({
   inlineLabel: {
     fontWeight: 'bold',
     fontFamily: 'Helvetica-Bold'
+  },
+  // Add missing styles for the two-column layout
+  twoColumns: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    margin: 10
+  },
+  column: {
+    width: '48%'
+  },
+  // Add additional styles for status badges
+  statusBadge: {
+    padding: 3,
+    paddingHorizontal: 8,
+    borderRadius: 10,
+    fontSize: 8,
+    alignSelf: 'flex-start',
+    marginLeft: 5
+  },
+  statusMild: {
+    backgroundColor: colorScheme.info,
+    color: colorScheme.textInverted
+  },
+  statusModerate: {
+    backgroundColor: colorScheme.warning,
+    color: colorScheme.textInverted
+  },
+  statusSevere: {
+    backgroundColor: colorScheme.error,
+    color: colorScheme.textInverted
+  },
+  statusResolved: {
+    backgroundColor: colorScheme.success,
+    color: colorScheme.textInverted
   }
 });

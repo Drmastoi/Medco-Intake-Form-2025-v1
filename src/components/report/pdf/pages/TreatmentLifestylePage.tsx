@@ -94,7 +94,7 @@ const TreatmentLifestylePage: React.FC<TreatmentLifestylePageProps> = ({
         )}
       </View>
       
-      {/* Use two-column layout for treatment and lifestyle sections */}
+      {/* Two-column layout using the new styles */}
       <View style={pdfStyles.twoColumns}>
         <View style={[pdfStyles.section, pdfStyles.column]}>
           <TreatmentSection formData={reportData} styles={pdfStyles} />
@@ -115,7 +115,7 @@ const TreatmentLifestylePage: React.FC<TreatmentLifestylePageProps> = ({
       </View>
       
       <View style={pdfStyles.section}>
-        <ConclusionSection formData={reportData} styles={pdfStyles} />
+        <ConclusionSection styles={pdfStyles} formData={reportData} />
       </View>
       
       <PDFFooter pageNumber={3} claimantName={claimantName} today={today} />
