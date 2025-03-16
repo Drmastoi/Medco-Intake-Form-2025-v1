@@ -1,43 +1,42 @@
 
 import React from 'react';
 import { View, Text } from '@react-pdf/renderer';
-import { ReportData } from '@/types/reportTypes';
-import { pdfStyles } from '../styles/pdfStyles';
+import { layoutStyles } from '../styles/layoutStyles';
 import { textStyles } from '../styles/textStyles';
 import { colorScheme } from '../styles/colorScheme';
 
 interface MedicalHistorySectionProps {
-  reportData: ReportData;
-  reportType?: "claimant" | "expert";
+  medicalHistory: {
+    exceptionalInjuries: boolean;
+    exceptionalInjuriesDetails: string;
+  };
 }
 
-const MedicalHistorySection = ({ reportData, reportType = "expert" }: MedicalHistorySectionProps) => {
-  const medicalHistory = reportData.other?.medicalHistory;
-  
-  if (!medicalHistory) {
-    return null;
-  }
-  
+const MedicalHistorySection: React.FC<MedicalHistorySectionProps> = ({ medicalHistory }) => {
+  const hasExceptionalHistory = medicalHistory.exceptionalInjuries;
+
   return (
-    <View style={pdfStyles.sectionContainer}>
-      <Text style={[textStyles.sectionTitle, { marginBottom: 5 }]}>Medical History</Text>
-      
-      {medicalHistory.exceptionalInjuries ? (
-        <View>
-          <Text style={[textStyles.regularText, { marginBottom: 5, fontWeight: 'bold' }]}>
-            Relevant pre-existing injuries or conditions:
+    <View style={[layoutStyles.section, { backgroundColor: colorScheme.sectionBg }]}>
+      <Text style={textStyles.sectionTitle}>Medical History</Text>
+
+      <View style={[layoutStyles.subsection, { backgroundColor: colorScheme.sectionBg }]}>
+        <Text style={textStyles.subHeaderText}>Relevant Medical History</Text>
+        
+        {!hasExceptionalHistory ? (
+          <Text style={textStyles.normalText}>
+            The claimant reports no exceptional medical history that would affect recovery from the injuries sustained in this accident.
           </Text>
-          <View style={{ backgroundColor: colorScheme.altSectionBg, padding: 10, borderRadius: 5 }}>
-            <Text style={textStyles.regularText}>
-              {medicalHistory.exceptionalInjuriesDetails || "Pre-existing conditions reported but no details provided"}
+        ) : (
+          <View>
+            <Text style={textStyles.normalText}>
+              The claimant reports the following exceptional medical history that may affect recovery from the injuries:
+            </Text>
+            <Text style={[textStyles.normalText, { marginTop: 8, fontStyle: 'italic' }]}>
+              {medicalHistory.exceptionalInjuriesDetails || "Details not provided"}
             </Text>
           </View>
-        </View>
-      ) : (
-        <View style={{ backgroundColor: colorScheme.altSectionBg, padding: 10, borderRadius: 5 }}>
-          <Text style={textStyles.regularText}>No pre-existing injuries or medical conditions reported.</Text>
-        </View>
-      )}
+        )}
+      </View>
     </View>
   );
 };

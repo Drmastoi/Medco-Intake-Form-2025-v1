@@ -18,6 +18,10 @@ export default function Index() {
   
   const form = useForm<FormSchema>({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+      fullName: "",
+      // Add other default values if needed
+    }
   });
 
   const handlePreviewReport = (type: "claimant" | "expert") => {
@@ -88,6 +92,10 @@ export default function Index() {
           isPreview={true}
         />
       )}
+      
+      <div className="mt-8">
+        <SamplePDFGenerator />
+      </div>
     </div>
   );
 }

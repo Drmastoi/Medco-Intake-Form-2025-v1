@@ -1,66 +1,42 @@
 
 import React from 'react';
-import { Page, View, Text } from '@react-pdf/renderer';
-import { pdfStyles } from '../styles/pdfStyles';
-import { textStyles } from '../styles/textStyles';
+import { View, Text } from '@react-pdf/renderer';
 import { layoutStyles } from '../styles/layoutStyles';
-import { ReportData } from '@/types/reportTypes';
-import PDFFooter from '../components/PDFFooter';
-import { TreatmentSection } from '../sections/TreatmentSection';
-import { LifestyleImpactSection } from '../sections/LifestyleImpactSection';
-import { MedicalHistorySection } from '../sections/MedicalHistorySection';
-import { OtherInjuriesSection } from '../sections/OtherInjuriesSection';
-import { BruisingSection } from '../sections/BruisingSection';
+import { textStyles } from '../styles/textStyles';
+
+// Import section components
+import TreatmentSection from '../sections/TreatmentSection';
+import LifestyleImpactSection from '../sections/LifestyleImpactSection';
+import MedicalHistorySection from '../sections/MedicalHistorySection';
+import OtherInjuriesSection from '../sections/OtherInjuriesSection';
+import BruisingSection from '../sections/BruisingSection';
+import TravelAnxietyComponent from '../sections/injury-components/TravelAnxietyComponent';
 
 interface TreatmentLifestylePageProps {
-  reportData: ReportData;
-  claimantName: string;
-  today: string;
-  reportType: "claimant" | "expert";
+  reportData: any;
 }
 
-const TreatmentLifestylePage = ({ reportData, claimantName, today, reportType }: TreatmentLifestylePageProps) => {
+const TreatmentLifestylePage: React.FC<TreatmentLifestylePageProps> = ({ reportData }) => {
   return (
-    <Page size="A4" style={layoutStyles.page}>
-      <View style={layoutStyles.pageContainer}>
-        <View style={pdfStyles.section}>
-          <Text style={textStyles.headerText}>
-            Treatment and Lifestyle Impact {reportType === "expert" ? "(Expert Copy)" : "(Claimant Copy)"}
-          </Text>
-          <Text style={textStyles.subHeaderText}>
-            Report Date: {today}
-          </Text>
-        </View>
+    <View style={layoutStyles.page}>
+      <View style={layoutStyles.pageContent}>
+        <Text style={textStyles.sectionTitle}>Treatment and Daily Life Impact</Text>
         
-        <View style={layoutStyles.content}>
-          <BruisingSection 
-            bruisingData={reportData.other.bruising}
-          />
-
-          <OtherInjuriesSection 
-            otherInjuriesData={reportData.other.otherInjuries}
-          />
-          
-          <TreatmentSection 
-            treatmentData={reportData.other.treatment}
-          />
-          
-          <LifestyleImpactSection 
-            lifestyleData={reportData.other.lifestyle}
-          />
-          
-          <MedicalHistorySection 
-            medicalHistoryData={reportData.other.medicalHistory}
-          />
-        </View>
+        <TreatmentSection treatment={reportData.other.treatment} />
+        
+        <BruisingSection bruising={reportData.other.bruising} />
+        
+        <OtherInjuriesSection otherInjuries={reportData.other.otherInjuries} />
+        
+        {reportData.travelAnxiety.hasAnxiety && (
+          <TravelAnxietyComponent travelAnxiety={reportData.travelAnxiety} />
+        )}
+        
+        <LifestyleImpactSection lifestyle={reportData.other.lifestyle} />
+        
+        <MedicalHistorySection medicalHistory={reportData.other.medicalHistory} />
       </View>
-      
-      <PDFFooter 
-        pageNumber={3} 
-        claimantName={claimantName} 
-        date={today} 
-      />
-    </Page>
+    </View>
   );
 };
 

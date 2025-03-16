@@ -1,64 +1,65 @@
 
 import React from 'react';
 import { View, Text } from '@react-pdf/renderer';
-import { ReportData } from '@/types/reportTypes';
-import { pdfStyles } from '../styles/pdfStyles';
-import { textStyles } from '../styles/textStyles';
 import { injuryStyles } from '../styles/injuryStyles';
+import { textStyles } from '../styles/textStyles';
+import { layoutStyles } from '../styles/layoutStyles';
 import { colorScheme } from '../styles/colorScheme';
-import { formatSeverity } from '../utils/formatUtils';
 
 interface OtherInjuriesSectionProps {
-  reportData: ReportData;
-  reportType?: "claimant" | "expert";
+  otherInjuries: {
+    hasOtherInjury: boolean;
+    name?: string;
+    start?: string;
+    initialSeverity?: string;
+    currentSeverity?: string;
+    resolveDays?: string;
+  };
 }
 
-const formatResolveDays = (days: string | undefined) => {
-  if (!days) return "Not specified";
-  if (days === "0") return "Ongoing";
-  return `${days} days`;
-};
-
-const OtherInjuriesSection = ({ reportData, reportType = "expert" }: OtherInjuriesSectionProps) => {
-  if (!reportData.other?.otherInjuries?.hasOtherInjury) {
-    return null;
+const OtherInjuriesSection: React.FC<OtherInjuriesSectionProps> = ({ otherInjuries }) => {
+  if (!otherInjuries.hasOtherInjury) {
+    return (
+      <View style={layoutStyles.section}>
+        <Text style={textStyles.sectionTitle}>Other Injuries</Text>
+        <Text style={textStyles.normalText}>The claimant did not report any other injuries following the accident.</Text>
+      </View>
+    );
   }
-  
-  const injury = reportData.other.otherInjuries;
-  
+
   return (
-    <View style={pdfStyles.section}>
+    <View style={layoutStyles.section}>
       <Text style={textStyles.sectionTitle}>Other Injuries</Text>
       
       <View style={injuryStyles.injurySection}>
         <View style={injuryStyles.injuryHeader}>
-          <Text style={injuryStyles.injuryHeaderText}>{injury.name || "Additional Injury"}</Text>
+          <Text style={textStyles.headerText}>{otherInjuries.name || "Additional Injury"} Details</Text>
         </View>
         
         <View style={injuryStyles.injuryContent}>
           <View style={injuryStyles.injuryRow}>
-            <Text style={textStyles.labelText}>Injury type:</Text>
-            <Text style={textStyles.valueText}>{injury.name || "Not specified"}</Text>
+            <Text style={textStyles.boldText}>Type of Injury:</Text>
+            <Text style={textStyles.normalText}>{otherInjuries.name || "Not specified"}</Text>
           </View>
           
           <View style={injuryStyles.injuryRow}>
-            <Text style={textStyles.labelText}>When started:</Text>
-            <Text style={textStyles.valueText}>{injury.start || "Not specified"}</Text>
+            <Text style={textStyles.boldText}>When Started:</Text>
+            <Text style={textStyles.normalText}>{otherInjuries.start || "Not specified"}</Text>
           </View>
           
           <View style={injuryStyles.injuryRow}>
-            <Text style={textStyles.labelText}>Initial severity:</Text>
-            <Text style={textStyles.valueText}>{formatSeverity(injury.initialSeverity)}</Text>
+            <Text style={textStyles.boldText}>Initial Severity:</Text>
+            <Text style={textStyles.normalText}>{otherInjuries.initialSeverity || "Not specified"}</Text>
           </View>
           
           <View style={injuryStyles.injuryRow}>
-            <Text style={textStyles.labelText}>Current severity:</Text>
-            <Text style={textStyles.valueText}>{formatSeverity(injury.currentSeverity)}</Text>
+            <Text style={textStyles.boldText}>Current Severity:</Text>
+            <Text style={textStyles.normalText}>{otherInjuries.currentSeverity || "Not specified"}</Text>
           </View>
           
           <View style={injuryStyles.injuryRow}>
-            <Text style={textStyles.labelText}>Expected resolution:</Text>
-            <Text style={textStyles.valueText}>{formatResolveDays(injury.resolveDays)}</Text>
+            <Text style={textStyles.boldText}>Days to Resolve:</Text>
+            <Text style={textStyles.normalText}>{otherInjuries.resolveDays || "Not specified"}</Text>
           </View>
         </View>
       </View>

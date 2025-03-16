@@ -37,3 +37,5 @@ export const WorkImpact = ({ formData }: WorkImpactProps) => {
     </View>
   );
 };
+
+export default WorkImpact;

@@ -1,138 +1,117 @@
 
 import React from 'react';
 import { View, Text } from '@react-pdf/renderer';
-import { ReportData } from '@/types/reportTypes';
-import { pdfStyles } from '../styles/pdfStyles';
+import { layoutStyles } from '../styles/layoutStyles';
 import { textStyles } from '../styles/textStyles';
-import { colorScheme } from '../styles/colorScheme';
 import { tableStyles } from '../styles/tableStyles';
+import { colorScheme } from '../styles/colorScheme';
+import { formatCheckboxList } from '../utils/formatUtils';
 
 interface LifestyleImpactSectionProps {
-  reportData: ReportData;
-  reportType?: "claimant" | "expert";
+  lifestyle: {
+    impactOnWork: boolean;
+    timeOffWork?: string;
+    workRestrictions?: string[];
+    impactOnSleep: boolean;
+    sleepIssues?: string[];
+    impactOnDomestic: boolean;
+    domesticIssues?: string[];
+    impactOnSports: boolean;
+    sportsActivities?: string;
+    sportsDuration?: string;
+    impactOnSocial: boolean;
+    socialDetails?: string;
+  };
 }
 
-const LifestyleImpactSection = ({ reportData, reportType = "expert" }: LifestyleImpactSectionProps) => {
-  const lifestyle = reportData.other?.lifestyle;
-  
-  if (!lifestyle) {
-    return null;
-  }
-  
-  const hasAnyImpact = 
-    lifestyle.impactOnWork || 
-    lifestyle.impactOnSleep || 
-    lifestyle.impactOnDomestic || 
-    lifestyle.impactOnSports || 
-    lifestyle.impactOnSocial;
-  
-  if (!hasAnyImpact) {
-    return (
-      <View style={pdfStyles.sectionContainer}>
-        <Text style={[textStyles.sectionTitle, { marginBottom: 5 }]}>Impact on Daily Life</Text>
-        <View style={{ backgroundColor: colorScheme.altSectionBg, padding: 10, borderRadius: 5 }}>
-          <Text style={textStyles.regularText}>No impact on daily life activities reported.</Text>
-        </View>
-      </View>
-    );
-  }
-  
+const LifestyleImpactSection: React.FC<LifestyleImpactSectionProps> = ({ lifestyle }) => {
+  const hasAnyImpact = lifestyle.impactOnWork || 
+                        lifestyle.impactOnSleep || 
+                        lifestyle.impactOnDomestic || 
+                        lifestyle.impactOnSports || 
+                        lifestyle.impactOnSocial;
+
   return (
-    <View style={pdfStyles.sectionContainer}>
-      <Text style={[textStyles.sectionTitle, { marginBottom: 10 }]}>Impact on Daily Life</Text>
-      
-      <View style={tableStyles.table}>
-        {/* Work Impact */}
-        {lifestyle.impactOnWork && (
-          <View style={tableStyles.tableRow}>
-            <View style={tableStyles.tableCol1}>
-              <Text style={tableStyles.tableHeader}>Work</Text>
+    <View style={[layoutStyles.section, { backgroundColor: colorScheme.sectionBg }]}>
+      <Text style={textStyles.sectionTitle}>Lifestyle Impact</Text>
+
+      {!hasAnyImpact ? (
+        <Text style={textStyles.normalText}>The claimant reports no significant lifestyle impact from the injuries sustained.</Text>
+      ) : (
+        <View>
+          <View style={tableStyles.tableContainer}>
+            <View style={tableStyles.tableHeader}>
+              <Text style={[textStyles.boldText, { flex: 1 }]}>Area of Impact</Text>
+              <Text style={[textStyles.boldText, { flex: 2 }]}>Details</Text>
             </View>
-            <View style={tableStyles.tableCol2}>
-              {lifestyle.timeOffWork && (
-                <Text style={tableStyles.tableCell}>Time off work: {lifestyle.timeOffWork}</Text>
-              )}
-              {lifestyle.workRestrictions && lifestyle.workRestrictions.length > 0 && (
-                <Text style={tableStyles.tableCell}>Restrictions: {lifestyle.workRestrictions.join(', ')}</Text>
-              )}
-              {lifestyle.workImpactDate && (
-                <Text style={tableStyles.tableCell}>Impact began: {lifestyle.workImpactDate}</Text>
-              )}
-            </View>
+
+            {lifestyle.impactOnWork && (
+              <View style={tableStyles.tableRow}>
+                <Text style={[textStyles.normalText, { flex: 1 }]}>Work</Text>
+                <View style={{ flex: 2 }}>
+                  {lifestyle.timeOffWork && (
+                    <Text style={textStyles.normalText}>Time off work: {lifestyle.timeOffWork} days</Text>
+                  )}
+                  {lifestyle.workRestrictions && lifestyle.workRestrictions.length > 0 && (
+                    <Text style={textStyles.normalText}>
+                      Difficulties with: {formatCheckboxList(lifestyle.workRestrictions)}
+                    </Text>
+                  )}
+                </View>
+              </View>
+            )}
+
+            {lifestyle.impactOnSleep && (
+              <View style={tableStyles.tableRow}>
+                <Text style={[textStyles.normalText, { flex: 1 }]}>Sleep</Text>
+                <Text style={[textStyles.normalText, { flex: 2 }]}>
+                  {lifestyle.sleepIssues && lifestyle.sleepIssues.length > 0 
+                    ? `Experienced: ${formatCheckboxList(lifestyle.sleepIssues)}`
+                    : "Sleep was affected but no specific issues reported."}
+                </Text>
+              </View>
+            )}
+
+            {lifestyle.impactOnDomestic && (
+              <View style={tableStyles.tableRow}>
+                <Text style={[textStyles.normalText, { flex: 1 }]}>Domestic Activities</Text>
+                <Text style={[textStyles.normalText, { flex: 2 }]}>
+                  {lifestyle.domesticIssues && lifestyle.domesticIssues.length > 0 
+                    ? `Difficulties with: ${formatCheckboxList(lifestyle.domesticIssues)}`
+                    : "Domestic activities were affected but no specific issues reported."}
+                </Text>
+              </View>
+            )}
+
+            {lifestyle.impactOnSports && (
+              <View style={tableStyles.tableRow}>
+                <Text style={[textStyles.normalText, { flex: 1 }]}>Sports/Leisure</Text>
+                <View style={{ flex: 2 }}>
+                  {lifestyle.sportsActivities && (
+                    <Text style={textStyles.normalText}>
+                      Activities affected: {lifestyle.sportsActivities}
+                    </Text>
+                  )}
+                  {lifestyle.sportsDuration && (
+                    <Text style={textStyles.normalText}>
+                      Duration of impact: {lifestyle.sportsDuration}
+                    </Text>
+                  )}
+                </View>
+              </View>
+            )}
+
+            {lifestyle.impactOnSocial && (
+              <View style={tableStyles.tableRow}>
+                <Text style={[textStyles.normalText, { flex: 1 }]}>Social Life</Text>
+                <Text style={[textStyles.normalText, { flex: 2 }]}>
+                  {lifestyle.socialDetails || "Social life was affected but no specific details provided."}
+                </Text>
+              </View>
+            )}
           </View>
-        )}
-        
-        {/* Sleep Impact */}
-        {lifestyle.impactOnSleep && (
-          <View style={tableStyles.tableRow}>
-            <View style={tableStyles.tableCol1}>
-              <Text style={tableStyles.tableHeader}>Sleep</Text>
-            </View>
-            <View style={tableStyles.tableCol2}>
-              {lifestyle.sleepIssues && lifestyle.sleepIssues.length > 0 && (
-                <Text style={tableStyles.tableCell}>Issues: {lifestyle.sleepIssues.join(', ')}</Text>
-              )}
-              {lifestyle.sleepImpactDate && (
-                <Text style={tableStyles.tableCell}>Impact began: {lifestyle.sleepImpactDate}</Text>
-              )}
-            </View>
-          </View>
-        )}
-        
-        {/* Domestic Activities Impact */}
-        {lifestyle.impactOnDomestic && (
-          <View style={tableStyles.tableRow}>
-            <View style={tableStyles.tableCol1}>
-              <Text style={tableStyles.tableHeader}>Domestic Activities</Text>
-            </View>
-            <View style={tableStyles.tableCol2}>
-              {lifestyle.domesticIssues && lifestyle.domesticIssues.length > 0 && (
-                <Text style={tableStyles.tableCell}>Affected activities: {lifestyle.domesticIssues.join(', ')}</Text>
-              )}
-              {lifestyle.domesticImpactDate && (
-                <Text style={tableStyles.tableCell}>Impact began: {lifestyle.domesticImpactDate}</Text>
-              )}
-            </View>
-          </View>
-        )}
-        
-        {/* Sports/Leisure Activities Impact */}
-        {lifestyle.impactOnSports && (
-          <View style={tableStyles.tableRow}>
-            <View style={tableStyles.tableCol1}>
-              <Text style={tableStyles.tableHeader}>Sports & Leisure</Text>
-            </View>
-            <View style={tableStyles.tableCol2}>
-              {lifestyle.sportsActivities && (
-                <Text style={tableStyles.tableCell}>Affected activities: {lifestyle.sportsActivities}</Text>
-              )}
-              {lifestyle.sportsDuration && (
-                <Text style={tableStyles.tableCell}>Duration of limitation: {lifestyle.sportsDuration}</Text>
-              )}
-              {lifestyle.sportsImpactDate && (
-                <Text style={tableStyles.tableCell}>Impact began: {lifestyle.sportsImpactDate}</Text>
-              )}
-            </View>
-          </View>
-        )}
-        
-        {/* Social Life Impact */}
-        {lifestyle.impactOnSocial && (
-          <View style={tableStyles.tableRow}>
-            <View style={tableStyles.tableCol1}>
-              <Text style={tableStyles.tableHeader}>Social Life</Text>
-            </View>
-            <View style={tableStyles.tableCol2}>
-              {lifestyle.socialDetails && (
-                <Text style={tableStyles.tableCell}>{lifestyle.socialDetails}</Text>
-              )}
-              {lifestyle.socialImpactDate && (
-                <Text style={tableStyles.tableCell}>Impact began: {lifestyle.socialImpactDate}</Text>
-              )}
-            </View>
-          </View>
-        )}
-      </View>
+        </View>
+      )}
     </View>
   );
 };
