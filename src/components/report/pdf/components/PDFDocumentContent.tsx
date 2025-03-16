@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { 
   Document, 
@@ -23,6 +24,7 @@ import { ConclusionSection } from '../sections/ConclusionSection';
 import { AgreementSection } from '../sections/AgreementSection';
 import { WriterInfoSection } from '../sections/WriterInfoSection';
 import { MedicalRecordsReviewSection } from '../sections/MedicalRecordsReviewSection';
+import { ExpertCVSection } from '../sections/ExpertCVSection';
 import { format } from 'date-fns';
 
 // Create styles
@@ -201,7 +203,8 @@ const PDFDocumentContent = ({ reportData }: PDFDocumentContentProps) => {
       initialSeverity: '',
       currentSeverity: '',
       symptoms: [],
-      start: '',
+      // Fix property name as per TravelAnxietyData type
+      startDate: '',
       startDateEstimated: false,
       resolveDate: '',
       resolveDateEstimated: false,
@@ -382,6 +385,21 @@ const PDFDocumentContent = ({ reportData }: PDFDocumentContentProps) => {
         <AgreementSection claimantName={claimantName} />
         
         <Footer pageNumber={4} claimantName={claimantName} today={today} />
+      </Page>
+      
+      {/* Fifth Page - Expert CV */}
+      <Page size="A4" style={styles.page}>
+        <View style={styles.header}>
+          <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
+            Expert Information
+          </Text>
+        </View>
+        
+        <View style={styles.section}>
+          <ExpertCVSection styles={styles} />
+        </View>
+        
+        <Footer pageNumber={5} claimantName={claimantName} today={today} />
       </Page>
     </Document>
   );
