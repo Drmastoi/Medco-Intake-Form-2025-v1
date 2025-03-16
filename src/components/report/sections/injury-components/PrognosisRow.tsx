@@ -19,17 +19,11 @@ export const PrognosisRow = ({ injuryType, currentSeverity, resolveDays, styles 
     
     switch (currentSeverity) {
       case "1": // Mild
-        return injuryType === "Travel Anxiety" 
-          ? "Expected to resolve within 3-6 months with appropriate support." 
-          : "Expected to resolve within 3-6 months.";
+        return "3 months from date of accident.";
       case "2": // Moderate
-        return injuryType === "Travel Anxiety"
-          ? "Expected to resolve within 6-9 months with appropriate psychological support."
-          : "Expected to resolve within 6-9 months with appropriate treatment.";
+        return "6 months from date of accident.";
       case "3": // Severe
-        return injuryType === "Travel Anxiety"
-          ? "May take 9-12 months or longer to resolve with appropriate psychological support. Some residual effects may persist."
-          : "May take 9-12 months to resolve with appropriate treatment.";
+        return "9 months from date of accident. (Prolonged prognosis is due to severity of symptoms)";
       default:
         return "Prognosis cannot be determined with available information.";
     }

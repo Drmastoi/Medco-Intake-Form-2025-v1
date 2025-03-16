@@ -1,3 +1,4 @@
+
 export const getOnsetText = (onset: string) => {
   switch (onset) {
     case "1": return "Same day";
@@ -23,10 +24,18 @@ export const getPrognosis = (severity: string, resolveDays: string | undefined) 
   }
   
   switch (severity) {
-    case "1": return "3 MONTHS";
-    case "2": return "6 MONTHS";
-    case "3": return "9 MONTHS";
-    default: return "6 MONTHS";
+    case "1": return "3 MONTHS FROM DATE OF ACCIDENT";
+    case "2": return "6 MONTHS FROM DATE OF ACCIDENT";
+    case "3": return "9 MONTHS FROM DATE OF ACCIDENT (Prolonged prognosis is due to severity of symptoms)";
+    default: return "6 MONTHS FROM DATE OF ACCIDENT";
+  }
+};
+
+export const getTreatmentRecommendation = (severity: string) => {
+  if (severity === "4") {
+    return "Pain killers if required";
+  } else {
+    return "Physiotherapy recommended. Number of sessions to be determined by the physiotherapist";
   }
 };
 
@@ -39,7 +48,7 @@ export const prepareWhiplashInjuries = (formData: any) => {
       onset: getOnsetText(formData.neckPainStart),
       initialSeverity: getSeverityText(formData.neckPainInitialSeverity),
       currentSeverity: getSeverityText(formData.neckPainCurrentSeverity),
-      treatment: formData.neckPainCurrentSeverity === "4" ? "Pain killers if required" : "Physiotherapy and pain management",
+      treatment: getTreatmentRecommendation(formData.neckPainCurrentSeverity),
       prognosis: getPrognosis(formData.neckPainCurrentSeverity, formData.neckPainResolveDays),
     });
   }
@@ -50,7 +59,7 @@ export const prepareWhiplashInjuries = (formData: any) => {
       onset: getOnsetText(formData.shoulderPainStart),
       initialSeverity: getSeverityText(formData.shoulderPainInitialSeverity),
       currentSeverity: getSeverityText(formData.shoulderPainCurrentSeverity),
-      treatment: formData.shoulderPainCurrentSeverity === "4" ? "Pain killers if required" : "Physiotherapy and pain management",
+      treatment: getTreatmentRecommendation(formData.shoulderPainCurrentSeverity),
       prognosis: getPrognosis(formData.shoulderPainCurrentSeverity, formData.shoulderPainResolveDays),
     });
   }
@@ -61,7 +70,7 @@ export const prepareWhiplashInjuries = (formData: any) => {
       onset: getOnsetText(formData.backPainStart),
       initialSeverity: getSeverityText(formData.backPainInitialSeverity),
       currentSeverity: getSeverityText(formData.backPainCurrentSeverity),
-      treatment: formData.backPainCurrentSeverity === "4" ? "Pain killers if required" : "Physiotherapy and pain management",
+      treatment: getTreatmentRecommendation(formData.backPainCurrentSeverity),
       prognosis: getPrognosis(formData.backPainCurrentSeverity, formData.backPainResolveDays),
     });
   }
@@ -78,7 +87,7 @@ export const prepareNonWhiplashInjuries = (formData: any) => {
       onset: getOnsetText(formData.headacheStart),
       initialSeverity: getSeverityText(formData.headacheInitialSeverity),
       currentSeverity: getSeverityText(formData.headacheCurrentSeverity),
-      treatment: formData.headacheCurrentSeverity === "4" ? "Pain killers if required" : "Pain management",
+      treatment: getTreatmentRecommendation(formData.headacheCurrentSeverity),
       prognosis: getPrognosis(formData.headacheCurrentSeverity, formData.headacheResolveDays),
     });
   }
@@ -89,8 +98,30 @@ export const prepareNonWhiplashInjuries = (formData: any) => {
       onset: getOnsetText(formData.anxietyStart),
       initialSeverity: getSeverityText(formData.anxietyInitialSeverity),
       currentSeverity: getSeverityText(formData.anxietyCurrentSeverity),
-      treatment: formData.anxietyCurrentSeverity === "4" ? "Pain killers if required" : "Self-management techniques",
+      treatment: getTreatmentRecommendation(formData.anxietyCurrentSeverity),
       prognosis: getPrognosis(formData.anxietyCurrentSeverity, formData.anxietyResolveDays),
+    });
+  }
+
+  if (formData.hasBruising === "1") {
+    injuries.push({
+      injury: "Bruising",
+      onset: getOnsetText(formData.bruisingNoticed),
+      initialSeverity: getSeverityText(formData.bruisingInitialSeverity),
+      currentSeverity: getSeverityText(formData.bruisingCurrentSeverity),
+      treatment: getTreatmentRecommendation(formData.bruisingCurrentSeverity),
+      prognosis: getPrognosis(formData.bruisingCurrentSeverity, formData.bruisingResolveDays),
+    });
+  }
+
+  if (formData.hasOtherInjury === "1") {
+    injuries.push({
+      injury: formData.injuryName || "Other Injury",
+      onset: getOnsetText(formData.injuryStart),
+      initialSeverity: getSeverityText(formData.injuryInitialSeverity),
+      currentSeverity: getSeverityText(formData.injuryCurrentSeverity),
+      treatment: getTreatmentRecommendation(formData.injuryCurrentSeverity),
+      prognosis: getPrognosis(formData.injuryCurrentSeverity, formData.injuryResolveDays),
     });
   }
 

@@ -4,55 +4,60 @@ import { colorScheme } from '../../pdf/styles/colorScheme';
 
 interface TreatmentRowProps {
   injuryType: string;
-  severity: string | undefined;  // This prop is named 'severity', not 'currentSeverity'
+  severity: string | undefined;
   styles: any;
 }
 
 export const TreatmentRow = ({ injuryType, severity, styles }: TreatmentRowProps) => {
+  const isResolved = severity === "4";
   
-  const getTreatmentRecommendation = (type: string, severity: string | undefined): string => {
-    const severityLevel = severity ? parseInt(severity) : 1;
+  const getTreatmentRecommendation = (): string => {
+    if (isResolved) {
+      return "Pain killers if required";
+    }
     
-    switch (type) {
-      case 'Neck':
-        return severityLevel === 3 
-          ? 'Physiotherapy recommended. In the interim, over-the-counter analgesics as needed for pain relief.' 
-          : 'Self-management with gentle stretching exercises. Over-the-counter analgesics as needed for pain relief.';
-      case 'Back':
-        return severityLevel === 3 
-          ? 'Physiotherapy recommended. In the interim, over-the-counter analgesics as needed for pain relief.'
-          : 'Self-management with core strengthening exercises. Over-the-counter analgesics as needed for pain relief.';
-      case 'Shoulder':
-        return severityLevel === 3 
-          ? 'Physiotherapy recommended with targeted range-of-motion exercises. Over-the-counter analgesics as needed for pain relief.'
-          : 'Self-management with gentle shoulder exercises. Over-the-counter analgesics as needed for pain relief.';
-      case 'Headache':
-        return 'Over-the-counter analgesics as needed. Stress management techniques and adequate hydration recommended.';
-      case 'Travel Anxiety':
-        return severityLevel === 3 
-          ? 'Referral to psychological services for Cognitive Behavioral Therapy should be considered if symptoms persist beyond 3 months.'
-          : 'Self-help strategies including gradual exposure techniques and relaxation exercises.';
+    if (injuryType === "Travel Anxiety") {
+      return "Self-help measures including gradual exposure, relaxation techniques, and breathing exercises";
+    }
+    
+    return "Physiotherapy recommended. Number of sessions to be determined by the physiotherapist";
+  };
+  
+  const getAdditionalTreatmentDetails = (): string => {
+    if (isResolved) return "No further treatment required as symptoms have resolved.";
+    
+    switch (injuryType) {
+      case "Neck":
+      case "Back":
+      case "Shoulder":
+        return "Pain management with over-the-counter medications as needed. Ice/heat therapy may provide temporary relief.";
+      case "Headache":
+        return "Ensure adequate hydration, regular rest periods, and stress management techniques.";
+      case "Travel Anxiety":
+        return "Professional psychological support may be considered if self-help measures are ineffective.";
       default:
-        return 'Symptomatic management with over-the-counter medications as needed.';
+        return "";
     }
   };
 
-  const treatment = getTreatmentRecommendation(injuryType, severity);
+  const treatment = getTreatmentRecommendation();
+  const additionalDetails = getAdditionalTreatmentDetails();
   
   return (
     <View style={styles.injuryRow}>
       <Text style={styles.injuryLabel}>Treatment</Text>
       <View style={{ width: '70%' }}>
         <Text style={styles.injuryValue}>{treatment}</Text>
-        {(injuryType === 'Neck' || injuryType === 'Back' || injuryType === 'Shoulder') && severity === "3" && (
+        {!isResolved && (
           <View style={{ 
-            backgroundColor: colorScheme.altSectionBg, 
-            padding: 5, 
-            marginTop: 3, 
-            borderRadius: 2 
+            marginTop: 3,
+            backgroundColor: colorScheme.altSectionBg,
+            padding: 5,
+            borderRadius: 2,
+            borderLeft: `3px solid ${colorScheme.warning}`
           }}>
-            <Text style={{ fontSize: 8, fontStyle: 'italic', color: colorScheme.textSecondary }}>
-              Note: Early intervention with physiotherapy may reduce recovery time and improve long-term outcomes.
+            <Text style={{ fontSize: 8, color: colorScheme.textSecondary }}>
+              {additionalDetails}
             </Text>
           </View>
         )}

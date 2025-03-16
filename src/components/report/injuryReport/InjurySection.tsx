@@ -57,9 +57,7 @@ export const InjurySection = ({
       <Text style={styles.boldLabel}>Treatment and Prognosis</Text>
       <View style={styles.indentedGroup}>
         <Text style={styles.boldLabel}>Treatment</Text>
-        <Text style={styles.normalText}>Pain management: Over-the-counter pain medication and ice therapy recommended</Text>
-        <Text style={styles.boldLabel}>Physiotherapy Recommended</Text>
-        <Text style={styles.normalText}>Number of sessions to be decided by the referred expert</Text>
+        <Text style={styles.normalText}>{treatment}</Text>
         <Text style={styles.boldLabel}>Prognosis</Text>
         <Text style={styles.normalText}>{prognosis}</Text>
       </View>
