@@ -104,23 +104,32 @@ export const getOICTariff = (injuryType: string, location?: string) => {
 };
 
 export const getExaminationFindings = (injuryType: string, severity: string) => {
-  if (['Anxiety', 'Travel Anxiety', 'Headache', 'Dizziness'].includes(injuryType)) {
-    return "Not applicable for this type of injury.";
+  // For psychological conditions
+  if (['Anxiety', 'Travel Anxiety', 'Panic', 'Fear of Travel'].includes(injuryType)) {
+    return "Normal mental state examination. Good eye contact, appropriate affect, coping well with good support system in place. No evidence of acute psychological distress during examination. No delusions, hallucinations or thought disorders detected.";
   }
   
-  let baseText = "Observation Normal\n";
+  // For headache
+  if (injuryType === 'Headache') {
+    return "Normal neurological examination. No cranial nerve abnormalities. No light sensitivity observed during examination. Normal visual fields. No signs of raised intracranial pressure.";
+  }
   
+  // For physical injuries - neck, shoulder, back
+  let baseText = "Observation: Patient entered examination room without assistance. ";
+  
+  // Tenderness findings based on severity
   if (severity === "1") {
-    baseText += "Mild - as per claimant's entry. ";
+    baseText += "Mild tenderness on palpation of affected area. Minimal restriction of movements. ";
   } else if (severity === "2") {
-    baseText += "Moderate - as per claimant's entry. ";
+    baseText += "Moderate tenderness on palpation of affected area. Moderate restriction of movements. ";
   } else if (severity === "3") {
-    baseText += "Severe - as per claimant's entry. ";
+    baseText += "Moderate to severe tenderness on palpation. Moderate to severe restriction of movements. ";
+  } else if (severity === "4") {
+    baseText += "No tenderness on palpation. Full range of movement achieved. ";
   }
   
-  baseText += "Movements Flexion, Extension Mild Restriction | Extremes mild Painful\n";
-  baseText += "Left Lateral Flexion, Right Lateral Flexion | Left side | Normal\n";
-  baseText += "No neurovascular deficits noted.";
+  // Add neurological findings
+  baseText += "No neurological deficit detected. Sensation intact. Power 5/5 in all muscle groups tested. Reflexes normal and symmetrical.";
   
   return baseText;
 };

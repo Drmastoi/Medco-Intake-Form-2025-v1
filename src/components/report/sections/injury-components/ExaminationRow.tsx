@@ -6,16 +6,18 @@ interface ExaminationRowProps {
   injuryType: string;
   currentSeverity: string | undefined;
   styles: any;
+  location?: string;
 }
 
-export const ExaminationRow = ({ injuryType, currentSeverity, styles }: ExaminationRowProps) => {
+export const ExaminationRow = ({ injuryType, currentSeverity, styles, location }: ExaminationRowProps) => {
+  // Get formatted examination findings based on injury type and severity
+  const findings = getExaminationFindings(injuryType, currentSeverity || "");
+  
   return (
     <View style={styles.injuryRow}>
       <Text style={styles.injuryLabel}>Examination Findings</Text>
       <Text style={styles.injuryValue}>
-        {injuryType === 'Travel Anxiety' ? 
-          "Normal mood, good eye contact, no signs of acute distress during examination. The patient reports anxiety specifically when traveling in vehicles." :
-          getExaminationFindings(injuryType, currentSeverity || "")}
+        {findings}
       </Text>
     </View>
   );

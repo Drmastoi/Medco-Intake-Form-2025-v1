@@ -22,7 +22,7 @@ export const AppointmentDetailsSection = ({ formData, styles }: AppointmentDetai
         </View>
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>4.2 Time spent</Text>
-          <Text style={styles.fieldValue}>30 Minutes</Text>
+          <Text style={styles.fieldValue}>{formData.timeSpentWithClaimant || '30'} Minutes</Text>
         </View>
       </View>
       

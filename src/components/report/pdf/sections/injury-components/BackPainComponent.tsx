@@ -1,6 +1,7 @@
 
 import { Text, View } from '@react-pdf/renderer';
 import { formatDuration, formatSeverity, safeValue } from '../../utils/formatUtils';
+import { getExaminationFindings } from '../../../utils/injuryClassification';
 
 interface BackPainComponentProps {
   backPain: any;
@@ -31,6 +32,15 @@ export const BackPainComponent = ({ backPain, styles }: BackPainComponentProps) 
     } else {
       return "Physiotherapy recommended. Number of sessions to be determined by the physiotherapist";
     }
+  };
+
+  // Helper to convert severity to numeric code for examination findings
+  const getSeverityCode = (severity: string) => {
+    if (severity === "Resolved") return "4";
+    if (severity === "Mild") return "1";
+    if (severity === "Moderate") return "2";
+    if (severity === "Severe") return "3";
+    return "1";
   };
 
   return (
@@ -71,6 +81,15 @@ export const BackPainComponent = ({ backPain, styles }: BackPainComponentProps) 
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>Treatment</Text>
           <Text style={styles.fieldValue}>{getTreatment()}</Text>
+        </View>
+      </View>
+
+      <View style={styles.fieldRow}>
+        <View style={styles.fieldColumn}>
+          <Text style={styles.fieldLabel}>Examination Findings</Text>
+          <Text style={styles.fieldValue}>
+            {getExaminationFindings('Back', getSeverityCode(backPain.currentSeverity))}
+          </Text>
         </View>
       </View>
     </View>

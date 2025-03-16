@@ -1,6 +1,7 @@
 
 import { Text, View } from '@react-pdf/renderer';
 import { formatDuration, formatSeverity, safeValue } from '../../utils/formatUtils';
+import { getExaminationFindings } from '../../../utils/injuryClassification';
 
 interface NeckPainComponentProps {
   neckPain: any;
@@ -71,6 +72,18 @@ export const NeckPainComponent = ({ neckPain, styles }: NeckPainComponentProps) 
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>Treatment</Text>
           <Text style={styles.fieldValue}>{getTreatment()}</Text>
+        </View>
+      </View>
+
+      <View style={styles.fieldRow}>
+        <View style={styles.fieldColumn}>
+          <Text style={styles.fieldLabel}>Examination Findings</Text>
+          <Text style={styles.fieldValue}>
+            {getExaminationFindings('Neck', neckPain.currentSeverity === "Resolved" ? "4" : 
+                                        neckPain.currentSeverity === "Mild" ? "1" : 
+                                        neckPain.currentSeverity === "Moderate" ? "2" : 
+                                        neckPain.currentSeverity === "Severe" ? "3" : "1")}
+          </Text>
         </View>
       </View>
     </View>
