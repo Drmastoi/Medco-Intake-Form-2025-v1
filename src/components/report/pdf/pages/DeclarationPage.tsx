@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Page, View, Text } from '@react-pdf/renderer';
+import { Page, View, Text, Image } from '@react-pdf/renderer';
 import { ConclusionSection } from '../sections/ConclusionSection';
 import PDFFooter from '../components/PDFFooter';
 import { pdfStyles } from '../styles/pdfStyles';
@@ -22,7 +22,7 @@ const DeclarationPage: React.FC<DeclarationPageProps> = ({
         </Text>
       </View>
       
-      <View style={pdfStyles.section}>
+      <View style={[pdfStyles.section, { minHeight: '80%' }]}>
         <ConclusionSection styles={pdfStyles} />
       </View>
       

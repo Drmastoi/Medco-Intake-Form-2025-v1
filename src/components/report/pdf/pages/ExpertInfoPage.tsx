@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Page, View, Text } from '@react-pdf/renderer';
+import { Page, View, Text, Image } from '@react-pdf/renderer';
 import PDFFooter from '../components/PDFFooter';
 import { pdfStyles } from '../styles/pdfStyles';
 

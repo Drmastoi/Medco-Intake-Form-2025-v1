@@ -1,5 +1,6 @@
 
-import { Text, View } from '@react-pdf/renderer';
+import React from 'react';
+import { Text, View, Image } from '@react-pdf/renderer';
 import { ReportData } from '@/types/reportTypes';
 
 interface ConclusionSectionProps {
@@ -9,11 +10,7 @@ interface ConclusionSectionProps {
 
 export const ConclusionSection = ({ styles, formData }: ConclusionSectionProps) => {
   // Get today's date
-  const today = new Date().toLocaleDateString('en-GB', {
-    day: '2-digit',
-    month: 'long',
-    year: 'numeric'
-  });
+  const today = "16 March 2025";
 
   return (
     <View style={styles.subsection}>
@@ -56,14 +53,24 @@ export const ConclusionSection = ({ styles, formData }: ConclusionSectionProps) 
         </Text>
       </View>
       
-      <View style={{ marginTop: 30, flexDirection: 'row', justifyContent: 'space-between' }}>
-        <View style={{ width: '60%' }}>
-          <Text style={styles.fieldLabel}>Signature:</Text>
-          <Text style={styles.fieldValue}>Dr Awais Iqbal</Text>
-        </View>
-        <View style={{ width: '30%' }}>
-          <Text style={styles.fieldLabel}>Date:</Text>
-          <Text style={styles.fieldValue}>{today}</Text>
+      {/* Spacer to push signature to bottom */}
+      <View style={{ flexGrow: 1, minHeight: 100 }} />
+      
+      {/* Signature and date at bottom of page */}
+      <View style={{ marginTop: 30 }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
+          <View style={{ width: '60%' }}>
+            <Text style={styles.fieldLabel}>Signature:</Text>
+            <Image 
+              src="/awais-signature.png" 
+              style={{ width: 150, height: 50 }} 
+            />
+            <Text style={styles.fieldValue}>Dr Awais Iqbal</Text>
+          </View>
+          <View style={{ width: '30%' }}>
+            <Text style={styles.fieldLabel}>Date:</Text>
+            <Text style={styles.fieldValue}>{today}</Text>
+          </View>
         </View>
       </View>
     </View>
