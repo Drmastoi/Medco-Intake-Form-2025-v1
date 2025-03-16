@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   Document, 
@@ -195,15 +194,12 @@ const PDFDocumentContent = ({ reportData }: PDFDocumentContentProps) => {
   }
 
   // Ensure travelAnxiety has all required properties
-  const safeReportData = reportData;
-  if (!safeReportData.travelAnxiety) {
-    safeReportData.travelAnxiety = {
+  if (!reportData.travelAnxiety) {
+    reportData.travelAnxiety = {
       hasAnxiety: false,
-      currentlyDriving: '',
       initialSeverity: '',
       currentSeverity: '',
       symptoms: [],
-      otherSymptoms: '',
       startDate: '',
       startDateEstimated: false,
       resolveDate: '',
@@ -211,7 +207,8 @@ const PDFDocumentContent = ({ reportData }: PDFDocumentContentProps) => {
       resolveDays: '',
       pastHistory: '',
       duration: '',
-      hasHistory: ''
+      hasHistory: '',
+      currentlyDriving: ''
     };
   }
 
@@ -226,11 +223,11 @@ const PDFDocumentContent = ({ reportData }: PDFDocumentContentProps) => {
         </View>
         
         <View style={styles.section}>
-          <ClaimantDetailsSection formData={safeReportData} styles={styles} />
+          <ClaimantDetailsSection formData={reportData} styles={styles} />
         </View>
         
         <View style={styles.section}>
-          <ExpertDetailsSection styles={styles} formData={safeReportData} />
+          <ExpertDetailsSection styles={styles} formData={reportData} />
         </View>
 
         <View style={styles.section}>
@@ -238,23 +235,23 @@ const PDFDocumentContent = ({ reportData }: PDFDocumentContentProps) => {
         </View>
         
         <View style={styles.section}>
-          <InstructionDetailsSection formData={safeReportData} styles={styles} />
+          <InstructionDetailsSection formData={reportData} styles={styles} />
         </View>
         
         <View style={styles.section}>
-          <AppointmentDetailsSection formData={safeReportData} styles={styles} />
+          <AppointmentDetailsSection formData={reportData} styles={styles} />
         </View>
         
         <View style={styles.section}>
-          <AccidentDetailsSection formData={safeReportData} styles={styles} />
+          <AccidentDetailsSection formData={reportData} styles={styles} />
         </View>
         
         <View style={styles.section}>
-          <SummaryOfInjuriesTableSection formData={safeReportData} styles={styles} />
+          <SummaryOfInjuriesTableSection formData={reportData} styles={styles} />
         </View>
         
         <View style={styles.section}>
-          <StatementOfInstructionSection styles={styles} formData={safeReportData} />
+          <StatementOfInstructionSection styles={styles} formData={reportData} />
         </View>
         
         <Footer pageNumber={1} claimantName={claimantName} today={today} />
@@ -269,7 +266,7 @@ const PDFDocumentContent = ({ reportData }: PDFDocumentContentProps) => {
         </View>
         
         <View style={styles.section}>
-          <InjuriesSection formData={safeReportData} styles={styles} />
+          <InjuriesSection formData={reportData} styles={styles} />
         </View>
         
         <Footer pageNumber={2} claimantName={claimantName} today={today} />
@@ -285,20 +282,20 @@ const PDFDocumentContent = ({ reportData }: PDFDocumentContentProps) => {
         
         {/* Section 9 - Treatment */}
         <View style={styles.section}>
-          <TreatmentSection formData={safeReportData} styles={styles} />
+          <TreatmentSection formData={reportData} styles={styles} />
         </View>
         
         {/* Section 10 - Lifestyle Impact */}
         <View style={styles.section}>
-          <LifestyleImpactSection formData={safeReportData} />
+          <LifestyleImpactSection formData={reportData} />
         </View>
         
         <View style={styles.section}>
-          <MedicalHistorySection formData={safeReportData} styles={styles} />
+          <MedicalHistorySection formData={reportData} styles={styles} />
         </View>
         
         <View style={styles.section}>
-          <ConclusionSection formData={safeReportData} styles={styles} />
+          <ConclusionSection formData={reportData} styles={styles} />
         </View>
         
         <Footer pageNumber={3} claimantName={claimantName} today={today} />
