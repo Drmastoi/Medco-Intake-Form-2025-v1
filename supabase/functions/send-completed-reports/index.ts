@@ -1,8 +1,24 @@
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
-import { ReportData } from "../../src/types/reportTypes.ts";
-import { generatePdfAsBase64 } from "../../src/utils/pdfGenerationUtils.ts";
+
+// Define ReportData interface locally instead of importing it
+interface ReportData {
+  prefilled: any;
+  personal: any;
+  accident: any;
+  injuries: any;
+  travelAnxiety: any;
+  other: any;
+  meta?: {
+    reportType?: "claimant" | "expert";
+    referenceNumber?: string;
+    claimantEmail?: string;
+    expertEmail?: string;
+    submissionDate?: string;
+    status?: string;
+  };
+}
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 

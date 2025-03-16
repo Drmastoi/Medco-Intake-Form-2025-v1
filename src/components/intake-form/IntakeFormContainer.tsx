@@ -11,6 +11,7 @@ import { ReportSubmissionTab } from "@/components/report/ReportSubmissionTab";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
+import { createExtendedClient } from "@/types/supabase";
 
 export function IntakeFormContainer() {
   const [currentSection, setCurrentSection] = useState(0);
@@ -19,6 +20,7 @@ export function IntakeFormContainer() {
   const [referenceNumber, setReferenceNumber] = useState<string | null>(null);
   const { toast } = useToast();
   const totalSections = 13;
+  const extendedClient = createExtendedClient(supabase);
 
   const tabNames = [
     "Prefilled Details",
@@ -145,9 +147,8 @@ export function IntakeFormContainer() {
   const loadFormDataByReference = async (reference: string) => {
     setIsLoading(true);
     try {
-      // First get the submission ID
-      const { data: submission, error: submissionError } = await supabase
-        .from('questionnaire_submissions')
+      // First get the submission ID using the REST API
+      const { data: submission, error: submissionError } = await supabase.rest.from('questionnaire_submissions')
         .select('id, status, claimant_email')
         .eq('reference_number', reference)
         .single();
@@ -155,8 +156,7 @@ export function IntakeFormContainer() {
       if (submissionError) throw submissionError;
       
       // Then get the prefilled form data
-      const { data, error } = await supabase
-        .from('questionnaire_data')
+      const { data, error } = await supabase.rest.from('questionnaire_data')
         .select('form_data')
         .eq('submission_id', submission.id)
         .eq('version', 'prefilled')

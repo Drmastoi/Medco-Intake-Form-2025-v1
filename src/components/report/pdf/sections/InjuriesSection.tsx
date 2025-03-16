@@ -1,40 +1,75 @@
 
-import { Text, View } from '@react-pdf/renderer';
+import React from 'react';
+import { View, Text } from '@react-pdf/renderer';
 import { ReportData } from '@/types/reportTypes';
-import { NeckPainComponent } from './injury-components/NeckPainComponent';
-import { BackPainComponent } from './injury-components/BackPainComponent';
-import { ShoulderPainComponent } from './injury-components/ShoulderPainComponent';
-import { HeadacheComponent } from './injury-components/HeadacheComponent';
-import { TravelAnxietyComponent } from './injury-components/TravelAnxietyComponent';
-import { ConcludingStatement } from './injury-components/ConcludingStatement';
+import { pdfStyles } from '../styles/pdfStyles';
+import { textStyles } from '../styles/textStyles';
+import { colorScheme } from '../styles/colorScheme';
+import NeckPainComponent from './injury-components/NeckPainComponent';
+import ShoulderPainComponent from './injury-components/ShoulderPainComponent';
+import BackPainComponent from './injury-components/BackPainComponent';
+import HeadacheComponent from './injury-components/HeadacheComponent';
 
 interface InjuriesSectionProps {
-  formData: ReportData;
-  styles: any;
+  reportData: ReportData;
+  reportType?: "claimant" | "expert";
 }
 
-export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
-  return (
-    <View style={styles.subsection}>
-      <Text style={styles.sectionHeader}>Section 6 - Injuries</Text>
+const InjuriesSection = ({ reportData, reportType = "expert" }: InjuriesSectionProps) => {
+  const hasAnyInjury = 
+    reportData.injuries.neckPain?.hasInjury || 
+    reportData.injuries.shoulderPain?.hasInjury || 
+    reportData.injuries.backPain?.hasInjury || 
+    reportData.injuries.headache?.hasInjury;
 
-      {/* Neck Pain */}
-      <NeckPainComponent neckPain={formData.injuries.neckPain} styles={styles} />
+  if (!hasAnyInjury) {
+    return (
+      <View style={pdfStyles.sectionContainer}>
+        <Text style={[textStyles.sectionTitle, { marginBottom: 10 }]}>Physical Injuries</Text>
+        <View style={{ backgroundColor: colorScheme.altSectionBg, padding: 10, borderRadius: 5 }}>
+          <Text style={textStyles.regularText}>No physical injuries reported.</Text>
+        </View>
+      </View>
+    );
+  }
+  
+  return (
+    <View style={pdfStyles.sectionContainer}>
+      <Text style={[textStyles.sectionTitle, { marginBottom: 10 }]}>Physical Injuries</Text>
       
-      {/* Back Pain */}
-      <BackPainComponent backPain={formData.injuries.backPain} styles={styles} />
+      {/* Neck Pain */}
+      {reportData.injuries.neckPain?.hasInjury && (
+        <NeckPainComponent 
+          data={reportData.injuries.neckPain} 
+          reportType={reportType}
+        />
+      )}
       
       {/* Shoulder Pain */}
-      <ShoulderPainComponent shoulderPain={formData.injuries.shoulderPain} styles={styles} />
+      {reportData.injuries.shoulderPain?.hasInjury && (
+        <ShoulderPainComponent 
+          data={reportData.injuries.shoulderPain} 
+          reportType={reportType}
+        />
+      )}
+      
+      {/* Back Pain */}
+      {reportData.injuries.backPain?.hasInjury && (
+        <BackPainComponent 
+          data={reportData.injuries.backPain} 
+          reportType={reportType}
+        />
+      )}
       
       {/* Headache */}
-      <HeadacheComponent headache={formData.injuries.headache} styles={styles} />
-      
-      {/* Travel Anxiety */}
-      <TravelAnxietyComponent travelAnxiety={formData.travelAnxiety} styles={styles} />
-      
-      {/* Concluding statement */}
-      <ConcludingStatement styles={styles} />
+      {reportData.injuries.headache?.hasInjury && (
+        <HeadacheComponent 
+          data={reportData.injuries.headache} 
+          reportType={reportType}
+        />
+      )}
     </View>
   );
 };
+
+export default InjuriesSection;

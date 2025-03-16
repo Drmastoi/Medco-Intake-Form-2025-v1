@@ -1,32 +1,38 @@
 
 import React from 'react';
-import { Page, View, Text, Image } from '@react-pdf/renderer';
-import { ConclusionSection } from '../sections/ConclusionSection';
-import PDFFooter from '../components/PDFFooter';
+import { Page, View, Text } from '@react-pdf/renderer';
+import { layoutStyles } from '../styles/layoutStyles';
+import { textStyles } from '../styles/textStyles';
 import { pdfStyles } from '../styles/pdfStyles';
+import AgreementSection from '../sections/AgreementSection';
+import ConclusionSection from '../sections/ConclusionSection';
+import PDFFooter from '../components/PDFFooter';
 
-interface DeclarationPageProps {
+export interface DeclarationPageProps {
   claimantName: string;
   today: string;
+  reportType?: "claimant" | "expert";
 }
 
-const DeclarationPage: React.FC<DeclarationPageProps> = ({ 
-  claimantName, 
-  today 
-}) => {
+const DeclarationPage = ({ claimantName, today, reportType = "expert" }: DeclarationPageProps) => {
   return (
     <Page size="A4" style={pdfStyles.page}>
-      <View style={pdfStyles.header}>
-        <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
-          Conclusion and Expert Declaration
-        </Text>
+      <View style={layoutStyles.pageContainer}>
+        <View style={pdfStyles.header}>
+          <Text style={textStyles.headerText}>Declaration and Agreement</Text>
+          <Text style={textStyles.subHeaderText}>
+            {reportType === "expert" ? "Medical Expert Declaration" : "Claimant Declaration"}
+          </Text>
+        </View>
+
+        <View style={pdfStyles.content}>
+          <View style={pdfStyles.section}>
+            <ConclusionSection reportType={reportType} />
+            <AgreementSection claimantName={claimantName} today={today} reportType={reportType} />
+          </View>
+        </View>
       </View>
-      
-      <View style={[pdfStyles.section, { minHeight: '80%' }]}>
-        <ConclusionSection styles={pdfStyles} />
-      </View>
-      
-      <PDFFooter pageNumber={4} claimantName={claimantName} today={today} />
+      <PDFFooter pageNumber={4} claimantName={claimantName} date={today} />
     </Page>
   );
 };

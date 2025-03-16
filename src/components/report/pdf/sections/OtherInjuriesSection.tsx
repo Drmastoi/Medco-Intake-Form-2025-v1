@@ -1,39 +1,65 @@
 
-import { Text, View } from '@react-pdf/renderer';
+import React from 'react';
+import { View, Text } from '@react-pdf/renderer';
 import { ReportData } from '@/types/reportTypes';
+import { pdfStyles } from '../styles/pdfStyles';
+import { textStyles } from '../styles/textStyles';
+import { formatInjurySeverity, formatResolveDays } from '../utils/formatUtils';
+import { injuryStyles } from '../styles/injuryStyles';
 
 interface OtherInjuriesSectionProps {
-  formData: ReportData;
-  styles: any;
+  reportData: ReportData;
+  reportType?: "claimant" | "expert";
 }
 
-export const OtherInjuriesSection = ({ formData, styles }: OtherInjuriesSectionProps) => {
+const OtherInjuriesSection = ({ reportData, reportType = "expert" }: OtherInjuriesSectionProps) => {
+  const otherInjuries = reportData.other?.otherInjuries;
+  
+  if (!otherInjuries || !otherInjuries.hasOtherInjury) {
+    return null;
+  }
+  
   return (
-    <View style={styles.subsection}>
-      <Text style={styles.sectionHeader}>Section 8 - Other Injuries Details</Text>
+    <View style={pdfStyles.sectionContainer}>
+      <Text style={[textStyles.sectionTitle, { marginBottom: 5 }]}>Other Injuries</Text>
       
-      {formData.other?.otherInjuries?.hasOtherInjury ? (
-        <>
-          <View style={{ marginBottom: 10 }}>
-            <Text style={styles.fieldLabel}>8.1 Additional Injuries</Text>
-            <Text style={styles.fieldValue}>
-              • {formData.other.otherInjuries.name || "Unspecified injury"} - 
-              Initial severity: {formData.other.otherInjuries.initialSeverity || "Not specified"}, 
-              Current severity: {formData.other.otherInjuries.currentSeverity || "Not specified"}
-              {formData.other.otherInjuries.resolveDays ? `, Resolved after: ${formData.other.otherInjuries.resolveDays} days` : ""}
+      <View style={injuryStyles.injuryContainer}>
+        <View style={injuryStyles.injuryHeader}>
+          <Text style={injuryStyles.injuryTitle}>{otherInjuries.name || "Unspecified Injury"}</Text>
+        </View>
+        
+        <View style={injuryStyles.injuryContent}>
+          <View style={injuryStyles.injuryRow}>
+            <Text style={injuryStyles.injuryLabel}>Onset</Text>
+            <Text style={injuryStyles.injuryValue}>{otherInjuries.start || "Not specified"}</Text>
+          </View>
+          
+          <View style={injuryStyles.injuryRow}>
+            <Text style={injuryStyles.injuryLabel}>Initial Severity</Text>
+            <Text style={injuryStyles.injuryValue}>{formatInjurySeverity(otherInjuries.initialSeverity)}</Text>
+          </View>
+          
+          <View style={injuryStyles.injuryRow}>
+            <Text style={injuryStyles.injuryLabel}>Current Status</Text>
+            <Text style={injuryStyles.injuryValue}>
+              {otherInjuries.currentSeverity === "4" 
+                ? "Resolved" 
+                : `${formatInjurySeverity(otherInjuries.currentSeverity)}`}
             </Text>
           </View>
-        </>
-      ) : (
-        <Text style={styles.fieldValue}>No other significant injuries were reported by the claimant.</Text>
-      )}
-      
-      {formData.other?.medicalHistory?.exceptionalInjuries && formData.other.medicalHistory.exceptionalInjuriesDetails && (
-        <View style={{ marginBottom: 10, marginTop: 10 }}>
-          <Text style={styles.fieldLabel}>8.2 Exceptional Circumstances</Text>
-          <Text style={styles.fieldValue}>{formData.other.medicalHistory.exceptionalInjuriesDetails}</Text>
+          
+          {(otherInjuries.currentSeverity === "4" || otherInjuries.resolveDays) && (
+            <View style={injuryStyles.injuryRow}>
+              <Text style={injuryStyles.injuryLabel}>Resolution</Text>
+              <Text style={injuryStyles.injuryValue}>
+                {formatResolveDays(otherInjuries.resolveDays)}
+              </Text>
+            </View>
+          )}
         </View>
-      )}
+      </View>
     </View>
   );
 };
+
+export default OtherInjuriesSection;

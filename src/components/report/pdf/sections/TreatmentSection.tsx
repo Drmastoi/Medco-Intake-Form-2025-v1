@@ -1,99 +1,108 @@
 
-import { Text, View } from '@react-pdf/renderer';
+import React from 'react';
+import { View, Text } from '@react-pdf/renderer';
 import { ReportData } from '@/types/reportTypes';
+import { pdfStyles } from '../styles/pdfStyles';
+import { textStyles } from '../styles/textStyles';
+import { colorScheme } from '../styles/colorScheme';
+import { tableStyles } from '../styles/tableStyles';
 
 interface TreatmentSectionProps {
-  formData: ReportData;
-  styles: any;
+  reportData: ReportData;
+  reportType?: "claimant" | "expert";
 }
 
-export const TreatmentSection = ({ formData, styles }: TreatmentSectionProps) => {
-  // Extract treatment-related data for easier access
-  const treatmentData = formData.other?.treatment;
+const TreatmentSection = ({ reportData, reportType = "expert" }: TreatmentSectionProps) => {
+  const treatment = reportData.other?.treatment;
+  
+  if (!treatment || !treatment.hasTreatment) {
+    return (
+      <View style={pdfStyles.sectionContainer}>
+        <Text style={[textStyles.sectionTitle, { marginBottom: 5 }]}>Treatment</Text>
+        <View style={{ backgroundColor: colorScheme.altSectionBg, padding: 10, borderRadius: 5 }}>
+          <Text style={textStyles.regularText}>No treatment reported.</Text>
+        </View>
+      </View>
+    );
+  }
   
   return (
-    <View style={styles.subsection}>
-      <Text style={styles.sectionHeader}>Section 7 - Treatment</Text>
+    <View style={pdfStyles.sectionContainer}>
+      <Text style={[textStyles.sectionTitle, { marginBottom: 10 }]}>Treatment</Text>
       
-      <View style={{ marginBottom: 10 }}>
-        <Text style={styles.fieldLabel}>7.1 Type of Treatment</Text>
-        <Text style={styles.fieldValue}>
-          {treatmentData?.hasTreatment 
-            ? `The claimant has received the following treatment(s): ${treatmentData.type?.join(", ") || "Not specified"}.`
-            : "The claimant has not received any formal treatment for the injuries."}
-        </Text>
-
-        {/* Treatment at scene of accident */}
-        {treatmentData?.sceneOfAccidentTreatment === "1" && (
-          <Text style={styles.fieldValue}>
-            The claimant received treatment at the scene of the accident. 
-            {treatmentData.sceneOfAccidentTreatmentTypes && treatmentData.sceneOfAccidentTreatmentTypes.length > 0 && 
-              ` This included ${treatmentData.sceneOfAccidentTreatmentTypes.join(", ")}.`}
-          </Text>
+      <View style={tableStyles.table}>
+        {/* Emergency Treatment */}
+        {treatment.sceneOfAccidentTreatment && (
+          <View style={tableStyles.tableRow}>
+            <View style={tableStyles.tableCol1}>
+              <Text style={tableStyles.tableHeader}>Emergency Treatment</Text>
+            </View>
+            <View style={tableStyles.tableCol2}>
+              <Text style={tableStyles.tableCell}>
+                {treatment.sceneOfAccidentTreatment === 'Yes' 
+                  ? `Received emergency treatment at scene: ${(treatment.sceneOfAccidentTreatmentTypes || []).join(', ')}` 
+                  : 'No emergency treatment received at scene'}
+              </Text>
+            </View>
+          </View>
         )}
-
-        {/* A&E attendance */}
-        {treatmentData?.wentToAE === "1" && (
-          <Text style={styles.fieldValue}>
-            The claimant attended A&E at {treatmentData.hospitalName || "the hospital"}.
-            {treatmentData.hospitalTreatment && treatmentData.hospitalTreatment.length > 0 && 
-              ` Hospital treatment included ${treatmentData.hospitalTreatment.join(", ")}.`}
-          </Text>
+        
+        {/* Hospital Treatment */}
+        {treatment.wentToAE && (
+          <View style={tableStyles.tableRow}>
+            <View style={tableStyles.tableCol1}>
+              <Text style={tableStyles.tableHeader}>Hospital Treatment</Text>
+            </View>
+            <View style={tableStyles.tableCol2}>
+              <Text style={tableStyles.tableCell}>
+                {treatment.wentToAE === 'Yes' 
+                  ? `Attended ${treatment.hospitalName || 'hospital'} for treatment: ${(treatment.hospitalTreatment || []).join(', ')}` 
+                  : 'Did not attend hospital'}
+              </Text>
+            </View>
+          </View>
         )}
-
-        {/* GP/Walk-in center attendance */}
-        {treatmentData?.wentToWalkInGP === "1" && (
-          <Text style={styles.fieldValue}>
-            The claimant visited their GP/Walk-in center {treatmentData.daysBeforeGPVisit || "some"} days after the accident.
-            {treatmentData.currentTreatment && ` They are currently taking ${getCurrentTreatmentText(treatmentData.currentTreatment)} for pain relief.`}
-          </Text>
+        
+        {/* GP Treatment */}
+        {treatment.wentToWalkInGP && (
+          <View style={tableStyles.tableRow}>
+            <View style={tableStyles.tableCol1}>
+              <Text style={tableStyles.tableHeader}>GP/Walk-in Treatment</Text>
+            </View>
+            <View style={tableStyles.tableCol2}>
+              <Text style={tableStyles.tableCell}>
+                {treatment.wentToWalkInGP === 'Yes' 
+                  ? `Visited GP/walk-in center ${treatment.daysBeforeGPVisit ? `${treatment.daysBeforeGPVisit} days after the accident` : ''}` 
+                  : 'Did not visit GP/walk-in center'}
+              </Text>
+            </View>
+          </View>
         )}
-
-        {/* Physiotherapy */}
-        {treatmentData?.physiotherapySessions && parseInt(treatmentData.physiotherapySessions) > 0 && (
-          <Text style={styles.fieldValue}>
-            The claimant has attended {treatmentData.physiotherapySessions} physiotherapy sessions to date.
-          </Text>
+        
+        {/* Current Treatment */}
+        {treatment.type && treatment.type.length > 0 && (
+          <View style={tableStyles.tableRow}>
+            <View style={tableStyles.tableCol1}>
+              <Text style={tableStyles.tableHeader}>Current Treatment</Text>
+            </View>
+            <View style={tableStyles.tableCol2}>
+              <Text style={tableStyles.tableCell}>
+                {`${treatment.type.join(', ')}${treatment.frequency ? `, ${treatment.frequency}` : ''}${treatment.duration ? `, for ${treatment.duration}` : ''}`}
+              </Text>
+              {treatment.physiotherapySessions && (
+                <Text style={tableStyles.tableCell}>
+                  {`Physiotherapy sessions: ${treatment.physiotherapySessions}`}
+                </Text>
+              )}
+              <Text style={tableStyles.tableCell}>
+                {treatment.ongoing ? 'Treatment is ongoing' : 'Treatment has been completed'}
+              </Text>
+            </View>
+          </View>
         )}
       </View>
-      
-      {formData.other?.treatment?.hasTreatment && (
-        <>
-          <View style={{ marginBottom: 10 }}>
-            <Text style={styles.fieldLabel}>7.2 Frequency</Text>
-            <Text style={styles.fieldValue}>
-              {formData.other.treatment.frequency || "The frequency of treatment was not specified."}
-            </Text>
-          </View>
-          
-          <View style={{ marginBottom: 10 }}>
-            <Text style={styles.fieldLabel}>7.3 Duration</Text>
-            <Text style={styles.fieldValue}>
-              {formData.other.treatment.duration || "The duration of treatment was not specified."}
-            </Text>
-          </View>
-          
-          <View style={{ marginBottom: 10 }}>
-            <Text style={styles.fieldLabel}>7.4 Treatment Status</Text>
-            <Text style={styles.fieldValue}>
-              {formData.other.treatment.ongoing
-                ? "The claimant is continuing to receive treatment."
-                : "The claimant has completed the course of treatment."}
-            </Text>
-          </View>
-        </>
-      )}
     </View>
   );
 };
 
-// Function to get readable text for current treatment
-const getCurrentTreatmentText = (treatment: string | undefined) => {
-  switch (treatment) {
-    case "1": return "Paracetamol";
-    case "2": return "Ibuprofen/Naproxen";
-    case "3": return "Codeine";
-    case "4": return "other prescribed medicines";
-    default: return "unspecified medication";
-  }
-};
+export default TreatmentSection;

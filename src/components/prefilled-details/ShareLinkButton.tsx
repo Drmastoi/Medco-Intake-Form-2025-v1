@@ -5,6 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { v4 as uuidv4 } from "uuid";
+import { createExtendedClient } from "@/types/supabase";
 
 interface ShareLinkButtonProps {
   form: any;
@@ -13,6 +14,7 @@ interface ShareLinkButtonProps {
 export function ShareLinkButton({ form }: ShareLinkButtonProps) {
   const { toast } = useToast();
   const [isSending, setIsSending] = useState(false);
+  const extendedClient = createExtendedClient(supabase);
 
   const generateAndShareLink = async () => {
     const formData = form.getValues();
@@ -32,7 +34,7 @@ export function ShareLinkButton({ form }: ShareLinkButtonProps) {
     const referenceNumber = `MR-${uuidv4().substring(0, 8).toUpperCase()}`;
     
     try {
-      // Save the pre-filled data to Supabase
+      // Save the pre-filled data to Supabase using REST API
       const prefilledData = {
         solicitorName: formData.solicitorName || '',
         solicitorReference: formData.solicitorReference || '',
@@ -51,32 +53,26 @@ export function ShareLinkButton({ form }: ShareLinkButtonProps) {
       };
       
       // First, create a submission record
-      const { data: submissionData, error: submissionError } = await supabase
-        .from('questionnaire_submissions')
-        .insert([
-          {
-            reference_number: referenceNumber,
-            expert_email: 'drawais@gmail.com', // Hardcoded expert email
-            claimant_email: formData.emailId,
-            claimant_name: formData.fullName || 'Claimant',
-            status: 'sent_to_claimant'
-          }
-        ])
+      const { data: submissionData, error: submissionError } = await supabase.rest.from('questionnaire_submissions')
+        .insert({
+          reference_number: referenceNumber,
+          expert_email: 'drawais@gmail.com', // Hardcoded expert email
+          claimant_email: formData.emailId,
+          claimant_name: formData.fullName || 'Claimant',
+          status: 'sent_to_claimant'
+        })
         .select('id')
         .single();
       
       if (submissionError) throw submissionError;
       
       // Then, store the form data
-      const { error: dataError } = await supabase
-        .from('questionnaire_data')
-        .insert([
-          {
-            submission_id: submissionData.id,
-            form_data: form.getValues(),
-            version: 'prefilled'
-          }
-        ]);
+      const { error: dataError } = await supabase.rest.from('questionnaire_data')
+        .insert({
+          submission_id: submissionData.id,
+          form_data: form.getValues(),
+          version: 'prefilled'
+        });
       
       if (dataError) throw dataError;
       

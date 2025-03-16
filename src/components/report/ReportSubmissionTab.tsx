@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -18,6 +17,7 @@ import { Loader2, CheckCircle2 } from 'lucide-react';
 import { convertFormDataToReportData } from '@/utils/pdfReportUtils';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { createExtendedClient } from '@/types/supabase';
 
 interface ReportSubmissionTabProps {
   isOpen: boolean;
@@ -31,6 +31,7 @@ export const ReportSubmissionTab = ({ isOpen, onClose, formData, referenceNumber
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const { toast } = useToast();
+  const extendedClient = createExtendedClient(supabase);
   
   // Convert form data to report data structure for claimant report (without prognosis)
   const claimantReportData = convertFormDataToReportData(formData);
@@ -69,9 +70,8 @@ export const ReportSubmissionTab = ({ isOpen, onClose, formData, referenceNumber
     setIsSubmitting(true);
     
     try {
-      // Find the submission record
-      const { data: submission, error: submissionError } = await supabase
-        .from('questionnaire_submissions')
+      // Find the submission record using the REST API
+      const { data: submission, error: submissionError } = await supabase.rest.from('questionnaire_submissions')
         .select('id')
         .eq('reference_number', referenceNumber)
         .single();
@@ -79,21 +79,17 @@ export const ReportSubmissionTab = ({ isOpen, onClose, formData, referenceNumber
       if (submissionError) throw submissionError;
       
       // Store the completed form data
-      const { error: dataError } = await supabase
-        .from('questionnaire_data')
-        .insert([
-          {
-            submission_id: submission.id,
-            form_data: formData,
-            version: 'completed'
-          }
-        ]);
+      const { error: dataError } = await supabase.rest.from('questionnaire_data')
+        .insert({
+          submission_id: submission.id,
+          form_data: formData,
+          version: 'completed'
+        });
       
       if (dataError) throw dataError;
       
       // Update submission status
-      const { error: updateError } = await supabase
-        .from('questionnaire_submissions')
+      const { error: updateError } = await supabase.rest.from('questionnaire_submissions')
         .update({ 
           status: 'completed',
           completed_date: new Date().toISOString()
