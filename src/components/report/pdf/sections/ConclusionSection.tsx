@@ -17,11 +17,11 @@ export const ConclusionSection = ({ styles, formData }: ConclusionSectionProps) 
 
   return (
     <View style={styles.subsection}>
-      <Text style={styles.sectionHeader}>Conclusion and Declaration</Text>
+      <Text style={styles.sectionHeader}>Section 16 - Conclusion and Declaration</Text>
       
       {/* Case Classification Content */}
       <View style={{ marginBottom: 15 }}>
-        <Text style={styles.fieldLabel}>Case Classification</Text>
+        <Text style={styles.fieldLabel}>16.1 Case Classification</Text>
         <Text style={styles.fieldValue}>Seatbelts: Was the claimant wearing a seat belt? Yes</Text>
         <Text style={styles.fieldValue}>Soft-tissue Injury Claim: Yes</Text>
         <Text style={styles.fieldValue}>Was the Claimant an occupant of a motor vehicle? Yes</Text>
@@ -32,6 +32,7 @@ export const ConclusionSection = ({ styles, formData }: ConclusionSectionProps) 
       
       {/* Declaration Content */}
       <View style={{ marginBottom: 10 }}>
+        <Text style={styles.fieldLabel}>16.2 Expert Declaration</Text>
         <Text style={styles.fieldValue}>
           I confirm that I have made clear which facts and matters referred to in this report are within my own 
           knowledge and which are not. Those that are within my own knowledge I confirm to be true. The 

@@ -10,12 +10,12 @@ interface TravelAnxietySectionProps {
 export const TravelAnxietySection = ({ formData, styles }: TravelAnxietySectionProps) => {
   return (
     <View style={styles.subsection}>
-      <Text style={styles.sectionHeader}>Section 8.5 - Travel Anxiety Details</Text>
+      <Text style={styles.sectionHeader}>Section 10 - Travel Anxiety Details</Text>
       
       {formData.travelAnxiety.hasAnxiety ? (
         <>
           <View style={{ marginBottom: 10 }}>
-            <Text style={styles.fieldLabel}>8.5.1 Symptoms and Severity</Text>
+            <Text style={styles.fieldLabel}>10.1 Symptoms and Severity</Text>
             <Text style={styles.fieldValue}>
               The claimant reported travel anxiety following the accident. 
               The initial severity was {formData.travelAnxiety.initialSeverity.toLowerCase()}. 
@@ -27,7 +27,7 @@ export const TravelAnxietySection = ({ formData, styles }: TravelAnxietySectionP
           
           {formData.travelAnxiety.symptoms && formData.travelAnxiety.symptoms.length > 0 && (
             <View style={{ marginBottom: 10 }}>
-              <Text style={styles.fieldLabel}>8.5.2 Specific Anxiety Symptoms</Text>
+              <Text style={styles.fieldLabel}>10.2 Specific Anxiety Symptoms</Text>
               <Text style={styles.fieldValue}>The following symptoms were reported:</Text>
               {formData.travelAnxiety.symptoms.map((symptom, index) => (
                 <Text key={index} style={[styles.fieldValue, { marginLeft: 10 }]}>• {symptom}</Text>
@@ -36,7 +36,7 @@ export const TravelAnxietySection = ({ formData, styles }: TravelAnxietySectionP
           )}
           
           <View style={{ marginBottom: 10 }}>
-            <Text style={styles.fieldLabel}>8.5.3 Psychological Impact</Text>
+            <Text style={styles.fieldLabel}>10.3 Psychological Impact</Text>
             <Text style={styles.fieldValue}>
               The psychological impact of the accident has manifested as anxiety specifically related to traveling in vehicles.
               This is a typical trauma response following a road traffic accident and can significantly affect quality of life.
@@ -47,13 +47,13 @@ export const TravelAnxietySection = ({ formData, styles }: TravelAnxietySectionP
           
           {formData.travelAnxiety.pastHistory && (
             <View style={{ marginBottom: 10 }}>
-              <Text style={styles.fieldLabel}>8.5.4 Prior History</Text>
+              <Text style={styles.fieldLabel}>10.4 Prior History</Text>
               <Text style={styles.fieldValue}>{formData.travelAnxiety.pastHistory}</Text>
             </View>
           )}
 
           <View style={{ marginBottom: 10 }}>
-            <Text style={styles.fieldLabel}>8.5.5 Treatment and Prognosis</Text>
+            <Text style={styles.fieldLabel}>10.5 Treatment and Prognosis</Text>
             <Text style={styles.fieldValue}>
               Self-help measures including gradual exposure to travel situations, relaxation techniques, and breathing exercises
               are recommended. The prognosis is estimated at 

@@ -16,7 +16,7 @@ interface InjuriesSectionProps {
 export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
   return (
     <View style={styles.subsection}>
-      <Text style={styles.sectionHeader}>Section 8 - Injuries</Text>
+      <Text style={styles.sectionHeader}>Section 7 - Injuries</Text>
 
       {/* Neck Pain */}
       <NeckPainComponent neckPain={formData.injuries.neckPain} styles={styles} />
