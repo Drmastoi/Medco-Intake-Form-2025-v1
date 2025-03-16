@@ -3,28 +3,13 @@ import React from 'react';
 import { View, Text } from '@react-pdf/renderer';
 import { FormSchema } from '@/schemas/intakeFormSchema';
 import { dailyLifeStyles } from '../dailyLifeStyles';
+import { formatDate } from '../../../../utils/dateUtils';
 
 interface AccidentInfoProps {
   formData: Partial<FormSchema>;
 }
 
 export const AccidentInfoComponent = ({ formData }: AccidentInfoProps) => {
-  // Helper function to format date
-  const formatDate = (dateString: string | undefined) => {
-    if (!dateString) return 'unspecified date';
-    
-    try {
-      const date = new Date(dateString);
-      return date.toLocaleDateString('en-GB', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric'
-      });
-    } catch (e) {
-      return 'unspecified date';
-    }
-  };
-
   // Helper function to get time of day text
   const getTimeOfDay = (time: string | undefined) => {
     switch(time) {

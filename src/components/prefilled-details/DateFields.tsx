@@ -7,6 +7,9 @@ interface DateFieldsProps {
 }
 
 export function DateFields({ form }: DateFieldsProps) {
+  // Use today's date as default
+  const today = new Date().toISOString().split('T')[0];
+
   return (
     <>
       <FormField
@@ -16,7 +19,11 @@ export function DateFields({ form }: DateFieldsProps) {
           <FormItem>
             <FormLabel>Date of Examination</FormLabel>
             <FormControl>
-              <Input type="date" {...field} />
+              <Input 
+                type="date" 
+                {...field} 
+                defaultValue={field.value || today}
+              />
             </FormControl>
           </FormItem>
         )}
@@ -29,7 +36,11 @@ export function DateFields({ form }: DateFieldsProps) {
           <FormItem>
             <FormLabel>Date of Report</FormLabel>
             <FormControl>
-              <Input type="date" {...field} />
+              <Input 
+                type="date" 
+                {...field}
+                defaultValue={field.value || today}
+              />
             </FormControl>
           </FormItem>
         )}

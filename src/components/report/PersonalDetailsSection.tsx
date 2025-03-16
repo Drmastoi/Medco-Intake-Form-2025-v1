@@ -53,10 +53,6 @@ export const PersonalDetailsSection = ({ formData }: { formData: any }) => {
     }
   };
 
-  const today = new Date();
-  const examinationDate = today.toISOString().split('T')[0];
-  const reportDate = today.toISOString().split('T')[0];
-
   return (
     <View style={styles.section}>
       <View>
@@ -132,12 +128,12 @@ export const PersonalDetailsSection = ({ formData }: { formData: any }) => {
         
         <View style={styles.row}>
           <Text style={styles.label}>Date of Examination:</Text>
-          <Text style={styles.value}>{formatDate(examinationDate)}</Text>
+          <Text style={styles.value}>{formData.dateOfExamination ? formatDate(formData.dateOfExamination) : formatDate(new Date().toISOString().split('T')[0])}</Text>
         </View>
         
         <View style={styles.row}>
           <Text style={styles.label}>Date of Report:</Text>
-          <Text style={styles.value}>{formatDate(reportDate)}</Text>
+          <Text style={styles.value}>{formData.dateOfReport ? formatDate(formData.dateOfReport) : formatDate(new Date().toISOString().split('T')[0])}</Text>
         </View>
       </View>
 

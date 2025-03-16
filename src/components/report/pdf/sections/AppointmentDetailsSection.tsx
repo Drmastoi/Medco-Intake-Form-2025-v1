@@ -16,7 +16,7 @@ export const AppointmentDetailsSection = ({ formData, styles }: AppointmentDetai
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>4.1 Date of Appointment</Text>
           <Text style={styles.fieldValue}>
-            {formData.examinationDate ? formatDate(formData.examinationDate) : formatDate(new Date().toISOString().split('T')[0])} {formData.examinationTime || '10:00'}
+            {formData.dateOfExamination ? formatDate(formData.dateOfExamination) : formatDate(new Date().toISOString().split('T')[0])} {formData.examinationTime || '10:00'}
             {'\nMethod - Clinic'}
           </Text>
         </View>
@@ -33,7 +33,7 @@ export const AppointmentDetailsSection = ({ formData, styles }: AppointmentDetai
         </View>
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>4.4 Date of Report</Text>
-          <Text style={styles.fieldValue}>{formatDate(new Date().toISOString().split('T')[0])}</Text>
+          <Text style={styles.fieldValue}>{formData.dateOfReport ? formatDate(formData.dateOfReport) : formatDate(new Date().toISOString().split('T')[0])}</Text>
         </View>
       </View>
     </View>

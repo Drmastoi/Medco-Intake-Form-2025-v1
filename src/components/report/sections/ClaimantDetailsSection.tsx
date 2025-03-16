@@ -1,6 +1,6 @@
 
 import { Text, View } from '@react-pdf/renderer';
-import { formatDate } from '../../../utils/dateUtils';
+import { formatDate, calculateAge } from '../../../utils/dateUtils';
 
 interface ClaimantDetailsSectionProps {
   formData: any;
@@ -8,19 +8,6 @@ interface ClaimantDetailsSectionProps {
 }
 
 export const ClaimantDetailsSection = ({ formData, styles }: ClaimantDetailsSectionProps) => {
-  // Calculate claimant's age based on DOB
-  const getAge = (dateString: string) => {
-    if (!dateString) return 'Not provided';
-    const birthDate = new Date(dateString);
-    const today = new Date();
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
-    }
-    return age + ' Years';
-  };
-
   // Format identification type
   const getIdType = (idType: string) => {
     switch (idType) {
@@ -60,7 +47,7 @@ export const ClaimantDetailsSection = ({ formData, styles }: ClaimantDetailsSect
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>2.5 Age (At the time of the Incident)</Text>
-          <Text style={styles.fieldValue}>{getAge(formData.dateOfBirth)}</Text>
+          <Text style={styles.fieldValue}>{calculateAge(formData.dateOfBirth)}</Text>
         </View>
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>2.6 Date of Accident</Text>
