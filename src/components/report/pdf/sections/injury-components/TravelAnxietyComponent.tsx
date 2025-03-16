@@ -1,66 +1,64 @@
 
 import React from 'react';
 import { View, Text } from '@react-pdf/renderer';
-import { pdfStyles } from '../../styles/pdfStyles';
-import { TravelAnxietyData } from '@/types/reportTypes';
-import { formatSeverity, formatResolveDays } from '../../utils/formatUtils';
+import { layoutStyles } from '../../styles/layoutStyles';
+import { textStyles } from '../../styles/textStyles';
+import { colorScheme } from '../../styles/colorScheme';
+import { formatCheckboxList } from '../../utils/formatUtils';
 
-export interface TravelAnxietyComponentProps {
-  data: TravelAnxietyData;
-  reportType: "claimant" | "expert";
+interface TravelAnxietyProps {
+  travelAnxiety: {
+    hasAnxiety: boolean;
+    symptoms: string[];
+    initialSeverity: string;
+    currentSeverity: string;
+    resolveDays: string;
+    pastHistory: string;
+    hasHistory: string;
+    currentlyDriving: string;
+    duration?: string;
+  };
 }
 
-export const TravelAnxietyComponent = ({ data, reportType }: TravelAnxietyComponentProps) => {
-  if (!data.hasAnxiety) return null;
-  
+export const TravelAnxietyComponent: React.FC<TravelAnxietyProps> = ({ travelAnxiety }) => {
+  const formatSymptoms = () => {
+    const symptoms = travelAnxiety.symptoms || [];
+    if (symptoms.length === 0) return "No specific symptoms reported.";
+    
+    return formatCheckboxList(symptoms);
+  };
+
   return (
-    <View style={pdfStyles.injurySection}>
-      <View style={pdfStyles.injuryHeader}>
-        <Text style={pdfStyles.injuryTitle}>Travel Anxiety</Text>
-      </View>
+    <View style={[layoutStyles.section, { backgroundColor: colorScheme.altSectionBg, marginBottom: 10 }]}>
+      <Text style={textStyles.sectionTitle}>Travel Anxiety</Text>
       
-      <View style={pdfStyles.injuryContent}>
-        <View style={pdfStyles.injuryRow}>
-          <Text style={pdfStyles.injuryLabel}>Symptoms:</Text>
-          <Text style={pdfStyles.injuryValue}>
-            {data.symptoms.join(', ')}
+      <View>
+        <Text style={textStyles.normalText}>
+          The claimant reports experiencing travel anxiety following the accident. 
+          The initial severity was {travelAnxiety.initialSeverity.toLowerCase()} and the 
+          current severity is {travelAnxiety.currentSeverity.toLowerCase()}.
+        </Text>
+        
+        <Text style={[textStyles.normalText, { marginTop: 5 }]}>
+          Symptoms include: {formatSymptoms()}
+        </Text>
+        
+        {travelAnxiety.duration && (
+          <Text style={[textStyles.normalText, { marginTop: 5 }]}>
+            The anxiety symptoms lasted for approximately {travelAnxiety.duration}.
           </Text>
-        </View>
-        
-        <View style={pdfStyles.injuryRow}>
-          <Text style={pdfStyles.injuryLabel}>Currently Driving:</Text>
-          <Text style={pdfStyles.injuryValue}>{data.currentlyDriving}</Text>
-        </View>
-        
-        <View style={pdfStyles.injuryRow}>
-          <Text style={pdfStyles.injuryLabel}>Initial Severity:</Text>
-          <Text style={pdfStyles.injuryValue}>{formatSeverity(data.initialSeverity)}</Text>
-        </View>
-        
-        <View style={pdfStyles.injuryRow}>
-          <Text style={pdfStyles.injuryLabel}>Current Severity:</Text>
-          <Text style={pdfStyles.injuryValue}>{formatSeverity(data.currentSeverity)}</Text>
-        </View>
-        
-        {reportType === "expert" && data.resolveDays && (
-          <View style={pdfStyles.injuryRow}>
-            <Text style={pdfStyles.injuryLabel}>Expected Resolution:</Text>
-            <Text style={pdfStyles.injuryValue}>{formatResolveDays(data.resolveDays)}</Text>
-          </View>
         )}
         
-        {data.duration && (
-          <View style={pdfStyles.injuryRow}>
-            <Text style={pdfStyles.injuryLabel}>Duration:</Text>
-            <Text style={pdfStyles.injuryValue}>{data.duration}</Text>
-          </View>
+        {travelAnxiety.currentlyDriving && travelAnxiety.currentlyDriving !== "Not Specified" && (
+          <Text style={[textStyles.normalText, { marginTop: 5 }]}>
+            Currently driving status: {travelAnxiety.currentlyDriving}
+          </Text>
         )}
         
-        {reportType === "expert" && (
-          <View style={pdfStyles.injuryRow}>
-            <Text style={pdfStyles.injuryLabel}>Past History:</Text>
-            <Text style={pdfStyles.injuryValue}>{data.pastHistory || "None"}</Text>
-          </View>
+        {travelAnxiety.pastHistory && (
+          <Text style={[textStyles.normalText, { marginTop: 5 }]}>
+            Past history: {travelAnxiety.pastHistory}
+          </Text>
         )}
       </View>
     </View>

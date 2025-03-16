@@ -1,6 +1,6 @@
 
 import { Text, View } from '@react-pdf/renderer';
-import { formatCheckboxList } from '../utils/formatUtils';
+import { formatCheckboxList } from '../pdf/utils/formatUtils';
 import { impactStyles } from './impactStyles';
 
 interface WorkImpactProps {

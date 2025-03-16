@@ -25,6 +25,11 @@ export const textStyles = StyleSheet.create({
     marginBottom: 5,
     lineHeight: 1.4,
   },
+  normalText: {
+    fontSize: 10,
+    marginBottom: 5,
+    lineHeight: 1.4,
+  },
   boldText: {
     fontSize: 10,
     fontWeight: 'bold',

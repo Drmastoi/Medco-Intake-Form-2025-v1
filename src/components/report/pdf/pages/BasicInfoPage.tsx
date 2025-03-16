@@ -1,61 +1,63 @@
 
 import React from 'react';
-import { Page, View, Text } from '@react-pdf/renderer';
-import { pdfStyles } from '../styles/pdfStyles';
-import { textStyles } from '../styles/textStyles';
-import { layoutStyles } from '../styles/layoutStyles';
+import { View, Text } from '@react-pdf/renderer';
 import { ReportData } from '@/types/reportTypes';
+import { layoutStyles } from '../styles/layoutStyles';
+import { textStyles } from '../styles/textStyles';
+import { colorScheme } from '../styles/colorScheme';
+import InstructionDetailsSection from '../sections/InstructionDetailsSection';
+import AppointmentDetailsSection from '../sections/AppointmentDetailsSection';
+import ClaimantDetailsSection from '../sections/ClaimantDetailsSection';
+import AccidentDetailsSection from '../sections/AccidentDetailsSection';
 import PDFFooter from '../components/PDFFooter';
-import { InstructionDetailsSection } from '../sections/InstructionDetailsSection';
-import { AppointmentDetailsSection } from '../sections/AppointmentDetailsSection';
-import { ClaimantDetailsSection } from '../sections/ClaimantDetailsSection';
-import { AccidentDetailsSection } from '../sections/AccidentDetailsSection';
 
 interface BasicInfoPageProps {
   reportData: ReportData;
-  claimantName: string;
-  today: string;
-  reportType: "claimant" | "expert";
+  claimantName?: string;
+  today?: string;
+  reportType?: "claimant" | "expert";
 }
 
-const BasicInfoPage = ({ reportData, claimantName, today, reportType }: BasicInfoPageProps) => {
+const BasicInfoPage: React.FC<BasicInfoPageProps> = ({ 
+  reportData,
+  claimantName = "Not Specified",
+  today = new Date().toLocaleDateString('en-GB'),
+  reportType = "expert"
+}) => {
   return (
-    <Page size="A4" style={layoutStyles.page}>
+    <View style={layoutStyles.page}>
       <View style={layoutStyles.pageContainer}>
-        <View style={pdfStyles.section}>
-          <Text style={textStyles.headerText}>
-            Medico-Legal Report {reportType === "expert" ? "(Expert Copy)" : "(Claimant Copy)"}
-          </Text>
-          <Text style={textStyles.subHeaderText}>
-            Report Date: {today}
-          </Text>
-        </View>
+        <Text style={textStyles.headerText}>
+          Medical Report - {reportData?.personal?.fullName || "Not Specified"}
+        </Text>
         
-        <View style={layoutStyles.content}>
-          <InstructionDetailsSection 
-            prefilled={reportData.prefilled} 
-          />
-          
-          <AppointmentDetailsSection 
-            prefilled={reportData.prefilled} 
-          />
-          
-          <ClaimantDetailsSection 
-            personal={reportData.personal} 
-          />
-          
-          <AccidentDetailsSection 
-            accident={reportData.accident} 
-          />
-        </View>
+        <Text style={textStyles.subHeaderText}>
+          Date of Report: {reportData?.prefilled?.dateOfReport || today}
+        </Text>
+        
+        <InstructionDetailsSection
+          reportData={reportData}
+        />
+        
+        <AppointmentDetailsSection
+          reportData={reportData}
+        />
+        
+        <ClaimantDetailsSection
+          reportData={reportData}
+        />
+        
+        <AccidentDetailsSection
+          reportData={reportData}
+        />
       </View>
       
       <PDFFooter 
         pageNumber={1} 
         claimantName={claimantName} 
-        date={today} 
+        reportType={reportType}
       />
-    </Page>
+    </View>
   );
 };
 

@@ -1,44 +1,44 @@
 
 import React from 'react';
-import { Page, View, Text } from '@react-pdf/renderer';
-import { pdfStyles } from '../styles/pdfStyles';
-import { textStyles } from '../styles/textStyles';
+import { View, Text } from '@react-pdf/renderer';
 import { layoutStyles } from '../styles/layoutStyles';
+import { textStyles } from '../styles/textStyles';
+import { ReportData } from '@/types/reportTypes';
 import PDFFooter from '../components/PDFFooter';
-import { AgreementSection } from '../sections/AgreementSection';
-import { ConclusionSection } from '../sections/ConclusionSection';
+import AgreementSection from '../sections/AgreementSection';
+import ConclusionSection from '../sections/ConclusionSection';
 
 interface DeclarationPageProps {
-  claimantName: string;
-  today: string;
-  reportType: "claimant" | "expert";
+  reportData: ReportData;
+  claimantName?: string;
+  today?: string;
+  reportType?: "claimant" | "expert";
 }
 
-const DeclarationPage = ({ claimantName, today, reportType }: DeclarationPageProps) => {
+const DeclarationPage: React.FC<DeclarationPageProps> = ({ 
+  reportData,
+  claimantName = "Not Specified",
+  today = new Date().toLocaleDateString('en-GB'),
+  reportType = "expert" 
+}) => {
   return (
-    <Page size="A4" style={layoutStyles.page}>
+    <View style={layoutStyles.page}>
       <View style={layoutStyles.pageContainer}>
-        <View style={pdfStyles.section}>
-          <Text style={textStyles.headerText}>
-            Declaration and Statement of Truth {reportType === "expert" ? "(Expert Copy)" : "(Claimant Copy)"}
-          </Text>
-          <Text style={textStyles.subHeaderText}>
-            Report Date: {today}
-          </Text>
-        </View>
+        <Text style={textStyles.headerText}>
+          Declaration and Professional Opinion
+        </Text>
         
-        <View style={layoutStyles.content}>
-          <ConclusionSection />
-          <AgreementSection reportType={reportType} />
-        </View>
+        <ConclusionSection reportData={reportData} />
+        
+        <AgreementSection reportData={reportData} />
       </View>
       
       <PDFFooter 
         pageNumber={4} 
         claimantName={claimantName} 
-        date={today} 
+        reportType={reportType}
       />
-    </Page>
+    </View>
   );
 };
 

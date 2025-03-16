@@ -10,16 +10,19 @@ import LifestyleImpactSection from '../sections/LifestyleImpactSection';
 import MedicalHistorySection from '../sections/MedicalHistorySection';
 import OtherInjuriesSection from '../sections/OtherInjuriesSection';
 import BruisingSection from '../sections/BruisingSection';
-import TravelAnxietyComponent from '../sections/injury-components/TravelAnxietyComponent';
+import { TravelAnxietyComponent } from '../sections/injury-components/TravelAnxietyComponent';
 
 interface TreatmentLifestylePageProps {
   reportData: any;
+  claimantName?: string;
+  today?: string;
+  reportType?: "claimant" | "expert";
 }
 
 const TreatmentLifestylePage: React.FC<TreatmentLifestylePageProps> = ({ reportData }) => {
   return (
     <View style={layoutStyles.page}>
-      <View style={layoutStyles.pageContent}>
+      <View style={layoutStyles.section}>
         <Text style={textStyles.sectionTitle}>Treatment and Daily Life Impact</Text>
         
         <TreatmentSection treatment={reportData.other.treatment} />

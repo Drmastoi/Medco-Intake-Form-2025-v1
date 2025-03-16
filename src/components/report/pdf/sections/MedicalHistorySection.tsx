@@ -16,10 +16,10 @@ const MedicalHistorySection: React.FC<MedicalHistorySectionProps> = ({ medicalHi
   const hasExceptionalHistory = medicalHistory.exceptionalInjuries;
 
   return (
-    <View style={[layoutStyles.section, { backgroundColor: colorScheme.sectionBg }]}>
+    <View style={[layoutStyles.section, { backgroundColor: colorScheme.altSectionBg }]}>
       <Text style={textStyles.sectionTitle}>Medical History</Text>
 
-      <View style={[layoutStyles.subsection, { backgroundColor: colorScheme.sectionBg }]}>
+      <View style={[layoutStyles.section, { backgroundColor: colorScheme.altSectionBg }]}>
         <Text style={textStyles.subHeaderText}>Relevant Medical History</Text>
         
         {!hasExceptionalHistory ? (

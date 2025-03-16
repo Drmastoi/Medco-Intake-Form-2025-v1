@@ -1,46 +1,40 @@
 
+// Color scheme for PDF reports
 export const colorScheme = {
-  primary: '#3b82f6',    // blue-500
-  accent: '#8b5cf6',     // violet-500
-  success: '#10b981',    // emerald-500
-  warning: '#f59e0b',    // amber-500
-  error: '#ef4444',      // red-500
-  info: '#3b82f6',       // blue-500
+  // Primary colors
+  primary: '#3b82f6',
+  accent: '#8b5cf6',
+  success: '#10b981',
+  warning: '#f59e0b',
+  error: '#ef4444',
+  info: '#0ea5e9',
   
-  textDark: '#1f2937',   // gray-800
-  textLight: '#f9fafb',  // gray-50
-  textSecondary: '#6b7280', // gray-500
-  textInverted: '#ffffff', // white
+  // Text colors
+  textDark: '#1f2937',
+  textLight: '#f9fafb',
+  textSecondary: '#4b5563',
+  textInverted: '#ffffff',
   
-  borderColor: '#e5e7eb', // gray-200
+  // Border colors
+  borderColor: '#e5e7eb',
   
   // Background colors
-  background: '#f9fafb',   // gray-50
-  inputBg: '#ffffff',      // white
-  cardBg: '#ffffff',       // white
-  tableBg: '#ffffff',      // white
-  tableHeaderBg: '#f3f4f6', // gray-100
-  tableRowAlt: '#f9fafb',   // gray-50
-  altBg: '#f3f4f6',        // gray-100
+  background: '#f8fafc',
+  sectionBg: '#ffffff',
+  altSectionBg: '#f3f4f6',
+  headerBg: '#f1f5f9',
+  navBg: '#f9fafb',
   
-  headerBg: '#1f2937',     // gray-800
-  footerBg: '#f3f4f6',     // gray-100
+  // Status colors
+  statusPending: '#fef3c7',
+  statusPendingText: '#92400e',
+  statusApproved: '#d1fae5',
+  statusApprovedText: '#065f46',
+  statusRejected: '#fee2e2',
+  statusRejectedText: '#b91c1c',
   
-  // Text color
-  text: '#1f2937',         // gray-800
-  
-  // Medical report specific colors
-  medicalHighlight: '#eef2ff', // indigo-50
-  medicalWarning: '#fff7ed',   // orange-50
-  medicalInfo: '#ecfdf5',      // emerald-50
-  
-  // Severity levels
-  severityMild: '#d1fae5',     // emerald-100
-  severityModerate: '#fef3c7',  // amber-100
-  severitySevere: '#fee2e2',    // red-100
-  
-  // Timeline markers
-  timelineStart: '#bfdbfe',    // blue-200
-  timelineCurrent: '#a5b4fc',  // indigo-300
-  timelineEnd: '#c4b5fd',      // violet-300
+  // Timeline colors
+  timelineStart: '#3b82f6',
+  timelineMid: '#8b5cf6',
+  timelineEnd: '#ec4899',
 };

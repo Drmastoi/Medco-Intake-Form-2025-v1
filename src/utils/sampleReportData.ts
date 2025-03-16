@@ -1,82 +1,81 @@
 
-import { ReportData } from "@/types/reportTypes";
+import { ReportData } from '@/types/reportTypes';
 
 /**
- * Generates sample report data for testing PDF generation
+ * Generates sample report data for preview and testing
  */
 export function generateSampleReportData(): ReportData {
   return {
     prefilled: {
-      solicitorName: "Johnson & Partners LLP",
-      solicitorReference: "JP-2023-452",
-      instructingPartyName: "Claims Direct",
-      instructingPartyReference: "CD-8834-JD",
-      examinationLocation: "123 Harley Street, London",
-      medcoReference: "MED-2023-78945",
-      dateOfExamination: "2023-10-15",
-      dateOfReport: "2023-10-20",
+      solicitorName: "Jane Smith",
+      solicitorReference: "REF12345",
+      instructingPartyName: "Smith & Associates",
+      instructingPartyReference: "INST-5678",
+      examinationLocation: "123 Medical Center, London",
+      medcoReference: "MED-9876-543",
+      dateOfExamination: "2025-03-15",
+      dateOfReport: "2025-03-16",
       timeSpentWithClaimant: "30",
-      accompaniedBy: "Spouse",
-      expertName: "Dr. Awais Iqbal",
+      accompaniedBy: "Unaccompanied",
+      expertName: "Dr. Sam Jones",
       expertSpecialty: "General Practice",
       expertTitle: "Consultant",
-      gmcNumber: "6138189"
+      gmcNumber: "1234567"
     },
     personal: {
-      fullName: "James Smith",
+      fullName: "John Doe",
       dateOfBirth: "1985-06-12",
       gender: "Male",
-      address: "45 Oak Avenue, Manchester, M1 7BD",
-      occupation: "Office Manager",
+      address: "456 Sample Street, London, SW1A 1AA",
+      occupation: "Software Developer",
       workType: "Full Time",
       idType: "Driving License"
     },
     accident: {
-      accidentDate: "2023-05-04",
-      accidentTime: "Afternoon",
-      vehiclePosition: "Stationary at traffic lights",
+      accidentDate: "2025-01-20",
+      accidentTime: "Morning",
+      vehiclePosition: "Driver",
       vehicleStatus: "Stationary",
       vehicleLocation: "Main Road",
       impactLocation: "Rear",
       vehicleDamage: "Moderate Damage",
       claimantPosition: "Driver",
       claimantVehicle: "Car",
-      otherVehicle: "Van",
-      accidentSummary: "The claimant's vehicle was stationary at traffic lights when it was struck from behind by a van. The impact was of moderate force causing damage to the rear bumper and boot of the claimant's vehicle."
+      otherVehicle: "Car",
+      accidentSummary: "The claimant's vehicle was stationary at traffic lights when it was struck from behind by another vehicle."
     },
     injuries: {
       neckPain: {
         hasInjury: true,
-        painStart: "2023-05-04",
+        painStart: "Immediately after the accident",
         initialSeverity: "Moderate",
         currentSeverity: "Mild",
-        resolveDays: "",
-        additionalInfo: "Pain radiates to the upper back occasionally",
+        resolveDays: "90",
+        additionalInfo: "Pain radiates to shoulders occasionally",
         hadPrior: false
       },
       shoulderPain: {
         hasInjury: true,
-        side: "right",
-        painStart: "2023-05-04",
-        initialSeverity: "Moderate",
-        currentSeverity: "Resolved",
-        resolveDays: "45"
+        side: "left",
+        painStart: "Day after the accident",
+        initialSeverity: "Mild",
+        currentSeverity: "Mild",
+        resolveDays: "60"
       },
       backPain: {
-        hasInjury: true,
-        location: "Lower back",
-        painStart: "2023-05-05",
-        initialSeverity: "Severe",
-        currentSeverity: "Moderate",
-        resolveDays: ""
+        hasInjury: false,
+        location: "Not Specified",
+        painStart: "Not Specified",
+        initialSeverity: "Not Specified",
+        currentSeverity: "Not Specified"
       },
       headache: {
         hasInjury: true,
-        start: "2023-05-04",
-        initialSeverity: "Mild",
-        currentSeverity: "Resolved",
-        resolveDays: "21",
-        pastHistory: "Occasional tension headaches, approximately once per month"
+        start: "2 days after the accident",
+        initialSeverity: "Moderate",
+        currentSeverity: "Mild",
+        resolveDays: "45",
+        pastHistory: "Occasional tension headaches before the accident"
       }
     },
     travelAnxiety: {
@@ -86,75 +85,66 @@ export function generateSampleReportData(): ReportData {
       symptoms: [
         "Being a more cautious driver",
         "Looking in the mirror more frequently",
-        "Avoiding the road where the accident happened",
         "Anxiety when traveling as a passenger"
       ],
-      duration: "3 months",
-      resolveDays: "",
-      pastHistory: "No prior history of anxiety",
+      duration: "About 8 weeks",
+      resolveDays: "60",
+      pastHistory: "No history of anxiety before the accident",
       hasHistory: "no",
-      currentlyDriving: "yes"
+      currentlyDriving: "Yes, but more cautiously"
     },
     other: {
       bruising: {
         hasBruising: true,
         location: "Chest (from seatbelt)",
-        noticed: "Immediately after the accident",
+        noticed: "Immediately after accident",
         initialSeverity: "Moderate",
         currentSeverity: "Resolved",
-        resolveDays: "14",
-        hasVisibleScar: false
+        resolveDays: "14"
       },
       otherInjuries: {
-        hasOtherInjury: true,
-        name: "Jaw pain/TMJ dysfunction",
-        start: "2023-05-04",
-        initialSeverity: "Mild",
-        currentSeverity: "Resolved",
-        resolveDays: "30"
+        hasOtherInjury: false
       },
       treatment: {
         hasTreatment: true,
-        type: ["Pain medication", "Physiotherapy", "Heat/Ice"],
-        frequency: "Physiotherapy once per week, pain medication as needed",
+        type: ["over-the-counter", "physiotherapy"],
+        frequency: "Twice weekly physiotherapy",
         duration: "6 weeks",
-        ongoing: false,
-        sceneOfAccidentTreatment: "0",
-        wentToAE: "1",
-        hospitalName: "Manchester Royal Infirmary",
-        hospitalTreatment: ["X-rays", "Pain medication"],
-        wentToWalkInGP: "1",
-        daysBeforeGPVisit: "3",
-        currentTreatment: "2",
-        physiotherapySessions: "6"
+        ongoing: false
       },
       lifestyle: {
         impactOnWork: true,
-        timeOffWork: "14",
-        workRestrictions: ["sitting for long periods", "lifting heavy objects"],
-        workImpactDate: "2023-05-05",
+        timeOffWork: "5",
+        workRestrictions: ["typing/computer work", "sitting for long periods"],
+        workImpactDate: "2025-01-21",
         
         impactOnSleep: true,
         sleepIssues: ["difficulty falling asleep", "pain disturbs sleep"],
-        sleepImpactDate: "2023-05-04",
+        sleepImpactDate: "2025-01-20",
         
         impactOnDomestic: true,
-        domesticIssues: ["house cleaning", "grocery shopping", "gardening/yard work"],
-        domesticImpactDate: "2023-05-05",
+        domesticIssues: ["house cleaning", "grocery shopping"],
+        domesticImpactDate: "2025-01-20",
         
         impactOnSports: true,
-        sportsActivities: "gym, cycling, tennis",
-        sportsDuration: "8",
-        sportsImpactDate: "2023-05-04",
+        sportsActivities: "gym, swimming, cycling",
+        sportsDuration: "8 weeks",
+        sportsImpactDate: "2025-01-20",
         
-        impactOnSocial: true,
-        socialDetails: "Unable to attend social gatherings, family events, and dinner outings due to pain and discomfort",
-        socialImpactDate: "2023-05-10"
+        impactOnSocial: false,
+        socialDetails: "",
+        socialImpactDate: ""
       },
       medicalHistory: {
         exceptionalInjuries: false,
         exceptionalInjuriesDetails: ""
       }
+    },
+    meta: {
+      reportType: "expert",
+      referenceNumber: "SAMPLE-12345",
+      submissionDate: new Date().toISOString().split('T')[0],
+      status: "draft"
     }
   };
 }
