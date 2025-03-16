@@ -12,7 +12,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { toast } from "@/components/ui/use-toast";
-import { useForm } from "react-hook-form";
+import { useForm, UseFormReturn } from "react-hook-form"; // Added UseFormReturn import
 import { FormSchema } from "@/schemas/intakeFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PDFDownloadLink } from '@react-pdf/renderer';
@@ -64,11 +64,11 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import SignatureCanvas from 'react-signature-canvas'
 import { supabase } from "@/integrations/supabase/client";
 import { ReportData } from '@/types/reportTypes';
-import PDFDocumentContent from './report/pdf/components/PDFDocumentContent';
+import PDFDocumentContent from '../report/pdf/components/PDFDocumentContent';
 import { useSearchParams } from 'next/navigation';
 
 interface ReportSubmissionTabProps {
-  form: UseForm<FormSchema>;
+  form: UseFormReturn<FormSchema>;
   referenceNumber: string | null;
 }
 
@@ -213,7 +213,18 @@ const ReportSubmissionTab: React.FC<ReportSubmissionTabProps> = ({ form, referen
   const handleReportTypeChange = (value: "claimant" | "expert") => {
     setSelectedReportType(value);
     if (reportData) {
-      setReportData(prev => ({ ...prev, meta: { ...prev.meta, reportType: value } }));
+      setReportData(prev => {
+        if (prev) {
+          return { 
+            ...prev, 
+            meta: { 
+              ...prev.meta, 
+              reportType: value as "claimant" | "expert" 
+            } 
+          };
+        }
+        return prev;
+      });
     }
   };
 
@@ -230,13 +241,25 @@ const ReportSubmissionTab: React.FC<ReportSubmissionTabProps> = ({ form, referen
     setIsGenerating(true);
 
     try {
-      // Generate claimant copy
-      const claimantReportData = { ...reportData, meta: { ...reportData.meta, reportType: "claimant" } };
+      // Generate claimant copy with proper typing
+      const claimantReportData = { 
+        ...reportData, 
+        meta: { 
+          ...reportData.meta, 
+          reportType: "claimant" as "claimant" | "expert"
+        } 
+      };
       const claimantPdfBase64 = await generatePdfAsBase64(claimantReportData);
       setClaimantPdfUrl(`data:application/pdf;base64,${claimantPdfBase64}`);
 
-      // Generate full expert copy
-      const expertReportData = { ...reportData, meta: { ...reportData.meta, reportType: "expert" } };
+      // Generate full expert copy with proper typing
+      const expertReportData = { 
+        ...reportData, 
+        meta: { 
+          ...reportData.meta, 
+          reportType: "expert" as "claimant" | "expert"
+        } 
+      };
       const fullPdfBase64 = await generatePdfAsBase64(expertReportData);
       setFullPdfUrl(`data:application/pdf;base64,${fullPdfBase64}`);
 
@@ -269,9 +292,15 @@ const ReportSubmissionTab: React.FC<ReportSubmissionTabProps> = ({ form, referen
     setIsGenerating(true);
 
     try {
-      // Generate final medco copy
+      // Generate final medco copy with proper typing
       setIsMedcoReport(true);
-      const finalReportData = { ...reportData, meta: { ...reportData.meta, reportType: "expert" } };
+      const finalReportData = { 
+        ...reportData, 
+        meta: { 
+          ...reportData.meta, 
+          reportType: "expert" as "claimant" | "expert"
+        } 
+      };
       const finalPdfBase64 = await generatePdfAsBase64(finalReportData);
       setFinalPdfUrl(`data:application/pdf;base64,${finalPdfBase64}`);
 

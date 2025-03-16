@@ -274,6 +274,7 @@ const PDFDocumentContent = ({ reportData, reportType = "expert" }: PDFDocumentCo
         />
         
         <DeclarationPage 
+          reportData={safeReportData}
           claimantName={claimantName} 
           today={today}
           reportType={reportType}
@@ -281,6 +282,7 @@ const PDFDocumentContent = ({ reportData, reportType = "expert" }: PDFDocumentCo
         
         {reportType === "expert" && (
           <ExpertInfoPage 
+            reportData={safeReportData}
             claimantName={claimantName} 
             today={today}
           />

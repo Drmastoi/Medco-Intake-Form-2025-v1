@@ -5,8 +5,8 @@ import { layoutStyles } from '../styles/layoutStyles';
 import { textStyles } from '../styles/textStyles';
 import { ReportData } from '@/types/reportTypes';
 import PDFFooter from '../components/PDFFooter';
-import ExpertDetailsSection from '../sections/ExpertDetailsSection';
-import ExpertCVSection from '../sections/ExpertCVSection';
+import { ExpertDetailsSection } from '../sections/ExpertDetailsSection';
+import { ExpertCVSection } from '../sections/ExpertCVSection';
 
 interface ExpertInfoPageProps {
   reportData: ReportData;

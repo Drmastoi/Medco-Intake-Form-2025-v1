@@ -3,42 +3,53 @@ import React from 'react';
 import { View, Text } from '@react-pdf/renderer';
 import { layoutStyles } from '../styles/layoutStyles';
 import { textStyles } from '../styles/textStyles';
-
-// Import section components
-import TreatmentSection from '../sections/TreatmentSection';
-import LifestyleImpactSection from '../sections/LifestyleImpactSection';
-import MedicalHistorySection from '../sections/MedicalHistorySection';
-import OtherInjuriesSection from '../sections/OtherInjuriesSection';
-import BruisingSection from '../sections/BruisingSection';
-import { TravelAnxietyComponent } from '../sections/injury-components/TravelAnxietyComponent';
+import { ReportData } from '@/types/reportTypes';
+import PDFFooter from '../components/PDFFooter';
+import { TreatmentSection } from '../sections/TreatmentSection';
+import { BruisingSection } from '../sections/BruisingSection';
+import { OtherInjuriesSection } from '../sections/OtherInjuriesSection';
+import { LifestyleImpactSection } from '../sections/LifestyleImpactSection';
+import { MedicalHistorySection } from '../sections/MedicalHistorySection';
+import { TravelAnxietySection } from '../sections/TravelAnxietySection';
 
 interface TreatmentLifestylePageProps {
-  reportData: any;
+  reportData: ReportData;
   claimantName?: string;
   today?: string;
   reportType?: "claimant" | "expert";
 }
 
-const TreatmentLifestylePage: React.FC<TreatmentLifestylePageProps> = ({ reportData }) => {
+const TreatmentLifestylePage: React.FC<TreatmentLifestylePageProps> = ({ 
+  reportData,
+  claimantName = "Not Specified",
+  today = new Date().toLocaleDateString('en-GB'),
+  reportType = "expert"
+}) => {
   return (
     <View style={layoutStyles.page}>
-      <View style={layoutStyles.section}>
-        <Text style={textStyles.sectionTitle}>Treatment and Daily Life Impact</Text>
+      <View style={layoutStyles.pageContainer}>
+        <Text style={textStyles.headerText}>
+          Treatment and Impact on Daily Life
+        </Text>
         
-        <TreatmentSection treatment={reportData.other.treatment} />
+        <TreatmentSection treatmentData={reportData.other.treatment} reportType={reportType} />
         
-        <BruisingSection bruising={reportData.other.bruising} />
+        <BruisingSection bruisingData={reportData.other.bruising} reportType={reportType} />
         
-        <OtherInjuriesSection otherInjuries={reportData.other.otherInjuries} />
+        <OtherInjuriesSection otherInjuriesData={reportData.other.otherInjuries} reportType={reportType} />
         
-        {reportData.travelAnxiety.hasAnxiety && (
-          <TravelAnxietyComponent travelAnxiety={reportData.travelAnxiety} />
-        )}
+        <TravelAnxietySection anxietyData={reportData.travelAnxiety} reportType={reportType} />
         
-        <LifestyleImpactSection lifestyle={reportData.other.lifestyle} />
+        <LifestyleImpactSection lifestyleData={reportData.other.lifestyle} reportType={reportType} />
         
-        <MedicalHistorySection medicalHistory={reportData.other.medicalHistory} />
+        <MedicalHistorySection medicalHistoryData={reportData.other.medicalHistory} reportType={reportType} />
       </View>
+      
+      <PDFFooter 
+        pageNumber={3} 
+        claimantName={claimantName} 
+        reportType={reportType}
+      />
     </View>
   );
 };

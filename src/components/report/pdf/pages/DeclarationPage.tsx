@@ -5,8 +5,8 @@ import { layoutStyles } from '../styles/layoutStyles';
 import { textStyles } from '../styles/textStyles';
 import { ReportData } from '@/types/reportTypes';
 import PDFFooter from '../components/PDFFooter';
-import AgreementSection from '../sections/AgreementSection';
-import ConclusionSection from '../sections/ConclusionSection';
+import { AgreementSection } from '../sections/AgreementSection';
+import { ConclusionSection } from '../sections/ConclusionSection';
 
 interface DeclarationPageProps {
   reportData: ReportData;

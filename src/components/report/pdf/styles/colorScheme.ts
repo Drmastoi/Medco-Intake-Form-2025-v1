@@ -14,6 +14,7 @@ export const colorScheme = {
   textLight: '#f9fafb',
   textSecondary: '#4b5563',
   textInverted: '#ffffff',
+  normalText: '#374151', // Added normalText color
   
   // Border colors
   borderColor: '#e5e7eb',

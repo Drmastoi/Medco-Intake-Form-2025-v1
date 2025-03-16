@@ -1,4 +1,3 @@
-
 /**
  * Utility functions for formatting data in PDF reports
  */
@@ -46,5 +45,59 @@ export const formatDate = (dateString: string): string => {
   } catch (error) {
     console.error("Error formatting date:", error);
     return dateString;
+  }
+};
+
+/**
+ * Formats severity levels for consistent display
+ */
+export const formatSeverity = (severity: string | undefined): string => {
+  if (!severity) return "Not specified";
+  
+  // If already a text description, return as is
+  if (typeof severity === 'string' && 
+     (severity.toLowerCase() === 'mild' || 
+      severity.toLowerCase() === 'moderate' || 
+      severity.toLowerCase() === 'severe' ||
+      severity.toLowerCase() === 'resolved' ||
+      severity.toLowerCase() === 'not specified')) {
+    return severity;
+  }
+  
+  // Otherwise convert from numeric code
+  switch (severity) {
+    case "1": return "Mild";
+    case "2": return "Moderate";
+    case "3": return "Severe";
+    case "4": return "Resolved";
+    default: return "Not specified";
+  }
+};
+
+/**
+ * Formats resolve days to a human readable string
+ */
+export const formatResolveDays = (days: string | undefined): string => {
+  if (!days || days === "Not specified") return "Not specified";
+  
+  // If already contains text, return as is
+  if (typeof days === 'string' && !(/^\d+$/.test(days))) {
+    return days;
+  }
+  
+  const daysNum = parseInt(days, 10);
+  if (isNaN(daysNum)) return "Not specified";
+  
+  if (daysNum === 0) return "Same day";
+  if (daysNum === 1) return "1 day";
+  if (daysNum < 7) return `${daysNum} days`;
+  
+  const weeks = Math.floor(daysNum / 7);
+  const remainingDays = daysNum % 7;
+  
+  if (weeks === 1) {
+    return remainingDays > 0 ? `1 week and ${remainingDays} days` : "1 week";
+  } else {
+    return remainingDays > 0 ? `${weeks} weeks and ${remainingDays} days` : `${weeks} weeks`;
   }
 };
