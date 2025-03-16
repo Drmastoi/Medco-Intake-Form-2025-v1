@@ -54,6 +54,15 @@ export const BackPainComponent = ({ backPain, styles }: BackPainComponentProps) 
           <Text style={styles.fieldValue}>None</Text>
         </View>
       </View>
+      
+      {backPain.location && (
+        <View style={styles.fieldRow}>
+          <View style={styles.fieldColumn}>
+            <Text style={styles.fieldLabel}>Location</Text>
+            <Text style={styles.fieldValue}>{safeValue(backPain.location)}</Text>
+          </View>
+        </View>
+      )}
     </View>
   );
 };

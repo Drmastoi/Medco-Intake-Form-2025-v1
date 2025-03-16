@@ -1,7 +1,6 @@
 
 /**
  * Format a number of days into a human-readable duration
- * Enhanced with better error handling and type checking
  */
 export function formatDuration(days: string | number | undefined): string {
   // Handle undefined or empty string
