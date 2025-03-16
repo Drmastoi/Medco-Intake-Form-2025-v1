@@ -10,62 +10,91 @@ interface SummaryOfInjuriesTableSectionProps {
 }
 
 export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInjuriesTableSectionProps) => {
+  // Helper function to get exact prognosis based on severity
+  const getExactPrognosis = (severity: string, resolveDays?: string) => {
+    if (severity === "Resolved") {
+      return `Resolved in ${resolveDays || "unknown"} days`;
+    } else if (severity === "Mild") {
+      return "3 months from date of accident";
+    } else if (severity === "Moderate") {
+      return "6 months from date of accident";
+    } else if (severity === "Severe") {
+      return "9 months from date of accident";
+    } else {
+      return "Not specified";
+    }
+  };
+  
   // Create array of injuries for the table
   const injuries = [
     formData.injuries.neckPain.hasInjury && {
       name: "Neck Pain",
       initialSeverity: formatSeverity(formData.injuries.neckPain.initialSeverity),
       currentSeverity: formatSeverity(formData.injuries.neckPain.currentSeverity),
-      prognosis: formatSeverity(formData.injuries.neckPain.currentSeverity) === "Resolved" ? 
-        "Resolved" : "6-9 months from accident",
+      prognosis: getExactPrognosis(
+        formData.injuries.neckPain.currentSeverity,
+        formData.injuries.neckPain.resolveDays
+      ),
       classification: "Whiplash"
     },
     formData.injuries.backPain.hasInjury && {
       name: "Back Pain",
       initialSeverity: formatSeverity(formData.injuries.backPain.initialSeverity),
       currentSeverity: formatSeverity(formData.injuries.backPain.currentSeverity),
-      prognosis: formatSeverity(formData.injuries.backPain.currentSeverity) === "Resolved" ? 
-        "Resolved" : "9-12 months from accident",
+      prognosis: getExactPrognosis(
+        formData.injuries.backPain.currentSeverity,
+        formData.injuries.backPain.resolveDays
+      ),
       classification: "Whiplash"
     },
     formData.injuries.shoulderPain.hasInjury && {
       name: `Shoulder Pain (${formData.injuries.shoulderPain.side})`,
       initialSeverity: formatSeverity(formData.injuries.shoulderPain.initialSeverity),
       currentSeverity: formatSeverity(formData.injuries.shoulderPain.currentSeverity),
-      prognosis: formatSeverity(formData.injuries.shoulderPain.currentSeverity) === "Resolved" ? 
-        "Resolved" : "6-9 months from accident",
+      prognosis: getExactPrognosis(
+        formData.injuries.shoulderPain.currentSeverity,
+        formData.injuries.shoulderPain.resolveDays
+      ),
       classification: "Whiplash"
     },
     formData.injuries.headache.hasInjury && {
       name: "Headache",
       initialSeverity: formatSeverity(formData.injuries.headache.initialSeverity),
       currentSeverity: formatSeverity(formData.injuries.headache.currentSeverity),
-      prognosis: formatSeverity(formData.injuries.headache.currentSeverity) === "Resolved" ? 
-        "Resolved" : "3-6 months from accident",
+      prognosis: getExactPrognosis(
+        formData.injuries.headache.currentSeverity,
+        formData.injuries.headache.resolveDays
+      ),
       classification: "Whiplash Associated"
     },
     formData.travelAnxiety.hasAnxiety && {
       name: "Travel Anxiety",
       initialSeverity: formatSeverity(formData.travelAnxiety.initialSeverity),
       currentSeverity: formatSeverity(formData.travelAnxiety.currentSeverity),
-      prognosis: formatSeverity(formData.travelAnxiety.currentSeverity) === "Resolved" ? 
-        "Resolved" : "6-9 months from accident",
+      prognosis: getExactPrognosis(
+        formData.travelAnxiety.currentSeverity,
+        formData.travelAnxiety.resolveDays
+      ),
       classification: "Psychological"
     },
     formData.other.bruising.hasBruising && {
       name: "Bruising",
       initialSeverity: formatSeverity(formData.other.bruising.initialSeverity),
       currentSeverity: formatSeverity(formData.other.bruising.currentSeverity),
-      prognosis: formatSeverity(formData.other.bruising.currentSeverity) === "Resolved" ? 
-        "Resolved" : "2-4 weeks from accident",
+      prognosis: getExactPrognosis(
+        formData.other.bruising.currentSeverity,
+        formData.other.bruising.resolveDays
+      ),
       classification: "Non-whiplash"
     },
     formData.other.otherInjuries.hasOtherInjury && {
       name: formData.other.otherInjuries.name || "Other Injury",
       initialSeverity: formatSeverity(formData.other.otherInjuries.initialSeverity),
       currentSeverity: formatSeverity(formData.other.otherInjuries.currentSeverity),
-      prognosis: formatSeverity(formData.other.otherInjuries.currentSeverity) === "Resolved" ? 
-        "Resolved" : "Varies based on injury type",
+      prognosis: getExactPrognosis(
+        formData.other.otherInjuries.currentSeverity,
+        formData.other.otherInjuries.resolveDays
+      ),
       classification: "Non-whiplash"
     }
   ].filter(Boolean);

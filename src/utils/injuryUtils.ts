@@ -26,7 +26,7 @@ export const getPrognosis = (severity: string, resolveDays: string | undefined) 
   switch (severity) {
     case "1": return "3 MONTHS FROM DATE OF ACCIDENT";
     case "2": return "6 MONTHS FROM DATE OF ACCIDENT";
-    case "3": return "9 MONTHS FROM DATE OF ACCIDENT (Prolonged prognosis is due to severity of symptoms)";
+    case "3": return "9 MONTHS FROM DATE OF ACCIDENT";
     default: return "6 MONTHS FROM DATE OF ACCIDENT";
   }
 };
