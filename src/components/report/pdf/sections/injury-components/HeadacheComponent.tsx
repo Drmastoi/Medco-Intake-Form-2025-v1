@@ -45,7 +45,7 @@ export const HeadacheComponent = ({ headache, styles }: HeadacheComponentProps) 
 
   return (
     <View style={{ marginBottom: 15 }}>
-      <Text style={[styles.fieldLabel, { fontSize: 12 }]}>8.4 Headache</Text>
+      <Text style={[styles.fieldLabel, { fontSize: 12 }]}>6.4 Headache</Text>
       
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>

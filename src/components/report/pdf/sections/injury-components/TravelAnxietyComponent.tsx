@@ -45,7 +45,7 @@ export const TravelAnxietyComponent = ({ travelAnxiety, styles }: TravelAnxietyC
 
   return (
     <View style={{ marginBottom: 15 }}>
-      <Text style={[styles.fieldLabel, { fontSize: 12 }]}>8.5 Travel Anxiety</Text>
+      <Text style={[styles.fieldLabel, { fontSize: 12 }]}>6.5 Travel Anxiety</Text>
       
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>

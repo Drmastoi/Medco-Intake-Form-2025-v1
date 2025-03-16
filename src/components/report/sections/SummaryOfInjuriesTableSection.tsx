@@ -83,7 +83,7 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
     },
     formData.travelAnxiety.hasAnxiety && {
       name: "Travel Anxiety",
-      onset: getOnsetDescription(formData.travelAnxiety.start),
+      onset: getOnsetDescription(formData.travelAnxiety.anxietyStart),
       initialSeverity: formatSeverity(formData.travelAnxiety.initialSeverity),
       currentSeverity: formatSeverity(formData.travelAnxiety.currentSeverity),
       prognosis: getExactPrognosis(
@@ -118,7 +118,7 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
 
   return (
     <View style={styles.subsection}>
-      <Text style={styles.sectionHeader}>Section 7 - Summary of Injuries</Text>
+      <Text style={styles.sectionHeader}>Section 6 - Summary of Injuries</Text>
       
       {injuries.length > 0 ? (
         <>
