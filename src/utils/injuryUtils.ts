@@ -20,14 +20,14 @@ export const getSeverityText = (severity: string) => {
 
 export const getPrognosis = (severity: string, resolveDays: string | undefined) => {
   if (severity === "4" && resolveDays) {
-    return `${resolveDays} DAYS`;
+    return `Resolved in ${resolveDays} days`;
   }
   
   switch (severity) {
-    case "1": return "3 MONTHS FROM DATE OF ACCIDENT";
-    case "2": return "6 MONTHS FROM DATE OF ACCIDENT";
-    case "3": return "9 MONTHS FROM DATE OF ACCIDENT";
-    default: return "6 MONTHS FROM DATE OF ACCIDENT";
+    case "1": return "3 months from date of accident";
+    case "2": return "6 months from date of accident";
+    case "3": return "9 months from date of accident";
+    default: return "6 months from date of accident";
   }
 };
 
