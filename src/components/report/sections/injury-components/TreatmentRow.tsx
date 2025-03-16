@@ -4,7 +4,7 @@ import { colorScheme } from '../../pdf/styles/colorScheme';
 
 interface TreatmentRowProps {
   injuryType: string;
-  severity: string | undefined;
+  severity: string | undefined;  // This prop is named 'severity', not 'currentSeverity'
   styles: any;
 }
 

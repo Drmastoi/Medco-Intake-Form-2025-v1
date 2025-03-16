@@ -112,7 +112,7 @@ const InjurySectionDetail = ({
         />
         <TreatmentRow 
           injuryType={injuryType} 
-          currentSeverity={currentSeverity} 
+          severity={currentSeverity} // Changed from 'currentSeverity' to 'severity' to match the prop name expected by TreatmentRow
           styles={styles} 
         />
       </View>
