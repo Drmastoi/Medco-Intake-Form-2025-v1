@@ -59,8 +59,8 @@ export const TravelAnxietyComponent = ({ travelAnxiety, styles }: TravelAnxietyC
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>Symptoms</Text>
           <Text style={styles.fieldValue}>
-            {travelAnxiety.symptoms && travelAnxiety.symptoms.length > 0
-              ? travelAnxiety.symptoms.join(', ')
+            {travelAnxiety.symptoms && travelAnxiety.symptoms.length > 0 
+              ? travelAnxiety.symptoms.join(', ') 
               : 'Not specified'}
           </Text>
         </View>
