@@ -10,6 +10,29 @@ interface TravelAnxietyComponentProps {
 export const TravelAnxietyComponent = ({ travelAnxiety, styles }: TravelAnxietyComponentProps) => {
   if (!travelAnxiety?.hasAnxiety) return null;
 
+  // Get prognosis based on severity
+  const getPrognosis = () => {
+    if (travelAnxiety.currentSeverity === "Resolved" && travelAnxiety.resolveDays) {
+      return `${travelAnxiety.resolveDays} days`;
+    } else if (travelAnxiety.currentSeverity === "Mild") {
+      return "3 months from date of accident";
+    } else if (travelAnxiety.currentSeverity === "Moderate") {
+      return "6 months from date of accident";
+    } else if (travelAnxiety.currentSeverity === "Severe") {
+      return "9 months from date of accident (Prolonged prognosis is due to severity of symptoms)";
+    }
+    return "6 months from date of accident";
+  };
+
+  // Get treatment recommendation based on severity
+  const getTreatment = () => {
+    if (travelAnxiety.currentSeverity === "Resolved") {
+      return "Pain killers if required";
+    } else {
+      return "Self-help measures including gradual exposure, relaxation techniques, and breathing exercises";
+    }
+  };
+
   return (
     <View style={{ marginBottom: 15 }}>
       <Text style={[styles.fieldLabel, { fontSize: 12 }]}>8.5 Travel Anxiety</Text>
@@ -52,6 +75,17 @@ export const TravelAnxietyComponent = ({ travelAnxiety, styles }: TravelAnxietyC
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>Past History</Text>
           <Text style={styles.fieldValue}>{safeValue(travelAnxiety.pastHistory, 'None')}</Text>
+        </View>
+      </View>
+      
+      <View style={styles.fieldRow}>
+        <View style={styles.fieldColumn}>
+          <Text style={styles.fieldLabel}>Prognosis</Text>
+          <Text style={styles.fieldValue}>{getPrognosis()}</Text>
+        </View>
+        <View style={styles.fieldColumn}>
+          <Text style={styles.fieldLabel}>Treatment</Text>
+          <Text style={styles.fieldValue}>{getTreatment()}</Text>
         </View>
       </View>
     </View>
