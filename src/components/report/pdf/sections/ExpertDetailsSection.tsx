@@ -15,22 +15,22 @@ export const ExpertDetailsSection = ({ styles, formData }: ExpertDetailsSectionP
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>Medical Expert:</Text>
-          <Text style={styles.fieldValue}>{formData.prefilled.expertName || "Dr. Sam Smith"}</Text>
+          <Text style={styles.fieldValue}>Dr. Awais Iqbal</Text>
         </View>
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>Specialty:</Text>
-          <Text style={styles.fieldValue}>{formData.prefilled.expertSpecialty || "General Practice, Consultant"}</Text>
+          <Text style={styles.fieldValue}>General Practice, Consultant</Text>
         </View>
       </View>
       
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>GMC:</Text>
-          <Text style={styles.fieldValue}>{formData.prefilled.gmcNumber || "1234567"}</Text>
+          <Text style={styles.fieldValue}>6138189</Text>
         </View>
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>Medco Registration:</Text>
-          <Text style={styles.fieldValue}>{formData.prefilled.medcoReference || "Not Provided"}</Text>
+          <Text style={styles.fieldValue}>DME 8094</Text>
         </View>
       </View>
     </View>
