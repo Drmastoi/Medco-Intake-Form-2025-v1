@@ -161,7 +161,35 @@ const PDFDocumentContent = ({ reportData }: PDFDocumentContentProps) => {
   const today = format(new Date(), 'dd-MM-yyyy');
   const claimantName = reportData.personal?.fullName || 'Not specified';
   
-  console.log("Rendering PDF with lifestyle data:", JSON.stringify(reportData.other.lifestyle));
+  console.log("PDFDocumentContent rendering with lifestyle data:", 
+    JSON.stringify(reportData.other?.lifestyle, null, 2));
+
+  // Ensure lifestyle data exists
+  if (!reportData.other) {
+    console.error("Missing 'other' object in reportData");
+    reportData.other = {
+      bruising: { hasBruising: false },
+      otherInjuries: { hasOtherInjury: false },
+      treatment: { hasTreatment: false },
+      lifestyle: {
+        impactOnWork: false,
+        impactOnSleep: false,
+        impactOnDomestic: false,
+        impactOnSports: false,
+        impactOnSocial: false
+      },
+      medicalHistory: { exceptionalInjuries: false, exceptionalInjuriesDetails: "" }
+    };
+  } else if (!reportData.other.lifestyle) {
+    console.error("Missing 'lifestyle' object in reportData.other");
+    reportData.other.lifestyle = {
+      impactOnWork: false,
+      impactOnSleep: false,
+      impactOnDomestic: false,
+      impactOnSports: false,
+      impactOnSocial: false
+    };
+  }
 
   return (
     <Document>

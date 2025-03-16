@@ -8,9 +8,10 @@ interface LifestyleImpactSectionProps {
 }
 
 export const LifestyleImpactSection = ({ formData, styles }: LifestyleImpactSectionProps) => {
-  const lifestyleData = formData.other?.lifestyle;
+  // Safely access lifestyle data with fallbacks
+  const lifestyleData = formData.other?.lifestyle || {};
   
-  console.log("Rendering LifestyleImpactSection with data:", JSON.stringify(lifestyleData));
+  console.log("LifestyleImpactSection data:", JSON.stringify(lifestyleData, null, 2));
 
   // Function to format date display
   const formatDateDisplay = (date: string | undefined): string => {
@@ -29,15 +30,6 @@ export const LifestyleImpactSection = ({ formData, styles }: LifestyleImpactSect
     const otherItems = items.slice(0, -1).join(", ");
     return ` Specific issues include: ${otherItems}, and ${lastItem}.`;
   };
-
-  if (!lifestyleData) {
-    return (
-      <View style={styles.subsection}>
-        <Text style={styles.sectionHeader}>Section 10 - Impact on Lifestyle</Text>
-        <Text style={styles.fieldValue}>No lifestyle impact data available.</Text>
-      </View>
-    );
-  }
 
   return (
     <View style={styles.subsection}>

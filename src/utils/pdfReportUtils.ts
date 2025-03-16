@@ -1,4 +1,3 @@
-
 import { FormSchema } from "@/schemas/intakeFormSchema";
 import { ReportData } from "@/types/reportTypes";
 
@@ -6,58 +5,51 @@ import { ReportData } from "@/types/reportTypes";
  * Converts form data to the format required for PDF report generation
  */
 export function convertFormDataToReportData(formData: FormSchema): ReportData {
-  // Extract personal details
-  const personal = {
-    fullName: formData.fullName || "Not Specified",
-    dateOfBirth: formData.dateOfBirth || "Not Specified",
-    gender: formData.gender === "male" ? "Male" : formData.gender === "female" ? "Female" : "Not Specified",
-    address: formData.address || "Not Specified",
-    occupation: formData.occupation || "Not Specified",
-    workType: getWorkTypeText(formData.workType),
-    idType: formData.idType,
-  };
-
-  // Extract accident details
-  const accident = {
-    accidentDate: formData.accidentDate || "Not Specified",
-    accidentTime: getAccidentTimeText(formData.accidentTime),
-    vehiclePosition: formData.vehiclePosition || "Not Specified",
-    vehicleStatus: getVehicleStatusText(formData.vehicleStatus),
-    vehicleLocation: getVehicleLocationText(formData.vehicleLocation),
-    impactLocation: getImpactLocationText(formData.impactLocation),
-    vehicleDamage: getVehicleDamageText(formData.vehicleDamage),
-    claimantPosition: getClaimantPositionText(formData.claimantPosition),
-    claimantVehicle: getVehicleTypeText(formData.claimantVehicle),
-    otherVehicle: getVehicleTypeText(formData.otherVehicle),
-    accidentSummary: formData.accidentSummary || "",
-  };
-
-  // Extract prefilled data
-  const prefilled = {
-    solicitorName: formData.solicitorName || "Not Specified",
-    solicitorReference: formData.solicitorReference || "Not Specified",
-    instructingPartyName: formData.instructingPartyName || "Not Specified",
-    instructingPartyReference: formData.instructingPartyReference || "Not Specified",
-    examinationLocation: formData.examinationLocation || "Not Specified",
-    medcoReference: formData.medcoReference || "Not Specified",
-    accompaniedBy: formData.accompaniedBy || "Unaccompanied",
-    dateOfExamination: formData.dateOfExamination || new Date().toISOString().split('T')[0],
-    dateOfReport: formData.dateOfReport || new Date().toISOString().split('T')[0],
-    timeSpentWithClaimant: formData.timeSpentWithClaimant || "15",
-    expertName: "Dr. Sam Smith", // Default expert name
-    expertSpecialty: "General Practice, Consultant", // Default specialty
-    expertTitle: "Consultant", // Default title
-    gmcNumber: "1234567", // Default GMC number
-  };
-
-  // Process form data for lifestyle impact
+  // Process form data for lifestyle impact - ensuring we capture both old and new UI fields
   const lifestyle = getLifestyleData(formData);
+  
+  console.log("convertFormDataToReportData - processed lifestyle data:", JSON.stringify(lifestyle, null, 2));
 
   // Combine all sections into the final report data structure
   return {
-    prefilled,
-    personal,
-    accident,
+    prefilled: {
+      solicitorName: formData.solicitorName || "Not Specified",
+      solicitorReference: formData.solicitorReference || "Not Specified",
+      instructingPartyName: formData.instructingPartyName || "Not Specified",
+      instructingPartyReference: formData.instructingPartyReference || "Not Specified",
+      examinationLocation: formData.examinationLocation || "Not Specified",
+      medcoReference: formData.medcoReference || "Not Specified",
+      accompaniedBy: formData.accompaniedBy || "Unaccompanied",
+      dateOfExamination: formData.dateOfExamination || new Date().toISOString().split('T')[0],
+      dateOfReport: formData.dateOfReport || new Date().toISOString().split('T')[0],
+      timeSpentWithClaimant: formData.timeSpentWithClaimant || "15",
+      expertName: "Dr. Sam Smith", // Default expert name
+      expertSpecialty: "General Practice, Consultant", // Default specialty
+      expertTitle: "Consultant", // Default title
+      gmcNumber: "1234567", // Default GMC number
+    },
+    personal: {
+      fullName: formData.fullName || "Not Specified",
+      dateOfBirth: formData.dateOfBirth || "Not Specified",
+      gender: formData.gender === "male" ? "Male" : formData.gender === "female" ? "Female" : "Not Specified",
+      address: formData.address || "Not Specified",
+      occupation: formData.occupation || "Not Specified",
+      workType: getWorkTypeText(formData.workType),
+      idType: formData.idType,
+    },
+    accident: {
+      accidentDate: formData.accidentDate || "Not Specified",
+      accidentTime: getAccidentTimeText(formData.accidentTime),
+      vehiclePosition: formData.vehiclePosition || "Not Specified",
+      vehicleStatus: getVehicleStatusText(formData.vehicleStatus),
+      vehicleLocation: getVehicleLocationText(formData.vehicleLocation),
+      impactLocation: getImpactLocationText(formData.impactLocation),
+      vehicleDamage: getVehicleDamageText(formData.vehicleDamage),
+      claimantPosition: getClaimantPositionText(formData.claimantPosition),
+      claimantVehicle: getVehicleTypeText(formData.claimantVehicle),
+      otherVehicle: getVehicleTypeText(formData.otherVehicle),
+      accidentSummary: formData.accidentSummary || "",
+    },
     injuries: {
       neckPain: getNeckPainData(formData),
       shoulderPain: getShoulderPainData(formData),
@@ -295,7 +287,17 @@ function getTreatmentData(formData: FormSchema) {
 }
 
 function getLifestyleData(formData: FormSchema) {
-  // Process work restrictions
+  console.log("Processing lifestyle data from form:", 
+    JSON.stringify({
+      impactOnWork: formData.impactOnWork,
+      effectOnDomesticLiving: formData.effectOnDomesticLiving,
+      sleepDisturbance: formData.sleepDisturbance,
+      effectOnSportLeisure: formData.effectOnSportLeisure,
+      effectOnSocialLife: formData.effectOnSocialLife,
+      workDifficulties: formData.workDifficulties
+    }, null, 2));
+
+  // Process work restrictions from the new UI
   let workRestrictions: string[] = [];
   if (formData.workDifficulties && Array.isArray(formData.workDifficulties)) {
     workRestrictions = formData.workDifficulties.map(id => {
@@ -317,12 +319,12 @@ function getLifestyleData(formData: FormSchema) {
     }
   }
   
-  // If we have regular workRestrictions array from the form, use those
+  // If we have regular workRestrictions array from the form, use those as fallback
   if (!workRestrictions.length && formData.workRestrictions && Array.isArray(formData.workRestrictions)) {
     workRestrictions = formData.workRestrictions;
   }
   
-  // Process sleep issues
+  // Process sleep issues from the new UI
   let sleepIssues: string[] = [];
   if (formData.sleepDisturbances && Array.isArray(formData.sleepDisturbances)) {
     sleepIssues = formData.sleepDisturbances.map(id => {
@@ -343,12 +345,12 @@ function getLifestyleData(formData: FormSchema) {
     }
   }
   
-  // If we have regular sleepIssues array from the form, use those
+  // If we have regular sleepIssues array from the form, use those as fallback
   if (!sleepIssues.length && formData.sleepIssues && Array.isArray(formData.sleepIssues)) {
     sleepIssues = formData.sleepIssues;
   }
   
-  // Process domestic issues
+  // Process domestic issues from the new UI
   let domesticIssues: string[] = [];
   if (formData.domesticEffects && Array.isArray(formData.domesticEffects)) {
     domesticIssues = formData.domesticEffects.map(id => {
@@ -370,12 +372,12 @@ function getLifestyleData(formData: FormSchema) {
     }
   }
   
-  // If we have regular domesticIssues array from the form, use those
+  // If we have regular domesticIssues array from the form, use those as fallback
   if (!domesticIssues.length && formData.domesticIssues && Array.isArray(formData.domesticIssues)) {
     domesticIssues = formData.domesticIssues;
   }
   
-  // Process social life issues
+  // Process social life details from the new UI
   let socialLifeDetails = formData.socialDetails || "";
   if (formData.socialLifeEffects && Array.isArray(formData.socialLifeEffects)) {
     const socialLifeIssues = formData.socialLifeEffects.map(id => {
@@ -401,7 +403,7 @@ function getLifestyleData(formData: FormSchema) {
     }
   }
   
-  // Process sports activities
+  // Process sports activities from the new UI
   let sportsActivities = formData.sportsActivities || "";
   if (formData.sportLeisureEffects && Array.isArray(formData.sportLeisureEffects)) {
     const sportLeisureIssues = formData.sportLeisureEffects.map(id => {
@@ -427,36 +429,44 @@ function getLifestyleData(formData: FormSchema) {
     }
   }
 
-  // Convert string "1" to boolean true for impact fields
-  const impactOnWork = formData.impactOnWork === "1" ? true : false;
-  const impactOnSleep = formData.impactOnSleep === "1" ? true : false;
-  const impactOnDomestic = formData.impactOnDomestic === "1" ? true : false;
-  const impactOnSports = formData.impactOnSports === "1" ? true : false;
-  const impactOnSocial = formData.impactOnSocial === "1" ? true : false;
+  // Convert values to proper boolean format
+  // Use new UI fields first with fallback to old UI fields
+  const impactOnWork = formData.effectOnDomesticLiving === "1" || formData.impactOnWork === "1" || false;
+  const impactOnSleep = formData.sleepDisturbance === "1" || formData.impactOnSleep === "1" || false;
+  const impactOnDomestic = formData.effectOnDomesticLiving === "1" || formData.impactOnDomestic === "1" || false;
+  const impactOnSports = formData.effectOnSportLeisure === "1" || formData.impactOnSports === "1" || false;
+  const impactOnSocial = formData.effectOnSocialLife === "1" || formData.impactOnSocial === "1" || false;
 
-  return {
-    impactOnWork: impactOnWork,
-    timeOffWork: formData.timeOffWork || "Not Specified",
-    workRestrictions: workRestrictions,
+  // Time off work from either field
+  const timeOffWork = formData.daysOffWork || formData.timeOffWork || "Not Specified";
+
+  const result = {
+    impactOnWork,
+    timeOffWork,
+    workRestrictions,
     workImpactDate: formData.workImpactDate || "",
     
-    impactOnSleep: impactOnSleep,
-    sleepIssues: sleepIssues,
+    impactOnSleep,
+    sleepIssues,
     sleepImpactDate: formData.sleepImpactDate || "",
     
-    impactOnDomestic: impactOnDomestic,
-    domesticIssues: domesticIssues,
+    impactOnDomestic,
+    domesticIssues,
     domesticImpactDate: formData.domesticImpactDate || "",
     
-    impactOnSports: impactOnSports,
-    sportsActivities: sportsActivities,
+    impactOnSports,
+    sportsActivities,
     sportsDuration: formData.sportsDuration || "",
     sportsImpactDate: formData.sportsImpactDate || "",
     
-    impactOnSocial: impactOnSocial,
+    impactOnSocial,
     socialDetails: socialLifeDetails,
     socialImpactDate: formData.socialImpactDate || ""
   };
+  
+  console.log("Final lifestyle data result:", JSON.stringify(result, null, 2));
+  
+  return result;
 }
 
 function getMedicalHistoryData(formData: FormSchema) {
