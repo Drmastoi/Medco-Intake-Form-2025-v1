@@ -14,13 +14,13 @@ interface PDFDocumentContentProps {
 }
 
 const PDFDocumentContent = ({ reportData }: PDFDocumentContentProps) => {
-  // Ensure we have a valid date format
+  // Ensure we have a valid UK date format
   const today = (() => {
     try {
-      return format(new Date(), 'dd-MM-yyyy');
+      return format(new Date(), 'dd/MM/yyyy');
     } catch (error) {
       console.error("Error formatting date:", error);
-      return new Date().toLocaleDateString();
+      return new Date().toLocaleDateString('en-GB');
     }
   })();
   

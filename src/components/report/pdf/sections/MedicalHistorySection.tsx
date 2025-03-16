@@ -44,6 +44,12 @@ export const MedicalHistorySection = ({ formData, styles }: MedicalHistorySectio
           The claimant's general medical history is unremarkable with respect to the current injuries. No significant pre-existing conditions that would have contributed to or exacerbated the injuries sustained in this accident were reported.
         </Text>
       </View>
+
+      <View style={{ marginBottom: 10 }}>
+        <Text style={styles.fieldValue}>
+          I was able to obtain a good history. Claimant's injuries and recovery period were entirely consistent with the account of the accident. The treatment provided for the claimant has been appropriate. The problems reported in home life are consistent and reasonable. In my opinion, the time taken off work by the claimant is reasonable. Claimant is currently fit for working.
+        </Text>
+      </View>
     </View>
   );
 };

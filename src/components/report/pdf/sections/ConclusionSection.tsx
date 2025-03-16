@@ -2,6 +2,7 @@
 import React from 'react';
 import { Text, View, Image } from '@react-pdf/renderer';
 import { ReportData } from '@/types/reportTypes';
+import { format } from 'date-fns';
 
 interface ConclusionSectionProps {
   styles: any;
@@ -9,8 +10,8 @@ interface ConclusionSectionProps {
 }
 
 export const ConclusionSection = ({ styles, formData }: ConclusionSectionProps) => {
-  // Get today's date
-  const today = "16 March 2025";
+  // Get today's date in UK format
+  const today = format(new Date(), "dd/MM/yyyy");
 
   return (
     <View style={styles.subsection}>

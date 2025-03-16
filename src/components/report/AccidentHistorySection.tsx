@@ -66,7 +66,7 @@ export const AccidentHistorySection = ({ formData }: { formData: any }) => {
   const formatDate = (dateString: string) => {
     if (!dateString) return "an unspecified date";
     try {
-      return format(new Date(dateString), "do MMMM yyyy");
+      return format(new Date(dateString), "dd/MM/yyyy");
     } catch {
       return dateString;
     }

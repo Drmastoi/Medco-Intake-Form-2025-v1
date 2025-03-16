@@ -1,36 +1,47 @@
 
 import { Text, View } from '@react-pdf/renderer';
 import { ReportData } from '@/types/reportTypes';
+import { formatDate } from '../../../../utils/dateUtils';
 
 interface ExpertDetailsSectionProps {
-  styles: any;
   formData: ReportData;
+  styles: any;
 }
 
-export const ExpertDetailsSection = ({ styles, formData }: ExpertDetailsSectionProps) => {
+export const ExpertDetailsSection = ({ formData, styles }: ExpertDetailsSectionProps) => {
+  // Use UK date format for report date
+  const reportDate = formatDate(formData.prefilled?.dateOfReport || new Date().toISOString().split('T')[0]);
+  
   return (
-    <View style={[styles.subsection, { marginBottom: 10 }]}>
-      <Text style={styles.sectionHeader}>Section 2 - Expert Details</Text>
+    <View style={styles.subsection}>
+      <Text style={styles.sectionHeader}>Section 3 - Expert Details</Text>
       
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>Medical Expert:</Text>
-          <Text style={styles.fieldValue}>Dr. Awais Iqbal</Text>
+          <Text style={styles.fieldLabel}>3.1 Expert Name</Text>
+          <Text style={styles.fieldValue}>Dr. {formData.prefilled?.expertName || 'Awais Iqbal'}</Text>
         </View>
         <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>Specialty:</Text>
-          <Text style={styles.fieldValue}>Direct Medical Expert</Text>
+          <Text style={styles.fieldLabel}>3.2 Speciality</Text>
+          <Text style={styles.fieldValue}>{formData.prefilled?.expertSpecialty || 'General Practice'}</Text>
         </View>
       </View>
       
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>GMC:</Text>
-          <Text style={styles.fieldValue}>6138189</Text>
+          <Text style={styles.fieldLabel}>3.3 GMC/Registration Number</Text>
+          <Text style={styles.fieldValue}>{formData.prefilled?.gmcNumber || '6138189'}</Text>
         </View>
         <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>Medco Registration:</Text>
-          <Text style={styles.fieldValue}>DME 8094</Text>
+          <Text style={styles.fieldLabel}>3.4 Report Date</Text>
+          <Text style={styles.fieldValue}>{reportDate}</Text>
+        </View>
+      </View>
+      
+      <View style={styles.fieldRow}>
+        <View style={styles.fieldColumn}>
+          <Text style={styles.fieldLabel}>3.5 MedCo Reference</Text>
+          <Text style={styles.fieldValue}>{formData.prefilled?.medcoReference || 'DME 8094'}</Text>
         </View>
       </View>
     </View>

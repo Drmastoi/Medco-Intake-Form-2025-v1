@@ -35,7 +35,7 @@ export function getYesNo(value: boolean | undefined): string {
 }
 
 /**
- * Format a date string to a readable format
+ * Format a date string to a readable format (UK format)
  */
 export function formatDate(dateString: string | undefined): string {
   if (!dateString) return "Not specified";

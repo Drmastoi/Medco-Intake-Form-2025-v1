@@ -1,48 +1,39 @@
 
 import { Text, View } from '@react-pdf/renderer';
-import { ReportData } from '@/types/reportTypes';
-import { formatDate } from '@/utils/dateUtils';
+import { formatDate } from '../../../../utils/dateUtils';
 
 interface AppointmentDetailsSectionProps {
-  formData: ReportData;
+  formData: any;
   styles: any;
 }
 
 export const AppointmentDetailsSection = ({ formData, styles }: AppointmentDetailsSectionProps) => {
   return (
-    <View style={[styles.subsection, { marginBottom: 10 }]}>
-      <Text style={[styles.sectionHeader, { marginBottom: 8 }]}>Section 4 - Appointment Details</Text>
+    <View style={styles.subsection}>
+      <Text style={styles.sectionHeader}>Section 4 - Appointment Details</Text>
       
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>4.1 Date of Examination</Text>
-          <Text style={styles.fieldValue}>{formatDate(formData.prefilled?.dateOfExamination || '')}</Text>
+          <Text style={styles.fieldLabel}>4.1 Date of Appointment</Text>
+          <Text style={styles.fieldValue}>
+            {formData.examinationDate ? formatDate(formData.examinationDate) : formatDate(new Date().toISOString().split('T')[0])} {formData.examinationTime || '10:00'}
+            {'\nMethod - Clinic'}
+          </Text>
         </View>
         <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>4.2 Location</Text>
-          <Text style={styles.fieldValue}>{formData.prefilled?.examinationLocation || 'Not provided'}</Text>
+          <Text style={styles.fieldLabel}>4.2 Time spent</Text>
+          <Text style={styles.fieldValue}>30 Minutes</Text>
         </View>
       </View>
       
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>4.3 Duration</Text>
-          <Text style={styles.fieldValue}>{formData.prefilled?.timeSpentWithClaimant || 'Not provided'} minutes</Text>
+          <Text style={styles.fieldLabel}>4.3 Place of Examination</Text>
+          <Text style={styles.fieldValue}>{formData.examinationLocation || 'Medical Examination Center, London, UNITED KINGDOM'}</Text>
         </View>
         <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>4.4 Accompanied By</Text>
-          <Text style={styles.fieldValue}>{formData.prefilled?.accompaniedBy || 'Unaccompanied'}</Text>
-        </View>
-      </View>
-      
-      <View style={styles.fieldRow}>
-        <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>4.5 Identity Verification</Text>
-          <Text style={styles.fieldValue}>{formData.personal?.idType || 'Photo ID'}</Text>
-        </View>
-        <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>4.6 Date of Report</Text>
-          <Text style={styles.fieldValue}>{formatDate(formData.prefilled?.dateOfReport || '')}</Text>
+          <Text style={styles.fieldLabel}>4.4 Date of Report</Text>
+          <Text style={styles.fieldValue}>{formatDate(new Date().toISOString().split('T')[0])}</Text>
         </View>
       </View>
     </View>
