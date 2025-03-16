@@ -20,6 +20,8 @@ import { MedicalHistorySection } from '../sections/MedicalHistorySection';
 import { BruisingSection } from '../sections/BruisingSection';
 import { StatementOfInstructionSection } from '../../sections/StatementOfInstructionSection';
 import { SummaryOfInjuriesTableSection } from '../../sections/SummaryOfInjuriesTableSection';
+import { ConclusionSection } from '../sections/ConclusionSection';
+import { AgreementSection } from '../sections/AgreementSection';
 import { format } from 'date-fns';
 
 // Create styles
@@ -191,6 +193,23 @@ const PDFDocumentContent = ({ reportData }: PDFDocumentContentProps) => {
     };
   }
 
+  // Ensure travelAnxiety is handled correctly to fix TS error
+  const safeReportData = {
+    ...reportData,
+    travelAnxiety: reportData.travelAnxiety || {
+      hasAnxiety: false,
+      initialSeverity: '',
+      currentSeverity: '',
+      symptoms: [],
+      otherSymptoms: '',
+      startDate: '',
+      startDateEstimated: false,
+      resolveDate: '',
+      resolveDateEstimated: false,
+      resolveDays: ''
+    }
+  };
+
   return (
     <Document>
       {/* First Page - Basic Information */}
@@ -202,31 +221,31 @@ const PDFDocumentContent = ({ reportData }: PDFDocumentContentProps) => {
         </View>
         
         <View style={styles.section}>
-          <ClaimantDetailsSection formData={reportData} styles={styles} />
+          <ClaimantDetailsSection formData={safeReportData} styles={styles} />
         </View>
         
         <View style={styles.section}>
-          <ExpertDetailsSection styles={styles} formData={reportData} />
+          <ExpertDetailsSection styles={styles} formData={safeReportData} />
         </View>
         
         <View style={styles.section}>
-          <InstructionDetailsSection formData={reportData} styles={styles} />
+          <InstructionDetailsSection formData={safeReportData} styles={styles} />
         </View>
         
         <View style={styles.section}>
-          <AppointmentDetailsSection formData={reportData} styles={styles} />
+          <AppointmentDetailsSection formData={safeReportData} styles={styles} />
         </View>
         
         <View style={styles.section}>
-          <AccidentDetailsSection formData={reportData} styles={styles} />
+          <AccidentDetailsSection formData={safeReportData} styles={styles} />
         </View>
         
         <View style={styles.section}>
-          <SummaryOfInjuriesTableSection formData={reportData} styles={styles} />
+          <SummaryOfInjuriesTableSection formData={safeReportData} styles={styles} />
         </View>
         
         <View style={styles.section}>
-          <StatementOfInstructionSection styles={styles} formData={reportData} />
+          <StatementOfInstructionSection styles={styles} formData={safeReportData} />
         </View>
         
         <Footer pageNumber={1} claimantName={claimantName} today={today} />
@@ -241,7 +260,7 @@ const PDFDocumentContent = ({ reportData }: PDFDocumentContentProps) => {
         </View>
         
         <View style={styles.section}>
-          <InjuriesSection formData={reportData} styles={styles} />
+          <InjuriesSection formData={safeReportData} styles={styles} />
         </View>
         
         <Footer pageNumber={2} claimantName={claimantName} today={today} />
@@ -257,16 +276,31 @@ const PDFDocumentContent = ({ reportData }: PDFDocumentContentProps) => {
         
         {/* Section 9 - Treatment */}
         <View style={styles.section}>
-          <TreatmentSection formData={reportData} styles={styles} />
+          <TreatmentSection formData={safeReportData} styles={styles} />
         </View>
         
         {/* Section 10 - Lifestyle Impact */}
         <View style={styles.section}>
-          <LifestyleImpactSection formData={reportData} />
+          <LifestyleImpactSection formData={safeReportData} />
         </View>
         
         <View style={styles.section}>
-          <MedicalHistorySection formData={reportData} styles={styles} />
+          <MedicalHistorySection formData={safeReportData} styles={styles} />
+        </View>
+        
+        <View style={styles.section}>
+          <ConclusionSection formData={safeReportData} styles={styles} />
+        </View>
+        
+        <Footer pageNumber={3} claimantName={claimantName} today={today} />
+      </Page>
+      
+      {/* Fourth Page - Declaration and Agreement */}
+      <Page size="A4" style={styles.page}>
+        <View style={styles.header}>
+          <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
+            Declaration and Agreement
+          </Text>
         </View>
         
         <View style={styles.section}>
@@ -332,7 +366,10 @@ const PDFDocumentContent = ({ reportData }: PDFDocumentContentProps) => {
           </View>
         </View>
         
-        <Footer pageNumber={3} claimantName={claimantName} today={today} />
+        {/* New Agreement Section */}
+        <AgreementSection claimantName={claimantName} />
+        
+        <Footer pageNumber={4} claimantName={claimantName} today={today} />
       </Page>
     </Document>
   );
