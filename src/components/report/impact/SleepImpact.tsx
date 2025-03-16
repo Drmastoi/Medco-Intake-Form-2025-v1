@@ -9,7 +9,13 @@ interface SleepImpactProps {
 
 export const SleepImpact = ({ formData }: SleepImpactProps) => {
   const formatSleepImpact = () => {
-    const disturbances = formatCheckboxList(formData.sleepDisturbances, formData.otherSleepDisturbances);
+    // Combine the sleepDisturbances array with the otherSleepDisturbances if present
+    const allDisturbances = formData.sleepDisturbances || [];
+    if (formData.otherSleepDisturbances) {
+      allDisturbances.push(formData.otherSleepDisturbances);
+    }
+
+    const disturbances = formatCheckboxList(allDisturbances);
     return disturbances ? 
       `Sleep has been significantly affected. The claimant reports experiencing ${disturbances}. ` : 
       "";

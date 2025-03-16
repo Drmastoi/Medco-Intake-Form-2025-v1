@@ -9,7 +9,13 @@ interface DomesticImpactProps {
 
 export const DomesticImpact = ({ formData }: DomesticImpactProps) => {
   const formatDomesticImpact = () => {
-    const effects = formatCheckboxList(formData.domesticEffects, formData.otherDomesticEffects);
+    // Combine the domesticEffects array with the otherDomesticEffects if present
+    const allEffects = formData.domesticEffects || [];
+    if (formData.otherDomesticEffects) {
+      allEffects.push(formData.otherDomesticEffects);
+    }
+
+    const effects = formatCheckboxList(allEffects);
     return effects ? 
       `Daily domestic activities have been impacted. The claimant has difficulty with ${effects}. ` : 
       "";

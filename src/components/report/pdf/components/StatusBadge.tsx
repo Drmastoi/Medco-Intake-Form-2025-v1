@@ -35,7 +35,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ status, small = false }) => {
       paddingHorizontal: small ? spacing.sm / 2 : spacing.sm,
       borderRadius: 10,
       fontSize: small ? typography.fontSize.xs - 1 : typography.fontSize.xs,
-      alignSelf: 'flex-start',
+      alignSelf: 'flex-start' as 'flex-start', // Explicit type casting
       marginLeft: spacing.sm,
     },
   };

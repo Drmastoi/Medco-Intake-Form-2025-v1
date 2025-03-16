@@ -1,14 +1,14 @@
 
 import { Font } from '@react-pdf/renderer';
 
-// Register fonts (these should be in the public directory)
+// Register fonts using actual font files included with the package
 Font.register({
   family: 'Open Sans',
   fonts: [
-    { src: '/fonts/OpenSans-Regular.ttf' },
-    { src: '/fonts/OpenSans-Bold.ttf', fontWeight: 'bold' },
-    { src: '/fonts/OpenSans-Italic.ttf', fontStyle: 'italic' },
-    { src: '/fonts/OpenSans-BoldItalic.ttf', fontWeight: 'bold', fontStyle: 'italic' },
+    { src: 'https://fonts.gstatic.com/s/opensans/v23/mem8YaGs126MiZpBA-UFVZ0e.ttf', fontWeight: 'normal' },
+    { src: 'https://fonts.gstatic.com/s/opensans/v23/mem5YaGs126MiZpBA-UN7rgOUuhs.ttf', fontWeight: 'bold' },
+    { src: 'https://fonts.gstatic.com/s/opensans/v23/mem8YaGs126MiZpBA-UFVp0e.ttf', fontStyle: 'italic' },
+    { src: 'https://fonts.gstatic.com/s/opensans/v23/mem5YaGs126MiZpBA-UNirkOUuhs.ttf', fontWeight: 'bold', fontStyle: 'italic' },
   ],
 });
 

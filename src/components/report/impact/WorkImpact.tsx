@@ -17,7 +17,13 @@ export const WorkImpact = ({ formData }: WorkImpactProps) => {
       `They subsequently worked on light duties for ${formData.daysLightDuties} days. ` : 
       "";
 
-    const difficulties = formatCheckboxList(formData.workDifficulties, formData.otherWorkDifficulties);
+    // Combine the workDifficulties array with the otherWorkDifficulties if present
+    const allDifficulties = formData.workDifficulties || [];
+    if (formData.otherWorkDifficulties) {
+      allDifficulties.push(formData.otherWorkDifficulties);
+    }
+
+    const difficulties = formatCheckboxList(allDifficulties);
     const workDifficulties = difficulties ? 
       `The claimant reports experiencing difficulties at work with ${difficulties}. ` : 
       "";

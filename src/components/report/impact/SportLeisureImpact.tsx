@@ -9,7 +9,13 @@ interface SportLeisureImpactProps {
 
 export const SportLeisureImpact = ({ formData }: SportLeisureImpactProps) => {
   const formatSportLeisureImpact = () => {
-    const effects = formatCheckboxList(formData.sportLeisureEffects, formData.otherSportLeisureEffects);
+    // Combine the sportLeisureEffects array with the otherSportLeisureEffects if present
+    const allEffects = formData.sportLeisureEffects || [];
+    if (formData.otherSportLeisureEffects) {
+      allEffects.push(formData.otherSportLeisureEffects);
+    }
+
+    const effects = formatCheckboxList(allEffects);
     return effects ? 
       `Sport and leisure activities have been affected. The claimant reports limitations with ${effects}. ` : 
       "";

@@ -22,18 +22,28 @@ const TreatmentLifestylePage: React.FC<TreatmentLifestylePageProps> = ({
   claimantName, 
   today 
 }) => {
-  // Get treatment summary
-  const treatment = reportData.other?.treatment || {};
+  // Get treatment summary - ensure defaults for null values
+  const treatment = reportData.other?.treatment || {
+    hasTreatment: false,
+    ongoing: false
+  };
   const hasTreatment = treatment.hasTreatment || false;
   const treatmentOngoing = treatment.ongoing || false;
   
-  // Get lifestyle impact summary
-  const lifestyle = reportData.other?.lifestyle || {};
-  const hasLifestyleImpact = lifestyle.impactOnWork || 
-                             lifestyle.impactOnSleep || 
-                             lifestyle.impactOnDomestic || 
-                             lifestyle.impactOnSports || 
-                             lifestyle.impactOnSocial || false;
+  // Get lifestyle impact summary with defaults for null values
+  const lifestyle = reportData.other?.lifestyle || {
+    impactOnWork: false,
+    impactOnSleep: false,
+    impactOnDomestic: false,
+    impactOnSports: false,
+    impactOnSocial: false
+  };
+  
+  const hasLifestyleImpact = Boolean(lifestyle.impactOnWork || 
+                              lifestyle.impactOnSleep || 
+                              lifestyle.impactOnDomestic || 
+                              lifestyle.impactOnSports || 
+                              lifestyle.impactOnSocial);
   
   return (
     <Page size="A4" style={pdfStyles.page}>

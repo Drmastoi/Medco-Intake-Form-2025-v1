@@ -9,7 +9,13 @@ interface SocialLifeImpactProps {
 
 export const SocialLifeImpact = ({ formData }: SocialLifeImpactProps) => {
   const formatSocialLifeImpact = () => {
-    const effects = formatCheckboxList(formData.socialLifeEffects, formData.otherSocialLifeEffects);
+    // Combine the socialLifeEffects array with the otherSocialLifeEffects if present
+    const allEffects = formData.socialLifeEffects || [];
+    if (formData.otherSocialLifeEffects) {
+      allEffects.push(formData.otherSocialLifeEffects);
+    }
+
+    const effects = formatCheckboxList(allEffects);
     return effects ? 
       `Social activities have been impacted. The claimant experiences difficulties with ${effects}. ` : 
       "";
