@@ -13,7 +13,7 @@ export const ExpertDetailsSection = ({ styles }: ExpertDetailsSectionProps) => {
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>1.1 Medical Expert</Text>
-          <Text style={styles.fieldValue}>Dr. Awais Iqbal, General Practice, Consultant</Text>
+          <Text style={styles.fieldValue}>Dr. Awais Iqbal, Consultant & Direct Medical Expert</Text>
         </View>
       </View>
       
