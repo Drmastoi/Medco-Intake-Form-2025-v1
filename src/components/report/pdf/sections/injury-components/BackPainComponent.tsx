@@ -1,6 +1,6 @@
 
 import { Text, View } from '@react-pdf/renderer';
-import { formatDuration, formatSeverity, safeValue } from '../../../utils/formatUtils';
+import { formatDuration, formatSeverity, safeValue } from '../../utils/formatUtils';
 
 interface BackPainComponentProps {
   backPain: any;
