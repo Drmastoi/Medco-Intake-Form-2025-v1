@@ -1,81 +1,101 @@
 
-import { Text, View } from '@react-pdf/renderer';
-import { ReportData } from '@/types/reportTypes';
+import React from 'react';
+import { Text, View, StyleSheet } from '@react-pdf/renderer';
+import { FormSchema } from '@/schemas/intakeFormSchema';
+
+const styles = StyleSheet.create({
+  section: {
+    margin: 10,
+    padding: 10,
+    flexGrow: 1,
+  },
+  title: {
+    fontSize: 14,
+    marginBottom: 10,
+    fontWeight: 'bold',
+  },
+  subtitle: {
+    fontSize: 12,
+    marginTop: 6,
+    marginBottom: 4,
+    fontWeight: 'bold',
+  },
+  text: {
+    fontSize: 10,
+    marginBottom: 5,
+  },
+  paragraph: {
+    fontSize: 10,
+    marginBottom: 10,
+  },
+});
 
 interface LifestyleImpactSectionProps {
-  formData: ReportData;
-  styles: any;
+  formData: Partial<FormSchema>;
 }
 
-export const LifestyleImpactSection = ({ formData, styles }: LifestyleImpactSectionProps) => {
-  // Safely access lifestyle data with fallbacks
-  const lifestyleData = formData.other?.lifestyle || {};
+const LifestyleImpactSection: React.FC<LifestyleImpactSectionProps> = ({ formData }) => {
+  // Safely handle formData which might be undefined or incomplete
+  const data = formData || {};
   
-  console.log("LifestyleImpactSection data:", JSON.stringify(lifestyleData, null, 2));
-
-  // Function to format date display
-  const formatDateDisplay = (date: string | undefined): string => {
-    if (!date) return "";
-    return ` This impact started from ${date}.`;
-  };
-
-  // Function to format restrictions or issues into readable text
-  const formatArrayToText = (items: string[] | undefined): string => {
-    if (!items || items.length === 0) return "";
-    
-    if (items.length === 1) return ` Specific issues include: ${items[0]}.`;
-    if (items.length === 2) return ` Specific issues include: ${items[0]} and ${items[1]}.`;
-    
-    const lastItem = items[items.length - 1];
-    const otherItems = items.slice(0, -1).join(", ");
-    return ` Specific issues include: ${otherItems}, and ${lastItem}.`;
-  };
-
   return (
-    <View style={styles.subsection}>
-      <Text style={styles.sectionHeader}>Section 10 - Impact on Lifestyle</Text>
-      
-      <View style={{ marginBottom: 10 }}>
-        <Text style={styles.fieldLabel}>10.1 Work Impact</Text>
-        <Text style={styles.fieldValue}>
-          {lifestyleData.impactOnWork
-            ? `The injuries impacted the claimant's ability to work.${formatDateDisplay(lifestyleData.workImpactDate)}${formatArrayToText(lifestyleData.workRestrictions)}`
-            : "The injuries did not significantly impact the claimant's ability to work."}
-          {lifestyleData.timeOffWork && lifestyleData.timeOffWork !== "Not Specified"
-            ? ` The claimant took approximately ${lifestyleData.timeOffWork} days off work.`
-            : ""}
+    <View style={styles.section} break>
+      <Text style={styles.title}>Impact on Daily Life</Text>
+
+      {/* Work Impact */}
+      <Text style={styles.subtitle}>Work Capabilities</Text>
+      {data.impactOnWork === "1" ? (
+        <Text style={styles.paragraph}>
+          The claimant's work capabilities were affected. {data.workImpactDate ? `This impact started on ${data.workImpactDate}.` : ''} {data.workRestrictions && data.workRestrictions.length > 0 ? `Restrictions included: ${data.workRestrictions.join(', ')}.` : ''}
         </Text>
-      </View>
+      ) : (
+        <Text style={styles.paragraph}>The claimant reported no impact on work capabilities.</Text>
+      )}
       
-      <View style={{ marginBottom: 10 }}>
-        <Text style={styles.fieldLabel}>10.2 Domestic Impact</Text>
-        <Text style={styles.fieldValue}>
-          {lifestyleData.impactOnDomestic
-            ? `The injuries impacted the claimant's ability to perform domestic tasks.${formatDateDisplay(lifestyleData.domesticImpactDate)}${formatArrayToText(lifestyleData.domesticIssues)}`
-            : "The injuries did not significantly impact the claimant's ability to perform domestic tasks."}
+      {data.timeOffWork && data.timeOffWork !== '' ? (
+        <Text style={styles.text}>Time off work: {data.timeOffWork} days</Text>
+      ) : null}
+
+      {/* Domestic Activities */}
+      <Text style={styles.subtitle}>Domestic Activities</Text>
+      {data.impactOnDomestic === "1" ? (
+        <Text style={styles.paragraph}>
+          The claimant's domestic activities were affected. {data.domesticImpactDate ? `This impact started on ${data.domesticImpactDate}.` : ''} {data.domesticIssues && data.domesticIssues.length > 0 ? `Activities affected included: ${data.domesticIssues.join(', ')}.` : ''}
         </Text>
-      </View>
-      
-      <View style={{ marginBottom: 10 }}>
-        <Text style={styles.fieldLabel}>10.3 Sleep Impact</Text>
-        <Text style={styles.fieldValue}>
-          {lifestyleData.impactOnSleep
-            ? `The injuries disrupted the claimant's sleep.${formatDateDisplay(lifestyleData.sleepImpactDate)}${formatArrayToText(lifestyleData.sleepIssues)}`
-            : "The injuries did not significantly impact the claimant's sleep patterns."}
+      ) : (
+        <Text style={styles.paragraph}>The claimant reported no impact on domestic activities.</Text>
+      )}
+
+      {/* Sleep */}
+      <Text style={styles.subtitle}>Sleep</Text>
+      {data.impactOnSleep === "1" ? (
+        <Text style={styles.paragraph}>
+          The claimant's sleep was disrupted. {data.sleepImpactDate ? `This impact started on ${data.sleepImpactDate}.` : ''} {data.sleepIssues && data.sleepIssues.length > 0 ? `Sleep issues included: ${data.sleepIssues.join(', ')}.` : ''}
         </Text>
-      </View>
-      
-      <View style={{ marginBottom: 10 }}>
-        <Text style={styles.fieldLabel}>10.4 Social Life & Leisure Impact</Text>
-        <Text style={styles.fieldValue}>
-          {lifestyleData.impactOnSocial
-            ? `The injuries affected the claimant's social life.${formatDateDisplay(lifestyleData.socialImpactDate)} ${lifestyleData.socialDetails || ""}`
-            : "The injuries did not significantly impact the claimant's social life and leisure activities."}
-          {lifestyleData.impactOnSports
-            ? ` The claimant's sports activities were also affected.${formatDateDisplay(lifestyleData.sportsImpactDate)} ${lifestyleData.sportsActivities ? `Affected activities: ${lifestyleData.sportsActivities}.` : ""} ${lifestyleData.sportsDuration ? `Duration of impact: ${lifestyleData.sportsDuration}.` : ""}`
-            : ""}
+      ) : (
+        <Text style={styles.paragraph}>The claimant reported no impact on sleep.</Text>
+      )}
+
+      {/* Social Life */}
+      <Text style={styles.subtitle}>Social Life</Text>
+      {data.impactOnSocial === "1" ? (
+        <Text style={styles.paragraph}>
+          The claimant's social life was affected. {data.socialImpactDate ? `This impact started on ${data.socialImpactDate}.` : ''} {data.socialDetails ? `Details: ${data.socialDetails}` : ''}
         </Text>
-      </View>
+      ) : (
+        <Text style={styles.paragraph}>The claimant reported no impact on social life.</Text>
+      )}
+
+      {/* Sports and Leisure */}
+      {data.impactOnSports === "1" ? (
+        <Text style={styles.paragraph}>
+          The claimant's sports and leisure activities were affected. {data.sportsImpactDate ? `This impact started on ${data.sportsImpactDate}.` : ''} {data.sportsActivities ? `Activities affected: ${data.sportsActivities}` : ''} {data.sportsActivities && data.sportsDuration ? `. ` : ''} {data.sportsDuration ? `The claimant typically engaged in these activities ${data.sportsDuration} times per month before the accident.` : ''}
+        </Text>
+      ) : (
+        <Text style={styles.paragraph}>The claimant reported no impact on sports and leisure activities.</Text>
+      )}
     </View>
   );
 };
+
+export default LifestyleImpactSection;

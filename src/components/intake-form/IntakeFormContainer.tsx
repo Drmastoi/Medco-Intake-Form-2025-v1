@@ -58,16 +58,24 @@ export function IntakeFormContainer() {
       livingWith: "", // Empty string instead of default "1"
       childrenCount: "",
       
-      // Accident information default values
+      // Accident information default values - all unchecked
       accidentDate: "",
-      accidentTime: "", // Empty string instead of default "1"
-      vehiclePosition: "", // Empty string instead of default "1"
+      accidentTime: undefined, // Set to undefined instead of empty string
+      vehiclePosition: "", // Empty string
+      vehicleStatus: undefined, // Set to undefined instead of empty string
+      vehicleLocation: undefined, // Set to undefined instead of empty string
+      impactLocation: undefined, // Set to undefined instead of empty string
+      vehicleDamage: undefined, // Set to undefined instead of empty string
+      claimantPosition: undefined, // Set to undefined instead of empty string
+      claimantVehicle: undefined, // Set to undefined instead of empty string
+      otherVehicle: undefined, // Set to undefined instead of empty string
+      accidentSummary: "",
       
       // Section 3 - Medical Information
       neckPain: "2", // Default to No (unchecked)
-      neckPainStart: "", // Empty string instead of default "1"
-      neckPainInitialSeverity: "", // Empty string instead of default "1"
-      neckPainCurrentSeverity: "", // Empty string instead of default "1"
+      neckPainStart: undefined, // Set to undefined instead of empty string
+      neckPainInitialSeverity: undefined, // Set to undefined instead of empty string
+      neckPainCurrentSeverity: undefined, // Set to undefined instead of empty string
       neckPainResolveDays: "",
       additionalInfo: "",
       hadPriorNeckPain: "2", // Default to No
@@ -76,25 +84,25 @@ export function IntakeFormContainer() {
       
       // Section 4 - Shoulder Pain Information
       shoulderPain: "2", // Default to No (unchecked)
-      shoulderSide: "", // Empty string instead of default "1"
-      shoulderPainStart: "", // Empty string instead of default "1"
-      shoulderPainInitialSeverity: "", // Empty string instead of default "1"
-      shoulderPainCurrentSeverity: "", // Empty string instead of default "1"
+      shoulderSide: undefined, // Set to undefined instead of empty string
+      shoulderPainStart: undefined, // Set to undefined instead of empty string
+      shoulderPainInitialSeverity: undefined, // Set to undefined instead of empty string
+      shoulderPainCurrentSeverity: undefined, // Set to undefined instead of empty string
       shoulderPainResolveDays: "",
 
       // Section 5 - Back Pain Information
       backPain: "2", // Default to No (unchecked)
-      backLocation: "", // Empty string instead of default "1"
-      backPainStart: "", // Empty string instead of default "1"
-      backPainInitialSeverity: "", // Empty string instead of default "1"
-      backPainCurrentSeverity: "", // Empty string instead of default "1"
+      backLocation: undefined, // Set to undefined instead of empty string
+      backPainStart: undefined, // Set to undefined instead of empty string
+      backPainInitialSeverity: undefined, // Set to undefined instead of empty string
+      backPainCurrentSeverity: undefined, // Set to undefined instead of empty string
       backPainResolveDays: "",
 
       // Section 6 - Headache Information
       headache: "2", // Default to No (unchecked)
-      headacheStart: "", // Empty string instead of default "1"
-      headacheInitialSeverity: "", // Empty string instead of default "1"
-      headacheCurrentSeverity: "", // Empty string instead of default "1"
+      headacheStart: undefined, // Set to undefined instead of empty string
+      headacheInitialSeverity: undefined, // Set to undefined instead of empty string
+      headacheCurrentSeverity: undefined, // Set to undefined instead of empty string
       headacheResolveDays: "",
       headachePastHistory: "",
       
@@ -102,13 +110,13 @@ export function IntakeFormContainer() {
       travelAnxiety: "2", // Default to No (unchecked)
       travelAnxietySymptoms: [],
       otherTravelAnxietySymptom: "",
-      currentlyDriving: "", // Empty string instead of default "1"
-      anxietyInitialSeverity: "", // Empty string instead of default "1"
-      anxietyCurrentSeverity: "", // Empty string instead of default "1"
+      currentlyDriving: undefined, // Set to undefined instead of empty string
+      anxietyInitialSeverity: undefined, // Set to undefined instead of empty string
+      anxietyCurrentSeverity: undefined, // Set to undefined instead of empty string
       anxietyResolveDays: "",
       anxietyPastHistory: "",
       anxietyDuration: "",
-      hasAnxietyHistory: "",
+      hasAnxietyHistory: undefined, // Set to undefined instead of empty string
       
       // Previous Medical History fields
       exceptionalInjuries: "2", // Default to No (unchecked)
