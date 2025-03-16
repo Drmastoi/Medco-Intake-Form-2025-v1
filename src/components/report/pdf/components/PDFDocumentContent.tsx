@@ -15,7 +15,7 @@ import { AppointmentDetailsSection } from '../sections/AppointmentDetailsSection
 import { AccidentDetailsSection } from '../sections/AccidentDetailsSection';
 import { InjuriesSection } from '../sections/InjuriesSection';
 import { TreatmentSection } from '../sections/TreatmentSection';
-import { LifestyleImpactSection } from '../sections/LifestyleImpactSection';
+import LifestyleImpactSection from '../sections/LifestyleImpactSection';
 import { MedicalHistorySection } from '../sections/MedicalHistorySection';
 import { BruisingSection } from '../sections/BruisingSection';
 import { StatementOfInstructionSection } from '../../sections/StatementOfInstructionSection';
@@ -262,7 +262,7 @@ const PDFDocumentContent = ({ reportData }: PDFDocumentContentProps) => {
         
         {/* Section 10 - Lifestyle Impact */}
         <View style={styles.section}>
-          <LifestyleImpactSection formData={reportData} styles={styles} />
+          <LifestyleImpactSection formData={reportData} />
         </View>
         
         <View style={styles.section}>
@@ -271,9 +271,60 @@ const PDFDocumentContent = ({ reportData }: PDFDocumentContentProps) => {
         
         <View style={styles.section}>
           <View style={styles.subsection}>
-            <Text style={styles.sectionHeader}>Expert Declaration</Text>
+            <Text style={styles.sectionHeader}>G.3 Statement of Truth</Text>
             <Text style={styles.fieldValue}>
-              I, {reportData.prefilled.expertName}, declare that the content of this report is true to the best of my knowledge and belief. I understand that this report is to be submitted as expert evidence. I confirm that I have no conflict of interest in this case.
+              I understand that my overriding duty is to the court, both in preparing reports and in giving oral evidence. I
+              have complied and will continue to comply with that duty.
+            </Text>
+            <Text style={styles.fieldValue}>
+              I am aware of the requirements of Part 35 and practice direction 35, the protocol for instructing experts to
+              give evidence in civil claims and the practice direction on pre-action conduct.
+            </Text>
+            <Text style={styles.fieldValue}>
+              I have set out in my report that I understand from those instructing me to be the questions in respect of
+              which my opinions as an expert are required.
+            </Text>
+            <Text style={styles.fieldValue}>
+              I have done my best, in preparing this report, to be accurate and complete. I have mentioned all matters,
+              which I regard as relevant to the opinions I have expressed. All of the matters on which I have expressed
+              an opinion lie within my field of expertise.
+            </Text>
+            <Text style={styles.fieldValue}>
+              I have drawn to the attention of the court all matters, of which I am aware, which might adversely affect my
+              opinion. Wherever I have no personal knowledge, I have indicated the source if factual information.
+            </Text>
+            <Text style={styles.fieldValue}>
+              I have not included anything in this report, which has been suggested to me by anyone, including the
+              lawyers instructing me, without forming my own independent view of the matter.
+            </Text>
+            <Text style={styles.fieldValue}>
+              Where, in my view, there is a range of reasonable opinion, I have indicated the extent of that range in the
+              report.
+            </Text>
+            <Text style={styles.fieldValue}>
+              At the time of signing the report I consider it to be complete and accurate. I will notify those instructing me
+              if, for any reason, I subsequently consider that the report requires any correction or qualification.
+            </Text>
+            <Text style={styles.fieldValue}>
+              I understand that this report will be evidence that I will give under oath, subject to any correction or
+              qualification I may make before swearing to its veracity.
+            </Text>
+            <Text style={styles.fieldValue}>
+              I have included in this report a summary of my instructions.
+            </Text>
+            <Text style={styles.fieldValue}>
+              I have not entered into any agreement where the amount of payment of my fee is in any way dependant
+              on the outcome of the case
+            </Text>
+            <Text style={styles.fieldValue}>
+              I confirm that I have made clear which facts and matters referred to in this report are within my own
+              knowledge and which are not. Those that are within my own knowledge I confirm to be true. The opinions I
+              have expressed represent my true and complete professional opinions on the matters to which they refer.
+            </Text>
+            <Text style={styles.fieldValue}>
+              I understand that proceedings for contempt of court may be brought against anyone who makes, or
+              causes to be made, a false statement in a document verified by a statement of truth without an honest
+              belief in its truth.
             </Text>
             <Text style={styles.fieldValue}>
               Date: {today}
