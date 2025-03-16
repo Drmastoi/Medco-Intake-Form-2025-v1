@@ -1,4 +1,3 @@
-
 import { z } from "zod";
 
 export const formSchema = z.object({
@@ -21,17 +20,17 @@ export const formSchema = z.object({
     message: "Full name must be at least 2 characters.",
   }),
   dateOfBirth: z.string().optional(),
-  gender: z.enum(["male", "female"]).default("male"),
-  idType: z.enum(["1", "2", "3"]).default("1"),
+  gender: z.enum(["male", "female", ""]).optional(), // Added empty string as valid option
+  idType: z.enum(["1", "2", "3", "4", ""]).optional(), // Added empty string as valid option
   address: z.string().optional(),
   occupation: z.string().optional(),
-  workType: z.enum(["1", "2", "3", "4"]).default("1"),
-  livingWith: z.enum(["1", "2", "3"]).default("1"),
+  workType: z.enum(["1", "2", "3", "4", ""]).optional(), // Added empty string as valid option
+  livingWith: z.enum(["1", "2", "3", "4", "5", "6", ""]).optional(), // Added empty string as valid option
   childrenCount: z.string().optional(),
 
   // Section 3 - Accident Information
   accidentDate: z.string().optional(),
-  accidentTime: z.enum(["1", "2", "3", "4"]).default("1"),
+  accidentTime: z.enum(["1", "2", "3", "4"]).optional(),
   vehiclePosition: z.string().optional(),
   vehicleStatus: z.enum(["1", "2", "3", "4"]).optional(),
   vehicleLocation: z.enum(["1", "2", "3", "4", "5"]).optional(),

@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { FormSchema, formSchema } from "@/schemas/intakeFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -46,27 +47,27 @@ export function IntakeFormContainer() {
       dateOfReport: new Date().toISOString().split('T')[0],
       timeSpentWithClaimant: "15",
       
-      // Personal information default values
+      // Personal information default values - now all unchecked
       fullName: "",
       dateOfBirth: "",
-      gender: "male", // Default gender value
-      idType: "1", // Default to driving license
+      gender: "", // Empty string instead of "male"
+      idType: "", // Empty string instead of default "1"
       address: "",
       occupation: "",
-      workType: "1",
-      livingWith: "1",
-      childrenCount: "0",
+      workType: "", // Empty string instead of default "1"
+      livingWith: "", // Empty string instead of default "1"
+      childrenCount: "",
       
       // Accident information default values
       accidentDate: "",
-      accidentTime: "1", // Default to Morning
-      vehiclePosition: "1", // Default to first option
+      accidentTime: "", // Empty string instead of default "1"
+      vehiclePosition: "", // Empty string instead of default "1"
       
       // Section 3 - Medical Information
       neckPain: "2", // Default to No (unchecked)
-      neckPainStart: "1", // Default to Same day
-      neckPainInitialSeverity: "1", // Default to Mild
-      neckPainCurrentSeverity: "1", // Default to Mild
+      neckPainStart: "", // Empty string instead of default "1"
+      neckPainInitialSeverity: "", // Empty string instead of default "1"
+      neckPainCurrentSeverity: "", // Empty string instead of default "1"
       neckPainResolveDays: "",
       additionalInfo: "",
       hadPriorNeckPain: "2", // Default to No
@@ -74,40 +75,40 @@ export function IntakeFormContainer() {
       priorNeckPainPercentage: "",
       
       // Section 4 - Shoulder Pain Information
-      shoulderPain: "2", // Changed to unchecked
-      shoulderSide: "1",
-      shoulderPainStart: "1",
-      shoulderPainInitialSeverity: "1",
-      shoulderPainCurrentSeverity: "1",
+      shoulderPain: "2", // Default to No (unchecked)
+      shoulderSide: "", // Empty string instead of default "1"
+      shoulderPainStart: "", // Empty string instead of default "1"
+      shoulderPainInitialSeverity: "", // Empty string instead of default "1"
+      shoulderPainCurrentSeverity: "", // Empty string instead of default "1"
       shoulderPainResolveDays: "",
 
       // Section 5 - Back Pain Information
-      backPain: "2", // Changed to unchecked
-      backLocation: "1",
-      backPainStart: "1",
-      backPainInitialSeverity: "1",
-      backPainCurrentSeverity: "1",
+      backPain: "2", // Default to No (unchecked)
+      backLocation: "", // Empty string instead of default "1"
+      backPainStart: "", // Empty string instead of default "1"
+      backPainInitialSeverity: "", // Empty string instead of default "1"
+      backPainCurrentSeverity: "", // Empty string instead of default "1"
       backPainResolveDays: "",
 
       // Section 6 - Headache Information
-      headache: "2", // Changed to unchecked
-      headacheStart: "1",
-      headacheInitialSeverity: "1",
-      headacheCurrentSeverity: "1",
+      headache: "2", // Default to No (unchecked)
+      headacheStart: "", // Empty string instead of default "1"
+      headacheInitialSeverity: "", // Empty string instead of default "1"
+      headacheCurrentSeverity: "", // Empty string instead of default "1"
       headacheResolveDays: "",
       headachePastHistory: "",
       
       // Travel anxiety fields
-      travelAnxiety: "2", // Changed to unchecked
+      travelAnxiety: "2", // Default to No (unchecked)
       travelAnxietySymptoms: [],
       otherTravelAnxietySymptom: "",
-      currentlyDriving: "1",
-      anxietyInitialSeverity: "1",
-      anxietyCurrentSeverity: "1",
+      currentlyDriving: "", // Empty string instead of default "1"
+      anxietyInitialSeverity: "", // Empty string instead of default "1"
+      anxietyCurrentSeverity: "", // Empty string instead of default "1"
       anxietyResolveDays: "",
       anxietyPastHistory: "",
       anxietyDuration: "",
-      hasAnxietyHistory: "no",
+      hasAnxietyHistory: "",
       
       // Previous Medical History fields
       exceptionalInjuries: "2", // Default to No (unchecked)
