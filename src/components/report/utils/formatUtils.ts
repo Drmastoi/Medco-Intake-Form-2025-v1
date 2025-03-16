@@ -88,3 +88,41 @@ export const formatCheckboxList = (items: string[] | undefined): string => {
   const lastItem = filteredItems.pop();
   return `${filteredItems.join(', ')} and ${lastItem}`;
 };
+
+/**
+ * Returns the classification of an injury based on its type
+ */
+export function getInjuryClassification(injuryType: string): string {
+  if (injuryType.includes('Neck') || injuryType.includes('Back') || injuryType.includes('Shoulder')) {
+    return "Whiplash";
+  } else if (injuryType.includes('Headache')) {
+    return "Whiplash Associated";
+  } else if (injuryType.includes('Anxiety')) {
+    return "Psychological";
+  } else {
+    return "Non-whiplash";
+  }
+}
+
+/**
+ * Returns a safe value with a fallback if the value is undefined or empty
+ */
+export function safeValue(value: any, fallback: string = "Not specified"): string {
+  if (value === undefined || value === null || value === '') {
+    return fallback;
+  }
+  return String(value);
+}
+
+/**
+ * Format severity to a readable text
+ */
+export function formatSeverity(severity: string | undefined): string {
+  switch (severity) {
+    case "1": return "Mild";
+    case "2": return "Moderate";
+    case "3": return "Severe";
+    case "4": return "Resolved";
+    default: return "Not specified";
+  }
+}

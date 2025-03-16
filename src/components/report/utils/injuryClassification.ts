@@ -7,9 +7,9 @@ export const getInjuryClassification = (injuryType: string, location?: string) =
   } else if (['Headache', 'Dizziness'].includes(injuryType)) {
     return 'Whiplash Associated';
   } else if (['Anxiety', 'Travel Anxiety', 'Panic', 'Fear of Travel'].includes(injuryType)) {
-    return 'Psychological Impact';
+    return 'Psychological';
   } else {
-    return 'Non-whiplash Injury';
+    return 'Non-whiplash';
   }
 };
 
@@ -65,9 +65,9 @@ export const getMechanismOfInjury = (injuryType: string, location?: string) => {
   } else if (injuryType === 'Shoulder' || (injuryType === 'Back' && location !== "3")) {
     return "The injury is caused by a direct trauma to the vehicle interior.";
   } else if (['Headache', 'Dizziness'].includes(injuryType)) {
-    return "It is classified as non-whiplash injury and falls within subsection 1.3 of the civil liability act 2018.";
+    return "It is classified as Whiplash Associated injury and falls within subsection 1.3 of the civil liability act 2018.";
   } else if (['Anxiety', 'Travel Anxiety'].includes(injuryType)) {
-    return "It is classified as non-whiplash injury and falls within subsection 1.3 of the civil liability act 2018.";
+    return "It is classified as a Psychological impact and falls within subsection 1.3 of the civil liability act 2018.";
   } else {
     return "The injury is caused by a direct impact during the accident.";
   }

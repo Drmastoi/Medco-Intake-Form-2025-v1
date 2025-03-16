@@ -16,7 +16,15 @@ export const SummaryOfInjuriesSection = ({ formData }: { formData: any }) => {
         <InjuriesTable 
           title="Whiplash Related Injuries:"
           injuries={whiplashInjuries}
-          classification={() => "Whiplash"}
+          classification={(injury) => {
+            if (injury.injury.includes("Neck") || injury.injury.includes("Back") || injury.injury.includes("Shoulder")) {
+              return "Whiplash";
+            } else if (injury.injury.includes("Headache")) {
+              return "Whiplash Associated";
+            } else {
+              return "Non-whiplash";
+            }
+          }}
         />
 
         {nonWhiplashInjuries.length > 0 && (
@@ -24,7 +32,15 @@ export const SummaryOfInjuriesSection = ({ formData }: { formData: any }) => {
             <InjuriesTable 
               title="Other Injuries and Impacts:"
               injuries={nonWhiplashInjuries}
-              classification={(injury) => injury.injury === "Headache" ? "WAD" : "Psychological"}
+              classification={(injury) => {
+                if (injury.injury.includes("Anxiety")) {
+                  return "Psychological";
+                } else if (injury.injury.includes("Headache")) {
+                  return "Whiplash Associated";
+                } else {
+                  return "Non-whiplash";
+                }
+              }}
             />
           </View>
         )}
