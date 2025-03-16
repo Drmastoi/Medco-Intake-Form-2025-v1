@@ -5,10 +5,11 @@ import { ReportData } from '@/types/reportTypes';
 import { pdfStyles } from '../styles/pdfStyles';
 import { textStyles } from '../styles/textStyles';
 import { colorScheme } from '../styles/colorScheme';
-import NeckPainComponent from './injury-components/NeckPainComponent';
-import ShoulderPainComponent from './injury-components/ShoulderPainComponent';
-import BackPainComponent from './injury-components/BackPainComponent';
-import HeadacheComponent from './injury-components/HeadacheComponent';
+import { injuryStyles } from '../styles/injuryStyles';
+import { NeckPainComponent } from './injury-components/NeckPainComponent';
+import { ShoulderPainComponent } from './injury-components/ShoulderPainComponent';
+import { BackPainComponent } from './injury-components/BackPainComponent';
+import { HeadacheComponent } from './injury-components/HeadacheComponent';
 
 interface InjuriesSectionProps {
   reportData: ReportData;
@@ -16,57 +17,40 @@ interface InjuriesSectionProps {
 }
 
 const InjuriesSection = ({ reportData, reportType = "expert" }: InjuriesSectionProps) => {
-  const hasAnyInjury = 
-    reportData.injuries.neckPain?.hasInjury || 
-    reportData.injuries.shoulderPain?.hasInjury || 
-    reportData.injuries.backPain?.hasInjury || 
-    reportData.injuries.headache?.hasInjury;
-
-  if (!hasAnyInjury) {
+  // Check if any injuries exist
+  const hasInjuries = 
+    reportData.injuries?.neckPain?.hasInjury ||
+    reportData.injuries?.shoulderPain?.hasInjury ||
+    reportData.injuries?.backPain?.hasInjury ||
+    reportData.injuries?.headache?.hasInjury;
+    
+  if (!hasInjuries) {
     return (
-      <View style={pdfStyles.sectionContainer}>
-        <Text style={[textStyles.sectionTitle, { marginBottom: 10 }]}>Physical Injuries</Text>
-        <View style={{ backgroundColor: colorScheme.altSectionBg, padding: 10, borderRadius: 5 }}>
-          <Text style={textStyles.regularText}>No physical injuries reported.</Text>
-        </View>
+      <View style={pdfStyles.section}>
+        <Text style={textStyles.sectionTitle}>Injuries Summary</Text>
+        <Text style={textStyles.regularText}>No injuries reported in this accident.</Text>
       </View>
     );
   }
   
   return (
-    <View style={pdfStyles.sectionContainer}>
-      <Text style={[textStyles.sectionTitle, { marginBottom: 10 }]}>Physical Injuries</Text>
+    <View style={pdfStyles.section}>
+      <Text style={textStyles.sectionTitle}>Soft Tissue Injuries</Text>
       
-      {/* Neck Pain */}
-      {reportData.injuries.neckPain?.hasInjury && (
-        <NeckPainComponent 
-          data={reportData.injuries.neckPain} 
-          reportType={reportType}
-        />
+      {reportData.injuries?.neckPain?.hasInjury && (
+        <NeckPainComponent data={reportData.injuries.neckPain} reportType={reportType} />
       )}
       
-      {/* Shoulder Pain */}
-      {reportData.injuries.shoulderPain?.hasInjury && (
-        <ShoulderPainComponent 
-          data={reportData.injuries.shoulderPain} 
-          reportType={reportType}
-        />
+      {reportData.injuries?.shoulderPain?.hasInjury && (
+        <ShoulderPainComponent data={reportData.injuries.shoulderPain} reportType={reportType} />
       )}
       
-      {/* Back Pain */}
-      {reportData.injuries.backPain?.hasInjury && (
-        <BackPainComponent 
-          data={reportData.injuries.backPain} 
-          reportType={reportType}
-        />
+      {reportData.injuries?.backPain?.hasInjury && (
+        <BackPainComponent data={reportData.injuries.backPain} reportType={reportType} />
       )}
       
-      {/* Headache */}
-      {reportData.injuries.headache?.hasInjury && (
-        <HeadacheComponent 
-          data={reportData.injuries.headache} 
-          reportType={reportType}
-        />
+      {reportData.injuries?.headache?.hasInjury && (
+        <HeadacheComponent data={reportData.injuries.headache} reportType={reportType} />
       )}
     </View>
   );

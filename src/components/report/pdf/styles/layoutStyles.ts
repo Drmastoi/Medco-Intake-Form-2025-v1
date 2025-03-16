@@ -1,44 +1,45 @@
 
 import { StyleSheet } from '@react-pdf/renderer';
 import { colorScheme } from './colorScheme';
-import { spacing } from './spacing';
-import { typography } from './typography';
 
 export const layoutStyles = StyleSheet.create({
   page: {
     flexDirection: 'column',
-    backgroundColor: colorScheme.pageBg,
-    padding: spacing.pageMargin,
-    paddingBottom: spacing.pageMargin * 3, // Add padding at the bottom for the footer
-    fontFamily: typography.fontFamily,
-    fontSize: typography.fontSize.base,
+    backgroundColor: colorScheme.background,
+    padding: 40,
+    paddingBottom: 60, // Extra space for footer
+    fontFamily: 'Helvetica',
+    fontSize: 10,
     color: colorScheme.textDark,
   },
+  pageContainer: {
+    flex: 1,
+    flexDirection: 'column',
+  },
   section: {
-    margin: spacing.md,
-    padding: spacing.contentPadding,
-    backgroundColor: colorScheme.sectionBg,
-    borderRadius: 3,
-    border: `1px solid ${colorScheme.borderLight}`,
-    marginBottom: spacing.sectionGap,
+    margin: 10,
+    padding: 15,
+    backgroundColor: 'white',
+    borderRadius: 5,
+    border: `1px solid ${colorScheme.borderColor}`,
+    marginBottom: 15,
   },
-  subsection: {
-    marginBottom: spacing.xl,
+  content: {
+    flex: 1,
+    flexDirection: 'column',
   },
-  twoColumns: {
+  row: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    marginBottom: 5,
   },
   column: {
-    width: '48%',
-  },
-  divider: {
-    borderBottomWidth: 1,
-    borderBottomColor: colorScheme.borderLight,
-    marginVertical: spacing.md,
+    flexDirection: 'column',
+    marginRight: 10,
+    flex: 1,
   },
   pageBreak: {
-    height: 0,
-    pageBreakAfter: 'always',
+    height: 1,
+    marginTop: 30,
+    marginBottom: 30,
   },
 });

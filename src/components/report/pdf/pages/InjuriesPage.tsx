@@ -5,9 +5,10 @@ import { ReportData } from '@/types/reportTypes';
 import { layoutStyles } from '../styles/layoutStyles';
 import { textStyles } from '../styles/textStyles';
 import { pdfStyles } from '../styles/pdfStyles';
+import PDFFooter from '../components/PDFFooter';
 import InjuriesSection from '../sections/InjuriesSection';
 import TravelAnxietySection from '../sections/TravelAnxietySection';
-import PDFFooter from '../components/PDFFooter';
+import MedicalHistorySection from '../sections/MedicalHistorySection';
 
 export interface InjuriesPageProps {
   reportData: ReportData;
@@ -23,17 +24,15 @@ const InjuriesPage = ({ reportData, claimantName, today, reportType = "expert" }
         <View style={pdfStyles.header}>
           <Text style={textStyles.headerText}>Injuries and Symptoms</Text>
           <Text style={textStyles.subHeaderText}>
-            {reportType === "expert" ? "Expert Medical Assessment" : "Reported Injuries and Symptoms"}
+            {reportType === "expert" ? "Expert Assessment" : "Claimant Report"}
           </Text>
         </View>
 
-        <View style={pdfStyles.content}>
+        <View style={layoutStyles.content}>
           <View style={pdfStyles.section}>
             <InjuriesSection reportData={reportData} reportType={reportType} />
-            
-            {reportData.travelAnxiety?.hasAnxiety && (
-              <TravelAnxietySection reportData={reportData} reportType={reportType} />
-            )}
+            <TravelAnxietySection reportData={reportData} reportType={reportType} />
+            <MedicalHistorySection reportData={reportData} reportType={reportType} />
           </View>
         </View>
       </View>

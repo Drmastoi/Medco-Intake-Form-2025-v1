@@ -1,43 +1,73 @@
 
 import { StyleSheet } from '@react-pdf/renderer';
 import { colorScheme } from './colorScheme';
-import { spacing } from './spacing';
-import { typography } from './typography';
 
 export const injuryStyles = StyleSheet.create({
+  injurySection: {
+    marginBottom: 15,
+    border: `1px solid ${colorScheme.borderColor}`,
+    borderRadius: 3,
+    overflow: 'hidden',
+  },
   injuryHeader: {
     backgroundColor: colorScheme.primary,
-    color: colorScheme.textInverted,
-    padding: spacing.sm,
-    marginBottom: spacing.md,
+    color: 'white',
+    padding: 5,
+    marginBottom: 5,
     borderRadius: 3,
-    fontSize: typography.fontSize.md,
+    fontSize: 11,
+  },
+  injuryHeaderText: {
+    color: 'white',
+    fontSize: 11,
+    fontWeight: 'bold',
   },
   injuryTable: {
-    marginBottom: spacing.xl,
+    marginBottom: 10,
   },
   injuryRow: {
     flexDirection: 'row',
-    marginBottom: spacing.sm,
+    marginBottom: 5,
     borderBottomWidth: 1,
-    borderBottomColor: colorScheme.borderLight,
-    paddingBottom: spacing.sm,
+    borderBottomColor: colorScheme.borderColor,
+    paddingBottom: 3, 
   },
-  injuryLabel: {
+  injuryCol1: {
     width: '30%',
-    fontWeight: typography.fontWeight.bold,
-    fontSize: typography.fontSize.sm,
-    color: colorScheme.textSecondary,
+    paddingRight: 10,
   },
-  injuryValue: {
+  injuryCol2: {
     width: '70%',
-    fontSize: typography.fontSize.sm,
   },
-  injuriesSectionTitle: {
-    fontSize: typography.fontSize.lg,
-    fontWeight: typography.fontWeight.bold,
-    marginTop: spacing.lg,
-    marginBottom: spacing.md,
-    color: colorScheme.primary,
+  injuryContent: {
+    padding: 8,
   },
+  prognosisSection: {
+    marginTop: 10,
+    padding: 5,
+    backgroundColor: colorScheme.altBg,
+    borderRadius: 3,
+  },
+  prognosisTitle: {
+    fontWeight: 'bold',
+    fontSize: 10,
+    marginBottom: 3,
+  },
+  severityContainer: {
+    flexDirection: 'row',
+    marginBottom: 5,
+    marginTop: 5,
+  },
+  severityBox: {
+    flex: 1,
+    marginLeft: 2,
+    marginRight: 2,
+    borderRadius: 3,
+    height: 15,
+    borderWidth: 1,
+    borderColor: colorScheme.borderColor,
+  },
+  severityBoxActive: {
+    backgroundColor: colorScheme.accent,
+  }
 });

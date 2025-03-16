@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -31,7 +32,6 @@ export const ReportSubmissionTab = ({ isOpen, onClose, formData, referenceNumber
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const { toast } = useToast();
-  const extendedClient = createExtendedClient(supabase);
   
   // Convert form data to report data structure for claimant report (without prognosis)
   const claimantReportData = convertFormDataToReportData(formData);
@@ -70,33 +70,68 @@ export const ReportSubmissionTab = ({ isOpen, onClose, formData, referenceNumber
     setIsSubmitting(true);
     
     try {
-      // Find the submission record using the REST API
-      const { data: submission, error: submissionError } = await supabase.rest.from('questionnaire_submissions')
-        .select('id')
-        .eq('reference_number', referenceNumber)
-        .single();
+      // Find the submission record using fetch API
+      const submissionResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/questionnaire_submissions?reference_number=eq.${referenceNumber}&select=id`,
+        {
+          headers: {
+            'apikey': process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
+            'Content-Type': 'application/json'
+          }
+        }
+      );
       
-      if (submissionError) throw submissionError;
+      if (!submissionResponse.ok) {
+        throw new Error('Failed to fetch submission');
+      }
+      
+      const submissions = await submissionResponse.json();
+      if (submissions.length === 0) {
+        throw new Error('Submission not found');
+      }
+      
+      const submissionId = submissions[0].id;
       
       // Store the completed form data
-      const { error: dataError } = await supabase.rest.from('questionnaire_data')
-        .insert({
-          submission_id: submission.id,
-          form_data: formData,
-          version: 'completed'
-        });
+      const dataResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/questionnaire_data`,
+        {
+          method: 'POST',
+          headers: {
+            'apikey': process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            submission_id: submissionId,
+            form_data: formData,
+            version: 'completed'
+          })
+        }
+      );
       
-      if (dataError) throw dataError;
+      if (!dataResponse.ok) {
+        throw new Error('Failed to store completed form data');
+      }
       
       // Update submission status
-      const { error: updateError } = await supabase.rest.from('questionnaire_submissions')
-        .update({ 
-          status: 'completed',
-          completed_date: new Date().toISOString()
-        })
-        .eq('id', submission.id);
+      const updateResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/questionnaire_submissions?id=eq.${submissionId}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'apikey': process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            status: 'completed',
+            completed_date: new Date().toISOString()
+          })
+        }
+      );
       
-      if (updateError) throw updateError;
+      if (!updateResponse.ok) {
+        throw new Error('Failed to update submission status');
+      }
       
       // Send both reports via edge function
       const { error: sendError } = await supabase.functions.invoke('send-completed-reports', {

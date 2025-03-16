@@ -5,12 +5,11 @@ import { ReportData } from '@/types/reportTypes';
 import { layoutStyles } from '../styles/layoutStyles';
 import { textStyles } from '../styles/textStyles';
 import { pdfStyles } from '../styles/pdfStyles';
+import PDFFooter from '../components/PDFFooter';
 import BruisingSection from '../sections/BruisingSection';
 import OtherInjuriesSection from '../sections/OtherInjuriesSection';
 import TreatmentSection from '../sections/TreatmentSection';
 import LifestyleImpactSection from '../sections/LifestyleImpactSection';
-import MedicalHistorySection from '../sections/MedicalHistorySection';
-import PDFFooter from '../components/PDFFooter';
 
 export interface TreatmentLifestylePageProps {
   reportData: ReportData;
@@ -26,27 +25,31 @@ const TreatmentLifestylePage = ({ reportData, claimantName, today, reportType = 
         <View style={pdfStyles.header}>
           <Text style={textStyles.headerText}>Treatment and Lifestyle Impact</Text>
           <Text style={textStyles.subHeaderText}>
-            {reportType === "expert" ? "Medical Assessment and Analysis" : "Treatment and Daily Life Impact"}
+            {reportType === "expert" ? "Expert Assessment" : "Claimant Report"}
           </Text>
         </View>
 
-        <View style={pdfStyles.content}>
+        <View style={layoutStyles.content}>
           <View style={pdfStyles.section}>
-            {reportData.other?.bruising?.hasBruising && (
-              <BruisingSection reportData={reportData} reportType={reportType} />
-            )}
+            <BruisingSection 
+              reportData={reportData} 
+              reportType={reportType} 
+            />
             
-            {reportData.other?.otherInjuries?.hasOtherInjury && (
-              <OtherInjuriesSection reportData={reportData} reportType={reportType} />
-            )}
+            <OtherInjuriesSection 
+              reportData={reportData} 
+              reportType={reportType} 
+            />
             
-            {reportData.other?.treatment?.hasTreatment && (
-              <TreatmentSection reportData={reportData} reportType={reportType} />
-            )}
+            <TreatmentSection 
+              reportData={reportData} 
+              reportType={reportType} 
+            />
             
-            <LifestyleImpactSection reportData={reportData} reportType={reportType} />
-            
-            <MedicalHistorySection reportData={reportData} reportType={reportType} />
+            <LifestyleImpactSection 
+              reportData={reportData} 
+              reportType={reportType} 
+            />
           </View>
         </View>
       </View>

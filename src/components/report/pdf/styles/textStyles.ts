@@ -1,61 +1,66 @@
 
 import { StyleSheet } from '@react-pdf/renderer';
 import { colorScheme } from './colorScheme';
-import { spacing } from './spacing';
-import { typography } from './typography';
 
 export const textStyles = StyleSheet.create({
-  sectionHeader: {
-    borderBottom: `2px solid ${colorScheme.primary}`,
-    paddingBottom: spacing.sm,
-    marginBottom: spacing.md,
-    fontSize: typography.fontSize.lg,
-    fontWeight: typography.fontWeight.bold,
-    color: colorScheme.primary,
+  headerText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: colorScheme.textDark,
+    marginBottom: 2,
   },
-  fieldRow: {
-    flexDirection: 'row',
-    marginBottom: spacing.rowGap,
+  subHeaderText: {
+    fontSize: 12,
+    color: colorScheme.textSecondary,
+    marginBottom: 10,
   },
-  fieldColumn: {
-    flex: 1,
-    marginRight: spacing.columnGap,
+  sectionTitle: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: colorScheme.textDark,
+    marginBottom: 5,
   },
-  fieldLabel: {
-    fontWeight: typography.fontWeight.bold,
-    fontSize: typography.fontSize.sm,
-    marginBottom: spacing.xs,
+  subsectionTitle: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: colorScheme.textDark,
+    marginBottom: 3,
+  },
+  regularText: {
+    fontSize: 10,
+    color: colorScheme.textDark,
+    marginBottom: 5,
+    lineHeight: 1.5,
+  },
+  boldText: {
+    fontSize: 10,
+    fontWeight: 'bold',
+    color: colorScheme.textDark,
+  },
+  smallText: {
+    fontSize: 8,
     color: colorScheme.textSecondary,
   },
-  fieldValue: {
-    fontSize: typography.fontSize.base,
-    lineHeight: typography.lineHeight.normal,
+  labelText: {
+    fontSize: 10,
+    fontWeight: 'bold',
+    color: colorScheme.textDark,
+    marginRight: 5,
   },
-  disclaimerText: {
-    fontSize: typography.fontSize.xs,
-    marginTop: spacing.md,
-    fontStyle: 'italic',
+  valueText: {
+    fontSize: 10,
+    color: colorScheme.textDark,
+  },
+  footerText: {
+    fontSize: 8,
     color: colorScheme.textSecondary,
+    textAlign: 'center',
   },
-  summaryText: {
-    fontSize: typography.fontSize.sm,
-    marginTop: spacing.md,
-    fontStyle: 'italic',
-    backgroundColor: colorScheme.altSectionBg,
-    padding: spacing.sm,
-    borderRadius: 3,
-  },
-  conclusionText: {
-    fontSize: typography.fontSize.sm,
-    marginTop: spacing.md,
-    fontStyle: 'italic',
+  pageNumber: {
+    position: 'absolute',
+    bottom: 30,
+    right: 40,
+    fontSize: 8,
     color: colorScheme.textSecondary,
-  },
-  highlightBox: {
-    backgroundColor: colorScheme.altSectionBg,
-    padding: spacing.md,
-    borderRadius: 3,
-    marginBottom: spacing.md,
-    borderLeft: `4px solid ${colorScheme.accent}`,
   },
 });

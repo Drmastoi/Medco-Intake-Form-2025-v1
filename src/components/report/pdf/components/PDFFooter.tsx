@@ -1,20 +1,25 @@
 
 import React from 'react';
-import { Text, View } from '@react-pdf/renderer';
-import { pdfStyles } from '../styles/pdfStyles';
+import { View, Text } from '@react-pdf/renderer';
+import { textStyles } from '../styles/textStyles';
+import { headerFooterStyles } from '../styles/headerFooterStyles';
 
-interface PDFFooterProps {
+export interface PDFFooterProps {
   pageNumber: number;
   claimantName: string;
-  today: string;
+  date?: string;
 }
 
-const PDFFooter: React.FC<PDFFooterProps> = ({ pageNumber, claimantName, today }) => {
+const PDFFooter = ({ pageNumber, claimantName, date }: PDFFooterProps) => {
+  const formattedDate = date || new Date().toISOString().split('T')[0];
+  
   return (
-    <View fixed style={pdfStyles.footer}>
-      <Text>
-        Medical Report - {claimantName} - Page {pageNumber} - Generated on {today}
-      </Text>
+    <View style={headerFooterStyles.footer} fixed>
+      <View style={headerFooterStyles.footerContent}>
+        <Text style={textStyles.footerText}>
+          {claimantName} | {formattedDate} | Page {pageNumber}
+        </Text>
+      </View>
     </View>
   );
 };

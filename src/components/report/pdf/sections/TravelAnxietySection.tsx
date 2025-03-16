@@ -5,7 +5,7 @@ import { ReportData } from '@/types/reportTypes';
 import { pdfStyles } from '../styles/pdfStyles';
 import { textStyles } from '../styles/textStyles';
 import { colorScheme } from '../styles/colorScheme';
-import TravelAnxietyComponent from './injury-components/TravelAnxietyComponent';
+import { TravelAnxietyComponent } from './injury-components/TravelAnxietyComponent';
 
 interface TravelAnxietySectionProps {
   reportData: ReportData;
@@ -18,8 +18,8 @@ const TravelAnxietySection = ({ reportData, reportType = "expert" }: TravelAnxie
   }
   
   return (
-    <View style={pdfStyles.sectionContainer}>
-      <Text style={[textStyles.sectionTitle, { marginBottom: 10 }]}>Travel Anxiety</Text>
+    <View style={pdfStyles.section}>
+      <Text style={textStyles.sectionTitle}>Travel Anxiety</Text>
       
       <TravelAnxietyComponent 
         data={reportData.travelAnxiety} 

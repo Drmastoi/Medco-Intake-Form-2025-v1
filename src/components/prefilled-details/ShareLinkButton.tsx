@@ -14,7 +14,6 @@ interface ShareLinkButtonProps {
 export function ShareLinkButton({ form }: ShareLinkButtonProps) {
   const { toast } = useToast();
   const [isSending, setIsSending] = useState(false);
-  const extendedClient = createExtendedClient(supabase);
 
   const generateAndShareLink = async () => {
     const formData = form.getValues();
@@ -34,7 +33,7 @@ export function ShareLinkButton({ form }: ShareLinkButtonProps) {
     const referenceNumber = `MR-${uuidv4().substring(0, 8).toUpperCase()}`;
     
     try {
-      // Save the pre-filled data to Supabase using REST API
+      // Save the pre-filled data to Supabase using fetch API
       const prefilledData = {
         solicitorName: formData.solicitorName || '',
         solicitorReference: formData.solicitorReference || '',
@@ -52,29 +51,57 @@ export function ShareLinkButton({ form }: ShareLinkButtonProps) {
         gmcNumber: "1234567", // Default GMC number
       };
       
-      // First, create a submission record
-      const { data: submissionData, error: submissionError } = await supabase.rest.from('questionnaire_submissions')
-        .insert({
-          reference_number: referenceNumber,
-          expert_email: 'drawais@gmail.com', // Hardcoded expert email
-          claimant_email: formData.emailId,
-          claimant_name: formData.fullName || 'Claimant',
-          status: 'sent_to_claimant'
-        })
-        .select('id')
-        .single();
+      // First, create a submission record using fetch
+      const submissionResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/questionnaire_submissions`,
+        {
+          method: 'POST',
+          headers: {
+            'apikey': process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
+            'Content-Type': 'application/json',
+            'Prefer': 'return=representation'
+          },
+          body: JSON.stringify({
+            reference_number: referenceNumber,
+            expert_email: 'drawais@gmail.com', // Hardcoded expert email
+            claimant_email: formData.emailId,
+            claimant_name: formData.fullName || 'Claimant',
+            status: 'sent_to_claimant'
+          })
+        }
+      );
       
-      if (submissionError) throw submissionError;
+      if (!submissionResponse.ok) {
+        throw new Error('Failed to create submission record');
+      }
+      
+      const submissionData = await submissionResponse.json();
+      const submissionId = submissionData[0]?.id;
+      
+      if (!submissionId) {
+        throw new Error('Failed to get submission ID');
+      }
       
       // Then, store the form data
-      const { error: dataError } = await supabase.rest.from('questionnaire_data')
-        .insert({
-          submission_id: submissionData.id,
-          form_data: form.getValues(),
-          version: 'prefilled'
-        });
+      const dataResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/questionnaire_data`,
+        {
+          method: 'POST',
+          headers: {
+            'apikey': process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            submission_id: submissionId,
+            form_data: form.getValues(),
+            version: 'prefilled'
+          })
+        }
+      );
       
-      if (dataError) throw dataError;
+      if (!dataResponse.ok) {
+        throw new Error('Failed to store form data');
+      }
       
       // Create a query string with minimal data for the URL
       const queryParams = new URLSearchParams();

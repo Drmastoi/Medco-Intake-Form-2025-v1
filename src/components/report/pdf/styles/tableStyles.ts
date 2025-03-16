@@ -1,44 +1,56 @@
 
 import { StyleSheet } from '@react-pdf/renderer';
 import { colorScheme } from './colorScheme';
-import { spacing } from './spacing';
-import { typography } from './typography';
 
 export const tableStyles = StyleSheet.create({
   tableContainer: {
-    marginTop: spacing.md,
+    marginTop: 10,
     borderWidth: 1,
-    borderColor: colorScheme.tableBorder,
+    borderColor: colorScheme.borderColor,
     borderStyle: 'solid',
-    borderRadius: 2,
+    borderRadius: 3,
     overflow: 'hidden',
   },
   tableHeader: {
     flexDirection: 'row',
     borderBottomWidth: 1,
-    borderBottomColor: colorScheme.tableBorder,
-    backgroundColor: colorScheme.tableHeaderBg,
-    paddingVertical: spacing.sm,
-    paddingHorizontal: spacing.sm,
+    borderBottomColor: colorScheme.borderColor,
+    backgroundColor: colorScheme.altBg,
+    paddingVertical: 5,
+    paddingHorizontal: 8,
   },
   tableHeaderCell: {
-    fontSize: typography.fontSize.sm,
-    fontWeight: typography.fontWeight.bold,
-    textAlign: 'left',
-    color: colorScheme.textSecondary,
+    fontWeight: 'bold',
+    fontSize: 10,
+    color: colorScheme.textDark,
   },
   tableRow: {
     flexDirection: 'row',
     borderBottomWidth: 1,
-    borderBottomColor: colorScheme.borderLight,
-    paddingVertical: spacing.sm,
-    paddingHorizontal: spacing.sm,
-  },
-  tableRowAlt: {
-    backgroundColor: colorScheme.tableRowBgAlt,
+    borderBottomColor: colorScheme.borderColor,
+    paddingVertical: 5,
+    paddingHorizontal: 8,
   },
   tableCell: {
-    fontSize: typography.fontSize.sm,
-    textAlign: 'left',
+    fontSize: 9,
+    color: colorScheme.textDark,
+  },
+  tableCol1: {
+    width: '30%',
+  },
+  tableCol2: {
+    width: '70%',
+  },
+  tableCol3: {
+    width: '33%',
+  },
+  tableCol4: {
+    width: '25%',
+  },
+  tableCol5: {
+    width: '20%',
+  },
+  tableLastRow: {
+    borderBottomWidth: 0,
   },
 });

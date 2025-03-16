@@ -5,11 +5,11 @@ import { ReportData } from '@/types/reportTypes';
 import { layoutStyles } from '../styles/layoutStyles';
 import { textStyles } from '../styles/textStyles';
 import { pdfStyles } from '../styles/pdfStyles';
-import InstructionDetailsSection from '../sections/InstructionDetailsSection';
-import AppointmentDetailsSection from '../sections/AppointmentDetailsSection';
-import ClaimantDetailsSection from '../sections/ClaimantDetailsSection';
-import AccidentDetailsSection from '../sections/AccidentDetailsSection';
 import PDFFooter from '../components/PDFFooter';
+import { InstructionDetailsSection } from '../sections/InstructionDetailsSection';
+import { AppointmentDetailsSection } from '../sections/AppointmentDetailsSection';
+import { ClaimantDetailsSection } from '../sections/ClaimantDetailsSection';
+import { AccidentDetailsSection } from '../sections/AccidentDetailsSection';
 
 export interface BasicInfoPageProps {
   reportData: ReportData;
@@ -23,13 +23,13 @@ const BasicInfoPage = ({ reportData, claimantName, today, reportType = "expert" 
     <Page size="A4" style={pdfStyles.page}>
       <View style={layoutStyles.pageContainer}>
         <View style={pdfStyles.header}>
-          <Text style={textStyles.headerText}>Medical Assessment Report</Text>
+          <Text style={textStyles.headerText}>Medical Legal Report</Text>
           <Text style={textStyles.subHeaderText}>
-            {reportType === "expert" ? "Expert Medical Report" : "Personal Injury Questionnaire Summary"}
+            {reportType === "expert" ? "Medico-Legal Expert Report" : "Claimant Report"}
           </Text>
         </View>
 
-        <View style={pdfStyles.content}>
+        <View style={layoutStyles.content}>
           <View style={pdfStyles.section}>
             <InstructionDetailsSection reportData={reportData} />
             <AppointmentDetailsSection reportData={reportData} />

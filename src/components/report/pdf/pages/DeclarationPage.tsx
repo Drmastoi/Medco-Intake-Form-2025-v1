@@ -25,7 +25,7 @@ const DeclarationPage = ({ claimantName, today, reportType = "expert" }: Declara
           </Text>
         </View>
 
-        <View style={pdfStyles.content}>
+        <View style={layoutStyles.content}>
           <View style={pdfStyles.section}>
             <ConclusionSection reportType={reportType} />
             <AgreementSection claimantName={claimantName} today={today} reportType={reportType} />

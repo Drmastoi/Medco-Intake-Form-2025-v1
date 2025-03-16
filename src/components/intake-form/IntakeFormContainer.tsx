@@ -20,7 +20,6 @@ export function IntakeFormContainer() {
   const [referenceNumber, setReferenceNumber] = useState<string | null>(null);
   const { toast } = useToast();
   const totalSections = 13;
-  const extendedClient = createExtendedClient(supabase);
 
   const tabNames = [
     "Prefilled Details",
@@ -147,22 +146,41 @@ export function IntakeFormContainer() {
   const loadFormDataByReference = async (reference: string) => {
     setIsLoading(true);
     try {
-      // First get the submission ID using the REST API
-      const { data: submission, error: submissionError } = await supabase.rest.from('questionnaire_submissions')
-        .select('id, status, claimant_email')
-        .eq('reference_number', reference)
-        .single();
+      // Use fetch API directly to get the submission by reference number
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/questionnaire_submissions?reference_number=eq.${reference}&select=id,status,claimant_email`,
+        {
+          headers: {
+            'apikey': process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+      if (!response.ok) throw new Error('Failed to fetch submission');
       
-      if (submissionError) throw submissionError;
+      const submissions = await response.json();
+      if (submissions.length === 0) throw new Error('Submission not found');
+      
+      const submission = submissions[0];
       
       // Then get the prefilled form data
-      const { data, error } = await supabase.rest.from('questionnaire_data')
-        .select('form_data')
-        .eq('submission_id', submission.id)
-        .eq('version', 'prefilled')
-        .single();
+      const formDataResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/questionnaire_data?submission_id=eq.${submission.id}&version=eq.prefilled&select=form_data`,
+        {
+          headers: {
+            'apikey': process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
+            'Content-Type': 'application/json'
+          }
+        }
+      );
       
-      if (error) throw error;
+      if (!formDataResponse.ok) throw new Error('Failed to fetch form data');
+      
+      const formDataResults = await formDataResponse.json();
+      if (formDataResults.length === 0) throw new Error('Form data not found');
+      
+      const data = formDataResults[0];
       
       if (data?.form_data) {
         // Reset form with the loaded data
