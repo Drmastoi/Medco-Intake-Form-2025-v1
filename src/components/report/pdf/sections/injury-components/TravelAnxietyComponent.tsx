@@ -19,7 +19,7 @@ export const TravelAnxietyComponent = ({ travelAnxiety, styles }: TravelAnxietyC
     } else if (travelAnxiety.currentSeverity === "Moderate") {
       return "6 months from date of accident";
     } else if (travelAnxiety.currentSeverity === "Severe") {
-      return "9 months from date of accident (Prolonged prognosis is due to severity of symptoms)";
+      return "12 months from date of accident (Prolonged prognosis is due to severity of symptoms)";
     }
     return "6 months from date of accident";
   };
@@ -27,15 +27,17 @@ export const TravelAnxietyComponent = ({ travelAnxiety, styles }: TravelAnxietyC
   // Get treatment recommendation based on severity
   const getTreatment = () => {
     if (travelAnxiety.currentSeverity === "Resolved") {
-      return "Pain killers if required";
+      return "No further treatment required";
+    } else if (travelAnxiety.currentSeverity === "Severe") {
+      return "Cognitive Behavioral Therapy (CBT) recommended";
     } else {
-      return "Self-help measures including gradual exposure, relaxation techniques, and breathing exercises";
+      return "Self-help techniques and gradual exposure therapy recommended";
     }
   };
 
   // Get onset description
-  const getOnsetDescription = (anxietyStart?: string) => {
-    switch (anxietyStart) {
+  const getOnsetDescription = (start?: string) => {
+    switch (start) {
       case "1": return "Same day";
       case "2": return "Next day";
       case "3": return "Few days later";
@@ -54,7 +56,7 @@ export const TravelAnxietyComponent = ({ travelAnxiety, styles }: TravelAnxietyC
         </View>
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>Currently Driving</Text>
-          <Text style={styles.fieldValue}>{safeValue(travelAnxiety.currentlyDriving)}</Text>
+          <Text style={styles.fieldValue}>{travelAnxiety.currentlyDriving === "1" ? "Yes" : "No"}</Text>
         </View>
       </View>
       
@@ -71,21 +73,6 @@ export const TravelAnxietyComponent = ({ travelAnxiety, styles }: TravelAnxietyC
       
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>Symptoms</Text>
-          <Text style={styles.fieldValue}>
-            {travelAnxiety.symptoms && travelAnxiety.symptoms.length > 0 
-              ? travelAnxiety.symptoms.join(", ") 
-              : "Not specified"}
-          </Text>
-        </View>
-        <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>Past History</Text>
-          <Text style={styles.fieldValue}>{safeValue(travelAnxiety.pastHistory, 'None')}</Text>
-        </View>
-      </View>
-      
-      <View style={styles.fieldRow}>
-        <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>Prognosis</Text>
           <Text style={styles.fieldValue}>{getPrognosis()}</Text>
         </View>
@@ -94,6 +81,22 @@ export const TravelAnxietyComponent = ({ travelAnxiety, styles }: TravelAnxietyC
           <Text style={styles.fieldValue}>{getTreatment()}</Text>
         </View>
       </View>
+      
+      <View style={{ marginTop: 5 }}>
+        <Text style={styles.fieldLabel}>Symptoms</Text>
+        <Text style={styles.fieldValue}>
+          {travelAnxiety.symptoms?.length > 0 
+            ? travelAnxiety.symptoms.join(", ") 
+            : "No specific symptoms reported"}
+        </Text>
+      </View>
+      
+      {travelAnxiety.pastHistory && (
+        <View style={{ marginTop: 5 }}>
+          <Text style={styles.fieldLabel}>Past History</Text>
+          <Text style={styles.fieldValue}>{travelAnxiety.pastHistory}</Text>
+        </View>
+      )}
     </View>
   );
 };
