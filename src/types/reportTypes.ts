@@ -122,6 +122,7 @@ export interface BruisingData {
   initialSeverity?: string;
   currentSeverity?: string;
   resolveDays?: string;
+  hasVisibleScar?: boolean;
 }
 
 export interface OtherInjuriesData {

@@ -100,7 +100,7 @@ const TreatmentLifestylePage: React.FC<TreatmentLifestylePageProps> = ({
         </View>
         
         <View style={[pdfStyles.section, pdfStyles.column]}>
-          <LifestyleImpactSection formData={reportData} />
+          <LifestyleImpactSection formData={reportData} styles={pdfStyles} />
         </View>
       </View>
       
