@@ -1,7 +1,7 @@
 
 import { Text, View } from '@react-pdf/renderer';
 import { ReportData } from '@/types/reportTypes';
-import { formatDate } from '../../../utils/dateUtils';
+import { formatDate } from '@/utils/dateUtils';
 
 interface AppointmentDetailsSectionProps {
   formData: ReportData;
