@@ -1,6 +1,6 @@
 
 import { Text, View } from '@react-pdf/renderer';
-import { formatDuration, formatSeverity, safeValue } from '../../utils/formatUtils';
+import { formatSeverity, safeValue } from '../../utils/formatUtils';
 
 interface HeadacheComponentProps {
   headache: any;
@@ -33,9 +33,30 @@ export const HeadacheComponent = ({ headache, styles }: HeadacheComponentProps) 
     }
   };
 
+  // Get onset description
+  const getOnsetDescription = (start?: string) => {
+    switch (start) {
+      case "1": return "Same day";
+      case "2": return "Next day";
+      case "3": return "Few days later";
+      default: return "Not specified";
+    }
+  };
+
   return (
     <View style={{ marginBottom: 15 }}>
       <Text style={[styles.fieldLabel, { fontSize: 12 }]}>8.4 Headache</Text>
+      
+      <View style={styles.fieldRow}>
+        <View style={styles.fieldColumn}>
+          <Text style={styles.fieldLabel}>Onset</Text>
+          <Text style={styles.fieldValue}>{getOnsetDescription(headache.start)}</Text>
+        </View>
+        <View style={styles.fieldColumn}>
+          <Text style={styles.fieldLabel}>Past History</Text>
+          <Text style={styles.fieldValue}>{safeValue(headache.pastHistory, 'None')}</Text>
+        </View>
+      </View>
       
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>
@@ -45,21 +66,6 @@ export const HeadacheComponent = ({ headache, styles }: HeadacheComponentProps) 
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>Current Severity</Text>
           <Text style={styles.fieldValue}>{formatSeverity(headache.currentSeverity)}</Text>
-        </View>
-      </View>
-      
-      <View style={styles.fieldRow}>
-        <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>Duration</Text>
-          <Text style={styles.fieldValue}>
-            {formatSeverity(headache.currentSeverity) === 'Resolved' 
-              ? formatDuration(headache.resolveDays) 
-              : 'Ongoing'}
-          </Text>
-        </View>
-        <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>Past History</Text>
-          <Text style={styles.fieldValue}>{safeValue(headache.pastHistory, 'None')}</Text>
         </View>
       </View>
       

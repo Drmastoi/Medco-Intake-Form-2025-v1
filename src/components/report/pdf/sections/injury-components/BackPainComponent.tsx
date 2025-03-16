@@ -1,6 +1,6 @@
 
 import { Text, View } from '@react-pdf/renderer';
-import { formatDuration, formatSeverity, safeValue } from '../../utils/formatUtils';
+import { formatSeverity, safeValue } from '../../utils/formatUtils';
 import { getExaminationFindings } from '../../../utils/injuryClassification';
 
 interface BackPainComponentProps {
@@ -43,9 +43,30 @@ export const BackPainComponent = ({ backPain, styles }: BackPainComponentProps) 
     return "1";
   };
 
+  // Get onset description
+  const getOnsetDescription = (painStart?: string) => {
+    switch (painStart) {
+      case "1": return "Same day";
+      case "2": return "Next day";
+      case "3": return "Few days later";
+      default: return "Not specified";
+    }
+  };
+
   return (
     <View style={{ marginBottom: 15 }}>
       <Text style={[styles.fieldLabel, { fontSize: 12 }]}>8.2 Back Pain</Text>
+      
+      <View style={styles.fieldRow}>
+        <View style={styles.fieldColumn}>
+          <Text style={styles.fieldLabel}>Onset</Text>
+          <Text style={styles.fieldValue}>{getOnsetDescription(backPain.painStart)}</Text>
+        </View>
+        <View style={styles.fieldColumn}>
+          <Text style={styles.fieldLabel}>Location</Text>
+          <Text style={styles.fieldValue}>{safeValue(backPain.location)}</Text>
+        </View>
+      </View>
       
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>
@@ -55,21 +76,6 @@ export const BackPainComponent = ({ backPain, styles }: BackPainComponentProps) 
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>Current Severity</Text>
           <Text style={styles.fieldValue}>{formatSeverity(backPain.currentSeverity)}</Text>
-        </View>
-      </View>
-      
-      <View style={styles.fieldRow}>
-        <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>Duration</Text>
-          <Text style={styles.fieldValue}>
-            {formatSeverity(backPain.currentSeverity) === 'Resolved' 
-              ? formatDuration(backPain.resolveDays) 
-              : 'Ongoing'}
-          </Text>
-        </View>
-        <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>Location</Text>
-          <Text style={styles.fieldValue}>{safeValue(backPain.location)}</Text>
         </View>
       </View>
       

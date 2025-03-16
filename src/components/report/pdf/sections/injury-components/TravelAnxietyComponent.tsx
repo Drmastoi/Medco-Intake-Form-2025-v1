@@ -1,6 +1,6 @@
 
 import { Text, View } from '@react-pdf/renderer';
-import { formatDuration, formatSeverity, safeValue } from '../../utils/formatUtils';
+import { formatSeverity, safeValue } from '../../utils/formatUtils';
 
 interface TravelAnxietyComponentProps {
   travelAnxiety: any;
@@ -33,9 +33,30 @@ export const TravelAnxietyComponent = ({ travelAnxiety, styles }: TravelAnxietyC
     }
   };
 
+  // Get onset description
+  const getOnsetDescription = (start?: string) => {
+    switch (start) {
+      case "1": return "Same day";
+      case "2": return "Next day";
+      case "3": return "Few days later";
+      default: return "Not specified";
+    }
+  };
+
   return (
     <View style={{ marginBottom: 15 }}>
       <Text style={[styles.fieldLabel, { fontSize: 12 }]}>8.5 Travel Anxiety</Text>
+      
+      <View style={styles.fieldRow}>
+        <View style={styles.fieldColumn}>
+          <Text style={styles.fieldLabel}>Onset</Text>
+          <Text style={styles.fieldValue}>{getOnsetDescription(travelAnxiety.start)}</Text>
+        </View>
+        <View style={styles.fieldColumn}>
+          <Text style={styles.fieldLabel}>Currently Driving</Text>
+          <Text style={styles.fieldValue}>{safeValue(travelAnxiety.currentlyDriving)}</Text>
+        </View>
+      </View>
       
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>
@@ -55,21 +76,6 @@ export const TravelAnxietyComponent = ({ travelAnxiety, styles }: TravelAnxietyC
             {travelAnxiety.symptoms && travelAnxiety.symptoms.length > 0 
               ? travelAnxiety.symptoms.join(", ") 
               : "Not specified"}
-          </Text>
-        </View>
-        <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>Currently Driving</Text>
-          <Text style={styles.fieldValue}>{safeValue(travelAnxiety.currentlyDriving)}</Text>
-        </View>
-      </View>
-      
-      <View style={styles.fieldRow}>
-        <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>Duration</Text>
-          <Text style={styles.fieldValue}>
-            {formatSeverity(travelAnxiety.currentSeverity) === 'Resolved' 
-              ? formatDuration(travelAnxiety.resolveDays) 
-              : 'Ongoing'}
           </Text>
         </View>
         <View style={styles.fieldColumn}>

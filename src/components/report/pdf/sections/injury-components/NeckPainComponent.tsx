@@ -1,6 +1,6 @@
 
 import { Text, View } from '@react-pdf/renderer';
-import { formatDuration, formatSeverity, safeValue } from '../../utils/formatUtils';
+import { formatSeverity, safeValue } from '../../utils/formatUtils';
 import { getExaminationFindings } from '../../../utils/injuryClassification';
 
 interface NeckPainComponentProps {
@@ -43,9 +43,30 @@ export const NeckPainComponent = ({ neckPain, styles }: NeckPainComponentProps) 
     return "1";
   };
 
+  // Get onset description
+  const getOnsetDescription = (painStart?: string) => {
+    switch (painStart) {
+      case "1": return "Same day";
+      case "2": return "Next day";
+      case "3": return "Few days later";
+      default: return "Not specified";
+    }
+  };
+
   return (
     <View style={{ marginBottom: 15 }}>
       <Text style={[styles.fieldLabel, { fontSize: 12 }]}>8.1 Neck Pain</Text>
+      
+      <View style={styles.fieldRow}>
+        <View style={styles.fieldColumn}>
+          <Text style={styles.fieldLabel}>Onset</Text>
+          <Text style={styles.fieldValue}>{getOnsetDescription(neckPain.painStart)}</Text>
+        </View>
+        <View style={styles.fieldColumn}>
+          <Text style={styles.fieldLabel}>Past History</Text>
+          <Text style={styles.fieldValue}>{neckPain.hadPrior ? 'Yes' : 'None'}</Text>
+        </View>
+      </View>
       
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>
@@ -55,21 +76,6 @@ export const NeckPainComponent = ({ neckPain, styles }: NeckPainComponentProps) 
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>Current Severity</Text>
           <Text style={styles.fieldValue}>{formatSeverity(neckPain.currentSeverity)}</Text>
-        </View>
-      </View>
-      
-      <View style={styles.fieldRow}>
-        <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>Duration</Text>
-          <Text style={styles.fieldValue}>
-            {formatSeverity(neckPain.currentSeverity) === 'Resolved' 
-              ? formatDuration(neckPain.resolveDays) 
-              : 'Ongoing'}
-          </Text>
-        </View>
-        <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>Past History</Text>
-          <Text style={styles.fieldValue}>{neckPain.hadPrior ? 'Yes' : 'None'}</Text>
         </View>
       </View>
       

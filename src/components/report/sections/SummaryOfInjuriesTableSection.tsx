@@ -25,10 +25,21 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
     }
   };
   
+  // Helper function to get onset description
+  const getOnsetDescription = (painStart?: string) => {
+    switch (painStart) {
+      case "1": return "Same day";
+      case "2": return "Next day";
+      case "3": return "Few days later";
+      default: return "Not specified";
+    }
+  };
+  
   // Create array of injuries for the table
   const injuries = [
     formData.injuries.neckPain.hasInjury && {
       name: "Neck Pain",
+      onset: getOnsetDescription(formData.injuries.neckPain.painStart),
       initialSeverity: formatSeverity(formData.injuries.neckPain.initialSeverity),
       currentSeverity: formatSeverity(formData.injuries.neckPain.currentSeverity),
       prognosis: getExactPrognosis(
@@ -39,6 +50,7 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
     },
     formData.injuries.backPain.hasInjury && {
       name: "Back Pain",
+      onset: getOnsetDescription(formData.injuries.backPain.painStart),
       initialSeverity: formatSeverity(formData.injuries.backPain.initialSeverity),
       currentSeverity: formatSeverity(formData.injuries.backPain.currentSeverity),
       prognosis: getExactPrognosis(
@@ -49,6 +61,7 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
     },
     formData.injuries.shoulderPain.hasInjury && {
       name: `Shoulder Pain (${formData.injuries.shoulderPain.side})`,
+      onset: getOnsetDescription(formData.injuries.shoulderPain.painStart),
       initialSeverity: formatSeverity(formData.injuries.shoulderPain.initialSeverity),
       currentSeverity: formatSeverity(formData.injuries.shoulderPain.currentSeverity),
       prognosis: getExactPrognosis(
@@ -59,6 +72,7 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
     },
     formData.injuries.headache.hasInjury && {
       name: "Headache",
+      onset: getOnsetDescription(formData.injuries.headache.start),
       initialSeverity: formatSeverity(formData.injuries.headache.initialSeverity),
       currentSeverity: formatSeverity(formData.injuries.headache.currentSeverity),
       prognosis: getExactPrognosis(
@@ -69,6 +83,7 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
     },
     formData.travelAnxiety.hasAnxiety && {
       name: "Travel Anxiety",
+      onset: getOnsetDescription(formData.travelAnxiety.start),
       initialSeverity: formatSeverity(formData.travelAnxiety.initialSeverity),
       currentSeverity: formatSeverity(formData.travelAnxiety.currentSeverity),
       prognosis: getExactPrognosis(
@@ -79,6 +94,7 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
     },
     formData.other.bruising.hasBruising && {
       name: "Bruising",
+      onset: getOnsetDescription(formData.other.bruising.noticed),
       initialSeverity: formatSeverity(formData.other.bruising.initialSeverity),
       currentSeverity: formatSeverity(formData.other.bruising.currentSeverity),
       prognosis: getExactPrognosis(
@@ -89,6 +105,7 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
     },
     formData.other.otherInjuries.hasOtherInjury && {
       name: formData.other.otherInjuries.name || "Other Injury",
+      onset: getOnsetDescription(formData.other.otherInjuries.start),
       initialSeverity: formatSeverity(formData.other.otherInjuries.initialSeverity),
       currentSeverity: formatSeverity(formData.other.otherInjuries.currentSeverity),
       prognosis: getExactPrognosis(
@@ -107,8 +124,11 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
         <>
           <View style={styles.table}>
             <View style={styles.tableHeader}>
-              <View style={[styles.cell, { width: '25%' }]}>
+              <View style={[styles.cell, { width: '20%' }]}>
                 <Text style={{ fontSize: 8 }}>Injury</Text>
+              </View>
+              <View style={[styles.cell, { width: '15%' }]}>
+                <Text style={{ fontSize: 8 }}>Onset</Text>
               </View>
               <View style={[styles.cell, { width: '15%' }]}>
                 <Text style={{ fontSize: 8 }}>Initial Severity</Text>
@@ -116,18 +136,21 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
               <View style={[styles.cell, { width: '15%' }]}>
                 <Text style={{ fontSize: 8 }}>Current Severity</Text>
               </View>
-              <View style={[styles.cell, { width: '25%' }]}>
+              <View style={[styles.cell, { width: '20%' }]}>
                 <Text style={{ fontSize: 8 }}>Prognosis</Text>
               </View>
-              <View style={[styles.cell, { width: '20%' }]}>
+              <View style={[styles.cell, { width: '15%' }]}>
                 <Text style={{ fontSize: 8 }}>Classification</Text>
               </View>
             </View>
             
             {injuries.map((injury, index) => (
               <View key={index} style={styles.tableRow}>
-                <View style={[styles.cell, { width: '25%' }]}>
+                <View style={[styles.cell, { width: '20%' }]}>
                   <Text style={{ fontSize: 8 }}>{injury.name}</Text>
+                </View>
+                <View style={[styles.cell, { width: '15%' }]}>
+                  <Text style={{ fontSize: 8 }}>{injury.onset}</Text>
                 </View>
                 <View style={[styles.cell, { width: '15%' }]}>
                   <Text style={{ fontSize: 8 }}>{injury.initialSeverity}</Text>
@@ -135,10 +158,10 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
                 <View style={[styles.cell, { width: '15%' }]}>
                   <Text style={{ fontSize: 8 }}>{injury.currentSeverity}</Text>
                 </View>
-                <View style={[styles.cell, { width: '25%' }]}>
+                <View style={[styles.cell, { width: '20%' }]}>
                   <Text style={{ fontSize: 8 }}>{injury.prognosis}</Text>
                 </View>
-                <View style={[styles.cell, { width: '20%' }]}>
+                <View style={[styles.cell, { width: '15%' }]}>
                   <Text style={{ fontSize: 8 }}>{injury.classification}</Text>
                 </View>
               </View>
