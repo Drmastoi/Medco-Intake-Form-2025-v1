@@ -10,20 +10,6 @@ interface TravelAnxietyComponentProps {
 export const TravelAnxietyComponent = ({ travelAnxiety, styles }: TravelAnxietyComponentProps) => {
   if (!travelAnxiety?.hasAnxiety) return null;
 
-  // Safely handle symptoms array
-  const symptomsText = (() => {
-    if (!travelAnxiety.symptoms) return 'Not specified';
-    if (!Array.isArray(travelAnxiety.symptoms)) return 'Not specified';
-    if (travelAnxiety.symptoms.length === 0) return 'Not specified';
-    
-    try {
-      return travelAnxiety.symptoms.join(', ');
-    } catch (error) {
-      console.error("Error joining symptoms:", error);
-      return 'Not specified';
-    }
-  })();
-
   return (
     <View style={{ marginBottom: 15 }}>
       <Text style={[styles.fieldLabel, { fontSize: 12 }]}>8.5 Travel Anxiety</Text>
@@ -41,16 +27,16 @@ export const TravelAnxietyComponent = ({ travelAnxiety, styles }: TravelAnxietyC
       
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>Start Date</Text>
-          <Text style={styles.fieldValue}>{safeValue(travelAnxiety.duration)}</Text>
+          <Text style={styles.fieldLabel}>Symptoms</Text>
+          <Text style={styles.fieldValue}>
+            {travelAnxiety.symptoms && travelAnxiety.symptoms.length > 0 
+              ? travelAnxiety.symptoms.join(", ") 
+              : "Not specified"}
+          </Text>
         </View>
         <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>End Date</Text>
-          <Text style={styles.fieldValue}>
-            {formatSeverity(travelAnxiety.currentSeverity) === 'Resolved' 
-              ? 'Resolved' 
-              : 'Ongoing'}
-          </Text>
+          <Text style={styles.fieldLabel}>Currently Driving</Text>
+          <Text style={styles.fieldValue}>{safeValue(travelAnxiety.currentlyDriving)}</Text>
         </View>
       </View>
       
@@ -66,13 +52,6 @@ export const TravelAnxietyComponent = ({ travelAnxiety, styles }: TravelAnxietyC
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>Past History</Text>
           <Text style={styles.fieldValue}>{safeValue(travelAnxiety.pastHistory, 'None')}</Text>
-        </View>
-      </View>
-      
-      <View style={styles.fieldRow}>
-        <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>Symptoms</Text>
-          <Text style={styles.fieldValue}>{symptomsText}</Text>
         </View>
       </View>
     </View>

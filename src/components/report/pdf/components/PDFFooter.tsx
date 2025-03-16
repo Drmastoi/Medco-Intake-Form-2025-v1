@@ -1,40 +1,7 @@
 
 import React from 'react';
-import { Text, View, StyleSheet } from '@react-pdf/renderer';
-import { colorScheme } from '../styles/colorScheme';
-import { typography } from '../styles/typography';
-import { spacing } from '../styles/spacing';
-
-const styles = StyleSheet.create({
-  footer: {
-    position: 'absolute',
-    bottom: spacing.md,
-    left: spacing.pageMargin,
-    right: spacing.pageMargin,
-    textAlign: 'center',
-    paddingTop: spacing.md,
-    borderTop: `1px solid ${colorScheme.borderLight}`,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    fontSize: typography.fontSize.xs,
-    color: colorScheme.textLight,
-  },
-  pageNumber: {
-    fontSize: typography.fontSize.xs,
-    color: colorScheme.textSecondary,
-  },
-  confidential: {
-    fontSize: typography.fontSize.xs,
-    fontStyle: 'italic',
-    color: colorScheme.textLight,
-  },
-  logo: {
-    fontSize: typography.fontSize.sm,
-    fontWeight: typography.fontWeight.bold,
-    color: colorScheme.primary,
-  },
-});
+import { Text, View } from '@react-pdf/renderer';
+import { pdfStyles } from '../styles/pdfStyles';
 
 interface PDFFooterProps {
   pageNumber: number;
@@ -42,19 +9,14 @@ interface PDFFooterProps {
   today: string;
 }
 
-const PDFFooter = ({ pageNumber, claimantName, today }: PDFFooterProps) => (
-  <View style={styles.footer} fixed>
-    <View>
-      <Text style={styles.confidential}>CONFIDENTIAL</Text>
+const PDFFooter: React.FC<PDFFooterProps> = ({ pageNumber, claimantName, today }) => {
+  return (
+    <View fixed style={pdfStyles.footer}>
+      <Text>
+        Medical Report - {claimantName} - Page {pageNumber} - Generated on {today}
+      </Text>
     </View>
-    <View style={{ alignItems: 'center' }}>
-      <Text style={styles.pageNumber}>Page {pageNumber}</Text>
-      <Text>{claimantName} | {today}</Text>
-    </View>
-    <View>
-      <Text style={styles.logo}>MedLegal Report</Text>
-    </View>
-  </View>
-);
+  );
+};
 
 export default PDFFooter;

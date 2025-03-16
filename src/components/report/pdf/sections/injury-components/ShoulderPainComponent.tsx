@@ -50,15 +50,8 @@ export const ShoulderPainComponent = ({ shoulderPain, styles }: ShoulderPainComp
           </Text>
         </View>
         <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>Past History</Text>
-          <Text style={styles.fieldValue}>None</Text>
-        </View>
-      </View>
-      
-      <View style={styles.fieldRow}>
-        <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>Affected Side</Text>
-          <Text style={styles.fieldValue}>{safeValue(shoulderPain.side)}</Text>
+          <Text style={styles.fieldLabel}>Side Affected</Text>
+          <Text style={styles.fieldValue}>{safeValue(shoulderPain.side, 'Not specified')}</Text>
         </View>
       </View>
     </View>

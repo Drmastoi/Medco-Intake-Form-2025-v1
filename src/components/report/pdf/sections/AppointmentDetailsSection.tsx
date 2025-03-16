@@ -1,6 +1,5 @@
 
 import { Text, View } from '@react-pdf/renderer';
-import { formatDate } from '@/utils/dateUtils';
 import { ReportData } from '@/types/reportTypes';
 
 interface AppointmentDetailsSectionProps {
@@ -15,38 +14,34 @@ export const AppointmentDetailsSection = ({ formData, styles }: AppointmentDetai
       
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>Date of Appointment:</Text>
-          <Text style={styles.fieldValue}>
-            {formData.prefilled.dateOfExamination 
-              ? formatDate(formData.prefilled.dateOfExamination) + " 11:30" 
-              : "Not Specified"}
-          </Text>
+          <Text style={styles.fieldLabel}>4.1 Date of Examination</Text>
+          <Text style={styles.fieldValue}>{formData.prefilled?.dateOfExamination || 'Not provided'}</Text>
         </View>
         <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>Method:</Text>
-          <Text style={styles.fieldValue}>Clinic</Text>
+          <Text style={styles.fieldLabel}>4.2 Location</Text>
+          <Text style={styles.fieldValue}>{formData.prefilled?.examinationLocation || 'Not provided'}</Text>
         </View>
       </View>
       
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>Time Spent:</Text>
-          <Text style={styles.fieldValue}>{formData.prefilled.timeSpentWithClaimant || "15"} Minutes</Text>
+          <Text style={styles.fieldLabel}>4.3 Duration</Text>
+          <Text style={styles.fieldValue}>{formData.prefilled?.timeSpentWithClaimant || 'Not provided'} minutes</Text>
         </View>
         <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>Place of Examination:</Text>
-          <Text style={styles.fieldValue}>{formData.prefilled.examinationLocation}</Text>
+          <Text style={styles.fieldLabel}>4.4 Accompanied By</Text>
+          <Text style={styles.fieldValue}>{formData.prefilled?.accompaniedBy || 'Unaccompanied'}</Text>
         </View>
       </View>
       
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>Date of Report:</Text>
-          <Text style={styles.fieldValue}>
-            {formData.prefilled.dateOfReport
-              ? formatDate(formData.prefilled.dateOfReport)
-              : formatDate(new Date().toISOString())}
-          </Text>
+          <Text style={styles.fieldLabel}>4.5 Identity Verification</Text>
+          <Text style={styles.fieldValue}>{formData.personal?.idType || 'Photo ID'}</Text>
+        </View>
+        <View style={styles.fieldColumn}>
+          <Text style={styles.fieldLabel}>4.6 Date of Report</Text>
+          <Text style={styles.fieldValue}>{formData.prefilled?.dateOfReport || 'Not provided'}</Text>
         </View>
       </View>
     </View>

@@ -1,6 +1,5 @@
 
 import { Text, View } from '@react-pdf/renderer';
-import { formatDate } from '@/utils/dateUtils';
 import { ReportData } from '@/types/reportTypes';
 
 interface AccidentDetailsSectionProps {
@@ -11,50 +10,55 @@ interface AccidentDetailsSectionProps {
 export const AccidentDetailsSection = ({ formData, styles }: AccidentDetailsSectionProps) => {
   return (
     <View style={styles.subsection}>
-      <Text style={styles.sectionHeader}>Section 5 - Accident Details</Text>
+      <Text style={styles.sectionHeader}>Section 6 - Accident Details</Text>
       
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>Date:</Text>
-          <Text style={styles.fieldValue}>
-            {formData.accident.accidentDate !== "Not Specified" 
-              ? formatDate(formData.accident.accidentDate) 
-              : "Not Specified"}
-          </Text>
+          <Text style={styles.fieldLabel}>6.1 Date</Text>
+          <Text style={styles.fieldValue}>{formData.accident?.accidentDate || 'Not provided'}</Text>
         </View>
         <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>Time:</Text>
-          <Text style={styles.fieldValue}>{formData.accident.accidentTime}</Text>
+          <Text style={styles.fieldLabel}>6.2 Time</Text>
+          <Text style={styles.fieldValue}>{formData.accident?.accidentTime || 'Not provided'}</Text>
         </View>
       </View>
       
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>Vehicle Position:</Text>
-          <Text style={styles.fieldValue}>{formData.accident.vehiclePosition}</Text>
+          <Text style={styles.fieldLabel}>6.3 Vehicle Type (Claimant)</Text>
+          <Text style={styles.fieldValue}>{formData.accident?.claimantVehicle || 'Not provided'}</Text>
         </View>
         <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>Status:</Text>
-          <Text style={styles.fieldValue}>{formData.accident.vehicleStatus}</Text>
+          <Text style={styles.fieldLabel}>6.4 Vehicle Type (Other)</Text>
+          <Text style={styles.fieldValue}>{formData.accident?.otherVehicle || 'Not provided'}</Text>
         </View>
       </View>
       
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>Location:</Text>
-          <Text style={styles.fieldValue}>{formData.accident.vehicleLocation}</Text>
+          <Text style={styles.fieldLabel}>6.5 Claimant Position</Text>
+          <Text style={styles.fieldValue}>{formData.accident?.claimantPosition || 'Not provided'}</Text>
         </View>
         <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>Damage:</Text>
-          <Text style={styles.fieldValue}>{formData.accident.vehicleDamage}</Text>
+          <Text style={styles.fieldLabel}>6.6 Impact Location</Text>
+          <Text style={styles.fieldValue}>{formData.accident?.impactLocation || 'Not provided'}</Text>
         </View>
       </View>
       
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>Vehicle:</Text>
-          <Text style={styles.fieldValue}>{formData.accident.claimantVehicle}</Text>
+          <Text style={styles.fieldLabel}>6.7 Vehicle Status</Text>
+          <Text style={styles.fieldValue}>{formData.accident?.vehicleStatus || 'Not provided'}</Text>
         </View>
+        <View style={styles.fieldColumn}>
+          <Text style={styles.fieldLabel}>6.8 Vehicle Damage</Text>
+          <Text style={styles.fieldValue}>{formData.accident?.vehicleDamage || 'Not provided'}</Text>
+        </View>
+      </View>
+      
+      <View style={{ marginTop: 10 }}>
+        <Text style={styles.fieldLabel}>6.9 Accident Description</Text>
+        <Text style={styles.fieldValue}>{formData.accident?.accidentSummary || 'No detailed description provided.'}</Text>
       </View>
     </View>
   );
