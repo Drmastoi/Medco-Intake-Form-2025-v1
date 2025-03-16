@@ -35,11 +35,11 @@ export const BackPainComponent = ({ backPain, styles }: BackPainComponentProps) 
   };
 
   // Helper to convert severity to numeric code for examination findings
-  const getSeverityCode = (severity: string) => {
-    if (severity === "Resolved") return "4";
-    if (severity === "Mild") return "1";
-    if (severity === "Moderate") return "2";
-    if (severity === "Severe") return "3";
+  const getSeverityCode = () => {
+    if (backPain.currentSeverity === "Resolved") return "4";
+    if (backPain.currentSeverity === "Mild") return "1";
+    if (backPain.currentSeverity === "Moderate") return "2";
+    if (backPain.currentSeverity === "Severe") return "3";
     return "1";
   };
 
@@ -88,7 +88,7 @@ export const BackPainComponent = ({ backPain, styles }: BackPainComponentProps) 
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>Examination Findings</Text>
           <Text style={styles.fieldValue}>
-            {getExaminationFindings('Back', getSeverityCode(backPain.currentSeverity))}
+            {getExaminationFindings('Back', getSeverityCode())}
           </Text>
         </View>
       </View>

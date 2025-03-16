@@ -35,11 +35,11 @@ export const ShoulderPainComponent = ({ shoulderPain, styles }: ShoulderPainComp
   };
 
   // Helper to convert severity to numeric code for examination findings
-  const getSeverityCode = (severity: string) => {
-    if (severity === "Resolved") return "4";
-    if (severity === "Mild") return "1";
-    if (severity === "Moderate") return "2";
-    if (severity === "Severe") return "3";
+  const getSeverityCode = () => {
+    if (shoulderPain.currentSeverity === "Resolved") return "4";
+    if (shoulderPain.currentSeverity === "Mild") return "1";
+    if (shoulderPain.currentSeverity === "Moderate") return "2";
+    if (shoulderPain.currentSeverity === "Severe") return "3";
     return "1";
   };
 
@@ -88,7 +88,7 @@ export const ShoulderPainComponent = ({ shoulderPain, styles }: ShoulderPainComp
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>Examination Findings</Text>
           <Text style={styles.fieldValue}>
-            {getExaminationFindings('Shoulder', getSeverityCode(shoulderPain.currentSeverity))}
+            {getExaminationFindings('Shoulder', getSeverityCode())}
           </Text>
         </View>
       </View>

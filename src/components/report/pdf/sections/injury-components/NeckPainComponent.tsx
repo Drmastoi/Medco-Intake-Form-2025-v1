@@ -34,6 +34,15 @@ export const NeckPainComponent = ({ neckPain, styles }: NeckPainComponentProps) 
     }
   };
 
+  // Get severity code for examination findings
+  const getSeverityCode = () => {
+    if (neckPain.currentSeverity === "Resolved") return "4";
+    if (neckPain.currentSeverity === "Mild") return "1";
+    if (neckPain.currentSeverity === "Moderate") return "2";
+    if (neckPain.currentSeverity === "Severe") return "3";
+    return "1";
+  };
+
   return (
     <View style={{ marginBottom: 15 }}>
       <Text style={[styles.fieldLabel, { fontSize: 12 }]}>8.1 Neck Pain</Text>
@@ -79,10 +88,7 @@ export const NeckPainComponent = ({ neckPain, styles }: NeckPainComponentProps) 
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>Examination Findings</Text>
           <Text style={styles.fieldValue}>
-            {getExaminationFindings('Neck', neckPain.currentSeverity === "Resolved" ? "4" : 
-                                        neckPain.currentSeverity === "Mild" ? "1" : 
-                                        neckPain.currentSeverity === "Moderate" ? "2" : 
-                                        neckPain.currentSeverity === "Severe" ? "3" : "1")}
+            {getExaminationFindings('Neck', getSeverityCode())}
           </Text>
         </View>
       </View>
