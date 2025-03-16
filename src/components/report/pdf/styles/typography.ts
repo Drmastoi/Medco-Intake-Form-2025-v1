@@ -1,20 +1,20 @@
 
 import { Font } from '@react-pdf/renderer';
 
-// Register fonts using actual font files included with the package
+// Register fonts using Google Fonts CDN links for better reliability
 Font.register({
-  family: 'Open Sans',
+  family: 'Roboto',
   fonts: [
-    { src: 'https://fonts.gstatic.com/s/opensans/v23/mem8YaGs126MiZpBA-UFVZ0e.ttf', fontWeight: 'normal' },
-    { src: 'https://fonts.gstatic.com/s/opensans/v23/mem5YaGs126MiZpBA-UN7rgOUuhs.ttf', fontWeight: 'bold' },
-    { src: 'https://fonts.gstatic.com/s/opensans/v23/mem8YaGs126MiZpBA-UFVp0e.ttf', fontStyle: 'italic' },
-    { src: 'https://fonts.gstatic.com/s/opensans/v23/mem5YaGs126MiZpBA-UNirkOUuhs.ttf', fontWeight: 'bold', fontStyle: 'italic' },
-  ],
+    { src: 'https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-light-webfont.ttf', fontWeight: 300 },
+    { src: 'https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-regular-webfont.ttf', fontWeight: 400 },
+    { src: 'https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-medium-webfont.ttf', fontWeight: 500 },
+    { src: 'https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-bold-webfont.ttf', fontWeight: 700 },
+  ]
 });
 
 // Typography constants for the PDF report
 export const typography = {
-  fontFamily: 'Open Sans',
+  fontFamily: 'Roboto',
   
   // Font sizes
   fontSize: {
@@ -37,7 +37,9 @@ export const typography = {
   
   // Font weights
   fontWeight: {
-    normal: 'normal',
-    bold: 'bold',
+    light: 300,
+    normal: 400,
+    medium: 500,
+    bold: 700,
   },
 };

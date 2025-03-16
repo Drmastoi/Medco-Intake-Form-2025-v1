@@ -1,6 +1,6 @@
 
 import { Text, View } from '@react-pdf/renderer';
-import { formatDuration } from '../../../utils/formatUtils';
+import { formatDuration } from '../../../../utils/formatUtils';
 
 interface HeadacheComponentProps {
   headache: any;
