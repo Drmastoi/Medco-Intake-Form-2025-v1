@@ -21,6 +21,21 @@ export function IntakeFormSection2({ form }: { form: any }) {
   
   // Generate summary text based on selected options
   useEffect(() => {
+    // Only generate summary if at least some fields are filled
+    if (!accidentDate && 
+        !accidentTime && 
+        !vehicleStatus && 
+        !vehicleLocation && 
+        !impactLocation && 
+        !vehicleDamage && 
+        !claimantPosition && 
+        !claimantVehicle && 
+        !otherVehicle) {
+      setSummaryText("");
+      form.setValue("accidentSummary", "");
+      return;
+    }
+    
     let text = "Accident Information Summary: ";
     
     // Add date information if available
@@ -136,7 +151,7 @@ export function IntakeFormSection2({ form }: { form: any }) {
         </div>
       </div>
       
-      {/* Dynamic Summary Text */}
+      {/* Dynamic Summary Text - Only show if there's content */}
       {summaryText && (
         <div className="mt-6 p-4 bg-gray-50 rounded-md border border-gray-200">
           <p className="text-xs text-gray-600 italic">{summaryText}</p>

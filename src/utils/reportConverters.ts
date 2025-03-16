@@ -58,7 +58,7 @@ export function convertPersonalData(formData: FormSchema): PersonalData {
   return {
     fullName: formData.fullName || "Not specified",
     dateOfBirth: formData.dateOfBirth || "Not specified",
-    gender: formData.gender === "male" ? "Male" : "Female",
+    gender: formData.gender === "male" ? "Male" : formData.gender === "female" ? "Female" : "Not specified",
     address: formData.address || "Not specified",
     occupation: formData.occupation || "Not specified",
     workType: formData.workType || "Not specified",
@@ -70,18 +70,85 @@ export function convertPersonalData(formData: FormSchema): PersonalData {
  * Converts form data to accident information section
  */
 export function convertAccidentData(formData: FormSchema): AccidentData {
+  // Helper functions to convert enum values to readable text
+  const getVehicleStatusText = (status: string | undefined) => {
+    if (!status) return "Not specified";
+    const statusMap: Record<string, string> = {
+      "1": "Moving",
+      "2": "Stationary",
+      "3": "Parked",
+      "4": "Other"
+    };
+    return statusMap[status] || "Not specified";
+  };
+
+  const getVehicleLocationText = (location: string | undefined) => {
+    if (!location) return "Not specified";
+    const locationMap: Record<string, string> = {
+      "1": "Main Road",
+      "2": "Minor Road",
+      "3": "Roundabout",
+      "4": "Parked",
+      "5": "Other"
+    };
+    return locationMap[location] || "Not specified";
+  };
+
+  const getImpactLocationText = (location: string | undefined) => {
+    if (!location) return "Not specified";
+    const locationMap: Record<string, string> = {
+      "1": "Rear",
+      "2": "Front",
+      "3": "Passenger Side",
+      "4": "Driver Side"
+    };
+    return locationMap[location] || "Not specified";
+  };
+
+  const getVehicleDamageText = (damage: string | undefined) => {
+    if (!damage) return "Not specified";
+    const damageMap: Record<string, string> = {
+      "1": "Mild Damage",
+      "2": "Moderate Damage",
+      "3": "Written Off"
+    };
+    return damageMap[damage] || "Not specified";
+  };
+
+  const getClaimantPositionText = (position: string | undefined) => {
+    if (!position) return "Not specified";
+    const positionMap: Record<string, string> = {
+      "1": "Driver",
+      "2": "Front Passenger",
+      "3": "Back Passenger",
+      "4": "Other"
+    };
+    return positionMap[position] || "Not specified";
+  };
+
+  const getVehicleTypeText = (type: string | undefined) => {
+    if (!type) return "Not specified";
+    const typeMap: Record<string, string> = {
+      "1": "Car",
+      "2": "Van",
+      "3": "Bus",
+      "4": "Other"
+    };
+    return typeMap[type] || "Not specified";
+  };
+
   return {
     accidentDate: formData.accidentDate || "Not specified",
     accidentTime: getTimeOfDayText(formData.accidentTime),
     vehiclePosition: formData.vehiclePosition || "Not specified",
-    vehicleStatus: formData.vehicleStatus,
-    vehicleLocation: formData.vehicleLocation,
-    impactLocation: formData.impactLocation,
-    vehicleDamage: formData.vehicleDamage,
-    claimantPosition: formData.claimantPosition,
-    claimantVehicle: formData.claimantVehicle,
-    otherVehicle: formData.otherVehicle,
-    accidentSummary: formData.accidentSummary || undefined,
+    vehicleStatus: getVehicleStatusText(formData.vehicleStatus),
+    vehicleLocation: getVehicleLocationText(formData.vehicleLocation),
+    impactLocation: getImpactLocationText(formData.impactLocation),
+    vehicleDamage: getVehicleDamageText(formData.vehicleDamage),
+    claimantPosition: getClaimantPositionText(formData.claimantPosition),
+    claimantVehicle: getVehicleTypeText(formData.claimantVehicle),
+    otherVehicle: getVehicleTypeText(formData.otherVehicle),
+    accidentSummary: formData.accidentSummary || "No detailed description provided.",
   };
 }
 

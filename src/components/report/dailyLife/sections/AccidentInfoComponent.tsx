@@ -87,18 +87,32 @@ export const AccidentInfoComponent = ({ formData }: AccidentInfoProps) => {
     }
   };
 
+  // Check if we have any accident information at all
+  const hasAccidentInfo = formData.accidentDate || 
+                         formData.accidentTime || 
+                         formData.claimantVehicle || 
+                         formData.vehicleStatus || 
+                         formData.vehicleLocation || 
+                         formData.impactLocation || 
+                         formData.vehicleDamage || 
+                         formData.claimantPosition;
+
   return (
     <View style={dailyLifeStyles.section}>
       <Text style={dailyLifeStyles.subtitle}>5.1 Accident Information</Text>
-      <Text style={dailyLifeStyles.text}>
-        {formData.accidentDate ? `The accident occurred on ${formatDate(formData.accidentDate)}` : 'The date of the accident has not been specified'} 
-        {formData.accidentTime ? ` during the ${getTimeOfDay(formData.accidentTime)}. ` : '. '}
-        
-        The claimant was in a {getVehicleTypeText(formData.claimantVehicle)} that was {getVehicleStatusText(formData.vehicleStatus)} {getVehicleLocationText(formData.vehicleLocation)}. 
-        The {getVehicleTypeText(formData.claimantVehicle)} was hit in the {getImpactLocationText(formData.impactLocation)} by a {getVehicleTypeText(formData.otherVehicle)}. 
-        The claimant's vehicle sustained {getVehicleDamageText(formData.vehicleDamage)}. 
-        The claimant was {getClaimantPositionText(formData.claimantPosition)} at the time of the accident.
-      </Text>
+      {hasAccidentInfo ? (
+        <Text style={dailyLifeStyles.text}>
+          {formData.accidentDate ? `The accident occurred on ${formatDate(formData.accidentDate)}` : 'The date of the accident has not been specified'} 
+          {formData.accidentTime ? ` during the ${getTimeOfDay(formData.accidentTime)}. ` : '. '}
+          
+          The claimant was in a {getVehicleTypeText(formData.claimantVehicle)} that was {getVehicleStatusText(formData.vehicleStatus)} {getVehicleLocationText(formData.vehicleLocation)}. 
+          The {getVehicleTypeText(formData.claimantVehicle)} was hit in the {getImpactLocationText(formData.impactLocation)} by a {getVehicleTypeText(formData.otherVehicle)}. 
+          The claimant's vehicle sustained {getVehicleDamageText(formData.vehicleDamage)}. 
+          The claimant was {getClaimantPositionText(formData.claimantPosition)} at the time of the accident.
+        </Text>
+      ) : (
+        <Text style={dailyLifeStyles.text}>No accident information has been provided.</Text>
+      )}
     </View>
   );
 };

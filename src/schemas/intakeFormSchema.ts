@@ -29,7 +29,7 @@ export const formSchema = z.object({
   livingWith: z.enum(["1", "2", "3", "4", "5", "6", ""]).optional(), // Added empty string as valid option
   childrenCount: z.string().optional(),
 
-  // Section 3 - Accident Information
+  // Section 3 - Accident Information - Making all fields optional with no defaults
   accidentDate: z.string().optional(),
   accidentTime: z.enum(["1", "2", "3", "4"]).optional(),
   vehiclePosition: z.string().optional(),

@@ -1,3 +1,4 @@
+
 import {
   FormControl,
   FormField,
@@ -18,7 +19,7 @@ export function DateTimeSection({ form }: { form: any }) {
           <FormItem>
             <FormLabel>Date of Accident</FormLabel>
             <FormControl>
-              <Input type="date" {...field} />
+              <Input type="date" {...field} value={field.value || ""} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -34,7 +35,7 @@ export function DateTimeSection({ form }: { form: any }) {
             <FormControl>
               <RadioGroup
                 onValueChange={field.onChange}
-                defaultValue={field.value}
+                value={field.value}
                 className="flex flex-col space-y-1"
               >
                 <FormItem className="flex items-center space-x-3 space-y-0">

@@ -7,6 +7,73 @@ interface AccidentDetailsSectionProps {
 }
 
 export const AccidentDetailsSection = ({ formData, styles }: AccidentDetailsSectionProps) => {
+  // Helper functions to get readable text for form values
+  const getTimeOfDayText = (time: string | undefined) => {
+    if (!time) return "Not specified";
+    const timeMap: Record<string, string> = {
+      "1": "Morning",
+      "2": "Afternoon",
+      "3": "Evening",
+      "4": "Night"
+    };
+    return timeMap[time] || "Not specified";
+  };
+
+  const getVehicleTypeText = (type: string | undefined) => {
+    if (!type) return "Not specified";
+    const typeMap: Record<string, string> = {
+      "1": "Car",
+      "2": "Van",
+      "3": "Bus",
+      "4": "Other"
+    };
+    return typeMap[type] || "Not specified";
+  };
+
+  const getVehiclePositionText = (position: string | undefined) => {
+    if (!position) return "Not specified";
+    const positionMap: Record<string, string> = {
+      "1": "Right side seated Driver",
+      "2": "Front Passenger",
+      "3": "Back Passenger",
+      "4": "Other"
+    };
+    return positionMap[position] || "Not specified";
+  };
+
+  const getVehicleLocationText = (location: string | undefined) => {
+    if (!location) return "Not specified";
+    const locationMap: Record<string, string> = {
+      "1": "Main Road",
+      "2": "Minor Road",
+      "3": "Roundabout",
+      "4": "Parked",
+      "5": "Other"
+    };
+    return locationMap[location] || "Not specified";
+  };
+
+  const getImpactLocationText = (location: string | undefined) => {
+    if (!location) return "unspecified location";
+    const locationMap: Record<string, string> = {
+      "1": "rear",
+      "2": "front",
+      "3": "passenger side",
+      "4": "driver side"
+    };
+    return locationMap[location] || "unspecified location";
+  };
+
+  const getVehicleDamageText = (damage: string | undefined) => {
+    if (!damage) return "unspecified damage";
+    const damageMap: Record<string, string> = {
+      "1": "minor damage",
+      "2": "moderate damage",
+      "3": "written off"
+    };
+    return damageMap[damage] || "unspecified damage";
+  };
+
   return (
     <View style={styles.subsection}>
       <Text style={styles.sectionHeader}>Section 5 - Accident/Incident Details</Text>
@@ -21,41 +88,28 @@ export const AccidentDetailsSection = ({ formData, styles }: AccidentDetailsSect
           <View style={styles.rtaRow}>
             <Text style={styles.rtaLabel}>Time of Accident</Text>
             <Text style={styles.rtaValue}>
-              {formData.accidentTime === "1" ? "Morning" :
-               formData.accidentTime === "2" ? "Afternoon" :
-               formData.accidentTime === "3" ? "Evening" :
-               formData.accidentTime === "4" ? "Night" : "Not specified"}
+              {getTimeOfDayText(formData.accidentTime)}
             </Text>
           </View>
           
           <View style={styles.rtaRow}>
             <Text style={styles.rtaLabel}>Vehicle</Text>
             <Text style={styles.rtaValue}>
-              {formData.claimantVehicle === "1" ? "Car" :
-               formData.claimantVehicle === "2" ? "Van" :
-               formData.claimantVehicle === "3" ? "Bus" : 
-               formData.claimantVehicle === "4" ? "Other" : "Not specified"}
+              {getVehicleTypeText(formData.claimantVehicle)}
             </Text>
           </View>
           
           <View style={styles.rtaRow}>
             <Text style={styles.rtaLabel}>Claimant's Position</Text>
             <Text style={styles.rtaValue}>
-              {formData.claimantPosition === "1" ? "Right side seated Driver" : 
-               formData.claimantPosition === "2" ? "Front Passenger" : 
-               formData.claimantPosition === "3" ? "Back Passenger" :
-               formData.claimantPosition === "4" ? "Other" : "Not specified"}
+              {getVehiclePositionText(formData.claimantPosition)}
             </Text>
           </View>
           
           <View style={styles.rtaRow}>
             <Text style={styles.rtaLabel}>Vehicle Location</Text>
             <Text style={styles.rtaValue}>
-              {formData.vehicleLocation === "1" ? "Main Road" :
-               formData.vehicleLocation === "2" ? "Minor Road" :
-               formData.vehicleLocation === "3" ? "Roundabout" :
-               formData.vehicleLocation === "4" ? "Parked" :
-               formData.vehicleLocation === "5" ? "Other" : "Not specified"}
+              {getVehicleLocationText(formData.vehicleLocation)}
             </Text>
           </View>
           
@@ -67,10 +121,7 @@ export const AccidentDetailsSection = ({ formData, styles }: AccidentDetailsSect
           <View style={styles.rtaRow}>
             <Text style={styles.rtaLabel}>Third Party</Text>
             <Text style={styles.rtaValue}>
-              {formData.otherVehicle === "1" ? "Car" :
-               formData.otherVehicle === "2" ? "Van" :
-               formData.otherVehicle === "3" ? "Bus" : 
-               formData.otherVehicle === "4" ? "Other" : "Not specified"}
+              {getVehicleTypeText(formData.otherVehicle)}
             </Text>
           </View>
           
@@ -87,15 +138,8 @@ export const AccidentDetailsSection = ({ formData, styles }: AccidentDetailsSect
           <View style={styles.rtaRow}>
             <Text style={styles.rtaLabel}>Damage</Text>
             <Text style={styles.rtaValue}>
-              The Claimant's vehicle sustained a damage to the 
-              {formData.impactLocation === "1" ? " rear" :
-               formData.impactLocation === "2" ? " front" :
-               formData.impactLocation === "3" ? " passenger side" :
-               formData.impactLocation === "4" ? " driver side" : " unspecified location"}.
-              The Claimant's vehicle status - 
-              {formData.vehicleDamage === "3" ? "written off" :
-               formData.vehicleDamage === "1" ? "minor damage" :
-               formData.vehicleDamage === "2" ? "moderate damage" : "unspecified damage"}.
+              The Claimant's vehicle sustained a damage to the {getImpactLocationText(formData.impactLocation)}.
+              The Claimant's vehicle status - {getVehicleDamageText(formData.vehicleDamage)}.
             </Text>
           </View>
           

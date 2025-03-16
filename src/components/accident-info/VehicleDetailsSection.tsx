@@ -20,7 +20,7 @@ export function VehicleDetailsSection({ form }: { form: any }) {
             <FormControl>
               <RadioGroup
                 onValueChange={field.onChange}
-                defaultValue={field.value || "1"}
+                value={field.value}
                 className="flex flex-col space-y-1"
               >
                 <FormItem className="flex items-center space-x-3 space-y-0">
@@ -63,7 +63,7 @@ export function VehicleDetailsSection({ form }: { form: any }) {
             <FormControl>
               <RadioGroup
                 onValueChange={field.onChange}
-                defaultValue={field.value || "1"}
+                value={field.value}
                 className="flex flex-col space-y-1"
               >
                 <FormItem className="flex items-center space-x-3 space-y-0">
