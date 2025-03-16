@@ -4,7 +4,6 @@ import { Page, View, Text, Image } from '@react-pdf/renderer';
 import { ReportData } from '@/types/reportTypes';
 import { ClaimantDetailsSection } from '../sections/ClaimantDetailsSection';
 import { ExpertDetailsSection } from '../sections/ExpertDetailsSection';
-import { WriterInfoSection } from '../sections/WriterInfoSection';
 import { InstructionDetailsSection } from '../sections/InstructionDetailsSection';
 import { AppointmentDetailsSection } from '../sections/AppointmentDetailsSection';
 import { AccidentDetailsSection } from '../sections/AccidentDetailsSection';
@@ -84,10 +83,6 @@ const BasicInfoPage: React.FC<BasicInfoPageProps> = ({
       
       <View style={pdfStyles.section}>
         <ExpertDetailsSection styles={pdfStyles} formData={reportData} />
-      </View>
-
-      <View style={pdfStyles.section}>
-        <WriterInfoSection styles={pdfStyles} />
       </View>
       
       <View style={pdfStyles.section}>

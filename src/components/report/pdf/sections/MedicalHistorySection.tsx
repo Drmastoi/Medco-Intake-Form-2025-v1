@@ -1,6 +1,7 @@
 
 import { Text, View } from '@react-pdf/renderer';
 import { ReportData } from '@/types/reportTypes';
+import { WriterInfoSection } from './WriterInfoSection';
 
 interface MedicalHistorySectionProps {
   formData: ReportData;
@@ -50,6 +51,9 @@ export const MedicalHistorySection = ({ formData, styles }: MedicalHistorySectio
           I was able to obtain a good history. Claimant's injuries and recovery period were entirely consistent with the account of the accident. The treatment provided for the claimant has been appropriate. The problems reported in home life are consistent and reasonable. In my opinion, the time taken off work by the claimant is reasonable. Claimant is currently fit for working.
         </Text>
       </View>
+      
+      {/* The Writer section moved to after section 12 */}
+      <WriterInfoSection styles={styles} />
     </View>
   );
 };
