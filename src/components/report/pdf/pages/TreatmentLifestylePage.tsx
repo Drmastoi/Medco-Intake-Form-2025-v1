@@ -6,7 +6,6 @@ import { TreatmentSection } from '../sections/TreatmentSection';
 import LifestyleImpactSection from '../sections/LifestyleImpactSection';
 import { MedicalRecordsReviewSection } from '../sections/MedicalRecordsReviewSection';
 import { MedicalHistorySection } from '../sections/MedicalHistorySection';
-import { ConclusionSection } from '../sections/ConclusionSection';
 import PDFFooter from '../components/PDFFooter';
 import { pdfStyles } from '../styles/pdfStyles';
 import { colorScheme } from '../styles/colorScheme';
@@ -112,10 +111,6 @@ const TreatmentLifestylePage: React.FC<TreatmentLifestylePageProps> = ({
       
       <View style={pdfStyles.section}>
         <MedicalHistorySection formData={reportData} styles={pdfStyles} />
-      </View>
-      
-      <View style={pdfStyles.section}>
-        <ConclusionSection styles={pdfStyles} formData={reportData} />
       </View>
       
       <PDFFooter pageNumber={3} claimantName={claimantName} today={today} />

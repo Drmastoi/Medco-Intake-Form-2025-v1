@@ -12,7 +12,7 @@ export const layoutStyles = StyleSheet.create({
     paddingBottom: spacing.pageMargin * 3, // Add padding at the bottom for the footer
     fontFamily: typography.fontFamily,
     fontSize: typography.fontSize.base,
-    color: colorScheme.textPrimary,
+    color: colorScheme.textDark,
   },
   section: {
     margin: spacing.md,

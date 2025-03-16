@@ -19,6 +19,18 @@ export const ConclusionSection = ({ styles, formData }: ConclusionSectionProps) 
     <View style={styles.subsection}>
       <Text style={styles.sectionHeader}>Conclusion and Declaration</Text>
       
+      {/* Case Classification Content */}
+      <View style={{ marginBottom: 15 }}>
+        <Text style={styles.fieldLabel}>Case Classification</Text>
+        <Text style={styles.fieldValue}>Seatbelts: Was the claimant wearing a seat belt? Yes</Text>
+        <Text style={styles.fieldValue}>Soft-tissue Injury Claim: Yes</Text>
+        <Text style={styles.fieldValue}>Was the Claimant an occupant of a motor vehicle? Yes</Text>
+        <Text style={styles.fieldValue}>Is the client's most significant injury a soft-tissue injury? Yes</Text>
+        <Text style={styles.fieldValue}>Is this the first report in relation to the client's injuries from the index accident? Yes</Text>
+        <Text style={styles.fieldValue}>{"\n"}I was able to obtain a good history. Claimant's injuries and recovery period were entirely consistent with the account of the accident. The treatment provided for the claimant has been appropriate. The problems reported in home life are consistent and reasonable. In my opinion, the time taken off work by the claimant is reasonable. Claimant is currently fit for working.</Text>
+      </View>
+      
+      {/* Declaration Content */}
       <View style={{ marginBottom: 10 }}>
         <Text style={styles.fieldValue}>
           I confirm that I have made clear which facts and matters referred to in this report are within my own 
