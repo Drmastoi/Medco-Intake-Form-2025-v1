@@ -14,26 +14,25 @@ export const AppointmentDetailsSection = ({ formData, styles }: AppointmentDetai
       
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>4.1 Date of Appointment</Text>
-          <Text style={styles.fieldValue}>
+          <Text style={{ ...styles.fieldLabel, fontSize: 9 }}>4.1 Date & Time</Text>
+          <Text style={{ ...styles.fieldValue, fontSize: 9 }}>
             {formData.dateOfExamination ? formatDate(formData.dateOfExamination) : formatDate(new Date().toISOString().split('T')[0])} {formData.examinationTime || '10:00'}
-            {'\nMethod - Clinic'}
           </Text>
         </View>
         <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>4.2 Time spent</Text>
-          <Text style={styles.fieldValue}>{formData.timeSpentWithClaimant || '30'} Minutes</Text>
+          <Text style={{ ...styles.fieldLabel, fontSize: 9 }}>4.2 Method</Text>
+          <Text style={{ ...styles.fieldValue, fontSize: 9 }}>Clinic</Text>
         </View>
       </View>
       
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>4.3 Place of Examination</Text>
-          <Text style={styles.fieldValue}>{formData.examinationLocation || 'Medical Examination Center, London, UNITED KINGDOM'}</Text>
+          <Text style={{ ...styles.fieldLabel, fontSize: 9 }}>4.3 Time Spent</Text>
+          <Text style={{ ...styles.fieldValue, fontSize: 9 }}>{formData.timeSpentWithClaimant || '30'} Minutes</Text>
         </View>
         <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>4.4 Date of Report</Text>
-          <Text style={styles.fieldValue}>{formData.dateOfReport ? formatDate(formData.dateOfReport) : formatDate(new Date().toISOString().split('T')[0])}</Text>
+          <Text style={{ ...styles.fieldLabel, fontSize: 9 }}>4.4 Location</Text>
+          <Text style={{ ...styles.fieldValue, fontSize: 9 }}>{formData.examinationLocation || 'Medical Examination Center'}</Text>
         </View>
       </View>
     </View>

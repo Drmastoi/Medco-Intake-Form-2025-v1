@@ -24,12 +24,29 @@ const BasicInfoPage: React.FC<BasicInfoPageProps> = ({
   claimantName, 
   today 
 }) => {
+  // Create more compact styles for the first page
+  const compactStyles = {
+    ...pdfStyles,
+    section: {
+      ...pdfStyles.section,
+      marginBottom: 8, // Reduce margin between sections
+      padding: 6, // Reduce padding inside sections
+    },
+    subsection: {
+      ...pdfStyles.subsection,
+      marginBottom: 8, // Reduce margin between subsections
+    },
+    fieldRow: {
+      ...pdfStyles.fieldRow,
+      marginBottom: 3, // Reduce margin between rows
+    }
+  };
+
   return (
     <Page size="A4" style={pdfStyles.page}>
       {/* Header with report type, claimant name and reference number */}
       <View style={[pdfStyles.header, { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }]}>
         <View style={{ width: '20%' }}>
-          {/* Display claimant name instead of logo */}
           <Text style={{ color: 'white', fontWeight: 'bold' }}>{claimantName}</Text>
         </View>
         <View style={{ width: '60%', textAlign: 'center' }}>
@@ -50,59 +67,57 @@ const BasicInfoPage: React.FC<BasicInfoPageProps> = ({
       {/* Summary box highlighting key information */}
       <View style={{ 
         backgroundColor: colorScheme.altSectionBg, 
-        margin: 10, 
-        padding: 10, 
+        margin: 8, 
+        padding: 8, 
         borderRadius: 3,
         borderLeft: `4px solid ${colorScheme.accent}`
       }}>
-        <Text style={{ fontSize: 12, fontWeight: 'bold', marginBottom: 5, color: colorScheme.primary }}>
+        <Text style={{ fontSize: 10, fontWeight: 'bold', marginBottom: 4, color: colorScheme.primary }}>
           Report Summary
         </Text>
-        <View style={{ flexDirection: 'row', marginBottom: 5 }}>
-          <Text style={{ width: '30%', fontSize: 10, fontWeight: 'bold' }}>Claimant:</Text>
-          <Text style={{ width: '70%', fontSize: 10 }}>{reportData.personal?.fullName || 'Not specified'}</Text>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+          <View style={{ width: '50%', flexDirection: 'row', marginBottom: 2 }}>
+            <Text style={{ width: '40%', fontSize: 8, fontWeight: 'bold' }}>Claimant:</Text>
+            <Text style={{ width: '60%', fontSize: 8 }}>{reportData.personal?.fullName || 'Not specified'}</Text>
+          </View>
+          <View style={{ width: '50%', flexDirection: 'row', marginBottom: 2 }}>
+            <Text style={{ width: '40%', fontSize: 8, fontWeight: 'bold' }}>Date of Accident:</Text>
+            <Text style={{ width: '60%', fontSize: 8 }}>{reportData.accident?.accidentDate || 'Not specified'}</Text>
+          </View>
+          <View style={{ width: '50%', flexDirection: 'row', marginBottom: 2 }}>
+            <Text style={{ width: '40%', fontSize: 8, fontWeight: 'bold' }}>Date of Examination:</Text>
+            <Text style={{ width: '60%', fontSize: 8 }}>{reportData.prefilled?.dateOfExamination || 'Not specified'}</Text>
+          </View>
+          <View style={{ width: '50%', flexDirection: 'row', marginBottom: 2 }}>
+            <Text style={{ width: '40%', fontSize: 8, fontWeight: 'bold' }}>Solicitor:</Text>
+            <Text style={{ width: '60%', fontSize: 8 }}>{reportData.prefilled?.solicitorName || 'Not specified'}</Text>
+          </View>
         </View>
-        <View style={{ flexDirection: 'row', marginBottom: 5 }}>
-          <Text style={{ width: '30%', fontSize: 10, fontWeight: 'bold' }}>Date of Accident:</Text>
-          <Text style={{ width: '70%', fontSize: 10 }}>{reportData.accident?.accidentDate || 'Not specified'}</Text>
-        </View>
-        <View style={{ flexDirection: 'row', marginBottom: 5 }}>
-          <Text style={{ width: '30%', fontSize: 10, fontWeight: 'bold' }}>Date of Examination:</Text>
-          <Text style={{ width: '70%', fontSize: 10 }}>{reportData.prefilled?.dateOfExamination || 'Not specified'}</Text>
-        </View>
-        <View style={{ flexDirection: 'row' }}>
-          <Text style={{ width: '30%', fontSize: 10, fontWeight: 'bold' }}>Solicitor:</Text>
-          <Text style={{ width: '70%', fontSize: 10 }}>{reportData.prefilled?.solicitorName || 'Not specified'}</Text>
-        </View>
       </View>
       
-      {/* Main content sections */}
-      <View style={pdfStyles.section}>
-        <ClaimantDetailsSection formData={reportData} styles={pdfStyles} />
+      {/* Main content sections - using compactStyles */}
+      <View style={compactStyles.section}>
+        <ClaimantDetailsSection formData={reportData} styles={compactStyles} />
       </View>
       
-      <View style={pdfStyles.section}>
-        <ExpertDetailsSection styles={pdfStyles} formData={reportData} />
+      <View style={compactStyles.section}>
+        <ExpertDetailsSection formData={reportData} styles={compactStyles} />
       </View>
       
-      <View style={pdfStyles.section}>
-        <InstructionDetailsSection formData={reportData} styles={pdfStyles} />
+      <View style={compactStyles.section}>
+        <InstructionDetailsSection formData={reportData} styles={compactStyles} />
       </View>
       
-      <View style={pdfStyles.section}>
-        <AppointmentDetailsSection formData={reportData} styles={pdfStyles} />
+      <View style={compactStyles.section}>
+        <AppointmentDetailsSection formData={reportData} styles={compactStyles} />
       </View>
       
-      <View style={pdfStyles.section}>
-        <AccidentDetailsSection formData={reportData} styles={pdfStyles} />
+      <View style={compactStyles.section}>
+        <AccidentDetailsSection formData={reportData} styles={compactStyles} />
       </View>
       
-      <View style={pdfStyles.section}>
-        <SummaryOfInjuriesTableSection formData={reportData} styles={pdfStyles} />
-      </View>
-      
-      <View style={pdfStyles.section}>
-        <StatementOfInstructionSection styles={pdfStyles} formData={reportData} />
+      <View style={compactStyles.section}>
+        <SummaryOfInjuriesTableSection formData={reportData} styles={compactStyles} />
       </View>
       
       <PDFFooter pageNumber={1} claimantName={claimantName} today={today} />

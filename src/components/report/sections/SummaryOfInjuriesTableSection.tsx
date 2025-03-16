@@ -108,45 +108,45 @@ export const SummaryOfInjuriesTableSection = ({ formData, styles }: SummaryOfInj
           <View style={styles.table}>
             <View style={styles.tableHeader}>
               <View style={[styles.cell, { width: '25%' }]}>
-                <Text>Injury</Text>
+                <Text style={{ fontSize: 8 }}>Injury</Text>
               </View>
               <View style={[styles.cell, { width: '15%' }]}>
-                <Text>Initial Severity</Text>
+                <Text style={{ fontSize: 8 }}>Initial Severity</Text>
               </View>
               <View style={[styles.cell, { width: '15%' }]}>
-                <Text>Current Severity</Text>
+                <Text style={{ fontSize: 8 }}>Current Severity</Text>
               </View>
               <View style={[styles.cell, { width: '25%' }]}>
-                <Text>Prognosis</Text>
+                <Text style={{ fontSize: 8 }}>Prognosis</Text>
               </View>
               <View style={[styles.cell, { width: '20%' }]}>
-                <Text>Classification</Text>
+                <Text style={{ fontSize: 8 }}>Classification</Text>
               </View>
             </View>
             
             {injuries.map((injury, index) => (
               <View key={index} style={styles.tableRow}>
                 <View style={[styles.cell, { width: '25%' }]}>
-                  <Text>{injury.name}</Text>
+                  <Text style={{ fontSize: 8 }}>{injury.name}</Text>
                 </View>
                 <View style={[styles.cell, { width: '15%' }]}>
-                  <Text>{injury.initialSeverity}</Text>
+                  <Text style={{ fontSize: 8 }}>{injury.initialSeverity}</Text>
                 </View>
                 <View style={[styles.cell, { width: '15%' }]}>
-                  <Text>{injury.currentSeverity}</Text>
+                  <Text style={{ fontSize: 8 }}>{injury.currentSeverity}</Text>
                 </View>
                 <View style={[styles.cell, { width: '25%' }]}>
-                  <Text>{injury.prognosis}</Text>
+                  <Text style={{ fontSize: 8 }}>{injury.prognosis}</Text>
                 </View>
                 <View style={[styles.cell, { width: '20%' }]}>
-                  <Text>{injury.classification}</Text>
+                  <Text style={{ fontSize: 8 }}>{injury.classification}</Text>
                 </View>
               </View>
             ))}
           </View>
           
-          <View style={{ marginTop: 10 }}>
-            <Text style={styles.fieldValue}>
+          <View style={{ marginTop: 6 }}>
+            <Text style={{ ...styles.fieldValue, fontSize: 8 }}>
               The prognosis periods are given from the date of the accident and represent my professional opinion on the
               expected recovery timeline based on the severity of the injuries and the claimant's presentation at the time of
               examination.
