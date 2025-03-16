@@ -1,3 +1,11 @@
+export interface ReportData {
+  prefilled: PrefilledData;
+  personal: PersonalData;
+  accident: AccidentData;
+  injuries: InjuriesData;
+  travelAnxiety: TravelAnxietyData;
+  other: OtherData;
+}
 
 export interface PrefilledData {
   solicitorName: string;
@@ -10,10 +18,10 @@ export interface PrefilledData {
   dateOfReport: string;
   timeSpentWithClaimant: string;
   accompaniedBy: string;
-  expertName?: string;
-  expertSpecialty?: string;
-  expertTitle?: string;
-  gmcNumber?: string;
+  expertName: string;
+  expertSpecialty: string;
+  expertTitle: string;
+  gmcNumber: string;
 }
 
 export interface PersonalData {
@@ -23,24 +31,31 @@ export interface PersonalData {
   address: string;
   occupation: string;
   workType: string;
-  idType?: string;
+  idType: string;
 }
 
 export interface AccidentData {
   accidentDate: string;
   accidentTime: string;
   vehiclePosition: string;
-  vehicleStatus?: string;
-  vehicleLocation?: string;
-  impactLocation?: string;
-  vehicleDamage?: string;
-  claimantPosition?: string;
-  claimantVehicle?: string;
-  otherVehicle?: string;
-  accidentSummary?: string;
+  vehicleStatus: string;
+  vehicleLocation: string;
+  impactLocation: string;
+  vehicleDamage: string;
+  claimantPosition: string;
+  claimantVehicle: string;
+  otherVehicle: string;
+  accidentSummary: string;
 }
 
-export interface NeckPainData {
+export interface InjuriesData {
+  neckPain: InjuryDetails;
+  shoulderPain: ShoulderPainDetails;
+  backPain: BackPainDetails;
+  headache: HeadacheDetails;
+}
+
+export interface InjuryDetails {
   hasInjury: boolean;
   painStart: string;
   initialSeverity: string;
@@ -50,7 +65,7 @@ export interface NeckPainData {
   hadPrior?: boolean;
 }
 
-export interface ShoulderPainData {
+export interface ShoulderPainDetails {
   hasInjury: boolean;
   side: string;
   painStart: string;
@@ -59,7 +74,7 @@ export interface ShoulderPainData {
   resolveDays?: string;
 }
 
-export interface BackPainData {
+export interface BackPainDetails {
   hasInjury: boolean;
   location: string;
   painStart: string;
@@ -68,32 +83,35 @@ export interface BackPainData {
   resolveDays?: string;
 }
 
-export interface HeadacheData {
+export interface HeadacheDetails {
   hasInjury: boolean;
   start: string;
   initialSeverity: string;
   currentSeverity: string;
   resolveDays?: string;
-  pastHistory: string;
-}
-
-export interface InjuriesData {
-  neckPain: NeckPainData;
-  shoulderPain: ShoulderPainData;
-  backPain: BackPainData;
-  headache: HeadacheData;
+  pastHistory?: string;
 }
 
 export interface TravelAnxietyData {
   hasAnxiety: boolean;
   symptoms: string[];
-  currentlyDriving: string;
   initialSeverity: string;
   currentSeverity: string;
   resolveDays: string;
+  start?: string;
+  anxietyStart?: string; // This should be included for backward compatibility
   pastHistory: string;
-  anxietyStart: string;
   hasHistory: string;
+  currentlyDriving: string;
+  duration?: string; // Add this field to fix the errors
+}
+
+export interface OtherData {
+  bruising: BruisingData;
+  otherInjuries: OtherInjuriesData;
+  treatment: TreatmentData;
+  lifestyle: LifestyleData;
+  medicalHistory: MedicalHistoryData;
 }
 
 export interface BruisingData {
@@ -103,7 +121,6 @@ export interface BruisingData {
   initialSeverity?: string;
   currentSeverity?: string;
   resolveDays?: string;
-  hasVisibleScar?: boolean;
 }
 
 export interface OtherInjuriesData {
@@ -155,21 +172,4 @@ export interface LifestyleData {
 export interface MedicalHistoryData {
   exceptionalInjuries: boolean;
   exceptionalInjuriesDetails: string;
-}
-
-export interface OtherData {
-  bruising: BruisingData;
-  otherInjuries: OtherInjuriesData;
-  treatment: TreatmentData;
-  lifestyle: LifestyleData;
-  medicalHistory: MedicalHistoryData;
-}
-
-export interface ReportData {
-  prefilled: PrefilledData;
-  personal: PersonalData;
-  accident: AccidentData;
-  injuries: InjuriesData;
-  travelAnxiety: TravelAnxietyData;
-  other: OtherData;
 }
