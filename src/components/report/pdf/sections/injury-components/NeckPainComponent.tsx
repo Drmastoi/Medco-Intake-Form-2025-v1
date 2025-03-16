@@ -1,6 +1,6 @@
 
 import { Text, View } from '@react-pdf/renderer';
-import { formatDuration } from '../../../utils/formatUtils';
+import { formatDuration, formatSeverity, safeValue } from '../../../utils/formatUtils';
 
 interface NeckPainComponentProps {
   neckPain: any;
@@ -8,7 +8,7 @@ interface NeckPainComponentProps {
 }
 
 export const NeckPainComponent = ({ neckPain, styles }: NeckPainComponentProps) => {
-  if (!neckPain.hasInjury) return null;
+  if (!neckPain?.hasInjury) return null;
 
   return (
     <View style={{ marginBottom: 15 }}>
@@ -17,23 +17,23 @@ export const NeckPainComponent = ({ neckPain, styles }: NeckPainComponentProps) 
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>Initial Severity</Text>
-          <Text style={styles.fieldValue}>{neckPain.initialSeverity || 'Not specified'}</Text>
+          <Text style={styles.fieldValue}>{formatSeverity(neckPain.initialSeverity)}</Text>
         </View>
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>Current Severity</Text>
-          <Text style={styles.fieldValue}>{neckPain.currentSeverity || 'Not specified'}</Text>
+          <Text style={styles.fieldValue}>{formatSeverity(neckPain.currentSeverity)}</Text>
         </View>
       </View>
       
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>Start Date</Text>
-          <Text style={styles.fieldValue}>{neckPain.painStart || 'Not specified'}</Text>
+          <Text style={styles.fieldValue}>{safeValue(neckPain.painStart)}</Text>
         </View>
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>End Date</Text>
           <Text style={styles.fieldValue}>
-            {neckPain.currentSeverity === 'Resolved' 
+            {formatSeverity(neckPain.currentSeverity) === 'Resolved' 
               ? 'Resolved' 
               : 'Ongoing'}
           </Text>
@@ -44,7 +44,7 @@ export const NeckPainComponent = ({ neckPain, styles }: NeckPainComponentProps) 
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>Duration</Text>
           <Text style={styles.fieldValue}>
-            {neckPain.currentSeverity === 'Resolved' 
+            {formatSeverity(neckPain.currentSeverity) === 'Resolved' 
               ? formatDuration(neckPain.resolveDays) 
               : 'Ongoing'}
           </Text>

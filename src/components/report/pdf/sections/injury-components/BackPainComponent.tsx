@@ -1,6 +1,6 @@
 
 import { Text, View } from '@react-pdf/renderer';
-import { formatDuration } from '../../../utils/formatUtils';
+import { formatDuration, formatSeverity, safeValue } from '../../../utils/formatUtils';
 
 interface BackPainComponentProps {
   backPain: any;
@@ -8,7 +8,7 @@ interface BackPainComponentProps {
 }
 
 export const BackPainComponent = ({ backPain, styles }: BackPainComponentProps) => {
-  if (!backPain.hasInjury) return null;
+  if (!backPain?.hasInjury) return null;
 
   return (
     <View style={{ marginBottom: 15 }}>
@@ -17,23 +17,23 @@ export const BackPainComponent = ({ backPain, styles }: BackPainComponentProps) 
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>Initial Severity</Text>
-          <Text style={styles.fieldValue}>{backPain.initialSeverity || 'Not specified'}</Text>
+          <Text style={styles.fieldValue}>{formatSeverity(backPain.initialSeverity)}</Text>
         </View>
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>Current Severity</Text>
-          <Text style={styles.fieldValue}>{backPain.currentSeverity || 'Not specified'}</Text>
+          <Text style={styles.fieldValue}>{formatSeverity(backPain.currentSeverity)}</Text>
         </View>
       </View>
       
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>Start Date</Text>
-          <Text style={styles.fieldValue}>{backPain.painStart || 'Not specified'}</Text>
+          <Text style={styles.fieldValue}>{safeValue(backPain.painStart)}</Text>
         </View>
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>End Date</Text>
           <Text style={styles.fieldValue}>
-            {backPain.currentSeverity === 'Resolved' 
+            {formatSeverity(backPain.currentSeverity) === 'Resolved' 
               ? 'Resolved' 
               : 'Ongoing'}
           </Text>
@@ -44,7 +44,7 @@ export const BackPainComponent = ({ backPain, styles }: BackPainComponentProps) 
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>Duration</Text>
           <Text style={styles.fieldValue}>
-            {backPain.currentSeverity === 'Resolved' 
+            {formatSeverity(backPain.currentSeverity) === 'Resolved' 
               ? formatDuration(backPain.resolveDays) 
               : 'Ongoing'}
           </Text>

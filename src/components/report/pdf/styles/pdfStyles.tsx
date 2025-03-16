@@ -1,4 +1,3 @@
-
 import { StyleSheet } from '@react-pdf/renderer';
 import { colorScheme } from './colorScheme';
 import { typography } from './typography';
@@ -220,5 +219,11 @@ export const pdfStyles = StyleSheet.create({
   statusResolved: {
     backgroundColor: colorScheme.success,
     color: colorScheme.textInverted,
+  },
+  conclusionText: {
+    fontSize: typography.fontSize.sm,
+    marginTop: spacing.md,
+    fontStyle: 'italic',
+    color: colorScheme.textSecondary,
   },
 });

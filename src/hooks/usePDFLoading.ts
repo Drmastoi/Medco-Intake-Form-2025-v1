@@ -23,6 +23,7 @@ export const usePDFLoading = (isOpen: boolean): UsePDFLoadingResult => {
   // Reset loading state when dialog opens/closes
   useEffect(() => {
     if (isOpen) {
+      console.log("PDF loading started");
       setLoading(true);
       setRenderError(null);
       setLoadingProgress(0);
@@ -34,14 +35,15 @@ export const usePDFLoading = (isOpen: boolean): UsePDFLoadingResult => {
             clearInterval(progressInterval);
             return current;
           }
-          return current + 10;
+          return current + 5; // Slower progress to give more time for PDF generation
         });
       }, 500);
       
       // Small delay to ensure state update and rendering cycle
       const timer = setTimeout(() => {
+        console.log("Setting viewerReady to true");
         setViewerReady(true);
-      }, 800); // Increased from 500ms for more stable initialization
+      }, 1500); // Increased from 800ms for more stable initialization
       
       return () => {
         clearTimeout(timer);
@@ -57,13 +59,31 @@ export const usePDFLoading = (isOpen: boolean): UsePDFLoadingResult => {
   // Add an event listener to detect when the PDF is loaded
   useEffect(() => {
     if (viewerReady) {
+      console.log("PDF viewer is ready, waiting for loading to complete");
       const loadingTimeout = setTimeout(() => {
-        console.log("PDF loading completed or timed out");
+        console.log("PDF loading timeout completed");
         setLoading(false);
         setLoadingProgress(100);
-      }, 8000); // Increased timeout from 6s to 8s
+      }, 15000); // Increased timeout from 8s to 15s to give more time for PDF generation
 
-      return () => clearTimeout(loadingTimeout);
+      // Add a listener to detect PDF loading completion
+      const checkPDFLoaded = () => {
+        const pdfElement = document.querySelector('[data-react-pdf-container="true"]');
+        if (pdfElement) {
+          console.log("PDF container found, loading complete");
+          clearTimeout(loadingTimeout);
+          setLoading(false);
+          setLoadingProgress(100);
+        }
+      };
+      
+      // Check every second if the PDF is loaded
+      const checkInterval = setInterval(checkPDFLoaded, 1000);
+      
+      return () => {
+        clearTimeout(loadingTimeout);
+        clearInterval(checkInterval);
+      };
     }
   }, [viewerReady]);
 
@@ -74,17 +94,17 @@ export const usePDFLoading = (isOpen: boolean): UsePDFLoadingResult => {
       const timer = setTimeout(() => {
         if (loading) {
           console.log("PDF rendering timed out, showing error");
-          setRenderError("Failed to load PDF preview. Please try again.");
+          setRenderError("Failed to load PDF preview. Please try again or use the download option instead.");
           setLoading(false);
           
           // Show a toast for better feedback
           toast({
             title: "PDF Preview Failed",
-            description: "The report couldn't be loaded. Please try again.",
+            description: "The report preview couldn't be loaded. You can still download the PDF directly.",
             variant: "destructive"
           });
         }
-      }, 10000); // Increased from 8s to 10s
+      }, 20000); // Increased from 10s to 20s
       
       return () => clearTimeout(timer);
     }
@@ -97,8 +117,12 @@ export const usePDFLoading = (isOpen: boolean): UsePDFLoadingResult => {
       if (event.message && (
         event.message.includes("PDF") || 
         event.message.includes("render") ||
-        event.message.includes("blob")
+        event.message.includes("blob") ||
+        event.message.includes("font") ||
+        event.message.includes("Failed to download") ||
+        event.message.includes("Failed to fetch")
       )) {
+        console.error("PDF error detected:", event.message);
         handlePDFError();
       }
     };
@@ -122,7 +146,7 @@ export const usePDFLoading = (isOpen: boolean): UsePDFLoadingResult => {
           clearInterval(progressInterval);
           return current;
         }
-        return current + 10;
+        return current + 5;
       });
     }, 500);
     
@@ -135,19 +159,19 @@ export const usePDFLoading = (isOpen: boolean): UsePDFLoadingResult => {
         title: "Retrying",
         description: "Attempting to generate PDF preview again...",
       });
-    }, 1500); // Increased delay for better stability
+    }, 2000); // Increased delay for better stability
     
     clearInterval(progressInterval);
   };
 
   const handlePDFError = () => {
     console.error("PDF rendering error detected");
-    setRenderError("Failed to load PDF preview. Please try again.");
+    setRenderError("Failed to load PDF preview. Please try downloading the PDF instead.");
     setLoading(false);
     
     toast({
-      title: "PDF Error",
-      description: "There was a problem rendering the PDF. Please try the download option instead.",
+      title: "PDF Preview Error",
+      description: "There was a problem rendering the PDF preview. Please try the download option instead.",
       variant: "destructive"
     });
   };
