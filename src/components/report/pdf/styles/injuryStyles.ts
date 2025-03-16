@@ -6,21 +6,16 @@ export const injuryStyles = StyleSheet.create({
   injurySection: {
     marginBottom: 15,
     border: `1px solid ${colorScheme.borderColor}`,
-    borderRadius: 3,
+    borderRadius: 4,
     overflow: 'hidden',
   },
   injuryHeader: {
     backgroundColor: colorScheme.primary,
-    color: 'white',
-    padding: 5,
+    color: colorScheme.textLight,
+    padding: 8,
     marginBottom: 5,
-    borderRadius: 3,
+    borderRadius: 4,
     fontSize: 11,
-  },
-  injuryHeaderText: {
-    color: 'white',
-    fontSize: 11,
-    fontWeight: 'bold',
   },
   injuryTable: {
     marginBottom: 10,
@@ -30,44 +25,59 @@ export const injuryStyles = StyleSheet.create({
     marginBottom: 5,
     borderBottomWidth: 1,
     borderBottomColor: colorScheme.borderColor,
-    paddingBottom: 3, 
+    paddingBottom: 2,
   },
-  injuryCol1: {
-    width: '30%',
-    paddingRight: 10,
+  injuryLabel: {
+    width: '35%',
+    fontSize: 9,
+    fontWeight: 'bold',
+    paddingRight: 5,
+    color: colorScheme.textSecondary,
   },
-  injuryCol2: {
-    width: '70%',
+  injuryValue: {
+    width: '65%',
+    fontSize: 9,
+  },
+  severityContainer: {
+    flexDirection: 'row',
+    marginTop: 5,
+    marginBottom: 8,
+  },
+  severityBox: {
+    width: 15,
+    height: 15,
+    margin: 2,
+    borderWidth: 1,
+    borderColor: colorScheme.borderColor,
+    backgroundColor: '#f3f4f6', // Use direct color instead of colorScheme.altBg
+  },
+  severityBoxActive: {
+    width: 15,
+    height: 15,
+    margin: 2,
+    borderWidth: 1,
+    borderColor: colorScheme.primary,
+    backgroundColor: colorScheme.primary,
+  },
+  injuryContainer: {
+    marginBottom: 10,
+    padding: 8,
+    borderWidth: 1,
+    borderColor: colorScheme.borderColor,
+    borderRadius: 4,
   },
   injuryContent: {
     padding: 8,
   },
-  prognosisSection: {
-    marginTop: 10,
-    padding: 5,
-    backgroundColor: colorScheme.altBg,
-    borderRadius: 3,
-  },
-  prognosisTitle: {
+  injurySectionTitle: {
+    fontSize: 11,
     fontWeight: 'bold',
-    fontSize: 10,
-    marginBottom: 3,
-  },
-  severityContainer: {
-    flexDirection: 'row',
     marginBottom: 5,
-    marginTop: 5,
+    color: colorScheme.textDark,
   },
-  severityBox: {
-    flex: 1,
-    marginLeft: 2,
-    marginRight: 2,
-    borderRadius: 3,
-    height: 15,
-    borderWidth: 1,
-    borderColor: colorScheme.borderColor,
-  },
-  severityBoxActive: {
-    backgroundColor: colorScheme.accent,
+  injuryTitle: {
+    fontSize: 11,
+    fontWeight: 'bold',
+    color: colorScheme.textLight,
   }
 });

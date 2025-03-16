@@ -1,59 +1,65 @@
 
 import React from 'react';
 import { Page, View, Text } from '@react-pdf/renderer';
-import { ReportData } from '@/types/reportTypes';
-import { layoutStyles } from '../styles/layoutStyles';
-import { textStyles } from '../styles/textStyles';
 import { pdfStyles } from '../styles/pdfStyles';
+import { textStyles } from '../styles/textStyles';
+import { layoutStyles } from '../styles/layoutStyles';
+import { ReportData } from '@/types/reportTypes';
 import PDFFooter from '../components/PDFFooter';
-import BruisingSection from '../sections/BruisingSection';
-import OtherInjuriesSection from '../sections/OtherInjuriesSection';
-import TreatmentSection from '../sections/TreatmentSection';
-import LifestyleImpactSection from '../sections/LifestyleImpactSection';
+import { TreatmentSection } from '../sections/TreatmentSection';
+import { LifestyleImpactSection } from '../sections/LifestyleImpactSection';
+import { MedicalHistorySection } from '../sections/MedicalHistorySection';
+import { OtherInjuriesSection } from '../sections/OtherInjuriesSection';
+import { BruisingSection } from '../sections/BruisingSection';
 
-export interface TreatmentLifestylePageProps {
+interface TreatmentLifestylePageProps {
   reportData: ReportData;
   claimantName: string;
   today: string;
-  reportType?: "claimant" | "expert";
+  reportType: "claimant" | "expert";
 }
 
-const TreatmentLifestylePage = ({ reportData, claimantName, today, reportType = "expert" }: TreatmentLifestylePageProps) => {
+const TreatmentLifestylePage = ({ reportData, claimantName, today, reportType }: TreatmentLifestylePageProps) => {
   return (
-    <Page size="A4" style={pdfStyles.page}>
+    <Page size="A4" style={layoutStyles.page}>
       <View style={layoutStyles.pageContainer}>
-        <View style={pdfStyles.header}>
-          <Text style={textStyles.headerText}>Treatment and Lifestyle Impact</Text>
+        <View style={pdfStyles.section}>
+          <Text style={textStyles.headerText}>
+            Treatment and Lifestyle Impact {reportType === "expert" ? "(Expert Copy)" : "(Claimant Copy)"}
+          </Text>
           <Text style={textStyles.subHeaderText}>
-            {reportType === "expert" ? "Expert Assessment" : "Claimant Report"}
+            Report Date: {today}
           </Text>
         </View>
-
+        
         <View style={layoutStyles.content}>
-          <View style={pdfStyles.section}>
-            <BruisingSection 
-              reportData={reportData} 
-              reportType={reportType} 
-            />
-            
-            <OtherInjuriesSection 
-              reportData={reportData} 
-              reportType={reportType} 
-            />
-            
-            <TreatmentSection 
-              reportData={reportData} 
-              reportType={reportType} 
-            />
-            
-            <LifestyleImpactSection 
-              reportData={reportData} 
-              reportType={reportType} 
-            />
-          </View>
+          <BruisingSection 
+            bruisingData={reportData.other.bruising}
+          />
+
+          <OtherInjuriesSection 
+            otherInjuriesData={reportData.other.otherInjuries}
+          />
+          
+          <TreatmentSection 
+            treatmentData={reportData.other.treatment}
+          />
+          
+          <LifestyleImpactSection 
+            lifestyleData={reportData.other.lifestyle}
+          />
+          
+          <MedicalHistorySection 
+            medicalHistoryData={reportData.other.medicalHistory}
+          />
         </View>
       </View>
-      <PDFFooter pageNumber={3} claimantName={claimantName} date={today} />
+      
+      <PDFFooter 
+        pageNumber={3} 
+        claimantName={claimantName} 
+        date={today} 
+      />
     </Page>
   );
 };

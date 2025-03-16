@@ -1,42 +1,52 @@
 
 import React from 'react';
 import { Page, View, Text } from '@react-pdf/renderer';
-import { ReportData } from '@/types/reportTypes';
-import { layoutStyles } from '../styles/layoutStyles';
-import { textStyles } from '../styles/textStyles';
 import { pdfStyles } from '../styles/pdfStyles';
+import { textStyles } from '../styles/textStyles';
+import { layoutStyles } from '../styles/layoutStyles';
+import { ReportData } from '@/types/reportTypes';
 import PDFFooter from '../components/PDFFooter';
-import InjuriesSection from '../sections/InjuriesSection';
-import TravelAnxietySection from '../sections/TravelAnxietySection';
-import MedicalHistorySection from '../sections/MedicalHistorySection';
+import { InjuriesSection } from '../sections/InjuriesSection';
+import { TravelAnxietySection } from '../sections/TravelAnxietySection';
 
-export interface InjuriesPageProps {
+interface InjuriesPageProps {
   reportData: ReportData;
   claimantName: string;
   today: string;
-  reportType?: "claimant" | "expert";
+  reportType: "claimant" | "expert";
 }
 
-const InjuriesPage = ({ reportData, claimantName, today, reportType = "expert" }: InjuriesPageProps) => {
+const InjuriesPage = ({ reportData, claimantName, today, reportType }: InjuriesPageProps) => {
   return (
-    <Page size="A4" style={pdfStyles.page}>
+    <Page size="A4" style={layoutStyles.page}>
       <View style={layoutStyles.pageContainer}>
-        <View style={pdfStyles.header}>
-          <Text style={textStyles.headerText}>Injuries and Symptoms</Text>
+        <View style={pdfStyles.section}>
+          <Text style={textStyles.headerText}>
+            Injuries and Symptoms {reportType === "expert" ? "(Expert Copy)" : "(Claimant Copy)"}
+          </Text>
           <Text style={textStyles.subHeaderText}>
-            {reportType === "expert" ? "Expert Assessment" : "Claimant Report"}
+            Report Date: {today}
           </Text>
         </View>
-
+        
         <View style={layoutStyles.content}>
-          <View style={pdfStyles.section}>
-            <InjuriesSection reportData={reportData} reportType={reportType} />
-            <TravelAnxietySection reportData={reportData} reportType={reportType} />
-            <MedicalHistorySection reportData={reportData} reportType={reportType} />
-          </View>
+          <InjuriesSection 
+            injuries={reportData.injuries}
+            reportType={reportType}
+          />
+          
+          <TravelAnxietySection 
+            reportData={reportData}
+            reportType={reportType}
+          />
         </View>
       </View>
-      <PDFFooter pageNumber={2} claimantName={claimantName} date={today} />
+      
+      <PDFFooter 
+        pageNumber={2} 
+        claimantName={claimantName} 
+        date={today} 
+      />
     </Page>
   );
 };

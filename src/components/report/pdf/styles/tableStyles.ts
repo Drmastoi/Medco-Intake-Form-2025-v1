@@ -8,49 +8,47 @@ export const tableStyles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colorScheme.borderColor,
     borderStyle: 'solid',
-    borderRadius: 3,
+    borderRadius: 4,
     overflow: 'hidden',
   },
   tableHeader: {
     flexDirection: 'row',
     borderBottomWidth: 1,
     borderBottomColor: colorScheme.borderColor,
-    backgroundColor: colorScheme.altBg,
+    backgroundColor: '#f3f4f6', // Use direct color instead of colorScheme.altBg
     paddingVertical: 5,
     paddingHorizontal: 8,
-  },
-  tableHeaderCell: {
-    fontWeight: 'bold',
-    fontSize: 10,
-    color: colorScheme.textDark,
   },
   tableRow: {
     flexDirection: 'row',
     borderBottomWidth: 1,
     borderBottomColor: colorScheme.borderColor,
-    paddingVertical: 5,
+    paddingVertical: 4,
     paddingHorizontal: 8,
+    minHeight: 20,
   },
-  tableCell: {
-    fontSize: 9,
-    color: colorScheme.textDark,
+  tableRowAlt: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderBottomColor: colorScheme.borderColor,
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    backgroundColor: '#f9fafb', // Light background for alternate rows
+    minHeight: 20,
   },
   tableCol1: {
     width: '30%',
+    paddingRight: 5,
   },
   tableCol2: {
     width: '70%',
   },
-  tableCol3: {
-    width: '33%',
+  tableCell: {
+    fontSize: 9,
+    textAlign: 'left',
   },
-  tableCol4: {
-    width: '25%',
-  },
-  tableCol5: {
-    width: '20%',
-  },
-  tableLastRow: {
-    borderBottomWidth: 0,
-  },
+  tableHeaderCell: {
+    fontSize: 9,
+    fontWeight: 'bold',
+  }
 });

@@ -4,57 +4,40 @@ import { colorScheme } from './colorScheme';
 
 export const textStyles = StyleSheet.create({
   headerText: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
     color: colorScheme.textDark,
-    marginBottom: 2,
+    marginBottom: 10,
   },
   subHeaderText: {
     fontSize: 12,
     color: colorScheme.textSecondary,
-    marginBottom: 10,
+    marginBottom: 8,
   },
   sectionTitle: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: colorScheme.textDark,
-    marginBottom: 5,
-  },
-  subsectionTitle: {
     fontSize: 12,
     fontWeight: 'bold',
     color: colorScheme.textDark,
-    marginBottom: 3,
+    marginBottom: 8,
   },
   regularText: {
     fontSize: 10,
-    color: colorScheme.textDark,
     marginBottom: 5,
-    lineHeight: 1.5,
+    lineHeight: 1.4,
   },
   boldText: {
     fontSize: 10,
     fontWeight: 'bold',
-    color: colorScheme.textDark,
+    marginBottom: 5,
   },
   smallText: {
     fontSize: 8,
     color: colorScheme.textSecondary,
-  },
-  labelText: {
-    fontSize: 10,
-    fontWeight: 'bold',
-    color: colorScheme.textDark,
-    marginRight: 5,
-  },
-  valueText: {
-    fontSize: 10,
-    color: colorScheme.textDark,
+    marginBottom: 2,
   },
   footerText: {
     fontSize: 8,
     color: colorScheme.textSecondary,
-    textAlign: 'center',
   },
   pageNumber: {
     position: 'absolute',
@@ -63,4 +46,33 @@ export const textStyles = StyleSheet.create({
     fontSize: 8,
     color: colorScheme.textSecondary,
   },
+  // Add missing text styles
+  fieldLabel: {
+    fontSize: 9,
+    fontWeight: 'bold',
+    color: colorScheme.textSecondary,
+    marginBottom: 2,
+  },
+  fieldValue: {
+    fontSize: 10,
+    color: colorScheme.textDark,
+    marginBottom: 5,
+  },
+  disclaimerText: {
+    fontSize: 8,
+    color: colorScheme.textSecondary,
+    fontStyle: 'italic',
+    marginTop: 5,
+  },
+  summaryText: {
+    fontSize: 10,
+    marginBottom: 10,
+    lineHeight: 1.5,
+  },
+  conclusionText: {
+    fontSize: 11,
+    fontWeight: 'bold',
+    marginTop: 10,
+    marginBottom: 5,
+  }
 });

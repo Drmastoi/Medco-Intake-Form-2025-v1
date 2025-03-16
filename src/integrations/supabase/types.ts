@@ -278,6 +278,83 @@ export type Database = {
         }
         Relationships: []
       }
+      questionnaire_data: {
+        Row: {
+          created_at: string | null
+          form_data: Json
+          id: string
+          submission_id: string | null
+          version: string
+        }
+        Insert: {
+          created_at?: string | null
+          form_data: Json
+          id?: string
+          submission_id?: string | null
+          version: string
+        }
+        Update: {
+          created_at?: string | null
+          form_data?: Json
+          id?: string
+          submission_id?: string | null
+          version?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "questionnaire_data_submission_id_fkey"
+            columns: ["submission_id"]
+            isOneToOne: false
+            referencedRelation: "questionnaire_submissions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      questionnaire_submissions: {
+        Row: {
+          claimant_email: string
+          claimant_name: string | null
+          claimant_report_url: string | null
+          completed_date: string | null
+          created_at: string | null
+          expert_email: string
+          expert_report_url: string | null
+          id: string
+          reference_number: string
+          status: string
+          submission_date: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          claimant_email: string
+          claimant_name?: string | null
+          claimant_report_url?: string | null
+          completed_date?: string | null
+          created_at?: string | null
+          expert_email: string
+          expert_report_url?: string | null
+          id?: string
+          reference_number: string
+          status?: string
+          submission_date?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          claimant_email?: string
+          claimant_name?: string | null
+          claimant_report_url?: string | null
+          completed_date?: string | null
+          created_at?: string | null
+          expert_email?: string
+          expert_report_url?: string | null
+          id?: string
+          reference_number?: string
+          status?: string
+          submission_date?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       questionnaire_tracking: {
         Row: {
           completed: boolean

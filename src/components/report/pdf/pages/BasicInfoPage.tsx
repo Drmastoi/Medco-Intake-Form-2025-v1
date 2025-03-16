@@ -1,44 +1,60 @@
 
 import React from 'react';
 import { Page, View, Text } from '@react-pdf/renderer';
-import { ReportData } from '@/types/reportTypes';
-import { layoutStyles } from '../styles/layoutStyles';
-import { textStyles } from '../styles/textStyles';
 import { pdfStyles } from '../styles/pdfStyles';
+import { textStyles } from '../styles/textStyles';
+import { layoutStyles } from '../styles/layoutStyles';
+import { ReportData } from '@/types/reportTypes';
 import PDFFooter from '../components/PDFFooter';
 import { InstructionDetailsSection } from '../sections/InstructionDetailsSection';
 import { AppointmentDetailsSection } from '../sections/AppointmentDetailsSection';
 import { ClaimantDetailsSection } from '../sections/ClaimantDetailsSection';
 import { AccidentDetailsSection } from '../sections/AccidentDetailsSection';
 
-export interface BasicInfoPageProps {
+interface BasicInfoPageProps {
   reportData: ReportData;
   claimantName: string;
   today: string;
-  reportType?: "claimant" | "expert";
+  reportType: "claimant" | "expert";
 }
 
-const BasicInfoPage = ({ reportData, claimantName, today, reportType = "expert" }: BasicInfoPageProps) => {
+const BasicInfoPage = ({ reportData, claimantName, today, reportType }: BasicInfoPageProps) => {
   return (
-    <Page size="A4" style={pdfStyles.page}>
+    <Page size="A4" style={layoutStyles.page}>
       <View style={layoutStyles.pageContainer}>
-        <View style={pdfStyles.header}>
-          <Text style={textStyles.headerText}>Medical Legal Report</Text>
+        <View style={pdfStyles.section}>
+          <Text style={textStyles.headerText}>
+            Medico-Legal Report {reportType === "expert" ? "(Expert Copy)" : "(Claimant Copy)"}
+          </Text>
           <Text style={textStyles.subHeaderText}>
-            {reportType === "expert" ? "Medico-Legal Expert Report" : "Claimant Report"}
+            Report Date: {today}
           </Text>
         </View>
-
+        
         <View style={layoutStyles.content}>
-          <View style={pdfStyles.section}>
-            <InstructionDetailsSection reportData={reportData} />
-            <AppointmentDetailsSection reportData={reportData} />
-            <ClaimantDetailsSection reportData={reportData} />
-            <AccidentDetailsSection reportData={reportData} />
-          </View>
+          <InstructionDetailsSection 
+            prefilled={reportData.prefilled} 
+          />
+          
+          <AppointmentDetailsSection 
+            prefilled={reportData.prefilled} 
+          />
+          
+          <ClaimantDetailsSection 
+            personal={reportData.personal} 
+          />
+          
+          <AccidentDetailsSection 
+            accident={reportData.accident} 
+          />
         </View>
       </View>
-      <PDFFooter pageNumber={1} claimantName={claimantName} date={today} />
+      
+      <PDFFooter 
+        pageNumber={1} 
+        claimantName={claimantName} 
+        date={today} 
+      />
     </Page>
   );
 };

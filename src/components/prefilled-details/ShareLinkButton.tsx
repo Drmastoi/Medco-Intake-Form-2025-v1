@@ -5,7 +5,6 @@ import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { v4 as uuidv4 } from "uuid";
-import { createExtendedClient } from "@/types/supabase";
 
 interface ShareLinkButtonProps {
   form: any;

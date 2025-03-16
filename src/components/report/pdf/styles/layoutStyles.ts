@@ -5,7 +5,7 @@ import { colorScheme } from './colorScheme';
 export const layoutStyles = StyleSheet.create({
   page: {
     flexDirection: 'column',
-    backgroundColor: colorScheme.background,
+    backgroundColor: '#f9f9f9', // Use direct color instead of colorScheme.background
     padding: 40,
     paddingBottom: 60, // Extra space for footer
     fontFamily: 'Helvetica',
@@ -42,4 +42,21 @@ export const layoutStyles = StyleSheet.create({
     marginTop: 30,
     marginBottom: 30,
   },
+  // Add missing styles that were referenced in the PDF pages
+  sectionContainer: {
+    marginBottom: 15,
+    padding: 10,
+    borderRadius: 4,
+    border: `1px solid ${colorScheme.borderColor}`,
+    backgroundColor: 'white',
+  },
+  twoColumns: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  divider: {
+    borderBottomWidth: 1,
+    borderBottomColor: colorScheme.borderColor,
+    marginVertical: 10,
+  }
 });

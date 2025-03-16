@@ -1,24 +1,24 @@
 
 import React from 'react';
 import { View, Text } from '@react-pdf/renderer';
-import { ReportData } from '@/types/reportTypes';
 import { pdfStyles } from '../styles/pdfStyles';
 import { textStyles } from '../styles/textStyles';
-import { colorScheme } from '../styles/colorScheme';
+import { layoutStyles } from '../styles/layoutStyles';
+import { ReportData } from '@/types/reportTypes';
 import { TravelAnxietyComponent } from './injury-components/TravelAnxietyComponent';
 
 interface TravelAnxietySectionProps {
   reportData: ReportData;
-  reportType?: "claimant" | "expert";
+  reportType: "claimant" | "expert";
 }
 
-const TravelAnxietySection = ({ reportData, reportType = "expert" }: TravelAnxietySectionProps) => {
+export const TravelAnxietySection = ({ reportData, reportType = "expert" }: TravelAnxietySectionProps) => {
   if (!reportData.travelAnxiety?.hasAnxiety) {
     return null;
   }
   
   return (
-    <View style={pdfStyles.section}>
+    <View style={layoutStyles.sectionContainer}>
       <Text style={textStyles.sectionTitle}>Travel Anxiety</Text>
       
       <TravelAnxietyComponent 
@@ -28,5 +28,3 @@ const TravelAnxietySection = ({ reportData, reportType = "expert" }: TravelAnxie
     </View>
   );
 };
-
-export default TravelAnxietySection;

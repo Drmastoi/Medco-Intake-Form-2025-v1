@@ -1,31 +1,29 @@
 
 import { StyleSheet } from '@react-pdf/renderer';
 import { colorScheme } from './colorScheme';
-import { spacing } from './spacing';
-import { typography } from './typography';
 
 export const headerFooterStyles = StyleSheet.create({
   header: {
     backgroundColor: colorScheme.headerBg,
     color: colorScheme.textInverted,
-    padding: spacing.md,
-    marginBottom: spacing.xl,
+    padding: 10,
+    marginBottom: 20,
     textAlign: 'center',
-    borderRadius: 3,
-    fontSize: typography.fontSize.xl,
-    fontWeight: typography.fontWeight.bold,
+    borderRadius: 4,
+    fontSize: 12,
+    fontWeight: 'bold',
   },
   footer: {
     position: 'absolute',
-    bottom: 10,
-    left: 20,
-    right: 20,
+    bottom: 30,
+    left: 0,
+    right: 0,
     textAlign: 'center',
-    paddingTop: 10,
-    borderTop: `1px solid ${colorScheme.borderLight}`,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    fontSize: typography.fontSize.xs,
-    color: colorScheme.textLight,
-  },
+    fontSize: 9,
+    paddingHorizontal: 20,
+    paddingVertical: 5,
+    borderTopWidth: 1,
+    borderTopColor: colorScheme.borderColor,
+    color: colorScheme.textSecondary,
+  }
 });

@@ -15,7 +15,7 @@ const PDFFooter = ({ pageNumber, claimantName, date }: PDFFooterProps) => {
   
   return (
     <View style={headerFooterStyles.footer} fixed>
-      <View style={headerFooterStyles.footerContent}>
+      <View style={{ padding: 10, textAlign: 'center' }}>
         <Text style={textStyles.footerText}>
           {claimantName} | {formattedDate} | Page {pageNumber}
         </Text>
