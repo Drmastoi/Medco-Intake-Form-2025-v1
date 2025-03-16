@@ -30,8 +30,8 @@ const BasicInfoPage: React.FC<BasicInfoPageProps> = ({
       {/* Header with report type, claimant name and reference number */}
       <View style={[pdfStyles.header, { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }]}>
         <View style={{ width: '20%' }}>
-          {/* Logo placeholder - in production, replace with actual logo */}
-          <Text style={{ color: 'white', fontWeight: 'bold' }}>MedLegal</Text>
+          {/* Display claimant name instead of logo */}
+          <Text style={{ color: 'white', fontWeight: 'bold' }}>{claimantName}</Text>
         </View>
         <View style={{ width: '60%', textAlign: 'center' }}>
           <Text style={{color: 'white', fontSize: 16}}>
