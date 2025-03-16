@@ -30,7 +30,7 @@ export const InstructionDetailsSection = ({ formData, styles }: InstructionDetai
         </View>
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>3.4 Review of Records</Text>
-          <Text style={styles.fieldValue}>GP Records, A&E Records</Text>
+          <Text style={styles.fieldValue}>Not Required</Text>
         </View>
       </View>
     </View>

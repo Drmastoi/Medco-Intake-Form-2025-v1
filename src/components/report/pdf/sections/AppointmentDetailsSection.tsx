@@ -1,6 +1,7 @@
 
 import { Text, View } from '@react-pdf/renderer';
 import { ReportData } from '@/types/reportTypes';
+import { formatDate } from '../../../utils/dateUtils';
 
 interface AppointmentDetailsSectionProps {
   formData: ReportData;
@@ -15,7 +16,7 @@ export const AppointmentDetailsSection = ({ formData, styles }: AppointmentDetai
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>4.1 Date of Examination</Text>
-          <Text style={styles.fieldValue}>{formData.prefilled?.dateOfExamination || 'Not provided'}</Text>
+          <Text style={styles.fieldValue}>{formatDate(formData.prefilled?.dateOfExamination || '')}</Text>
         </View>
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>4.2 Location</Text>
@@ -41,7 +42,7 @@ export const AppointmentDetailsSection = ({ formData, styles }: AppointmentDetai
         </View>
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>4.6 Date of Report</Text>
-          <Text style={styles.fieldValue}>{formData.prefilled?.dateOfReport || 'Not provided'}</Text>
+          <Text style={styles.fieldValue}>{formatDate(formData.prefilled?.dateOfReport || '')}</Text>
         </View>
       </View>
     </View>

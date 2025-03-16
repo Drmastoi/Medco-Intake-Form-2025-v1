@@ -19,7 +19,7 @@ export const ExpertDetailsSection = ({ styles, formData }: ExpertDetailsSectionP
         </View>
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>Specialty:</Text>
-          <Text style={styles.fieldValue}>General Practice, Consultant</Text>
+          <Text style={styles.fieldValue}>Direct Medical Expert</Text>
         </View>
       </View>
       

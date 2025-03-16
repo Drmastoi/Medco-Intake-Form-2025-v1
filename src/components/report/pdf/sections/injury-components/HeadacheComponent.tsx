@@ -27,21 +27,6 @@ export const HeadacheComponent = ({ headache, styles }: HeadacheComponentProps) 
       
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>Start Date</Text>
-          <Text style={styles.fieldValue}>{safeValue(headache.start)}</Text>
-        </View>
-        <View style={styles.fieldColumn}>
-          <Text style={styles.fieldLabel}>End Date</Text>
-          <Text style={styles.fieldValue}>
-            {formatSeverity(headache.currentSeverity) === 'Resolved' 
-              ? 'Resolved' 
-              : 'Ongoing'}
-          </Text>
-        </View>
-      </View>
-      
-      <View style={styles.fieldRow}>
-        <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>Duration</Text>
           <Text style={styles.fieldValue}>
             {formatSeverity(headache.currentSeverity) === 'Resolved' 

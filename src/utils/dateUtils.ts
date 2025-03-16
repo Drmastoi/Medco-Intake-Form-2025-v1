@@ -6,7 +6,7 @@ export const formatDate = (dateString: string) => {
   
   try {
     const date = new Date(dateString);
-    return format(date, 'dd-MM-yyyy');
+    return format(date, 'dd/MM/yyyy');
   } catch (error) {
     console.error('Error formatting date:', error);
     return dateString || 'Not provided';
@@ -18,7 +18,7 @@ export const formatDateTime = (dateString: string) => {
   
   try {
     const date = new Date(dateString);
-    return format(date, 'dd-MM-yyyy HH:mm');
+    return format(date, 'dd/MM/yyyy HH:mm');
   } catch (error) {
     console.error('Error formatting date and time:', error);
     return dateString || 'Not provided';
