@@ -9,19 +9,9 @@ interface InjuriesSectionProps {
 
 export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
   // Helper function to format injury duration
-  const formatDuration = (startDate: string | undefined, resolveDate: string | undefined) => {
-    if (!startDate || !resolveDate) return "Not specified";
-    
-    try {
-      const start = new Date(startDate);
-      const end = new Date(resolveDate);
-      const diffTime = Math.abs(end.getTime() - start.getTime());
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      
-      return `${diffDays} days`;
-    } catch (error) {
-      return "Invalid date format";
-    }
+  const formatDuration = (resolveDays: string | undefined) => {
+    if (!resolveDays) return "Not specified";
+    return `${resolveDays} days`;
   };
   
   return (
@@ -47,13 +37,13 @@ export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
           <View style={styles.fieldRow}>
             <View style={styles.fieldColumn}>
               <Text style={styles.fieldLabel}>Start Date</Text>
-              <Text style={styles.fieldValue}>{formData.injuries.neckPain.startDate || 'Not specified'}</Text>
+              <Text style={styles.fieldValue}>{formData.injuries.neckPain.painStart || 'Not specified'}</Text>
             </View>
             <View style={styles.fieldColumn}>
               <Text style={styles.fieldLabel}>End Date</Text>
               <Text style={styles.fieldValue}>
                 {formData.injuries.neckPain.currentSeverity === 'Resolved' 
-                  ? formData.injuries.neckPain.resolveDate || 'Not specified' 
+                  ? 'Resolved' 
                   : 'Ongoing'}
               </Text>
             </View>
@@ -64,13 +54,13 @@ export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
               <Text style={styles.fieldLabel}>Duration</Text>
               <Text style={styles.fieldValue}>
                 {formData.injuries.neckPain.currentSeverity === 'Resolved' 
-                  ? `${formData.injuries.neckPain.resolveDays || 'Not specified'} days` 
+                  ? formatDuration(formData.injuries.neckPain.resolveDays) 
                   : 'Ongoing'}
               </Text>
             </View>
             <View style={styles.fieldColumn}>
               <Text style={styles.fieldLabel}>Past History</Text>
-              <Text style={styles.fieldValue}>{formData.injuries.neckPain.pastHistory || 'None'}</Text>
+              <Text style={styles.fieldValue}>{formData.injuries.neckPain.hadPrior ? 'Yes' : 'None'}</Text>
             </View>
           </View>
         </View>
@@ -95,13 +85,13 @@ export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
           <View style={styles.fieldRow}>
             <View style={styles.fieldColumn}>
               <Text style={styles.fieldLabel}>Start Date</Text>
-              <Text style={styles.fieldValue}>{formData.injuries.backPain.startDate || 'Not specified'}</Text>
+              <Text style={styles.fieldValue}>{formData.injuries.backPain.painStart || 'Not specified'}</Text>
             </View>
             <View style={styles.fieldColumn}>
               <Text style={styles.fieldLabel}>End Date</Text>
               <Text style={styles.fieldValue}>
                 {formData.injuries.backPain.currentSeverity === 'Resolved' 
-                  ? formData.injuries.backPain.resolveDate || 'Not specified' 
+                  ? 'Resolved' 
                   : 'Ongoing'}
               </Text>
             </View>
@@ -112,13 +102,13 @@ export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
               <Text style={styles.fieldLabel}>Duration</Text>
               <Text style={styles.fieldValue}>
                 {formData.injuries.backPain.currentSeverity === 'Resolved' 
-                  ? `${formData.injuries.backPain.resolveDays || 'Not specified'} days` 
+                  ? formatDuration(formData.injuries.backPain.resolveDays) 
                   : 'Ongoing'}
               </Text>
             </View>
             <View style={styles.fieldColumn}>
               <Text style={styles.fieldLabel}>Past History</Text>
-              <Text style={styles.fieldValue}>{formData.injuries.backPain.pastHistory || 'None'}</Text>
+              <Text style={styles.fieldValue}>None</Text>
             </View>
           </View>
         </View>
@@ -143,13 +133,13 @@ export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
           <View style={styles.fieldRow}>
             <View style={styles.fieldColumn}>
               <Text style={styles.fieldLabel}>Start Date</Text>
-              <Text style={styles.fieldValue}>{formData.injuries.shoulderPain.startDate || 'Not specified'}</Text>
+              <Text style={styles.fieldValue}>{formData.injuries.shoulderPain.painStart || 'Not specified'}</Text>
             </View>
             <View style={styles.fieldColumn}>
               <Text style={styles.fieldLabel}>End Date</Text>
               <Text style={styles.fieldValue}>
                 {formData.injuries.shoulderPain.currentSeverity === 'Resolved' 
-                  ? formData.injuries.shoulderPain.resolveDate || 'Not specified' 
+                  ? 'Resolved' 
                   : 'Ongoing'}
               </Text>
             </View>
@@ -160,13 +150,13 @@ export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
               <Text style={styles.fieldLabel}>Duration</Text>
               <Text style={styles.fieldValue}>
                 {formData.injuries.shoulderPain.currentSeverity === 'Resolved' 
-                  ? `${formData.injuries.shoulderPain.resolveDays || 'Not specified'} days` 
+                  ? formatDuration(formData.injuries.shoulderPain.resolveDays) 
                   : 'Ongoing'}
               </Text>
             </View>
             <View style={styles.fieldColumn}>
               <Text style={styles.fieldLabel}>Past History</Text>
-              <Text style={styles.fieldValue}>{formData.injuries.shoulderPain.pastHistory || 'None'}</Text>
+              <Text style={styles.fieldValue}>None</Text>
             </View>
           </View>
           
@@ -198,13 +188,13 @@ export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
           <View style={styles.fieldRow}>
             <View style={styles.fieldColumn}>
               <Text style={styles.fieldLabel}>Start Date</Text>
-              <Text style={styles.fieldValue}>{formData.injuries.headache.startDate || 'Not specified'}</Text>
+              <Text style={styles.fieldValue}>{formData.injuries.headache.start || 'Not specified'}</Text>
             </View>
             <View style={styles.fieldColumn}>
               <Text style={styles.fieldLabel}>End Date</Text>
               <Text style={styles.fieldValue}>
                 {formData.injuries.headache.currentSeverity === 'Resolved' 
-                  ? formData.injuries.headache.resolveDate || 'Not specified' 
+                  ? 'Resolved' 
                   : 'Ongoing'}
               </Text>
             </View>
@@ -215,7 +205,7 @@ export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
               <Text style={styles.fieldLabel}>Duration</Text>
               <Text style={styles.fieldValue}>
                 {formData.injuries.headache.currentSeverity === 'Resolved' 
-                  ? `${formData.injuries.headache.resolveDays || 'Not specified'} days` 
+                  ? formatDuration(formData.injuries.headache.resolveDays) 
                   : 'Ongoing'}
               </Text>
             </View>
@@ -246,13 +236,13 @@ export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
           <View style={styles.fieldRow}>
             <View style={styles.fieldColumn}>
               <Text style={styles.fieldLabel}>Start Date</Text>
-              <Text style={styles.fieldValue}>{formData.travelAnxiety.startDate || 'Not specified'}</Text>
+              <Text style={styles.fieldValue}>{formData.travelAnxiety.duration || 'Not specified'}</Text>
             </View>
             <View style={styles.fieldColumn}>
               <Text style={styles.fieldLabel}>End Date</Text>
               <Text style={styles.fieldValue}>
                 {formData.travelAnxiety.currentSeverity === 'Resolved' 
-                  ? formData.travelAnxiety.resolveDate || 'Not specified' 
+                  ? 'Resolved' 
                   : 'Ongoing'}
               </Text>
             </View>
@@ -263,7 +253,7 @@ export const InjuriesSection = ({ formData, styles }: InjuriesSectionProps) => {
               <Text style={styles.fieldLabel}>Duration</Text>
               <Text style={styles.fieldValue}>
                 {formData.travelAnxiety.currentSeverity === 'Resolved' 
-                  ? `${formData.travelAnxiety.resolveDays || 'Not specified'} days` 
+                  ? formatDuration(formData.travelAnxiety.resolveDays) 
                   : 'Ongoing'}
               </Text>
             </View>

@@ -18,6 +18,13 @@ export const MedicalRecordsReviewSection = ({ styles }: MedicalRecordsReviewSect
           </Text>
         </View>
       </View>
+      
+      <View style={{ marginTop: 15 }}>
+        <Text style={styles.sectionHeader}>PROSPECTS ON THE OPEN JOB MARKET</Text>
+        <Text style={styles.fieldValue}>
+          Employment prospects in the open job market would be unaffected because of the injuries.
+        </Text>
+      </View>
     </View>
   );
 };
