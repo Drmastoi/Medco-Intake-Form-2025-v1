@@ -22,6 +22,7 @@ import { StatementOfInstructionSection } from '../../sections/StatementOfInstruc
 import { SummaryOfInjuriesTableSection } from '../../sections/SummaryOfInjuriesTableSection';
 import { ConclusionSection } from '../sections/ConclusionSection';
 import { AgreementSection } from '../sections/AgreementSection';
+import { WriterInfoSection } from '../sections/WriterInfoSection';
 import { format } from 'date-fns';
 
 // Create styles
@@ -193,11 +194,12 @@ const PDFDocumentContent = ({ reportData }: PDFDocumentContentProps) => {
     };
   }
 
-  // Ensure travelAnxiety is handled correctly to fix TS error
-  const safeReportData = {
-    ...reportData,
-    travelAnxiety: reportData.travelAnxiety || {
+  // Ensure travelAnxiety has all required properties
+  const safeReportData = reportData;
+  if (!safeReportData.travelAnxiety) {
+    safeReportData.travelAnxiety = {
       hasAnxiety: false,
+      currentlyDriving: '',
       initialSeverity: '',
       currentSeverity: '',
       symptoms: [],
@@ -206,9 +208,12 @@ const PDFDocumentContent = ({ reportData }: PDFDocumentContentProps) => {
       startDateEstimated: false,
       resolveDate: '',
       resolveDateEstimated: false,
-      resolveDays: ''
-    }
-  };
+      resolveDays: '',
+      pastHistory: '',
+      duration: '',
+      hasHistory: ''
+    };
+  }
 
   return (
     <Document>
@@ -226,6 +231,10 @@ const PDFDocumentContent = ({ reportData }: PDFDocumentContentProps) => {
         
         <View style={styles.section}>
           <ExpertDetailsSection styles={styles} formData={safeReportData} />
+        </View>
+
+        <View style={styles.section}>
+          <WriterInfoSection styles={styles} />
         </View>
         
         <View style={styles.section}>
@@ -366,7 +375,7 @@ const PDFDocumentContent = ({ reportData }: PDFDocumentContentProps) => {
           </View>
         </View>
         
-        {/* New Agreement Section */}
+        {/* Agreement Section */}
         <AgreementSection claimantName={claimantName} />
         
         <Footer pageNumber={4} claimantName={claimantName} today={today} />
