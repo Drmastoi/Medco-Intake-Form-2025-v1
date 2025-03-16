@@ -173,6 +173,10 @@ export function PrefilledDetailsSection({ form }: { form: any }) {
           />
         </div>
       </div>
+      
+      <div className="mt-4">
+        <ShareLinkButton form={form} />
+      </div>
     </div>
   );
 }

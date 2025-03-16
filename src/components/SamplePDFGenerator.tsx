@@ -4,9 +4,9 @@ import { generateSampleReportData } from '@/utils/sampleReportData';
 import PDFReport from '@/components/report/pdf/PDFReport';
 import { Button } from '@/components/ui/button';
 import { ReportData } from '@/types/reportTypes';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { FileText } from 'lucide-react';
 
-const SamplePDFGenerator: React.FC = () => {
+export function SamplePDFGenerator() {
   const [isReportOpen, setIsReportOpen] = useState(false);
   const [reportData, setReportData] = useState<ReportData | null>(null);
 
@@ -21,33 +21,23 @@ const SamplePDFGenerator: React.FC = () => {
   };
 
   return (
-    <Card className="w-full max-w-lg mx-auto mt-8">
-      <CardHeader>
-        <CardTitle>Sample PDF Report Generator</CardTitle>
-        <CardDescription>
-          Generate a sample medical report PDF using test data
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="flex flex-col items-center gap-4">
-        <Button 
-          onClick={handleGenerateSamplePDF}
-          size="lg"
-          className="w-full"
-        >
-          Generate Sample PDF
-        </Button>
-        
-        {reportData && (
-          <PDFReport
-            reportData={reportData}
-            isOpen={isReportOpen}
-            onClose={handleCloseReport}
-            isPreview={true}
-          />
-        )}
-      </CardContent>
-    </Card>
+    <div className="mt-8 text-center">
+      <Button 
+        onClick={handleGenerateSamplePDF}
+        variant="outline"
+      >
+        <FileText className="mr-2 h-4 w-4" />
+        View Sample Report
+      </Button>
+      
+      {reportData && (
+        <PDFReport
+          reportData={reportData}
+          isOpen={isReportOpen}
+          onClose={handleCloseReport}
+          isPreview={true}
+        />
+      )}
+    </div>
   );
-};
-
-export default SamplePDFGenerator;
+}

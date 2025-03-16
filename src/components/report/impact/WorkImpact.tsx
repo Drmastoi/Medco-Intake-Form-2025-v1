@@ -18,7 +18,7 @@ export const WorkImpact = ({ formData }: WorkImpactProps) => {
       "";
 
     // Combine the workDifficulties array with the otherWorkDifficulties if present
-    const allDifficulties = formData.workDifficulties || [];
+    let allDifficulties = Array.isArray(formData.workDifficulties) ? formData.workDifficulties : [];
     if (formData.otherWorkDifficulties) {
       allDifficulties.push(formData.otherWorkDifficulties);
     }
