@@ -1,3 +1,4 @@
+
 export interface ReportData {
   prefilled: PrefilledData;
   personal: PersonalData;

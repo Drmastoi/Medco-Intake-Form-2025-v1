@@ -1,4 +1,3 @@
-
 import { FormSchema } from "@/schemas/intakeFormSchema";
 import { 
   PrefilledData, 
@@ -63,6 +62,7 @@ export function convertPersonalData(formData: FormSchema): PersonalData {
     address: formData.address || "Not specified",
     occupation: formData.occupation || "Not specified",
     workType: formData.workType || "Not specified",
+    idType: formData.idType || "Not specified",
   };
 }
 
