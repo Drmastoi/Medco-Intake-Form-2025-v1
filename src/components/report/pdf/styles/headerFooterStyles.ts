@@ -25,5 +25,20 @@ export const headerFooterStyles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: colorScheme.borderColor,
     color: colorScheme.textSecondary,
+  },
+  footerContent: {
+    padding: 10,
+    textAlign: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  footerText: {
+    fontSize: 9,
+    color: colorScheme.textSecondary,
+  },
+  footerPageNumber: {
+    fontSize: 9,
+    fontWeight: 'bold',
+    color: colorScheme.textSecondary,
   }
 });

@@ -20,10 +20,27 @@ export const colorScheme = {
   cardBg: '#ffffff',       // white
   tableBg: '#ffffff',      // white
   tableHeaderBg: '#f3f4f6', // gray-100
+  tableRowAlt: '#f9fafb',   // gray-50
   altBg: '#f3f4f6',        // gray-100
   
   headerBg: '#1f2937',     // gray-800
+  footerBg: '#f3f4f6',     // gray-100
   
   // Text color
-  text: '#1f2937'          // gray-800
+  text: '#1f2937',         // gray-800
+  
+  // Medical report specific colors
+  medicalHighlight: '#eef2ff', // indigo-50
+  medicalWarning: '#fff7ed',   // orange-50
+  medicalInfo: '#ecfdf5',      // emerald-50
+  
+  // Severity levels
+  severityMild: '#d1fae5',     // emerald-100
+  severityModerate: '#fef3c7',  // amber-100
+  severitySevere: '#fee2e2',    // red-100
+  
+  // Timeline markers
+  timelineStart: '#bfdbfe',    // blue-200
+  timelineCurrent: '#a5b4fc',  // indigo-300
+  timelineEnd: '#c4b5fd',      // violet-300
 };
