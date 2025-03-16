@@ -1,9 +1,10 @@
 
 import { Button } from "@/components/ui/button";
 import { Share } from "lucide-react";
-import emailjs from '@emailjs/browser';
 import { useToast } from "@/hooks/use-toast";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { v4 as uuidv4 } from "uuid";
 
 interface ShareLinkButtonProps {
   form: any;
@@ -12,10 +13,6 @@ interface ShareLinkButtonProps {
 export function ShareLinkButton({ form }: ShareLinkButtonProps) {
   const { toast } = useToast();
   const [isSending, setIsSending] = useState(false);
-
-  useEffect(() => {
-    emailjs.init("YnnsjqOayi-IRBxy_");
-  }, []);
 
   const generateAndShareLink = async () => {
     const formData = form.getValues();
@@ -31,70 +28,85 @@ export function ShareLinkButton({ form }: ShareLinkButtonProps) {
     
     setIsSending(true);
     
-    const preFillData = {
-      solicitorName: formData.solicitorName || '',
-      solicitorReference: formData.solicitorReference || '',
-      instructingPartyName: formData.instructingPartyName || '',
-      instructingPartyReference: formData.instructingPartyReference || '',
-      examinationLocation: formData.examinationLocation || '',
-      medcoReference: formData.medcoReference || '',
-      dateOfExamination: formData.dateOfExamination || '',
-      dateOfReport: formData.dateOfReport || '',
-      emailId: formData.emailId || '',
-      timeSpentWithClaimant: formData.timeSpentWithClaimant || '15',
-    };
-    
-    const queryParams = new URLSearchParams();
-    Object.entries(preFillData).forEach(([key, value]) => {
-      if (value) {
-        queryParams.append(key, value.toString());
-      }
-    });
-    
-    const shareableLink = `${window.location.origin}?${queryParams.toString()}`;
-    
-    console.log("Shareable link generated:", shareableLink);
-    console.log("Email will be sent to:", formData.emailId);
+    // Generate a unique reference number
+    const referenceNumber = `MR-${uuidv4().substring(0, 8).toUpperCase()}`;
     
     try {
-      const templateParams = {
-        to_name: formData.solicitorName || "Valued Client",
-        to_email: formData.emailId,
-        message: `
-Dear ${formData.solicitorName || "Valued Client"},
-
-I hope this email finds you well. As part of your personal injury assessment process, we have prepared a detailed questionnaire for you to complete.
-
-Please click on the link below to access your personalized questionnaire. The form will be pre-filled with the information we already have:
-
-${shareableLink}
-
-If you have any questions or need assistance while completing the questionnaire, please don't hesitate to contact us.
-
-Best regards,
-Your Medical Assessment Team
-        `,
-        link: shareableLink,
+      // Save the pre-filled data to Supabase
+      const prefilledData = {
+        solicitorName: formData.solicitorName || '',
+        solicitorReference: formData.solicitorReference || '',
+        instructingPartyName: formData.instructingPartyName || '',
+        instructingPartyReference: formData.instructingPartyReference || '',
+        examinationLocation: formData.examinationLocation || '',
+        medcoReference: formData.medcoReference || '',
+        dateOfExamination: formData.dateOfExamination || '',
+        dateOfReport: formData.dateOfReport || '',
+        timeSpentWithClaimant: formData.timeSpentWithClaimant || '15',
+        accompaniedBy: formData.accompaniedBy || '',
+        expertName: "Dr. Sam Smith", // Default expert name
+        expertSpecialty: "General Practice", // Default specialty
+        expertTitle: "Consultant", // Default title
+        gmcNumber: "1234567", // Default GMC number
       };
-
-      const response = await emailjs.send(
-        "service_by7xf4t",
-        "template_5l8vu23",
-        templateParams,
-        "YnnsjqOayi-IRBxy_"
-      );
       
-      console.log('EmailJS Response:', response);
+      // First, create a submission record
+      const { data: submissionData, error: submissionError } = await supabase
+        .from('questionnaire_submissions')
+        .insert([
+          {
+            reference_number: referenceNumber,
+            expert_email: 'drawais@gmail.com', // Hardcoded expert email
+            claimant_email: formData.emailId,
+            claimant_name: formData.fullName || 'Claimant',
+            status: 'sent_to_claimant'
+          }
+        ])
+        .select('id')
+        .single();
+      
+      if (submissionError) throw submissionError;
+      
+      // Then, store the form data
+      const { error: dataError } = await supabase
+        .from('questionnaire_data')
+        .insert([
+          {
+            submission_id: submissionData.id,
+            form_data: form.getValues(),
+            version: 'prefilled'
+          }
+        ]);
+      
+      if (dataError) throw dataError;
+      
+      // Create a query string with minimal data for the URL
+      const queryParams = new URLSearchParams();
+      queryParams.append('ref', referenceNumber);
+      
+      const shareableLink = `${window.location.origin}?${queryParams.toString()}`;
+      
+      // Send the email via edge function
+      const { error: emailError } = await supabase.functions.invoke('send-claimant-invitation', {
+        body: {
+          to_email: formData.emailId,
+          to_name: formData.fullName || "Valued Client",
+          reference_number: referenceNumber,
+          link: shareableLink,
+        },
+      });
+      
+      if (emailError) throw emailError;
 
       toast({
-        title: "Link Shared",
-        description: "The questionnaire link has been sent to the provided email address.",
+        title: "Invitation Sent",
+        description: `Questionnaire invitation sent to ${formData.emailId} with reference number ${referenceNumber}`,
       });
     } catch (error) {
-      console.error('EmailJS Error:', error);
+      console.error('Error:', error);
       toast({
         title: "Error",
-        description: "Failed to send the email. Please try again.",
+        description: "Failed to send the invitation. Please try again.",
         variant: "destructive",
       });
     } finally {

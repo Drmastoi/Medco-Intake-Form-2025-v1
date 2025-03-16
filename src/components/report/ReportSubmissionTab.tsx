@@ -14,56 +14,121 @@ import {
 import PDFReport from './pdf/PDFReport';
 import { FormSchema } from '@/schemas/intakeFormSchema';
 import { useReportEmailSubmission } from '@/hooks/useReportEmailSubmission';
-import { Loader2 } from 'lucide-react';
+import { Loader2, CheckCircle2 } from 'lucide-react';
 import { convertFormDataToReportData } from '@/utils/pdfReportUtils';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 interface ReportSubmissionTabProps {
   isOpen: boolean;
   onClose: () => void;
   formData: FormSchema;
+  referenceNumber: string | null;
 }
 
-export const ReportSubmissionTab = ({ isOpen, onClose, formData }: ReportSubmissionTabProps) => {
-  const [sendToEmail, setSendToEmail] = useState('');
-  const [recipientName, setRecipientName] = useState('');
-  const [emailDialogOpen, setEmailDialogOpen] = useState(false);
+export const ReportSubmissionTab = ({ isOpen, onClose, formData, referenceNumber }: ReportSubmissionTabProps) => {
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const { toast } = useToast();
   
-  // Convert form data to report data structure
-  const reportData = convertFormDataToReportData(formData);
+  // Convert form data to report data structure for claimant report (without prognosis)
+  const claimantReportData = convertFormDataToReportData(formData);
   
-  console.log("ReportSubmissionTab using formData with lifestyle:", 
-    JSON.stringify(formData.impactOnWork),
-    JSON.stringify(formData.workDifficulties));
+  // Add metadata
+  if (claimantReportData.meta) {
+    claimantReportData.meta.reportType = "claimant";
+    claimantReportData.meta.referenceNumber = referenceNumber || undefined;
+  } else {
+    claimantReportData.meta = {
+      reportType: "claimant",
+      referenceNumber: referenceNumber || undefined
+    };
+  }
   
-  console.log("ReportSubmissionTab converted to reportData:", 
-    JSON.stringify(reportData.other?.lifestyle, null, 2));
+  // Create expert report data (with prognosis)
+  const expertReportData = JSON.parse(JSON.stringify(claimantReportData));
+  if (expertReportData.meta) {
+    expertReportData.meta.reportType = "expert";
+  } else {
+    expertReportData.meta = {
+      reportType: "expert"
+    };
+  }
   
-  // Use report email submission hook
-  const { isSubmitting, isSuccess, submitReportViaEmail } = useReportEmailSubmission(reportData);
-  
-  // Custom validation for email
-  const validateEmail = (email: string) => {
-    if (!email) return "Email is required";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "Please enter a valid email";
-    return null;
-  };
-  
-  // Email validation state
-  const [emailError, setEmailError] = useState<string | null>(null);
-  
-  const handleSendEmail = () => {
-    // Validate email before sending
-    const validationError = validateEmail(sendToEmail);
-    if (validationError) {
-      setEmailError(validationError);
+  const handleSubmitReport = async () => {
+    if (!referenceNumber) {
+      toast({
+        title: "Missing Reference",
+        description: "Cannot submit without a reference number.",
+        variant: "destructive"
+      });
       return;
     }
     
-    // Clear any previous errors
-    setEmailError(null);
+    setIsSubmitting(true);
     
-    // Send the report
-    submitReportViaEmail(sendToEmail, recipientName);
+    try {
+      // Find the submission record
+      const { data: submission, error: submissionError } = await supabase
+        .from('questionnaire_submissions')
+        .select('id')
+        .eq('reference_number', referenceNumber)
+        .single();
+      
+      if (submissionError) throw submissionError;
+      
+      // Store the completed form data
+      const { error: dataError } = await supabase
+        .from('questionnaire_data')
+        .insert([
+          {
+            submission_id: submission.id,
+            form_data: formData,
+            version: 'completed'
+          }
+        ]);
+      
+      if (dataError) throw dataError;
+      
+      // Update submission status
+      const { error: updateError } = await supabase
+        .from('questionnaire_submissions')
+        .update({ 
+          status: 'completed',
+          completed_date: new Date().toISOString()
+        })
+        .eq('id', submission.id);
+      
+      if (updateError) throw updateError;
+      
+      // Send both reports via edge function
+      const { error: sendError } = await supabase.functions.invoke('send-completed-reports', {
+        body: {
+          reference_number: referenceNumber,
+          claimant_report_data: claimantReportData,
+          expert_report_data: expertReportData
+        }
+      });
+      
+      if (sendError) throw sendError;
+      
+      setIsSuccess(true);
+      toast({
+        title: "Report Submitted",
+        description: "Your medical report has been submitted successfully.",
+      });
+    } catch (error) {
+      console.error("Error submitting report:", error);
+      toast({
+        title: "Submission Error",
+        description: "There was an error submitting your report. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+      setConfirmDialogOpen(false);
+    }
   };
 
   if (!isOpen) return null;
@@ -76,82 +141,67 @@ export const ReportSubmissionTab = ({ isOpen, onClose, formData }: ReportSubmiss
           <Button variant="ghost" onClick={onClose}>Close</Button>
         </div>
 
-        <div className="flex flex-col space-y-4">
-          <div className="rounded-md border p-4">
-            <h2 className="text-lg font-semibold mb-2">Download Report</h2>
-            <p className="text-sm text-gray-500 mb-4">
-              Download the report as a PDF file.
+        {isSuccess ? (
+          <div className="text-center py-8">
+            <CheckCircle2 className="h-16 w-16 text-green-500 mx-auto mb-4" />
+            <h3 className="text-2xl font-bold mb-2">Report Submitted Successfully</h3>
+            <p className="text-gray-600 mb-6">
+              Your medical report has been submitted to the medical expert. Thank you for completing the questionnaire.
             </p>
-            <PDFReport 
-              reportData={reportData} 
-              isOpen={true} 
-              onClose={() => {}} 
-              isPreview={true} 
-            />
+            <Button onClick={onClose}>Close</Button>
           </div>
+        ) : (
+          <div className="flex flex-col space-y-6">
+            <div className="rounded-md border p-4">
+              <h2 className="text-lg font-semibold mb-2">Preview Your Report</h2>
+              <p className="text-sm text-gray-500 mb-4">
+                Review your report before submission. This is exactly how the medical expert will see it.
+              </p>
+              <PDFReport 
+                reportData={claimantReportData} 
+                isOpen={true} 
+                onClose={() => {}} 
+                isPreview={true} 
+              />
+            </div>
 
-          <div className="rounded-md border p-4">
-            <h2 className="text-lg font-semibold mb-2">Send Report via Email</h2>
-            <Dialog open={emailDialogOpen} onOpenChange={setEmailDialogOpen}>
-              <DialogTrigger asChild>
-                <Button variant="outline">Send via Email</Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                  <DialogTitle>Send Report via Email</DialogTitle>
-                  <DialogDescription>
-                    Enter the recipient's email address and name to send the report.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="grid gap-4 py-4">
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="email" className="text-right">
-                      Email
-                    </Label>
-                    <Input 
-                      type="email" 
-                      id="email" 
-                      value={sendToEmail}
-                      onChange={(e) => {
-                        setSendToEmail(e.target.value);
-                        setEmailError(null); // Clear error on input change
-                      }}
-                      className="col-span-3" 
-                    />
+            <div className="rounded-md border p-4">
+              <h2 className="text-lg font-semibold mb-2">Submit Your Report</h2>
+              <p className="text-sm text-gray-500 mb-4">
+                Once submitted, your report will be sent to the medical expert for review.
+                {referenceNumber && <span className="block mt-1">Reference Number: {referenceNumber}</span>}
+              </p>
+              
+              <Dialog open={confirmDialogOpen} onOpenChange={setConfirmDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button className="w-full">Submit Report</Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Confirm Submission</DialogTitle>
+                    <DialogDescription>
+                      Are you sure you want to submit this report? This action cannot be undone.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="flex justify-end space-x-2 mt-4">
+                    <Button variant="outline" onClick={() => setConfirmDialogOpen(false)}>Cancel</Button>
+                    <Button 
+                      onClick={handleSubmitReport}
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Submitting...
+                        </>
+                      ) : "Confirm"}
+                    </Button>
                   </div>
-                  {emailError && <p className="text-red-500 text-sm">{emailError}</p>}
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="name" className="text-right">
-                      Recipient Name
-                    </Label>
-                    <Input 
-                      type="text" 
-                      id="name" 
-                      value={recipientName}
-                      onChange={(e) => setRecipientName(e.target.value)}
-                      className="col-span-3" 
-                    />
-                  </div>
-                </div>
-                <div className="flex justify-end">
-                  <Button 
-                    type="button" 
-                    onClick={handleSendEmail}
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" /> 
-                        Sending...
-                      </>
-                    ) : 'Send Email'}
-                  </Button>
-                </div>
-              </DialogContent>
-            </Dialog>
-            {isSuccess && <p className="text-green-500 text-sm mt-2">Report sent successfully!</p>}
+                </DialogContent>
+              </Dialog>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FormSchema, formSchema } from "@/schemas/intakeFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -8,10 +8,16 @@ import { IntakeFormHeader } from "@/components/intake-form/IntakeFormHeader";
 import { useFormPrefill } from "@/hooks/useFormPrefill";
 import { useReportGeneration } from "@/hooks/useReportGeneration";
 import { ReportSubmissionTab } from "@/components/report/ReportSubmissionTab";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { Loader2 } from "lucide-react";
 
 export function IntakeFormContainer() {
   const [currentSection, setCurrentSection] = useState(0);
   const [showSubmissionTab, setShowSubmissionTab] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [referenceNumber, setReferenceNumber] = useState<string | null>(null);
+  const { toast } = useToast();
   const totalSections = 13;
 
   const tabNames = [
@@ -124,6 +130,61 @@ export function IntakeFormContainer() {
     },
   });
 
+  // Parse URL params on component mount
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const ref = queryParams.get('ref');
+    
+    if (ref) {
+      setReferenceNumber(ref);
+      loadFormDataByReference(ref);
+    }
+  }, []);
+
+  // Load pre-filled form data from Supabase
+  const loadFormDataByReference = async (reference: string) => {
+    setIsLoading(true);
+    try {
+      // First get the submission ID
+      const { data: submission, error: submissionError } = await supabase
+        .from('questionnaire_submissions')
+        .select('id, status, claimant_email')
+        .eq('reference_number', reference)
+        .single();
+      
+      if (submissionError) throw submissionError;
+      
+      // Then get the prefilled form data
+      const { data, error } = await supabase
+        .from('questionnaire_data')
+        .select('form_data')
+        .eq('submission_id', submission.id)
+        .eq('version', 'prefilled')
+        .single();
+      
+      if (error) throw error;
+      
+      if (data?.form_data) {
+        // Reset form with the loaded data
+        form.reset(data.form_data);
+        
+        toast({
+          title: "Form Loaded",
+          description: `Questionnaire loaded with reference: ${reference}`,
+        });
+      }
+    } catch (error) {
+      console.error("Error loading form data:", error);
+      toast({
+        title: "Error",
+        description: "Could not load the questionnaire. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   // Handle tab changes
   const handleTabChange = (value: string) => {
     setCurrentSection(parseInt(value));
@@ -149,8 +210,26 @@ export function IntakeFormContainer() {
     setShowSubmissionTab(true);
   };
 
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center">
+          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
+          <p className="text-gray-600">Loading questionnaire data...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto py-10 px-4">
+      {referenceNumber && (
+        <div className="bg-blue-50 border border-blue-200 rounded-md p-4 mb-6">
+          <h2 className="font-semibold text-blue-700">Reference Number: {referenceNumber}</h2>
+          <p className="text-sm text-blue-600">Please keep this reference number for your records</p>
+        </div>
+      )}
+      
       <IntakeFormHeader 
         currentSection={currentSection}
         onTabChange={handleTabChange}
@@ -170,6 +249,7 @@ export function IntakeFormContainer() {
         isOpen={showSubmissionTab} 
         onClose={() => setShowSubmissionTab(false)}
         formData={form.getValues()}
+        referenceNumber={referenceNumber}
       />
     </div>
   );

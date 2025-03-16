@@ -6,6 +6,16 @@ export interface ReportData {
   injuries: InjuriesData;
   travelAnxiety: TravelAnxietyData;
   other: OtherData;
+  meta?: ReportMetaData;
+}
+
+export interface ReportMetaData {
+  referenceNumber?: string;
+  reportType?: "claimant" | "expert";
+  claimantEmail?: string;
+  expertEmail?: string;
+  submissionDate?: string;
+  status?: string;
 }
 
 export interface PrefilledData {
@@ -104,7 +114,7 @@ export interface TravelAnxietyData {
   pastHistory: string;
   hasHistory: string;
   currentlyDriving: string;
-  duration?: string; // Add this field to fix the errors
+  duration?: string;
 }
 
 export interface OtherData {
