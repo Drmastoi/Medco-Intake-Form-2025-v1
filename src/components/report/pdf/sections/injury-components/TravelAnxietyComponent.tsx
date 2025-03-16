@@ -34,8 +34,8 @@ export const TravelAnxietyComponent = ({ travelAnxiety, styles }: TravelAnxietyC
   };
 
   // Get onset description
-  const getOnsetDescription = (start?: string) => {
-    switch (start) {
+  const getOnsetDescription = (anxietyStart?: string) => {
+    switch (anxietyStart) {
       case "1": return "Same day";
       case "2": return "Next day";
       case "3": return "Few days later";
@@ -50,7 +50,7 @@ export const TravelAnxietyComponent = ({ travelAnxiety, styles }: TravelAnxietyC
       <View style={styles.fieldRow}>
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>Onset</Text>
-          <Text style={styles.fieldValue}>{getOnsetDescription(travelAnxiety.start)}</Text>
+          <Text style={styles.fieldValue}>{getOnsetDescription(travelAnxiety.anxietyStart)}</Text>
         </View>
         <View style={styles.fieldColumn}>
           <Text style={styles.fieldLabel}>Currently Driving</Text>

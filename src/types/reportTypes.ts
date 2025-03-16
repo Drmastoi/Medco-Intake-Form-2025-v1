@@ -92,7 +92,7 @@ export interface TravelAnxietyData {
   currentSeverity: string;
   resolveDays: string;
   pastHistory: string;
-  duration: string;
+  anxietyStart: string;
   hasHistory: string;
 }
 
