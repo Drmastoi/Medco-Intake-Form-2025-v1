@@ -30,6 +30,7 @@ export function CompletionDialog({
   const [showRating, setShowRating] = useState(false);
   const [rating, setRating] = useState(0);
   const { toast } = useToast();
+  const expertName = "Dr Awais Iqbal";
 
   const handleConfirm = () => {
     setShowRating(true);
@@ -80,7 +81,7 @@ export function CompletionDialog({
                 information has been successfully submitted.
               </p>
               <p>
-                A medical expert will review your responses and prepare your
+                {expertName} will review your responses and prepare your
                 medical-legal report. You will be contacted if any additional
                 information is needed.
               </p>

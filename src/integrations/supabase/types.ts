@@ -74,6 +74,36 @@ export type Database = {
         }
         Relationships: []
       }
+      feedback_ratings: {
+        Row: {
+          created_at: string
+          email: string | null
+          feedback_type: string
+          id: string
+          rating: number
+          user_id: string | null
+          user_name: string | null
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          feedback_type: string
+          id?: string
+          rating: number
+          user_id?: string | null
+          user_name?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          feedback_type?: string
+          id?: string
+          rating?: number
+          user_id?: string | null
+          user_name?: string | null
+        }
+        Relationships: []
+      }
       form_submissions: {
         Row: {
           accident_date: string | null

@@ -24,6 +24,8 @@ export function RatingDialog({
   setRating,
   onSubmit,
 }: RatingDialogProps) {
+  const expertName = "Dr Awais Iqbal";
+  
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
@@ -31,7 +33,7 @@ export function RatingDialog({
           <DialogTitle>Thank You for Completing Your Assessment</DialogTitle>
           <DialogDescription className="space-y-4">
             <p>Your report has been successfully submitted for review.</p>
-            <p>A summary copy has been sent to your email address, and a full medical report has been sent to our expert for review.</p>
+            <p>A summary copy has been sent to your email address, and a full medical report has been sent to {expertName} for review.</p>
             <div className="mt-4">
               <p className="mb-2">How would you rate your experience?</p>
               <div className="flex gap-2 justify-center">
