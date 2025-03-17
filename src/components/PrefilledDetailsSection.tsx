@@ -9,6 +9,7 @@ import { ExaminationFields } from "@/components/prefilled-details/ExaminationFie
 import { DateFields } from "@/components/prefilled-details/DateFields";
 import { ClaimantEmailField } from "@/components/prefilled-details/ClaimantEmailField";
 import { TimeSpentField } from "@/components/prefilled-details/TimeSpentField";
+import { MobileNumberField } from "@/components/prefilled-details/MobileNumberField";
 
 export function PrefilledDetailsSection({ form }: { form: any }) {
   return (
@@ -29,6 +30,9 @@ export function PrefilledDetailsSection({ form }: { form: any }) {
         <DateFields form={form} />
         <div className="grid grid-cols-2 gap-6">
           <ClaimantEmailField form={form} />
+          <MobileNumberField form={form} />
+        </div>
+        <div className="grid grid-cols-2 gap-6">
           <TimeSpentField form={form} />
         </div>
       </div>

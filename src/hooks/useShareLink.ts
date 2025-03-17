@@ -58,7 +58,8 @@ export function useShareLink() {
           recipientName: formData.fullName || "Valued Client",
           shareableLink: shareableLink,
           senderName: senderName || formData.solicitorName || "Medical Assessment Team",
-          medcoReference: formData.medcoReference
+          medcoReference: formData.medcoReference,
+          mobileNumber: formData.mobileNumber || "Not provided"
         }
       });
       

@@ -16,6 +16,7 @@ interface SendClaimantLinkRequest {
   shareableLink: string;
   senderName: string;
   medcoReference?: string;
+  mobileNumber?: string;
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -30,11 +31,13 @@ const handler = async (req: Request): Promise<Response> => {
       recipientName, 
       shareableLink, 
       senderName,
-      medcoReference 
+      medcoReference,
+      mobileNumber
     }: SendClaimantLinkRequest = await req.json();
 
     console.log("Sending claimant link email to:", recipientEmail);
     console.log("With link:", shareableLink);
+    console.log("Mobile number:", mobileNumber);
 
     const emailResponse = await resend.emails.send({
       from: "MEDCO Assessment <onboarding@resend.dev>",
@@ -46,6 +49,7 @@ const handler = async (req: Request): Promise<Response> => {
           <p>Dear ${recipientName || "Valued Client"},</p>
           <p>As part of your personal injury assessment process, we have prepared a detailed questionnaire for you to complete.</p>
           ${medcoReference ? `<p>Your MEDCO Reference: <strong>${medcoReference}</strong></p>` : ''}
+          ${mobileNumber ? `<p>Contact Number: <strong>${mobileNumber}</strong></p>` : ''}
           <p>Please click on the link below to access your personalized questionnaire. The form will be pre-filled with the information we already have:</p>
           <p style="margin: 20px 0;">
             <a href="${shareableLink}" 
