@@ -39,33 +39,35 @@ export function LoadPrefilledButton({ form }: LoadPrefilledButtonProps) {
     setIsLoading(true);
     
     try {
-      // First try to load from Supabase
-      try {
-        const { data, error } = await supabase
-          .from('prefilled_details')
-          .select('*')
-          .eq('email_id', searchEmail)
-          .single();
-          
-        if (error) throw error;
-        
-        if (data && data.data) {
-          setFoundData(data.data);
-          return;
-        }
-      } catch (dbError) {
-        console.error('Database search error:', dbError);
-        // Continue with local storage search
-      }
-      
-      // Try to load from local storage as fallback
+      // Try to load from local storage first as it's faster
       const storedData = localStorage.getItem('prefilledData');
       if (storedData) {
         const parsedData = JSON.parse(storedData);
         if (parsedData.emailId === searchEmail) {
           setFoundData(parsedData);
+          setIsLoading(false);
           return;
         }
+      }
+      
+      // Then try to load from Supabase
+      try {
+        // Using 'any' temporarily to work around the type mismatch
+        const response: any = await supabase
+          .from('prefilled_details')
+          .select('*')
+          .eq('email_id', searchEmail)
+          .single();
+          
+        if (response.error) throw response.error;
+        
+        if (response.data && response.data.data) {
+          setFoundData(response.data.data);
+          return;
+        }
+      } catch (dbError) {
+        console.error('Database search error:', dbError);
+        // Continue with local storage search as fallback
       }
       
       // No data found

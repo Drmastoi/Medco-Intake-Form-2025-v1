@@ -49,14 +49,15 @@ export function SavePrefilledButton({ form }: SavePrefilledButtonProps) {
       
       // If connected to Supabase, save to database
       try {
-        const { error } = await supabase
+        // Using 'any' temporarily to work around the type mismatch
+        const response: any = await supabase
           .from('prefilled_details')
           .upsert({
             email_id: formData.emailId,
             data: prefilledData,
           }, { onConflict: 'email_id' });
           
-        if (error) throw error;
+        if (response.error) throw response.error;
       } catch (dbError) {
         console.error('Database save error:', dbError);
         // Continue with toast success since we have local storage backup

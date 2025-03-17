@@ -257,6 +257,30 @@ export type Database = {
         }
         Relationships: []
       }
+      prefilled_details: {
+        Row: {
+          created_at: string
+          data: Json
+          email_id: string
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          data: Json
+          email_id: string
+          id?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json
+          email_id?: string
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
