@@ -32,11 +32,8 @@ export function IntakeFormNavButtons({
 
       {isLastSection ? (
         <Button 
-          type="submit"
-          onClick={onSubmit ? (e) => {
-            e.preventDefault();
-            onSubmit();
-          } : undefined}
+          type="button"
+          onClick={onSubmit}
         >
           <Send className="mr-2 h-4 w-4" />
           Submit Questionnaire

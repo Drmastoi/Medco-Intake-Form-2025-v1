@@ -21,13 +21,25 @@ export function IntakeFormContent({
   setCurrentSection,
   onSubmit
 }: IntakeFormContentProps) {
-  const handleSubmit = onSubmit 
-    ? form.handleSubmit(onSubmit)
-    : () => console.log("No submit handler provided");
+  const handleFormSubmit = async () => {
+    // Validate the entire form
+    const isValid = await form.trigger();
+    
+    if (isValid && onSubmit) {
+      const values = form.getValues();
+      await onSubmit(values);
+    } else {
+      // If validation fails, focus on the first error
+      const firstError = Object.keys(form.formState.errors)[0];
+      if (firstError) {
+        form.setFocus(firstError as any);
+      }
+    }
+  };
 
   return (
     <Form {...form}>
-      <form className="space-y-8" onSubmit={handleSubmit}>
+      <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
         <div className="grid grid-cols-1 gap-6">
           <IntakeFormSections 
             currentSection={currentSection} 
@@ -39,7 +51,7 @@ export function IntakeFormContent({
           currentSection={currentSection}
           totalSections={totalSections}
           setCurrentSection={setCurrentSection}
-          onSubmit={currentSection === totalSections - 1 ? handleSubmit : undefined}
+          onSubmit={handleFormSubmit}
         />
       </form>
     </Form>
