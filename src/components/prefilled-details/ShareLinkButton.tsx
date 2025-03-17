@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Share, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -97,6 +96,7 @@ export function ShareLinkButton({ form }: ShareLinkButtonProps) {
         description: "The questionnaire link has been sent to the provided email address.",
       });
       
+      // Only close the dialog after successful completion
       setShareDialogOpen(false);
     } catch (error) {
       console.error('Email sending error:', error);
@@ -110,18 +110,21 @@ export function ShareLinkButton({ form }: ShareLinkButtonProps) {
     }
   };
 
-  // Handle dialog open separately to prevent accidental closing
+  // Force the dialog to stay open while sending
   const handleOpenDialog = () => {
     setShareDialogOpen(true);
   };
 
-  // Handle dialog close with confirmation if sending is in progress
-  const handleCloseDialog = () => {
-    if (isSending) {
-      // Prevent closing while sending
-      return;
+  // Custom dialog close handler with strict prevention during sending
+  const handleCloseDialog = (open: boolean) => {
+    // If trying to close (open === false) while sending is in progress, prevent it
+    if (!open && isSending) {
+      console.log("Preventing dialog close while sending email");
+      return; // Don't update state, effectively preventing close
     }
-    setShareDialogOpen(false);
+    
+    // Otherwise allow the dialog state to change
+    setShareDialogOpen(open);
   };
 
   return (
@@ -135,7 +138,11 @@ export function ShareLinkButton({ form }: ShareLinkButtonProps) {
         Share with Claimant
       </Button>
       
-      <Dialog open={shareDialogOpen} onOpenChange={handleCloseDialog}>
+      {/* Force dialog to remain mounted while sending with forceMount */}
+      <Dialog 
+        open={shareDialogOpen} 
+        onOpenChange={handleCloseDialog}
+      >
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
             <DialogTitle>Share Questionnaire with Claimant</DialogTitle>
