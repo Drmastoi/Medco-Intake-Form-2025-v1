@@ -110,10 +110,24 @@ export function ShareLinkButton({ form }: ShareLinkButtonProps) {
     }
   };
 
+  // Handle dialog open separately to prevent accidental closing
+  const handleOpenDialog = () => {
+    setShareDialogOpen(true);
+  };
+
+  // Handle dialog close with confirmation if sending is in progress
+  const handleCloseDialog = () => {
+    if (isSending) {
+      // Prevent closing while sending
+      return;
+    }
+    setShareDialogOpen(false);
+  };
+
   return (
     <>
       <Button
-        onClick={() => setShareDialogOpen(true)}
+        onClick={handleOpenDialog}
         variant="outline"
         className="flex items-center gap-2"
       >
@@ -121,7 +135,7 @@ export function ShareLinkButton({ form }: ShareLinkButtonProps) {
         Share with Claimant
       </Button>
       
-      <Dialog open={shareDialogOpen} onOpenChange={setShareDialogOpen}>
+      <Dialog open={shareDialogOpen} onOpenChange={handleCloseDialog}>
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
             <DialogTitle>Share Questionnaire with Claimant</DialogTitle>
