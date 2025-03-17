@@ -43,13 +43,13 @@ export function LoadPrefilledButton({ form }: LoadPrefilledButtonProps) {
       try {
         const { data, error } = await supabase
           .from('prefilled_details')
-          .select('data')
+          .select('*')
           .eq('email_id', searchEmail)
           .single();
           
         if (error) throw error;
         
-        if (data?.data) {
+        if (data && data.data) {
           setFoundData(data.data);
           return;
         }

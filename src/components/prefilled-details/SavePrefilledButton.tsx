@@ -54,7 +54,6 @@ export function SavePrefilledButton({ form }: SavePrefilledButtonProps) {
           .upsert({
             email_id: formData.emailId,
             data: prefilledData,
-            created_at: new Date().toISOString(),
           }, { onConflict: 'email_id' });
           
         if (error) throw error;
