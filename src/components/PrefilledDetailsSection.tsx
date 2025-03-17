@@ -1,6 +1,8 @@
 
 import { Form } from "@/components/ui/form";
 import { ShareLinkButton } from "@/components/prefilled-details/ShareLinkButton";
+import { SavePrefilledButton } from "@/components/prefilled-details/SavePrefilledButton";
+import { LoadPrefilledButton } from "@/components/prefilled-details/LoadPrefilledButton";
 import { SolicitorFields } from "@/components/prefilled-details/SolicitorFields";
 import { InstructingPartyFields } from "@/components/prefilled-details/InstructingPartyFields";
 import { ExaminationFields } from "@/components/prefilled-details/ExaminationFields";
@@ -13,7 +15,11 @@ export function PrefilledDetailsSection({ form }: { form: any }) {
     <div className="space-y-4">
       <div className="flex justify-between items-center mb-8">
         <h2 className="text-xl font-semibold">Prefilled Details</h2>
-        <ShareLinkButton form={form} />
+        <div className="flex space-x-2">
+          <LoadPrefilledButton form={form} />
+          <SavePrefilledButton form={form} />
+          <ShareLinkButton form={form} />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
