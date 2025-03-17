@@ -1,91 +1,143 @@
 
 import React from 'react';
-import { View, Text } from '@react-pdf/renderer';
-import { pdfStyles } from '../styles/pdfStyles';
-import { textStyles } from '../styles/textStyles';
-import { layoutStyles } from '../styles/layoutStyles';
-import { colorScheme } from '../styles/colorScheme';
+import { Text, View, StyleSheet, Image } from '@react-pdf/renderer';
+import { format } from 'date-fns';
+
+const styles = StyleSheet.create({
+  section: {
+    marginBottom: 10,
+    paddingTop: 15,
+  },
+  sectionTitle: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    backgroundColor: '#e0e0e0',
+    padding: 5,
+    fontFamily: 'Helvetica-Bold',
+  },
+  subsectionTitle: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    marginTop: 15,
+    fontFamily: 'Helvetica-Bold',
+  },
+  text: {
+    fontSize: 10,
+    marginBottom: 10,
+    lineHeight: 1.4,
+    fontFamily: 'Helvetica',
+  },
+  row: {
+    flexDirection: 'row',
+    marginTop: 15,
+    marginBottom: 20,
+  },
+  column: {
+    width: '50%',
+  },
+  label: {
+    fontSize: 11,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    fontFamily: 'Helvetica-Bold',
+  },
+  signatureImage: {
+    width: 150,
+    height: 50,
+    marginTop: 5,
+  },
+  value: {
+    fontSize: 10,
+    fontFamily: 'Helvetica',
+  },
+  declarationItem: {
+    flexDirection: 'row',
+    marginBottom: 8,
+    alignItems: 'flex-start',
+  },
+  declarationText: {
+    fontSize: 10,
+    width: '90%',
+    fontFamily: 'Helvetica',
+  },
+  yesText: {
+    fontSize: 10,
+    width: '10%',
+    textAlign: 'right',
+    fontFamily: 'Helvetica',
+  }
+});
 
 interface AgreementSectionProps {
-  reportType: "claimant" | "expert";
+  claimantName?: string;
 }
 
-export const AgreementSection = ({ reportType }: AgreementSectionProps) => {
+export const AgreementSection = ({ claimantName }: AgreementSectionProps) => {
+  const today = format(new Date(), 'dd-MM-yyyy');
+  
   return (
-    <View style={layoutStyles.sectionContainer}>
-      <Text style={textStyles.sectionTitle}>Statement of Truth</Text>
+    <View style={styles.section} break>
+      <Text style={styles.sectionTitle}>Section G</Text>
       
-      {reportType === "expert" && (
-        <>
-          <Text style={textStyles.regularText}>
-            I understand that my overriding duty is to the court and I have complied with that duty.
-          </Text>
-          
-          <Text style={textStyles.regularText}>
-            I am aware of the requirements of Part 35 of the Civil Procedure Rules, the accompanying practice direction and the protocol for instructing experts to give evidence in civil claims.
-          </Text>
-          
-          <Text style={textStyles.regularText}>
-            I confirm that I have made clear which facts and matters referred to in this report are within my own knowledge and which are not. Those that are within my own knowledge I confirm to be true. The opinions I have expressed represent my true and complete professional opinions on the matters to which they refer.
-          </Text>
-          
-          <View style={{ marginTop: 20 }}>
-            <Text style={textStyles.regularText}>
-              Signed: <Text style={{ color: colorScheme.textDark, fontWeight: 'bold' }}>
-                ______________________________
-              </Text>
-            </Text>
-            <Text style={textStyles.smallText}>
-              (Electronic signature)
-            </Text>
-          </View>
-          
-          <View style={{ marginTop: 10 }}>
-            <Text style={textStyles.regularText}>
-              Date: <Text style={{ color: colorScheme.textDark, fontWeight: 'bold' }}>
-                ______________________________
-              </Text>
-            </Text>
-            <Text style={textStyles.regularText}>
-              
-            </Text>
-          </View>
-        </>
-      )}
+      <Text style={styles.subsectionTitle}>G.1 Agreement of Report :</Text>
+      <Text style={styles.text}>
+        I confirm that I have verified with the claimant the facts as referred to in this report
+      </Text>
       
-      {reportType === "claimant" && (
-        <>
-          <Text style={textStyles.regularText}>
-            I confirm that the contents of this report as they relate to my injuries, symptoms, treatment, and impact on my daily life are true and accurate to the best of my knowledge and belief.
-          </Text>
-          
-          <Text style={textStyles.regularText}>
-            I understand that this document may be used as evidence in legal proceedings relating to my claim.
-          </Text>
-          
-          <View style={{ marginTop: 20 }}>
-            <Text style={textStyles.regularText}>
-              Signed: <Text style={{ color: colorScheme.textDark, fontWeight: 'bold' }}>
-                ______________________________
-              </Text>
-            </Text>
-            <Text style={textStyles.smallText}>
-              (Electronic signature)
+      <View style={styles.row}>
+        <View style={styles.column}>
+          <Text style={styles.label}>Signature</Text>
+          {/* Note: In a real implementation, you would want to use a dynamic signature image */}
+          <View style={styles.signatureImage}>
+            {/* Dummy signature representation */}
+            <Text style={{ fontFamily: 'Helvetica-Oblique', fontSize: 20, color: '#444' }}>
+              Dr. Signature
             </Text>
           </View>
-          
-          <View style={{ marginTop: 10 }}>
-            <Text style={textStyles.regularText}>
-              Date: <Text style={{ color: colorScheme.textDark, fontWeight: 'bold' }}>
-                ______________________________
-              </Text>
-            </Text>
-            <Text style={textStyles.regularText}>
-              
-            </Text>
-          </View>
-        </>
-      )}
+        </View>
+        <View style={styles.column}>
+          <Text style={styles.label}>Date</Text>
+          <Text style={styles.value}>{today}</Text>
+        </View>
+      </View>
+      
+      <Text style={styles.subsectionTitle}>G.2 Case Classification and Declaration :</Text>
+      
+      <Text style={styles.subsectionTitle}>G.2.1 Soft-tissue Injury Claim :</Text>
+      
+      <View style={styles.declarationItem}>
+        <Text style={styles.declarationText}>Was the Claimant an occupant of a motor vehicle? :</Text>
+        <Text style={styles.yesText}>Yes</Text>
+      </View>
+      
+      <View style={styles.declarationItem}>
+        <Text style={styles.declarationText}>Is the client's most significant injury a soft-tissue injury ?</Text>
+        <Text style={styles.yesText}>Yes</Text>
+      </View>
+      
+      <View style={styles.declarationItem}>
+        <Text style={styles.declarationText}>Is this the first report in relation to the client's injuries from the index accident.</Text>
+        <Text style={styles.yesText}>Yes</Text>
+      </View>
+      
+      <Text style={styles.subsectionTitle}>G.2.2 Declaration :</Text>
+      
+      <View style={styles.declarationItem}>
+        <Text style={styles.declarationText}>I have not provided treatment to the claimant.</Text>
+        <Text style={styles.yesText}>Yes</Text>
+      </View>
+      
+      <View style={styles.declarationItem}>
+        <Text style={styles.declarationText}>I am not associated with any person who has provided treatment.</Text>
+        <Text style={styles.yesText}>Yes</Text>
+      </View>
+      
+      <View style={styles.declarationItem}>
+        <Text style={styles.declarationText}>I have not recommended any particular treatment provider.</Text>
+        <Text style={styles.yesText}>Yes</Text>
+      </View>
     </View>
   );
 };

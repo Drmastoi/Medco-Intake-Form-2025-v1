@@ -1,37 +1,79 @@
 
 import React from 'react';
-import { View, Text } from '@react-pdf/renderer';
-import { pdfStyles } from '../styles/pdfStyles';
-import { textStyles } from '../styles/textStyles';
-import { layoutStyles } from '../styles/layoutStyles';
+import { Text, View, Image } from '@react-pdf/renderer';
+import { ReportData } from '@/types/reportTypes';
+import { format } from 'date-fns';
 
-export const ConclusionSection = () => {
+interface ConclusionSectionProps {
+  styles: any;
+  formData?: ReportData;
+}
+
+export const ConclusionSection = ({ styles, formData }: ConclusionSectionProps) => {
+  // Get today's date in UK format
+  const today = format(new Date(), "dd/MM/yyyy");
+
   return (
-    <View style={layoutStyles.sectionContainer}>
-      <Text style={textStyles.sectionTitle}>Conclusion</Text>
+    <View style={styles.subsection}>
+      <Text style={styles.sectionHeader}>Section 12 - Conclusion and Declaration</Text>
       
-      <Text style={textStyles.regularText}>
-        Based on the claimant's account of the accident, their reported symptoms, and my clinical assessment,
-        I conclude that the injuries described in this report are consistent with the mechanism of the accident
-        as described, and represent the consequences of the accident.
-      </Text>
+      {/* Case Classification Content */}
+      <View style={{ marginBottom: 15 }}>
+        <Text style={styles.fieldLabel}>12.1 Case Classification</Text>
+        <Text style={styles.fieldValue}>Seatbelts: Was the claimant wearing a seat belt? Yes</Text>
+        <Text style={styles.fieldValue}>Soft-tissue Injury Claim: Yes</Text>
+        <Text style={styles.fieldValue}>Was the Claimant an occupant of a motor vehicle? Yes</Text>
+        <Text style={styles.fieldValue}>Is the client's most significant injury a soft-tissue injury? Yes</Text>
+        <Text style={styles.fieldValue}>Is this the first report in relation to the client's injuries from the index accident? Yes</Text>
+        <Text style={styles.fieldValue}>{"\n"}I was able to obtain a good history. Claimant's injuries and recovery period were entirely consistent with the account of the accident. The treatment provided for the claimant has been appropriate. The problems reported in home life are consistent and reasonable. In my opinion, the time taken off work by the claimant is reasonable. Claimant is currently fit for working.</Text>
+      </View>
       
-      <Text style={textStyles.regularText}>
-        I have provided an assessment of the injuries and their impact on the claimant's daily life, as well as
-        a prognosis for recovery where appropriate. The opinions expressed in this report are my own and are
-        based on my clinical experience and judgment.
-      </Text>
+      {/* Declaration Content */}
+      <View style={{ marginBottom: 10 }}>
+        <Text style={styles.fieldLabel}>12.2 Expert Declaration</Text>
+        <Text style={styles.fieldValue}>
+          I confirm that I have made clear which facts and matters referred to in this report are within my own 
+          knowledge and which are not. Those that are within my own knowledge I confirm to be true. The 
+          opinions I have expressed represent my true and complete professional opinions on the matters to 
+          which they refer.
+        </Text>
+      </View>
       
-      <Text style={textStyles.regularText}>
-        I confirm that I have read the contents of this report and the opinions expressed are mine. I further
-        confirm that this report complies with my duty to the court, including all matters that might affect
-        the validity of this report.
-      </Text>
+      <View style={{ marginBottom: 10 }}>
+        <Text style={styles.fieldValue}>
+          I understand that proceedings for contempt of court may be brought against anyone who makes, or 
+          causes to be made, a false statement in a document verified by a statement of truth without an 
+          honest belief in its truth.
+        </Text>
+      </View>
       
-      <Text style={textStyles.regularText}>
-        I understand that this report may be disclosed to the court and other medical experts, but may not be
-        disclosed to any other person without the court's permission.
-      </Text>
+      <View style={{ marginBottom: 10, marginTop: 20 }}>
+        <Text style={styles.fieldValue}>
+          I confirm that this report has been prepared in accordance with the guidance set out in the 
+          Pre-Action Protocol for Low Value Personal Injury Claims and the Civil Procedure Rules.
+        </Text>
+      </View>
+      
+      {/* Spacer to push signature to bottom */}
+      <View style={{ flexGrow: 1, minHeight: 100 }} />
+      
+      {/* Signature and date at bottom of page */}
+      <View style={{ marginTop: 30 }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
+          <View style={{ width: '60%' }}>
+            <Text style={styles.fieldLabel}>Signature:</Text>
+            <Image 
+              src="/awais-signature.png" 
+              style={{ width: 150, height: 50 }} 
+            />
+            <Text style={styles.fieldValue}>Dr Awais Iqbal</Text>
+          </View>
+          <View style={{ width: '30%' }}>
+            <Text style={styles.fieldLabel}>Date:</Text>
+            <Text style={styles.fieldValue}>{today}</Text>
+          </View>
+        </View>
+      </View>
     </View>
   );
 };

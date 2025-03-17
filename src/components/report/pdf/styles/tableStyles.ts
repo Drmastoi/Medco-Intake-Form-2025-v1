@@ -1,54 +1,44 @@
 
 import { StyleSheet } from '@react-pdf/renderer';
 import { colorScheme } from './colorScheme';
+import { spacing } from './spacing';
+import { typography } from './typography';
 
 export const tableStyles = StyleSheet.create({
   tableContainer: {
-    marginTop: 10,
+    marginTop: spacing.md,
     borderWidth: 1,
-    borderColor: colorScheme.borderColor,
+    borderColor: colorScheme.tableBorder,
     borderStyle: 'solid',
-    borderRadius: 4,
+    borderRadius: 2,
     overflow: 'hidden',
   },
   tableHeader: {
     flexDirection: 'row',
     borderBottomWidth: 1,
-    borderBottomColor: colorScheme.borderColor,
-    backgroundColor: '#f3f4f6', // Use direct color instead of colorScheme.altBg
-    paddingVertical: 5,
-    paddingHorizontal: 8,
+    borderBottomColor: colorScheme.tableBorder,
+    backgroundColor: colorScheme.tableHeaderBg,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.sm,
+  },
+  tableHeaderCell: {
+    fontSize: typography.fontSize.sm,
+    fontWeight: typography.fontWeight.bold,
+    textAlign: 'left',
+    color: colorScheme.textSecondary,
   },
   tableRow: {
     flexDirection: 'row',
     borderBottomWidth: 1,
-    borderBottomColor: colorScheme.borderColor,
-    paddingVertical: 4,
-    paddingHorizontal: 8,
-    minHeight: 20,
+    borderBottomColor: colorScheme.borderLight,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.sm,
   },
   tableRowAlt: {
-    flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderBottomColor: colorScheme.borderColor,
-    paddingVertical: 4,
-    paddingHorizontal: 8,
-    backgroundColor: '#f9fafb', // Light background for alternate rows
-    minHeight: 20,
-  },
-  tableCol1: {
-    width: '30%',
-    paddingRight: 5,
-  },
-  tableCol2: {
-    width: '70%',
+    backgroundColor: colorScheme.tableRowBgAlt,
   },
   tableCell: {
-    fontSize: 9,
+    fontSize: typography.fontSize.sm,
     textAlign: 'left',
   },
-  tableHeaderCell: {
-    fontSize: 9,
-    fontWeight: 'bold',
-  }
 });

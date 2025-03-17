@@ -1,62 +1,44 @@
 
 import { StyleSheet } from '@react-pdf/renderer';
 import { colorScheme } from './colorScheme';
+import { spacing } from './spacing';
+import { typography } from './typography';
 
 export const layoutStyles = StyleSheet.create({
   page: {
     flexDirection: 'column',
-    backgroundColor: '#f9f9f9', // Use direct color instead of colorScheme.background
-    padding: 40,
-    paddingBottom: 60, // Extra space for footer
-    fontFamily: 'Helvetica',
-    fontSize: 10,
+    backgroundColor: colorScheme.pageBg,
+    padding: spacing.pageMargin,
+    paddingBottom: spacing.pageMargin * 3, // Add padding at the bottom for the footer
+    fontFamily: typography.fontFamily,
+    fontSize: typography.fontSize.base,
     color: colorScheme.textDark,
   },
-  pageContainer: {
-    flex: 1,
-    flexDirection: 'column',
-  },
   section: {
-    margin: 10,
-    padding: 15,
-    backgroundColor: 'white',
-    borderRadius: 5,
-    border: `1px solid ${colorScheme.borderColor}`,
-    marginBottom: 15,
+    margin: spacing.md,
+    padding: spacing.contentPadding,
+    backgroundColor: colorScheme.sectionBg,
+    borderRadius: 3,
+    border: `1px solid ${colorScheme.borderLight}`,
+    marginBottom: spacing.sectionGap,
   },
-  content: {
-    flex: 1,
-    flexDirection: 'column',
-  },
-  row: {
-    flexDirection: 'row',
-    marginBottom: 5,
-  },
-  column: {
-    flexDirection: 'column',
-    marginRight: 10,
-    flex: 1,
-  },
-  pageBreak: {
-    height: 1,
-    marginTop: 30,
-    marginBottom: 30,
-  },
-  // Add missing styles that were referenced in the PDF pages
-  sectionContainer: {
-    marginBottom: 15,
-    padding: 10,
-    borderRadius: 4,
-    border: `1px solid ${colorScheme.borderColor}`,
-    backgroundColor: 'white',
+  subsection: {
+    marginBottom: spacing.xl,
   },
   twoColumns: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  column: {
+    width: '48%',
+  },
   divider: {
     borderBottomWidth: 1,
-    borderBottomColor: colorScheme.borderColor,
-    marginVertical: 10,
-  }
+    borderBottomColor: colorScheme.borderLight,
+    marginVertical: spacing.md,
+  },
+  pageBreak: {
+    height: 0,
+    pageBreakAfter: 'always',
+  },
 });

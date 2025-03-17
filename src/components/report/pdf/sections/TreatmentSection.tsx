@@ -1,124 +1,99 @@
 
-import React from 'react';
-import { View, Text } from '@react-pdf/renderer';
-import { layoutStyles } from '../styles/layoutStyles';
-import { textStyles } from '../styles/textStyles';
-import { tableStyles } from '../styles/tableStyles';
-import { formatCheckboxList } from '../utils/formatUtils';
-import { colorScheme } from '../styles/colorScheme';
+import { Text, View } from '@react-pdf/renderer';
+import { ReportData } from '@/types/reportTypes';
 
 interface TreatmentSectionProps {
-  treatment: {
-    hasTreatment: boolean;
-    type?: string[];
-    frequency?: string;
-    duration?: string;
-    ongoing?: boolean;
-    sceneOfAccidentTreatment?: string;
-    sceneOfAccidentTreatmentTypes?: string[];
-    wentToAE?: string;
-    hospitalName?: string;
-    hospitalTreatment?: string[];
-    wentToWalkInGP?: string;
-    daysBeforeGPVisit?: string;
-    currentTreatment?: string;
-    physiotherapySessions?: string;
-  };
+  formData: ReportData;
+  styles: any;
 }
 
-const TreatmentSection: React.FC<TreatmentSectionProps> = ({ treatment }) => {
+export const TreatmentSection = ({ formData, styles }: TreatmentSectionProps) => {
+  // Extract treatment-related data for easier access
+  const treatmentData = formData.other?.treatment;
+  
   return (
-    <View style={[layoutStyles.section, { backgroundColor: colorScheme.sectionBg }]}>
-      <Text style={textStyles.sectionTitle}>Treatment Information</Text>
+    <View style={styles.subsection}>
+      <Text style={styles.sectionHeader}>Section 7 - Treatment</Text>
+      
+      <View style={{ marginBottom: 10 }}>
+        <Text style={styles.fieldLabel}>7.1 Type of Treatment</Text>
+        <Text style={styles.fieldValue}>
+          {treatmentData?.hasTreatment 
+            ? `The claimant has received the following treatment(s): ${treatmentData.type?.join(", ") || "Not specified"}.`
+            : "The claimant has not received any formal treatment for the injuries."}
+        </Text>
 
-      {!treatment.hasTreatment ? (
-        <Text style={textStyles.normalText}>The claimant did not receive any medical treatment for injuries sustained in the accident.</Text>
-      ) : (
-        <View>
-          <View style={tableStyles.tableContainer}>
-            <View style={tableStyles.tableHeader}>
-              <Text style={[textStyles.boldText, { flex: 1 }]}>Treatment Type</Text>
-              <Text style={[textStyles.boldText, { flex: 1 }]}>Details</Text>
-            </View>
+        {/* Treatment at scene of accident */}
+        {treatmentData?.sceneOfAccidentTreatment === "1" && (
+          <Text style={styles.fieldValue}>
+            The claimant received treatment at the scene of the accident. 
+            {treatmentData.sceneOfAccidentTreatmentTypes && treatmentData.sceneOfAccidentTreatmentTypes.length > 0 && 
+              ` This included ${treatmentData.sceneOfAccidentTreatmentTypes.join(", ")}.`}
+          </Text>
+        )}
 
-            {treatment.sceneOfAccidentTreatment === "1" && (
-              <View style={tableStyles.tableRow}>
-                <Text style={[textStyles.normalText, { flex: 1 }]}>At scene of accident</Text>
-                <Text style={[textStyles.normalText, { flex: 1 }]}>
-                  {formatCheckboxList(treatment.sceneOfAccidentTreatmentTypes) || "Not specified"}
-                </Text>
-              </View>
-            )}
+        {/* A&E attendance */}
+        {treatmentData?.wentToAE === "1" && (
+          <Text style={styles.fieldValue}>
+            The claimant attended A&E at {treatmentData.hospitalName || "the hospital"}.
+            {treatmentData.hospitalTreatment && treatmentData.hospitalTreatment.length > 0 && 
+              ` Hospital treatment included ${treatmentData.hospitalTreatment.join(", ")}.`}
+          </Text>
+        )}
 
-            {treatment.wentToAE === "1" && (
-              <View style={tableStyles.tableRow}>
-                <Text style={[textStyles.normalText, { flex: 1 }]}>Hospital treatment</Text>
-                <Text style={[textStyles.normalText, { flex: 1 }]}>
-                  {treatment.hospitalName || "Not specified"} - 
-                  {formatCheckboxList(treatment.hospitalTreatment) || "Not specified"}
-                </Text>
-              </View>
-            )}
+        {/* GP/Walk-in center attendance */}
+        {treatmentData?.wentToWalkInGP === "1" && (
+          <Text style={styles.fieldValue}>
+            The claimant visited their GP/Walk-in center {treatmentData.daysBeforeGPVisit || "some"} days after the accident.
+            {treatmentData.currentTreatment && ` They are currently taking ${getCurrentTreatmentText(treatmentData.currentTreatment)} for pain relief.`}
+          </Text>
+        )}
 
-            {treatment.wentToWalkInGP === "1" && (
-              <View style={tableStyles.tableRow}>
-                <Text style={[textStyles.normalText, { flex: 1 }]}>GP/Walk-in center</Text>
-                <Text style={[textStyles.normalText, { flex: 1 }]}>
-                  {treatment.daysBeforeGPVisit ? `${treatment.daysBeforeGPVisit} days after accident` : "Not specified"}
-                </Text>
-              </View>
-            )}
-
-            {treatment.currentTreatment && (
-              <View style={tableStyles.tableRow}>
-                <Text style={[textStyles.normalText, { flex: 1 }]}>Current treatment</Text>
-                <Text style={[textStyles.normalText, { flex: 1 }]}>{treatment.currentTreatment}</Text>
-              </View>
-            )}
-
-            {treatment.physiotherapySessions && (
-              <View style={tableStyles.tableRow}>
-                <Text style={[textStyles.normalText, { flex: 1 }]}>Physiotherapy</Text>
-                <Text style={[textStyles.normalText, { flex: 1 }]}>
-                  {treatment.physiotherapySessions} sessions
-                </Text>
-              </View>
-            )}
-
-            {treatment.type && treatment.type.length > 0 && (
-              <View style={tableStyles.tableRow}>
-                <Text style={[textStyles.normalText, { flex: 1 }]}>Treatment types</Text>
-                <Text style={[textStyles.normalText, { flex: 1 }]}>
-                  {formatCheckboxList(treatment.type)}
-                </Text>
-              </View>
-            )}
-
-            {treatment.frequency && (
-              <View style={tableStyles.tableRow}>
-                <Text style={[textStyles.normalText, { flex: 1 }]}>Frequency</Text>
-                <Text style={[textStyles.normalText, { flex: 1 }]}>{treatment.frequency}</Text>
-              </View>
-            )}
-
-            {treatment.duration && (
-              <View style={tableStyles.tableRow}>
-                <Text style={[textStyles.normalText, { flex: 1 }]}>Duration</Text>
-                <Text style={[textStyles.normalText, { flex: 1 }]}>{treatment.duration}</Text>
-              </View>
-            )}
-
-            <View style={tableStyles.tableRow}>
-              <Text style={[textStyles.normalText, { flex: 1 }]}>Ongoing treatment</Text>
-              <Text style={[textStyles.normalText, { flex: 1 }]}>
-                {treatment.ongoing ? "Yes, treatment is ongoing" : "No ongoing treatment"}
-              </Text>
-            </View>
+        {/* Physiotherapy */}
+        {treatmentData?.physiotherapySessions && parseInt(treatmentData.physiotherapySessions) > 0 && (
+          <Text style={styles.fieldValue}>
+            The claimant has attended {treatmentData.physiotherapySessions} physiotherapy sessions to date.
+          </Text>
+        )}
+      </View>
+      
+      {formData.other?.treatment?.hasTreatment && (
+        <>
+          <View style={{ marginBottom: 10 }}>
+            <Text style={styles.fieldLabel}>7.2 Frequency</Text>
+            <Text style={styles.fieldValue}>
+              {formData.other.treatment.frequency || "The frequency of treatment was not specified."}
+            </Text>
           </View>
-        </View>
+          
+          <View style={{ marginBottom: 10 }}>
+            <Text style={styles.fieldLabel}>7.3 Duration</Text>
+            <Text style={styles.fieldValue}>
+              {formData.other.treatment.duration || "The duration of treatment was not specified."}
+            </Text>
+          </View>
+          
+          <View style={{ marginBottom: 10 }}>
+            <Text style={styles.fieldLabel}>7.4 Treatment Status</Text>
+            <Text style={styles.fieldValue}>
+              {formData.other.treatment.ongoing
+                ? "The claimant is continuing to receive treatment."
+                : "The claimant has completed the course of treatment."}
+            </Text>
+          </View>
+        </>
       )}
     </View>
   );
 };
 
-export default TreatmentSection;
+// Function to get readable text for current treatment
+const getCurrentTreatmentText = (treatment: string | undefined) => {
+  switch (treatment) {
+    case "1": return "Paracetamol";
+    case "2": return "Ibuprofen/Naproxen";
+    case "3": return "Codeine";
+    case "4": return "other prescribed medicines";
+    default: return "unspecified medication";
+  }
+};

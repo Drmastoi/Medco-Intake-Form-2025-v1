@@ -1,83 +1,43 @@
 
 import { StyleSheet } from '@react-pdf/renderer';
 import { colorScheme } from './colorScheme';
+import { spacing } from './spacing';
+import { typography } from './typography';
 
 export const injuryStyles = StyleSheet.create({
-  injurySection: {
-    marginBottom: 15,
-    border: `1px solid ${colorScheme.borderColor}`,
-    borderRadius: 4,
-    overflow: 'hidden',
-  },
   injuryHeader: {
     backgroundColor: colorScheme.primary,
-    color: colorScheme.textLight,
-    padding: 8,
-    marginBottom: 5,
-    borderRadius: 4,
-    fontSize: 11,
+    color: colorScheme.textInverted,
+    padding: spacing.sm,
+    marginBottom: spacing.md,
+    borderRadius: 3,
+    fontSize: typography.fontSize.md,
   },
   injuryTable: {
-    marginBottom: 10,
+    marginBottom: spacing.xl,
   },
   injuryRow: {
     flexDirection: 'row',
-    marginBottom: 5,
+    marginBottom: spacing.sm,
     borderBottomWidth: 1,
-    borderBottomColor: colorScheme.borderColor,
-    paddingBottom: 2,
+    borderBottomColor: colorScheme.borderLight,
+    paddingBottom: spacing.sm,
   },
   injuryLabel: {
-    width: '35%',
-    fontSize: 9,
-    fontWeight: 'bold',
-    paddingRight: 5,
+    width: '30%',
+    fontWeight: typography.fontWeight.bold,
+    fontSize: typography.fontSize.sm,
     color: colorScheme.textSecondary,
   },
   injuryValue: {
-    width: '65%',
-    fontSize: 9,
+    width: '70%',
+    fontSize: typography.fontSize.sm,
   },
-  severityContainer: {
-    flexDirection: 'row',
-    marginTop: 5,
-    marginBottom: 8,
+  injuriesSectionTitle: {
+    fontSize: typography.fontSize.lg,
+    fontWeight: typography.fontWeight.bold,
+    marginTop: spacing.lg,
+    marginBottom: spacing.md,
+    color: colorScheme.primary,
   },
-  severityBox: {
-    width: 15,
-    height: 15,
-    margin: 2,
-    borderWidth: 1,
-    borderColor: colorScheme.borderColor,
-    backgroundColor: '#f3f4f6', // Use direct color instead of colorScheme.altBg
-  },
-  severityBoxActive: {
-    width: 15,
-    height: 15,
-    margin: 2,
-    borderWidth: 1,
-    borderColor: colorScheme.primary,
-    backgroundColor: colorScheme.primary,
-  },
-  injuryContainer: {
-    marginBottom: 10,
-    padding: 8,
-    borderWidth: 1,
-    borderColor: colorScheme.borderColor,
-    borderRadius: 4,
-  },
-  injuryContent: {
-    padding: 8,
-  },
-  injurySectionTitle: {
-    fontSize: 11,
-    fontWeight: 'bold',
-    marginBottom: 5,
-    color: colorScheme.textDark,
-  },
-  injuryTitle: {
-    fontSize: 11,
-    fontWeight: 'bold',
-    color: colorScheme.textLight,
-  }
 });

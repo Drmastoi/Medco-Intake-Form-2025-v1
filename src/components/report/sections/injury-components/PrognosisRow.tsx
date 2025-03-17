@@ -7,20 +7,14 @@ interface PrognosisRowProps {
   currentSeverity: string | undefined;
   resolveDays: string | undefined;
   styles: any;
-  reportType?: "claimant" | "expert";
 }
 
-export const PrognosisRow = ({ injuryType, currentSeverity, resolveDays, styles, reportType = "expert" }: PrognosisRowProps) => {
+export const PrognosisRow = ({ injuryType, currentSeverity, resolveDays, styles }: PrognosisRowProps) => {
   const isResolved = currentSeverity === "4";
   
   const getPrognosis = (currentSeverity: string | undefined, injuryType: string): string => {
     if (isResolved) {
       return `Resolved after ${resolveDays || "unknown"} days.`;
-    }
-    
-    // For claimant report, don't show specific prognosis times
-    if (reportType === "claimant") {
-      return "Will be determined by medical expert after review.";
     }
     
     switch (currentSeverity) {
@@ -35,14 +29,9 @@ export const PrognosisRow = ({ injuryType, currentSeverity, resolveDays, styles,
     }
   };
   
-  // Additional details based on injury type - only shown in expert report
+  // Additional details based on injury type
   const getAdditionalPrognosisDetails = (injuryType: string, currentSeverity: string | undefined): string => {
     if (isResolved) return "No ongoing symptoms or functional limitations remain.";
-    
-    // Don't show detailed prognosis information for claimant report
-    if (reportType === "claimant") {
-      return "";
-    }
     
     switch (injuryType) {
       case "Neck":
@@ -71,7 +60,7 @@ export const PrognosisRow = ({ injuryType, currentSeverity, resolveDays, styles,
       <Text style={styles.injuryLabel}>Prognosis</Text>
       <View style={{ width: '70%' }}>
         <Text style={styles.injuryValue}>{prognosis}</Text>
-        {!isResolved && additionalDetails && (
+        {!isResolved && (
           <View style={{ 
             marginTop: 3,
             backgroundColor: colorScheme.altSectionBg,

@@ -1,6 +1,6 @@
 
 import { Text, View } from '@react-pdf/renderer';
-import { formatCheckboxList } from '../pdf/utils/formatUtils';
+import { formatCheckboxList } from '../utils/formatUtils';
 import { impactStyles } from './impactStyles';
 
 interface WorkImpactProps {
@@ -18,7 +18,7 @@ export const WorkImpact = ({ formData }: WorkImpactProps) => {
       "";
 
     // Combine the workDifficulties array with the otherWorkDifficulties if present
-    let allDifficulties = Array.isArray(formData.workDifficulties) ? formData.workDifficulties : [];
+    const allDifficulties = formData.workDifficulties || [];
     if (formData.otherWorkDifficulties) {
       allDifficulties.push(formData.otherWorkDifficulties);
     }
@@ -37,5 +37,3 @@ export const WorkImpact = ({ formData }: WorkImpactProps) => {
     </View>
   );
 };
-
-export default WorkImpact;

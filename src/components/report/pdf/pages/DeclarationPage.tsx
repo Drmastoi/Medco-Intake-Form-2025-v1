@@ -1,44 +1,33 @@
 
 import React from 'react';
-import { View, Text } from '@react-pdf/renderer';
-import { layoutStyles } from '../styles/layoutStyles';
-import { textStyles } from '../styles/textStyles';
-import { ReportData } from '@/types/reportTypes';
-import PDFFooter from '../components/PDFFooter';
-import { AgreementSection } from '../sections/AgreementSection';
+import { Page, View, Text, Image } from '@react-pdf/renderer';
 import { ConclusionSection } from '../sections/ConclusionSection';
+import PDFFooter from '../components/PDFFooter';
+import { pdfStyles } from '../styles/pdfStyles';
 
 interface DeclarationPageProps {
-  reportData: ReportData;
-  claimantName?: string;
-  today?: string;
-  reportType?: "claimant" | "expert";
+  claimantName: string;
+  today: string;
 }
 
 const DeclarationPage: React.FC<DeclarationPageProps> = ({ 
-  reportData,
-  claimantName = "Not Specified",
-  today = new Date().toLocaleDateString('en-GB'),
-  reportType = "expert" 
+  claimantName, 
+  today 
 }) => {
   return (
-    <View style={layoutStyles.page}>
-      <View style={layoutStyles.pageContainer}>
-        <Text style={textStyles.headerText}>
-          Declaration and Professional Opinion
+    <Page size="A4" style={pdfStyles.page}>
+      <View style={pdfStyles.header}>
+        <Text style={{color: 'white', fontSize: 16, textAlign: 'center'}}>
+          Conclusion and Expert Declaration
         </Text>
-        
-        <ConclusionSection reportData={reportData} />
-        
-        <AgreementSection reportData={reportData} />
       </View>
       
-      <PDFFooter 
-        pageNumber={4} 
-        claimantName={claimantName} 
-        reportType={reportType}
-      />
-    </View>
+      <View style={[pdfStyles.section, { minHeight: '80%' }]}>
+        <ConclusionSection styles={pdfStyles} />
+      </View>
+      
+      <PDFFooter pageNumber={4} claimantName={claimantName} today={today} />
+    </Page>
   );
 };
 

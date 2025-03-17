@@ -1,70 +1,16 @@
-/**
- * Utility functions for formatting data in PDF reports
- */
 
 /**
- * Formats a list of checkbox values into a comma-separated string
- * with proper grammatical joining (using "and" for the last item)
+ * Formats a severity value to a readable string
  */
-export const formatCheckboxList = (items: string[] | undefined): string => {
-  if (!items || items.length === 0) {
-    return "";
-  }
-
-  // Filter out empty strings
-  const filteredItems = items.filter(item => item && item.trim() !== "");
-  
-  if (filteredItems.length === 0) {
-    return "";
-  }
-  
-  if (filteredItems.length === 1) {
-    return filteredItems[0];
-  }
-  
-  // Format as "item1, item2, and item3"
-  const lastItem = filteredItems.pop();
-  return `${filteredItems.join(", ")} and ${lastItem}`;
-};
-
-/**
- * Formats a date string into a readable format
- */
-export const formatDate = (dateString: string): string => {
-  if (!dateString || dateString === "Not specified") {
-    return "Not specified";
-  }
-  
-  try {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-GB', { 
-      day: 'numeric', 
-      month: 'long', 
-      year: 'numeric' 
-    });
-  } catch (error) {
-    console.error("Error formatting date:", error);
-    return dateString;
-  }
-};
-
-/**
- * Formats severity levels for consistent display
- */
-export const formatSeverity = (severity: string | undefined): string => {
+export function formatSeverity(severity: string | undefined): string {
   if (!severity) return "Not specified";
   
-  // If already a text description, return as is
-  if (typeof severity === 'string' && 
-     (severity.toLowerCase() === 'mild' || 
-      severity.toLowerCase() === 'moderate' || 
-      severity.toLowerCase() === 'severe' ||
-      severity.toLowerCase() === 'resolved' ||
-      severity.toLowerCase() === 'not specified')) {
+  // If severity is already a readable string, return it
+  if (["Mild", "Moderate", "Severe", "Resolved", "Not specified"].includes(severity)) {
     return severity;
   }
   
-  // Otherwise convert from numeric code
+  // Convert numeric severity to readable string
   switch (severity) {
     case "1": return "Mild";
     case "2": return "Moderate";
@@ -72,32 +18,36 @@ export const formatSeverity = (severity: string | undefined): string => {
     case "4": return "Resolved";
     default: return "Not specified";
   }
-};
+}
 
 /**
- * Formats resolve days to a human readable string
+ * Format a number of days into a human-readable duration
  */
-export const formatResolveDays = (days: string | undefined): string => {
-  if (!days || days === "Not specified") return "Not specified";
+export function formatDuration(days: string | number | undefined): string {
+  if (!days) return "Not specified";
   
-  // If already contains text, return as is
-  if (typeof days === 'string' && !(/^\d+$/.test(days))) {
-    return days;
-  }
+  const numDays = typeof days === 'string' ? parseInt(days, 10) : days;
   
-  const daysNum = parseInt(days, 10);
-  if (isNaN(daysNum)) return "Not specified";
+  if (isNaN(numDays)) return "Not specified";
   
-  if (daysNum === 0) return "Same day";
-  if (daysNum === 1) return "1 day";
-  if (daysNum < 7) return `${daysNum} days`;
+  if (numDays <= 0) return "Less than a day";
+  if (numDays === 1) return "1 day";
+  if (numDays < 7) return `${numDays} days`;
   
-  const weeks = Math.floor(daysNum / 7);
-  const remainingDays = daysNum % 7;
+  const weeks = Math.floor(numDays / 7);
+  const remainingDays = numDays % 7;
   
-  if (weeks === 1) {
-    return remainingDays > 0 ? `1 week and ${remainingDays} days` : "1 week";
-  } else {
-    return remainingDays > 0 ? `${weeks} weeks and ${remainingDays} days` : `${weeks} weeks`;
-  }
-};
+  if (weeks === 1 && remainingDays === 0) return "1 week";
+  if (weeks === 1) return `1 week and ${remainingDays} day${remainingDays !== 1 ? 's' : ''}`;
+  if (remainingDays === 0) return `${weeks} weeks`;
+  
+  return `${weeks} weeks and ${remainingDays} day${remainingDays !== 1 ? 's' : ''}`;
+}
+
+/**
+ * Safely returns a value or a default string if the value is undefined
+ */
+export function safeValue(value: string | undefined, defaultValue: string = "Not specified"): string {
+  if (!value) return defaultValue;
+  return value;
+}

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Document } from '@react-pdf/renderer';
 import { ReportData } from '@/types/reportTypes';
@@ -10,10 +11,9 @@ import ExpertInfoPage from '../pages/ExpertInfoPage';
 
 interface PDFDocumentContentProps {
   reportData: ReportData;
-  reportType?: "claimant" | "expert";
 }
 
-const PDFDocumentContent = ({ reportData, reportType = "expert" }: PDFDocumentContentProps) => {
+const PDFDocumentContent = ({ reportData }: PDFDocumentContentProps) => {
   // Ensure we have a valid UK date format
   const today = (() => {
     try {
@@ -27,11 +27,10 @@ const PDFDocumentContent = ({ reportData, reportType = "expert" }: PDFDocumentCo
   // Safely get claimant name with fallback
   const claimantName = reportData?.personal?.fullName || 'Not specified';
   
-  console.log(`PDFDocumentContent rendering ${reportType} report with data`, { 
+  console.log("PDFDocumentContent rendering with data", { 
     claimantName,
     hasOtherData: !!reportData.other,
-    hasLifestyle: !!(reportData.other?.lifestyle),
-    referenceNumber: reportData.meta?.referenceNumber
+    hasLifestyle: !!(reportData.other?.lifestyle)
   });
 
   // Create a safe copy of the report data with all required properties
@@ -245,8 +244,8 @@ const PDFDocumentContent = ({ reportData, reportType = "expert" }: PDFDocumentCo
       }
     }
     
-    return { ...reportData, meta: { ...reportData.meta, reportType } };
-  }, [reportData, reportType]);
+    return data;
+  }, [reportData]);
 
   // Error boundary to prevent crashes
   try {
@@ -255,38 +254,30 @@ const PDFDocumentContent = ({ reportData, reportType = "expert" }: PDFDocumentCo
         <BasicInfoPage 
           reportData={safeReportData} 
           claimantName={claimantName} 
-          today={today}
-          reportType={reportType}
+          today={today} 
         />
 
         <InjuriesPage 
           reportData={safeReportData} 
           claimantName={claimantName} 
-          today={today}
-          reportType={reportType}
+          today={today} 
         />
         
         <TreatmentLifestylePage 
           reportData={safeReportData} 
           claimantName={claimantName} 
-          today={today}
-          reportType={reportType}
+          today={today} 
         />
         
         <DeclarationPage 
-          reportData={safeReportData}
           claimantName={claimantName} 
-          today={today}
-          reportType={reportType}
+          today={today} 
         />
         
-        {reportType === "expert" && (
-          <ExpertInfoPage 
-            reportData={safeReportData}
-            claimantName={claimantName} 
-            today={today}
-          />
-        )}
+        <ExpertInfoPage 
+          claimantName={claimantName} 
+          today={today} 
+        />
       </Document>
     );
   } catch (error) {
@@ -298,8 +289,7 @@ const PDFDocumentContent = ({ reportData, reportType = "expert" }: PDFDocumentCo
         <BasicInfoPage 
           reportData={safeReportData} 
           claimantName={claimantName} 
-          today={today}
-          reportType={reportType}
+          today={today} 
         />
       </Document>
     );

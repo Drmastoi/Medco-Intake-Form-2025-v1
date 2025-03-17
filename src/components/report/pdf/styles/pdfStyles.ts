@@ -1,47 +1,59 @@
 
+import { StyleSheet } from '@react-pdf/renderer';
 import { layoutStyles } from './layoutStyles';
+import { headerFooterStyles } from './headerFooterStyles';
 import { textStyles } from './textStyles';
 import { tableStyles } from './tableStyles';
+import { badgeStyles } from './badgeStyles';
 import { injuryStyles } from './injuryStyles';
 
-// Combine all styles into one object for easier access
-export const pdfStyles = {
+// Combine all styles into one object for easy access
+export const pdfStyles = StyleSheet.create({
   // Layout styles
-  ...layoutStyles,
-  
-  // Section styles
+  page: layoutStyles.page,
   section: layoutStyles.section,
-  subsection: layoutStyles.sectionContainer,
+  subsection: layoutStyles.subsection,
   twoColumns: layoutStyles.twoColumns,
-  content: layoutStyles.content,
+  column: layoutStyles.column,
   divider: layoutStyles.divider,
+  pageBreak: layoutStyles.pageBreak,
+  
+  // Header & Footer styles
+  header: headerFooterStyles.header,
+  footer: headerFooterStyles.footer,
   
   // Text styles
-  ...textStyles,
-  
-  // Form field styles
-  sectionHeader: textStyles.sectionTitle,
-  fieldRow: layoutStyles.row,
-  fieldColumn: layoutStyles.column,
+  sectionHeader: textStyles.sectionHeader,
+  fieldRow: textStyles.fieldRow,
+  fieldColumn: textStyles.fieldColumn,
   fieldLabel: textStyles.fieldLabel,
   fieldValue: textStyles.fieldValue,
   disclaimerText: textStyles.disclaimerText,
   summaryText: textStyles.summaryText,
   conclusionText: textStyles.conclusionText,
-  highlightBox: {
-    backgroundColor: '#f3f4f6',
-    padding: 8,
-    borderRadius: 4,
-    marginBottom: 10,
-  },
+  highlightBox: textStyles.highlightBox,
   
   // Table styles
-  ...tableStyles,
+  tableContainer: tableStyles.tableContainer,
+  tableHeader: tableStyles.tableHeader,
+  tableHeaderCell: tableStyles.tableHeaderCell,
+  tableRow: tableStyles.tableRow,
   tableRowAlt: tableStyles.tableRowAlt,
+  tableCell: tableStyles.tableCell,
+  
+  // Badge styles
+  badge: badgeStyles.badge,
+  statusBadge: badgeStyles.statusBadge,
+  statusMild: badgeStyles.statusMild,
+  statusModerate: badgeStyles.statusModerate,
+  statusSevere: badgeStyles.statusSevere,
+  statusResolved: badgeStyles.statusResolved,
   
   // Injury styles
-  ...injuryStyles,
+  injuryHeader: injuryStyles.injuryHeader,
+  injuryTable: injuryStyles.injuryTable,
+  injuryRow: injuryStyles.injuryRow,
   injuryLabel: injuryStyles.injuryLabel,
   injuryValue: injuryStyles.injuryValue,
-  injuriesSectionTitle: injuryStyles.injurySectionTitle,
-};
+  injuriesSectionTitle: injuryStyles.injuriesSectionTitle,
+});

@@ -1,44 +1,55 @@
 
-import React from 'react';
-import { View, Text } from '@react-pdf/renderer';
-import { layoutStyles } from '../styles/layoutStyles';
-import { textStyles } from '../styles/textStyles';
-import { colorScheme } from '../styles/colorScheme';
+import { Text, View } from '@react-pdf/renderer';
+import { ReportData } from '@/types/reportTypes';
 
 interface MedicalHistorySectionProps {
-  medicalHistory: {
-    exceptionalInjuries: boolean;
-    exceptionalInjuriesDetails: string;
-  };
+  formData: ReportData;
+  styles: any;
 }
 
-const MedicalHistorySection: React.FC<MedicalHistorySectionProps> = ({ medicalHistory }) => {
-  const hasExceptionalHistory = medicalHistory.exceptionalInjuries;
-
+export const MedicalHistorySection = ({ formData, styles }: MedicalHistorySectionProps) => {
   return (
-    <View style={[layoutStyles.section, { backgroundColor: colorScheme.altSectionBg }]}>
-      <Text style={textStyles.sectionTitle}>Medical History</Text>
+    <View style={styles.subsection}>
+      <Text style={styles.sectionHeader}>Section 10 - Past Medical History</Text>
+      
+      <View style={{ marginBottom: 10 }}>
+        <Text style={styles.fieldLabel}>10.1 Previous Related Conditions</Text>
+        <Text style={styles.fieldValue}>
+          {formData.injuries.neckPain.hadPrior
+            ? "The claimant reports having previous neck pain/issues prior to this accident."
+            : "The claimant reports no significant pre-existing injuries or conditions that are relevant to the current injuries."}
+        </Text>
+      </View>
+      
+      <View style={{ marginBottom: 10 }}>
+        <Text style={styles.fieldLabel}>10.2 Exceptional Circumstances</Text>
+        <Text style={styles.fieldValue}>
+          {formData.other?.medicalHistory?.exceptionalInjuries
+            ? formData.other.medicalHistory.exceptionalInjuriesDetails || "Exceptional circumstances noted but no details provided."
+            : "No exceptional circumstances or injuries were noted in this case."}
+        </Text>
+      </View>
+      
+      <View style={{ marginBottom: 10 }}>
+        <Text style={styles.fieldLabel}>10.3 Expert Agreement on Exceptional Circumstances</Text>
+        <Text style={styles.fieldValue}>
+          Claimant has not claimed for any exceptional physical or psychological circumstances and injuries. I
+          agree with it considering history, examination and prognosis of the current injuries.
+        </Text>
+      </View>
+      
+      <View style={{ marginBottom: 10 }}>
+        <Text style={styles.fieldLabel}>10.4 General Medical History</Text>
+        <Text style={styles.fieldValue}>
+          The claimant's general medical history is unremarkable with respect to the current injuries. No significant pre-existing conditions that would have contributed to or exacerbated the injuries sustained in this accident were reported.
+        </Text>
+      </View>
 
-      <View style={[layoutStyles.section, { backgroundColor: colorScheme.altSectionBg }]}>
-        <Text style={textStyles.subHeaderText}>Relevant Medical History</Text>
-        
-        {!hasExceptionalHistory ? (
-          <Text style={textStyles.normalText}>
-            The claimant reports no exceptional medical history that would affect recovery from the injuries sustained in this accident.
-          </Text>
-        ) : (
-          <View>
-            <Text style={textStyles.normalText}>
-              The claimant reports the following exceptional medical history that may affect recovery from the injuries:
-            </Text>
-            <Text style={[textStyles.normalText, { marginTop: 8, fontStyle: 'italic' }]}>
-              {medicalHistory.exceptionalInjuriesDetails || "Details not provided"}
-            </Text>
-          </View>
-        )}
+      <View style={{ marginBottom: 10 }}>
+        <Text style={styles.fieldValue}>
+          I was able to obtain a good history. Claimant's injuries and recovery period were entirely consistent with the account of the accident. The treatment provided for the claimant has been appropriate. The problems reported in home life are consistent and reasonable. In my opinion, the time taken off work by the claimant is reasonable. Claimant is currently fit for working.
+        </Text>
       </View>
     </View>
   );
 };
-
-export default MedicalHistorySection;
