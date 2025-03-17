@@ -11,17 +11,23 @@ interface IntakeFormContentProps {
   currentSection: number;
   totalSections: number;
   setCurrentSection: React.Dispatch<React.SetStateAction<number>>;
+  onSubmit?: (values: FormSchema) => Promise<void>;
 }
 
 export function IntakeFormContent({ 
   form, 
   currentSection, 
   totalSections, 
-  setCurrentSection 
+  setCurrentSection,
+  onSubmit
 }: IntakeFormContentProps) {
+  const handleSubmit = onSubmit 
+    ? form.handleSubmit(onSubmit)
+    : () => console.log("No submit handler provided");
+
   return (
     <Form {...form}>
-      <form className="space-y-8">
+      <form className="space-y-8" onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 gap-6">
           <IntakeFormSections 
             currentSection={currentSection} 
@@ -33,6 +39,7 @@ export function IntakeFormContent({
           currentSection={currentSection}
           totalSections={totalSections}
           setCurrentSection={setCurrentSection}
+          onSubmit={currentSection === totalSections - 1 ? handleSubmit : undefined}
         />
       </form>
     </Form>

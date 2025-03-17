@@ -1,10 +1,13 @@
 
+import { useState } from "react";
 import { FormSchema } from "@/schemas/intakeFormSchema";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
 export function useFormSubmission() {
   const { toast } = useToast();
+  const [showCompletionDialog, setShowCompletionDialog] = useState(false);
+  const [submittedFormData, setSubmittedFormData] = useState<FormSchema | null>(null);
 
   const handleSubmit = async (values: FormSchema) => {
     try {
@@ -77,6 +80,10 @@ export function useFormSubmission() {
 
       if (error) throw error;
 
+      // Store submitted data for the completion dialog
+      setSubmittedFormData(values);
+      setShowCompletionDialog(true);
+
       toast({
         title: "Form submitted",
         description: "Your intake form has been submitted successfully.",
@@ -93,5 +100,10 @@ export function useFormSubmission() {
     }
   };
 
-  return { handleSubmit };
+  return { 
+    handleSubmit,
+    showCompletionDialog,
+    setShowCompletionDialog,
+    submittedFormData
+  };
 }

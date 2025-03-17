@@ -8,6 +8,8 @@ import { IntakeFormHeader } from "@/components/intake-form/IntakeFormHeader";
 import { useFormPrefill } from "@/hooks/useFormPrefill";
 import { useReportGeneration } from "@/hooks/useReportGeneration";
 import { ReportSubmissionTab } from "@/components/report/ReportSubmissionTab";
+import { useFormSubmission } from "@/components/intake-form/useFormSubmission";
+import { CompletionDialog } from "@/components/report/components/CompletionDialog";
 
 export function IntakeFormContainer() {
   const [currentSection, setCurrentSection] = useState(0);
@@ -124,14 +126,20 @@ export function IntakeFormContainer() {
     },
   });
 
+  // Use custom hooks for form prefilling and report generation
+  useFormPrefill(form);
+  const { isGenerating } = useReportGeneration(form, setCurrentSection);
+  const { 
+    handleSubmit, 
+    showCompletionDialog, 
+    setShowCompletionDialog,
+    submittedFormData
+  } = useFormSubmission();
+
   // Handle tab changes
   const handleTabChange = (value: string) => {
     setCurrentSection(parseInt(value));
   };
-
-  // Use custom hooks for form prefilling and report generation
-  useFormPrefill(form);
-  const { isGenerating } = useReportGeneration(form, setCurrentSection);
 
   // Handler for opening submission tab
   const handleOpenSubmissionTab = () => {
@@ -163,6 +171,7 @@ export function IntakeFormContainer() {
         currentSection={currentSection}
         totalSections={totalSections}
         setCurrentSection={setCurrentSection}
+        onSubmit={handleSubmit}
       />
 
       {/* Report Submission Tab */}
@@ -171,6 +180,16 @@ export function IntakeFormContainer() {
         onClose={() => setShowSubmissionTab(false)}
         formData={form.getValues()}
       />
+
+      {/* Completion Dialog */}
+      {submittedFormData && (
+        <CompletionDialog
+          isOpen={showCompletionDialog}
+          onClose={() => setShowCompletionDialog(false)}
+          claimantName={submittedFormData.fullName || "Claimant"}
+          claimantEmail={submittedFormData.emailId}
+        />
+      )}
     </div>
   );
 }
