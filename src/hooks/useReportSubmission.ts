@@ -51,12 +51,8 @@ export function useReportSubmission(onSuccess: () => void) {
     setIsSubmitting(true);
 
     try {
-      // Get authenticated user
-      const { data: userData } = await supabase.auth.getUser();
-      if (!userData.user) {
-        throw new Error("User not authenticated");
-      }
-
+      // No longer checking for authentication
+      
       // Upload PDFs to storage
       const claimantStorageUrl = await uploadPdfToStorage(claimantPdfUrl, 'claimant-report');
       const fullStorageUrl = await uploadPdfToStorage(fullPdfUrl, 'expert-report');
@@ -66,12 +62,12 @@ export function useReportSubmission(onSuccess: () => void) {
         finalStorageUrl = await uploadPdfToStorage(finalPdfUrl, 'final-medco-report');
       }
 
-      // Insert record to database
+      // Insert record to database without requiring user authentication
       const { error } = await supabase
         .from('reports')
         .insert([
           {
-            patient_id: userData.user.id,
+            // Using email as identifier instead of user_id
             claimant_email: formData.emailId,
             storage_path: fullStorageUrl,
             original_filename: 'expert-report.pdf',

@@ -11,21 +11,13 @@ export function useFormSubmission() {
 
   const handleSubmit = async (values: FormSchema) => {
     try {
-      const { data: userData } = await supabase.auth.getUser();
-      if (!userData.user) {
-        toast({
-          title: "Error",
-          description: "You must be logged in to submit the form",
-          variant: "destructive",
-        });
-        return;
-      }
-
+      // We're no longer checking for authentication
+      // Just directly store the form data in Supabase
       const { error } = await supabase
         .from('form_submissions')
         .insert([
           {
-            user_id: userData.user.id,
+            // No longer including user_id
             solicitor_name: values.solicitorName,
             solicitor_reference: values.solicitorReference,
             instructing_party_name: values.instructingPartyName,

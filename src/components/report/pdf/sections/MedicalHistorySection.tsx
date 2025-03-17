@@ -1,54 +1,54 @@
 
-import { Text, View } from '@react-pdf/renderer';
+import React from 'react';
+import { View, Text } from '@react-pdf/renderer';
 import { ReportData } from '@/types/reportTypes';
+import { styles } from '../styles/pdfStyles';
+import { paperStyles } from '../styles/layoutStyles';
 
 interface MedicalHistorySectionProps {
-  formData: ReportData;
-  styles: any;
+  reportData: ReportData;
 }
 
-export const MedicalHistorySection = ({ formData, styles }: MedicalHistorySectionProps) => {
+const MedicalHistorySection: React.FC<MedicalHistorySectionProps> = ({ reportData }) => {
+  // Safely access properties to avoid errors
+  const hasExceptionalInjuries = reportData.personal?.exceptionalInjuries === "1";
+  const exceptionalInjuriesDetails = reportData.personal?.exceptionalInjuriesDetails || '';
+  const anxietyPastHistory = reportData.personal?.anxietyPastHistory || '';
+  const headachePastHistory = reportData.personal?.headachePastHistory || '';
+
   return (
-    <View style={styles.subsection}>
-      <Text style={styles.sectionHeader}>Section 10 - Past Medical History</Text>
+    <View style={paperStyles.section}>
+      <Text style={styles.sectionTitle}>PAST MEDICAL HISTORY</Text>
       
-      <View style={{ marginBottom: 10 }}>
-        <Text style={styles.fieldLabel}>10.1 Previous Road Traffic Accidents</Text>
-        <Text style={styles.fieldValue}>
-          {formData.history?.previousAccident === "1"
-            ? `The claimant reports having a previous road traffic accident. ${
-                formData.history.previousAccidentRecovery === "1" 
-                  ? "They made a complete recovery from that accident." 
-                  : "They did not make a complete recovery from that accident."
-              }`
-            : "The claimant denies any history of previous road traffic accidents."}
+      <View style={styles.contentBlock}>
+        <Text style={styles.paragraph}>
+          {hasExceptionalInjuries 
+            ? 'The claimant has reported previous medical issues.'
+            : 'The claimant has not reported any previous medical issues or conditions.'}
         </Text>
-      </View>
-      
-      <View style={{ marginBottom: 10 }}>
-        <Text style={styles.fieldLabel}>10.2 Pre-existing Medical Conditions</Text>
-        <Text style={styles.fieldValue}>
-          {formData.history?.previousConditionWorse
-            ? `The claimant reports pre-existing medical conditions that have been worsened by this accident: ${formData.history.previousConditionWorse}.`
-            : "The claimant denies any pre-existing medical conditions that have been worsened by this accident."}
-        </Text>
-      </View>
-      
-      <View style={{ marginBottom: 10 }}>
-        <Text style={styles.fieldLabel}>10.3 Exceptional Circumstances</Text>
-        <Text style={styles.fieldValue}>
-          {formData.other?.medicalHistory?.exceptionalInjuries === "1"
-            ? formData.other.medicalHistory.exceptionalInjuriesDetails || "Exceptional circumstances noted but no details provided."
-            : "No exceptional circumstances or injuries were noted in this case."}
-        </Text>
-      </View>
-      
-      <View style={{ marginBottom: 10 }}>
-        <Text style={styles.fieldLabel}>10.4 Expert Opinion</Text>
-        <Text style={styles.fieldValue}>
-          I was able to obtain a good history. Claimant's injuries and recovery period were entirely consistent with the account of the accident. The treatment provided for the claimant has been appropriate. The problems reported in home life are consistent and reasonable. In my opinion, the time taken off work by the claimant is reasonable. Claimant is currently fit for working.
-        </Text>
+        
+        {hasExceptionalInjuries && exceptionalInjuriesDetails && (
+          <Text style={styles.paragraph}>{exceptionalInjuriesDetails}</Text>
+        )}
+        
+        {/* Previous Headache History */}
+        {headachePastHistory && (
+          <>
+            <Text style={styles.subheading}>Previous Headache Issues:</Text>
+            <Text style={styles.paragraph}>{headachePastHistory}</Text>
+          </>
+        )}
+        
+        {/* Previous Anxiety History */}
+        {anxietyPastHistory && (
+          <>
+            <Text style={styles.subheading}>Previous Anxiety Issues:</Text>
+            <Text style={styles.paragraph}>{anxietyPastHistory}</Text>
+          </>
+        )}
       </View>
     </View>
   );
 };
+
+export default MedicalHistorySection;
