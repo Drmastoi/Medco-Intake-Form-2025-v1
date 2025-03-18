@@ -2,11 +2,11 @@
 import React from 'react';
 import { Page, View, Text } from '@react-pdf/renderer';
 import { ReportData } from '@/types/reportTypes';
-import { pageStyles } from '../styles/layoutStyles';
-import { styles } from '../styles/pdfStyles';
+import { layoutStyles } from '../styles/layoutStyles';
+import { textStyles } from '../styles/textStyles';
 import PDFFooter from '../components/PDFFooter';
-import TreatmentSection from '../sections/TreatmentSection';
-import LifestyleImpactSection from '../sections/LifestyleImpactSection';
+import { TreatmentSection } from '../sections/TreatmentSection';
+import { LifestyleImpactSection } from '../sections/LifestyleImpactSection';
 import MedicalHistorySection from '../sections/MedicalHistorySection';
 
 interface TreatmentLifestylePageProps {
@@ -21,9 +21,9 @@ const TreatmentLifestylePage: React.FC<TreatmentLifestylePageProps> = ({
   today 
 }) => {
   return (
-    <Page size="A4" style={pageStyles.page}>
-      <View style={pageStyles.content}>
-        <Text style={styles.pageTitle}>
+    <Page size="A4" style={layoutStyles.page}>
+      <View style={layoutStyles.content}>
+        <Text style={textStyles.pageTitle}>
           TREATMENT, LIFESTYLE IMPACT, AND MEDICAL HISTORY
         </Text>
         
@@ -36,7 +36,7 @@ const TreatmentLifestylePage: React.FC<TreatmentLifestylePageProps> = ({
       
       <PDFFooter 
         claimantName={claimantName} 
-        pageText="Treatment & Lifestyle" 
+        page="Treatment & Lifestyle" 
         date={today} 
       />
     </Page>

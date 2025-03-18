@@ -51,8 +51,6 @@ export function useReportSubmission(onSuccess: () => void) {
     setIsSubmitting(true);
 
     try {
-      // No longer checking for authentication
-      
       // Upload PDFs to storage
       const claimantStorageUrl = await uploadPdfToStorage(claimantPdfUrl, 'claimant-report');
       const fullStorageUrl = await uploadPdfToStorage(fullPdfUrl, 'expert-report');
@@ -62,12 +60,11 @@ export function useReportSubmission(onSuccess: () => void) {
         finalStorageUrl = await uploadPdfToStorage(finalPdfUrl, 'final-medco-report');
       }
 
-      // Insert record to database without requiring user authentication
+      // Insert record to database using email as identifier instead of user_id
       const { error } = await supabase
         .from('reports')
         .insert([
           {
-            // Using email as identifier instead of user_id
             claimant_email: formData.emailId,
             storage_path: fullStorageUrl,
             original_filename: 'expert-report.pdf',

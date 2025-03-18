@@ -2,8 +2,8 @@
 import React from 'react';
 import { View, Text } from '@react-pdf/renderer';
 import { ReportData } from '@/types/reportTypes';
-import { styles as pdfStyles } from '../styles/pdfStyles';
-import { paperStyles } from '../styles/layoutStyles';
+import { styles } from '../styles/textStyles';
+import { layoutStyles } from '../styles/layoutStyles';
 
 interface MedicalHistorySectionProps {
   reportData: ReportData;
@@ -20,33 +20,33 @@ const MedicalHistorySection: React.FC<MedicalHistorySectionProps> = ({ reportDat
   const headachePastHistory = reportData.injuries?.headache?.pastHistory || '';
 
   return (
-    <View style={paperStyles.section}>
-      <Text style={pdfStyles.sectionTitle}>PAST MEDICAL HISTORY</Text>
+    <View style={layoutStyles.section}>
+      <Text style={styles.sectionTitle}>PAST MEDICAL HISTORY</Text>
       
-      <View style={pdfStyles.contentBlock}>
-        <Text style={pdfStyles.paragraph}>
+      <View style={styles.contentBlock}>
+        <Text style={styles.paragraph}>
           {hasExceptionalInjuries 
             ? 'The claimant has reported previous medical issues.'
             : 'The claimant has not reported any previous medical issues or conditions.'}
         </Text>
         
         {hasExceptionalInjuries && exceptionalInjuriesDetails && (
-          <Text style={pdfStyles.paragraph}>{exceptionalInjuriesDetails}</Text>
+          <Text style={styles.paragraph}>{exceptionalInjuriesDetails}</Text>
         )}
         
         {/* Previous Headache History */}
         {headachePastHistory && (
           <>
-            <Text style={pdfStyles.subheading}>Previous Headache Issues:</Text>
-            <Text style={pdfStyles.paragraph}>{headachePastHistory}</Text>
+            <Text style={styles.subheading}>Previous Headache Issues:</Text>
+            <Text style={styles.paragraph}>{headachePastHistory}</Text>
           </>
         )}
         
         {/* Previous Anxiety History */}
         {anxietyPastHistory && (
           <>
-            <Text style={pdfStyles.subheading}>Previous Anxiety Issues:</Text>
-            <Text style={pdfStyles.paragraph}>{anxietyPastHistory}</Text>
+            <Text style={styles.subheading}>Previous Anxiety Issues:</Text>
+            <Text style={styles.paragraph}>{anxietyPastHistory}</Text>
           </>
         )}
       </View>

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Text, View } from '@react-pdf/renderer';
-import { styles } from '../dailyLifeStyles';
+import { textStyles } from '../dailyLifeUtils';
 
 interface MedicalHistoryComponentProps {
   formData: any; // Using any to avoid TypeScript errors temporarily
@@ -19,6 +19,24 @@ const MedicalHistoryComponent: React.FC<MedicalHistoryComponentProps> = ({ formD
     fontSize: 11,
     fontWeight: 'bold',
     marginBottom: 5,
+  };
+
+  // Using inline styles since we can't properly import the styles
+  const styles = {
+    section: {
+      marginBottom: 10,
+      padding: 10,
+    },
+    subtitle: {
+      fontSize: 12,
+      fontWeight: 'bold',
+      marginBottom: 5,
+      textTransform: 'uppercase',
+    },
+    text: {
+      fontSize: 10,
+      marginBottom: 5,
+    }
   };
 
   return (

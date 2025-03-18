@@ -11,13 +11,12 @@ export function useFormSubmission() {
 
   const handleSubmit = async (values: FormSchema) => {
     try {
-      // We're no longer checking for authentication
-      // Just directly store the form data in Supabase
+      // Directly store the form data in Supabase without authentication
       const { error } = await supabase
         .from('form_submissions')
         .insert([
           {
-            // No longer including user_id
+            // Store identifiable information to track submissions without requiring login
             solicitor_name: values.solicitorName,
             solicitor_reference: values.solicitorReference,
             instructing_party_name: values.instructingPartyName,
@@ -34,7 +33,7 @@ export function useFormSubmission() {
             occupation: values.occupation,
             work_type: values.workType,
             living_with: values.livingWith,
-            children_count: parseInt(values.childrenCount),
+            children_count: parseInt(values.childrenCount || '0'),
             accident_date: values.accidentDate,
             accident_time: values.accidentTime,
             vehicle_position: values.vehiclePosition,
