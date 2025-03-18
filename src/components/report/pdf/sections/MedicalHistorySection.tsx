@@ -2,7 +2,7 @@
 import React from 'react';
 import { View, Text } from '@react-pdf/renderer';
 import { ReportData } from '@/types/reportTypes';
-import { styles } from '../styles/textStyles';
+import { textStyles } from '../styles/textStyles';
 import { layoutStyles } from '../styles/layoutStyles';
 
 interface MedicalHistorySectionProps {
@@ -21,32 +21,32 @@ const MedicalHistorySection: React.FC<MedicalHistorySectionProps> = ({ reportDat
 
   return (
     <View style={layoutStyles.section}>
-      <Text style={styles.sectionTitle}>PAST MEDICAL HISTORY</Text>
+      <Text style={textStyles.sectionHeader}>PAST MEDICAL HISTORY</Text>
       
-      <View style={styles.contentBlock}>
-        <Text style={styles.paragraph}>
+      <View style={{margin: 5, padding: 5}}>
+        <Text style={{fontSize: 10, marginBottom: 8}}>
           {hasExceptionalInjuries 
             ? 'The claimant has reported previous medical issues.'
             : 'The claimant has not reported any previous medical issues or conditions.'}
         </Text>
         
         {hasExceptionalInjuries && exceptionalInjuriesDetails && (
-          <Text style={styles.paragraph}>{exceptionalInjuriesDetails}</Text>
+          <Text style={{fontSize: 10, marginBottom: 8}}>{exceptionalInjuriesDetails}</Text>
         )}
         
         {/* Previous Headache History */}
         {headachePastHistory && (
           <>
-            <Text style={styles.subheading}>Previous Headache Issues:</Text>
-            <Text style={styles.paragraph}>{headachePastHistory}</Text>
+            <Text style={{fontSize: 11, fontWeight: 'bold', marginBottom: 5}}>Previous Headache Issues:</Text>
+            <Text style={{fontSize: 10, marginBottom: 8}}>{headachePastHistory}</Text>
           </>
         )}
         
         {/* Previous Anxiety History */}
         {anxietyPastHistory && (
           <>
-            <Text style={styles.subheading}>Previous Anxiety Issues:</Text>
-            <Text style={styles.paragraph}>{anxietyPastHistory}</Text>
+            <Text style={{fontSize: 11, fontWeight: 'bold', marginBottom: 5}}>Previous Anxiety Issues:</Text>
+            <Text style={{fontSize: 10, marginBottom: 8}}>{anxietyPastHistory}</Text>
           </>
         )}
       </View>

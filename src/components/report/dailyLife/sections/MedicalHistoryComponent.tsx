@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { Text, View } from '@react-pdf/renderer';
-import { textStyles } from '../dailyLifeUtils';
 
 interface MedicalHistoryComponentProps {
   formData: any; // Using any to avoid TypeScript errors temporarily
@@ -14,13 +13,6 @@ const MedicalHistoryComponent: React.FC<MedicalHistoryComponentProps> = ({ formD
   const anxietyPastHistory = formData?.anxietyPastHistory || '';
   const headachePastHistory = formData?.headachePastHistory || '';
 
-  // Custom style for subheadings
-  const subheadingStyle = {
-    fontSize: 11,
-    fontWeight: 'bold',
-    marginBottom: 5,
-  };
-
   // Using inline styles since we can't properly import the styles
   const styles = {
     section: {
@@ -31,7 +23,12 @@ const MedicalHistoryComponent: React.FC<MedicalHistoryComponentProps> = ({ formD
       fontSize: 12,
       fontWeight: 'bold',
       marginBottom: 5,
-      textTransform: 'uppercase',
+      textTransform: 'uppercase' as const, // Fix TypeScript error with textTransform
+    },
+    subheading: {
+      fontSize: 11,
+      fontWeight: 'bold',
+      marginBottom: 5,
     },
     text: {
       fontSize: 10,
@@ -44,7 +41,7 @@ const MedicalHistoryComponent: React.FC<MedicalHistoryComponentProps> = ({ formD
       <Text style={styles.subtitle}>PAST MEDICAL HISTORY</Text>
 
       {/* Previous Medical Issues */}
-      <Text style={subheadingStyle}>Previous Medical Issues:</Text>
+      <Text style={styles.subheading}>Previous Medical Issues:</Text>
       <Text style={styles.text}>
         {hasExceptionalInjuries ? 'The claimant has reported previous medical issues.' : 'The claimant has not reported any previous medical issues.'}
       </Text>
@@ -55,7 +52,7 @@ const MedicalHistoryComponent: React.FC<MedicalHistoryComponentProps> = ({ formD
       {/* Previous Headache Issues */}
       {headachePastHistory && (
         <>
-          <Text style={subheadingStyle}>Previous Headache Issues:</Text>
+          <Text style={styles.subheading}>Previous Headache Issues:</Text>
           <Text style={styles.text}>{headachePastHistory}</Text>
         </>
       )}
@@ -63,13 +60,13 @@ const MedicalHistoryComponent: React.FC<MedicalHistoryComponentProps> = ({ formD
       {/* Previous Anxiety Issues */}
       {anxietyPastHistory && (
         <>
-          <Text style={subheadingStyle}>Previous Anxiety Issues:</Text>
+          <Text style={styles.subheading}>Previous Anxiety Issues:</Text>
           <Text style={styles.text}>{anxietyPastHistory}</Text>
         </>
       )}
 
       {/* Final Assessment */}
-      <Text style={{...subheadingStyle, marginTop: 10}}>Medical History Assessment:</Text>
+      <Text style={{...styles.subheading, marginTop: 10}}>Medical History Assessment:</Text>
       <Text style={styles.text}>
         The claimant's medical history has been taken into account when assessing the impact of the current injuries.
       </Text>

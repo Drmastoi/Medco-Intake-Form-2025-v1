@@ -1,98 +1,150 @@
 
 import React from 'react';
-import { Text, View } from '@react-pdf/renderer';
+import { View, Text } from '@react-pdf/renderer';
 import { ReportData } from '@/types/reportTypes';
-import { pdfStyles } from '../styles/pdfStyles';
+import { layoutStyles } from '../styles/layoutStyles';
+import { textStyles } from '../styles/textStyles';
 
 interface LifestyleImpactSectionProps {
-  formData: ReportData;
-  styles: any;
+  reportData: ReportData;
 }
 
-export const LifestyleImpactSection = ({ formData, styles }: LifestyleImpactSectionProps) => {
-  // Safely handle formData which might be incomplete
-  const lifestyle = formData.other?.lifestyle || {
-    impactOnWork: false,
-    impactOnSleep: false,
-    impactOnDomestic: false,
-    impactOnSports: false,
-    impactOnSocial: false
-  };
+export const LifestyleImpactSection: React.FC<LifestyleImpactSectionProps> = ({ reportData }) => {
+  // Safely access lifestyle data
+  const lifestyle = reportData.other?.lifestyle || {};
   
+  // Work impact
+  const impactOnWork = lifestyle.impactOnWork || false;
+  const timeOffWork = lifestyle.timeOffWork || '';
+  const workRestrictions = lifestyle.workRestrictions || [];
+  
+  // Sleep impact
+  const impactOnSleep = lifestyle.impactOnSleep || false;
+  const sleepIssues = lifestyle.sleepIssues || [];
+  
+  // Domestic impact
+  const impactOnDomestic = lifestyle.impactOnDomestic || false;
+  const domesticIssues = lifestyle.domesticIssues || [];
+  
+  // Sports impact
+  const impactOnSports = lifestyle.impactOnSports || false;
+  const sportsActivities = lifestyle.sportsActivities || '';
+  const sportsDuration = lifestyle.sportsDuration || '';
+  
+  // Social impact
+  const impactOnSocial = lifestyle.impactOnSocial || false;
+  const socialDetails = lifestyle.socialDetails || '';
+
   return (
-    <View style={styles.subsection}>
-      <Text style={styles.sectionHeader}>Section 8 - Impact on Daily Life</Text>
-
-      {/* Work Impact */}
-      <Text style={{ ...styles.fieldLabel, fontSize: 12, marginTop: 6, marginBottom: 4 }}>8.1 Work Capabilities</Text>
-      {lifestyle.impactOnWork ? (
-        <Text style={styles.fieldValue}>
-          The claimant's work capabilities were affected. 
-          {lifestyle.workImpactDate ? ` This impact started on ${lifestyle.workImpactDate}.` : ''} 
-          {lifestyle.workRestrictions && lifestyle.workRestrictions.length > 0 ? 
-            ` Restrictions included: ${lifestyle.workRestrictions.join(', ')}.` : ''}
-        </Text>
-      ) : (
-        <Text style={styles.fieldValue}>The claimant reported no impact on work capabilities.</Text>
-      )}
+    <View style={layoutStyles.section}>
+      <Text style={textStyles.sectionHeader}>LIFESTYLE IMPACT</Text>
       
-      {lifestyle.timeOffWork ? (
-        <Text style={styles.fieldValue}>Time off work: {lifestyle.timeOffWork} days</Text>
-      ) : null}
-
-      {/* Domestic Activities */}
-      <Text style={{ ...styles.fieldLabel, fontSize: 12, marginTop: 6, marginBottom: 4 }}>8.2 Domestic Activities</Text>
-      {lifestyle.impactOnDomestic ? (
-        <Text style={styles.fieldValue}>
-          The claimant's domestic activities were affected. 
-          {lifestyle.domesticImpactDate ? ` This impact started on ${lifestyle.domesticImpactDate}.` : ''} 
-          {lifestyle.domesticIssues && lifestyle.domesticIssues.length > 0 ? 
-            ` Activities affected included: ${lifestyle.domesticIssues.join(', ')}.` : ''}
-        </Text>
-      ) : (
-        <Text style={styles.fieldValue}>The claimant reported no impact on domestic activities.</Text>
-      )}
-
-      {/* Sleep */}
-      <Text style={{ ...styles.fieldLabel, fontSize: 12, marginTop: 6, marginBottom: 4 }}>8.3 Sleep</Text>
-      {lifestyle.impactOnSleep ? (
-        <Text style={styles.fieldValue}>
-          The claimant's sleep was disrupted. 
-          {lifestyle.sleepImpactDate ? ` This impact started on ${lifestyle.sleepImpactDate}.` : ''} 
-          {lifestyle.sleepIssues && lifestyle.sleepIssues.length > 0 ? 
-            ` Sleep issues included: ${lifestyle.sleepIssues.join(', ')}.` : ''}
-        </Text>
-      ) : (
-        <Text style={styles.fieldValue}>The claimant reported no impact on sleep.</Text>
-      )}
-
-      {/* Social Life */}
-      <Text style={{ ...styles.fieldLabel, fontSize: 12, marginTop: 6, marginBottom: 4 }}>8.4 Social Life</Text>
-      {lifestyle.impactOnSocial ? (
-        <Text style={styles.fieldValue}>
-          The claimant's social life was affected. 
-          {lifestyle.socialImpactDate ? ` This impact started on ${lifestyle.socialImpactDate}.` : ''} 
-          {lifestyle.socialDetails ? ` Details: ${lifestyle.socialDetails}` : ''}
-        </Text>
-      ) : (
-        <Text style={styles.fieldValue}>The claimant reported no impact on social life.</Text>
-      )}
-
-      {/* Sports and Leisure */}
-      <Text style={{ ...styles.fieldLabel, fontSize: 12, marginTop: 6, marginBottom: 4 }}>8.5 Sports and Leisure</Text>
-      {lifestyle.impactOnSports ? (
-        <Text style={styles.fieldValue}>
-          The claimant's sports and leisure activities were affected. 
-          {lifestyle.sportsImpactDate ? ` This impact started on ${lifestyle.sportsImpactDate}.` : ''} 
-          {lifestyle.sportsActivities ? ` Activities affected: ${lifestyle.sportsActivities}` : ''} 
-          {lifestyle.sportsActivities && lifestyle.sportsDuration ? `. ` : ''} 
-          {lifestyle.sportsDuration ? `The claimant typically engaged in these activities ${lifestyle.sportsDuration} times per month before the accident.` : ''}
-        </Text>
-      ) : (
-        <Text style={styles.fieldValue}>The claimant reported no impact on sports and leisure activities.</Text>
-      )}
+      <View style={{margin: 5, padding: 5}}>
+        {/* Work Impact Section */}
+        <Text style={{fontSize: 11, fontWeight: 'bold', marginBottom: 5}}>Impact on Work:</Text>
+        {impactOnWork ? (
+          <>
+            <Text style={{fontSize: 10, marginBottom: 8}}>
+              The claimant reports that their injuries have affected their ability to work.
+            </Text>
+            {timeOffWork && (
+              <Text style={{fontSize: 10, marginBottom: 8}}>
+                Time off work: {timeOffWork}
+              </Text>
+            )}
+            {workRestrictions.length > 0 && (
+              <Text style={{fontSize: 10, marginBottom: 8}}>
+                Work restrictions: {workRestrictions.join(', ')}
+              </Text>
+            )}
+          </>
+        ) : (
+          <Text style={{fontSize: 10, marginBottom: 8}}>
+            The claimant reports no impact on their work due to the injuries.
+          </Text>
+        )}
+        
+        {/* Sleep Impact Section */}
+        <Text style={{fontSize: 11, fontWeight: 'bold', marginBottom: 5}}>Impact on Sleep:</Text>
+        {impactOnSleep ? (
+          <>
+            <Text style={{fontSize: 10, marginBottom: 8}}>
+              The claimant reports that their injuries have affected their sleep.
+            </Text>
+            {sleepIssues.length > 0 && (
+              <Text style={{fontSize: 10, marginBottom: 8}}>
+                Sleep issues: {sleepIssues.join(', ')}
+              </Text>
+            )}
+          </>
+        ) : (
+          <Text style={{fontSize: 10, marginBottom: 8}}>
+            The claimant reports no impact on their sleep due to the injuries.
+          </Text>
+        )}
+        
+        {/* Domestic Impact Section */}
+        <Text style={{fontSize: 11, fontWeight: 'bold', marginBottom: 5}}>Impact on Domestic Activities:</Text>
+        {impactOnDomestic ? (
+          <>
+            <Text style={{fontSize: 10, marginBottom: 8}}>
+              The claimant reports that their injuries have affected their ability to perform domestic activities.
+            </Text>
+            {domesticIssues.length > 0 && (
+              <Text style={{fontSize: 10, marginBottom: 8}}>
+                Domestic difficulties: {domesticIssues.join(', ')}
+              </Text>
+            )}
+          </>
+        ) : (
+          <Text style={{fontSize: 10, marginBottom: 8}}>
+            The claimant reports no impact on their domestic activities due to the injuries.
+          </Text>
+        )}
+        
+        {/* Sports Impact Section */}
+        <Text style={{fontSize: 11, fontWeight: 'bold', marginBottom: 5}}>Impact on Sports and Leisure:</Text>
+        {impactOnSports ? (
+          <>
+            <Text style={{fontSize: 10, marginBottom: 8}}>
+              The claimant reports that their injuries have affected their ability to participate in sports and leisure activities.
+            </Text>
+            {sportsActivities && (
+              <Text style={{fontSize: 10, marginBottom: 8}}>
+                Affected activities: {sportsActivities}
+              </Text>
+            )}
+            {sportsDuration && (
+              <Text style={{fontSize: 10, marginBottom: 8}}>
+                Duration of impact: {sportsDuration}
+              </Text>
+            )}
+          </>
+        ) : (
+          <Text style={{fontSize: 10, marginBottom: 8}}>
+            The claimant reports no impact on their sports and leisure activities due to the injuries.
+          </Text>
+        )}
+        
+        {/* Social Impact Section */}
+        <Text style={{fontSize: 11, fontWeight: 'bold', marginBottom: 5}}>Impact on Social Life:</Text>
+        {impactOnSocial ? (
+          <>
+            <Text style={{fontSize: 10, marginBottom: 8}}>
+              The claimant reports that their injuries have affected their social life.
+            </Text>
+            {socialDetails && (
+              <Text style={{fontSize: 10, marginBottom: 8}}>
+                Details: {socialDetails}
+              </Text>
+            )}
+          </>
+        ) : (
+          <Text style={{fontSize: 10, marginBottom: 8}}>
+            The claimant reports no impact on their social life due to the injuries.
+          </Text>
+        )}
+      </View>
     </View>
   );
 };
-
-export default LifestyleImpactSection;

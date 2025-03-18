@@ -22,8 +22,8 @@ const TreatmentLifestylePage: React.FC<TreatmentLifestylePageProps> = ({
 }) => {
   return (
     <Page size="A4" style={layoutStyles.page}>
-      <View style={layoutStyles.content}>
-        <Text style={textStyles.pageTitle}>
+      <View style={{padding: 20, margin: 0}}>
+        <Text style={{fontSize: 16, fontWeight: 'bold', marginBottom: 15, textAlign: 'center'}}>
           TREATMENT, LIFESTYLE IMPACT, AND MEDICAL HISTORY
         </Text>
         
@@ -36,8 +36,8 @@ const TreatmentLifestylePage: React.FC<TreatmentLifestylePageProps> = ({
       
       <PDFFooter 
         claimantName={claimantName} 
-        page="Treatment & Lifestyle" 
-        date={today} 
+        pageLabel="Treatment & Lifestyle" 
+        currentDate={today} 
       />
     </Page>
   );
