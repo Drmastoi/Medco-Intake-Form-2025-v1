@@ -10,10 +10,10 @@ interface TreatmentSectionProps {
 }
 
 export const TreatmentSection: React.FC<TreatmentSectionProps> = ({ reportData }) => {
-  // Safely access treatment data
+  // Safely access treatment data with proper defaults
   const treatment = reportData.other?.treatment || {};
   const hasTreatment = treatment.hasTreatment || false;
-  const treatmentType = treatment.type || [];
+  const treatmentType = Array.isArray(treatment.type) ? treatment.type : [];
   const treatmentFrequency = treatment.frequency || '';
   const treatmentDuration = treatment.duration || '';
   const treatmentOngoing = treatment.ongoing || false;

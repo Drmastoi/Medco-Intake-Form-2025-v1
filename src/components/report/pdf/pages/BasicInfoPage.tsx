@@ -120,7 +120,11 @@ const BasicInfoPage: React.FC<BasicInfoPageProps> = ({
         <SummaryOfInjuriesTableSection formData={reportData} styles={compactStyles} />
       </View>
       
-      <PDFFooter pageNumber={1} claimantName={claimantName} today={today} />
+      <PDFFooter 
+        claimantName={claimantName} 
+        pageLabel="Page 1" 
+        currentDate={today} 
+      />
     </Page>
   );
 };

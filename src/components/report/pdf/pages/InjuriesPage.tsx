@@ -110,7 +110,11 @@ const InjuriesPage: React.FC<InjuriesPageProps> = ({
         <InjuriesSection formData={reportData} styles={pdfStyles} />
       </View>
       
-      <PDFFooter pageNumber={2} claimantName={claimantName} today={today} />
+      <PDFFooter 
+        claimantName={claimantName} 
+        pageLabel="Injuries Assessment" 
+        currentDate={today} 
+      />
     </Page>
   );
 };

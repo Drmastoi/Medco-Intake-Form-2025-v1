@@ -67,7 +67,11 @@ const ExpertInfoPage: React.FC<ExpertInfoPageProps> = ({
         </View>
       </View>
       
-      <PDFFooter pageNumber={5} claimantName={claimantName} today={today} />
+      <PDFFooter 
+        claimantName={claimantName} 
+        pageLabel="Expert Information" 
+        currentDate={today} 
+      />
     </Page>
   );
 };

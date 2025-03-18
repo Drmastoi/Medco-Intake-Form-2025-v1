@@ -26,7 +26,11 @@ const DeclarationPage: React.FC<DeclarationPageProps> = ({
         <ConclusionSection styles={pdfStyles} />
       </View>
       
-      <PDFFooter pageNumber={4} claimantName={claimantName} today={today} />
+      <PDFFooter 
+        claimantName={claimantName} 
+        pageLabel="Conclusion & Declaration" 
+        currentDate={today} 
+      />
     </Page>
   );
 };

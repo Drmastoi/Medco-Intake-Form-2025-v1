@@ -10,21 +10,21 @@ interface LifestyleImpactSectionProps {
 }
 
 export const LifestyleImpactSection: React.FC<LifestyleImpactSectionProps> = ({ reportData }) => {
-  // Safely access lifestyle data
+  // Safely access lifestyle data with proper defaults
   const lifestyle = reportData.other?.lifestyle || {};
   
   // Work impact
   const impactOnWork = lifestyle.impactOnWork || false;
   const timeOffWork = lifestyle.timeOffWork || '';
-  const workRestrictions = lifestyle.workRestrictions || [];
+  const workRestrictions = Array.isArray(lifestyle.workRestrictions) ? lifestyle.workRestrictions : [];
   
   // Sleep impact
   const impactOnSleep = lifestyle.impactOnSleep || false;
-  const sleepIssues = lifestyle.sleepIssues || [];
+  const sleepIssues = Array.isArray(lifestyle.sleepIssues) ? lifestyle.sleepIssues : [];
   
   // Domestic impact
   const impactOnDomestic = lifestyle.impactOnDomestic || false;
-  const domesticIssues = lifestyle.domesticIssues || [];
+  const domesticIssues = Array.isArray(lifestyle.domesticIssues) ? lifestyle.domesticIssues : [];
   
   // Sports impact
   const impactOnSports = lifestyle.impactOnSports || false;

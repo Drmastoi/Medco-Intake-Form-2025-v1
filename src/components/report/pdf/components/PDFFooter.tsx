@@ -4,11 +4,24 @@ import { Text, View } from '@react-pdf/renderer';
 
 export interface PDFFooterProps {
   claimantName: string;
-  pageLabel: string;
-  currentDate: string;
+  pageLabel?: string;
+  currentDate?: string;
+  pageNumber?: number;
+  today?: string;
 }
 
-const PDFFooter: React.FC<PDFFooterProps> = ({ claimantName, pageLabel, currentDate }) => {
+const PDFFooter: React.FC<PDFFooterProps> = ({ 
+  claimantName, 
+  pageLabel, 
+  currentDate, 
+  pageNumber,
+  today
+}) => {
+  // Use either pageLabel or pageNumber to show page information
+  const pageText = pageLabel || (pageNumber ? `Page ${pageNumber}` : '');
+  // Use either currentDate or today
+  const dateText = currentDate || today || new Date().toLocaleDateString();
+
   const footerStyles = {
     container: {
       position: 'absolute' as const,
@@ -34,10 +47,10 @@ const PDFFooter: React.FC<PDFFooterProps> = ({ claimantName, pageLabel, currentD
         {claimantName} - Medical Report
       </Text>
       <Text style={footerStyles.text}>
-        {pageLabel}
+        {pageText}
       </Text>
       <Text style={footerStyles.text}>
-        {currentDate}
+        {dateText}
       </Text>
     </View>
   );
