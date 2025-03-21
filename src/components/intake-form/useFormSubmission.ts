@@ -10,6 +10,34 @@ export function useFormSubmission() {
   const [submittedFormData, setSubmittedFormData] = useState<FormSchema | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Function to check and retry Supabase connection
+  const checkSupabaseConnection = async (retries = 3, delay = 1000): Promise<boolean> => {
+    for (let attempt = 1; attempt <= retries; attempt++) {
+      try {
+        const { data, error } = await supabase.from('form_submissions').select('id').limit(1);
+        
+        if (error) {
+          console.error(`Supabase connection attempt ${attempt}/${retries} failed:`, error);
+          // Wait before retrying
+          if (attempt < retries) {
+            await new Promise(resolve => setTimeout(resolve, delay));
+          }
+        } else {
+          console.log("Supabase connection successful");
+          return true;
+        }
+      } catch (err) {
+        console.error(`Supabase connection attempt ${attempt}/${retries} exception:`, err);
+        // Wait before retrying
+        if (attempt < retries) {
+          await new Promise(resolve => setTimeout(resolve, delay));
+        }
+      }
+    }
+    
+    return false;
+  };
+
   const handleSubmit = async (values: FormSchema) => {
     console.log("Form submission started with values:", values);
     
@@ -22,10 +50,74 @@ export function useFormSubmission() {
     setIsSubmitting(true);
     
     try {
+      // Check the Supabase connection
+      const isConnected = await checkSupabaseConnection();
+      if (!isConnected) {
+        throw new Error("Unable to connect to the database after multiple attempts");
+      }
+      
+      // Prepare travel anxiety data to be stored as JSON
+      const travelAnxietyData = {
+        travel_anxiety: values.travelAnxiety,
+        travel_anxiety_symptoms: Array.isArray(values.travelAnxietySymptoms) 
+          ? values.travelAnxietySymptoms 
+          : values.travelAnxietySymptoms ? [values.travelAnxietySymptoms] : [],
+        other_travel_anxiety_symptom: values.otherTravelAnxietySymptom,
+        currently_driving: values.currentlyDriving,
+        anxiety_initial_severity: values.anxietyInitialSeverity,
+        anxiety_current_severity: values.anxietyCurrentSeverity,
+        anxiety_resolve_days: values.anxietyResolveDays,
+        anxiety_past_history: values.anxietyPastHistory,
+        anxiety_duration: values.anxietyDuration,
+        has_anxiety_history: values.hasAnxietyHistory
+      };
+      
+      // Store lifestyle impact data
+      const lifestyleData = {
+        impact_on_work: values.impactOnWork,
+        time_off_work: values.timeOffWork,
+        work_restrictions: values.workRestrictions,
+        work_impact_date: values.workImpactDate,
+        
+        impact_on_sleep: values.impactOnSleep,
+        sleep_issues: values.sleepIssues,
+        sleep_impact_date: values.sleepImpactDate,
+        
+        impact_on_domestic: values.impactOnDomestic,
+        domestic_issues: values.domesticIssues,
+        domestic_impact_date: values.domesticImpactDate,
+        
+        impact_on_sports: values.impactOnSports,
+        sports_activities: values.sportsActivities,
+        sports_duration: values.sportsDuration,
+        sports_impact_date: values.sportsImpactDate,
+        
+        impact_on_social: values.impactOnSocial,
+        social_details: values.socialDetails,
+        social_impact_date: values.socialImpactDate
+      };
+      
+      // Treatment data
+      const treatmentData = {
+        has_treatment: values.hasTreatment,
+        treatment_type: values.treatmentType,
+        treatment_frequency: values.treatmentFrequency,
+        treatment_duration: values.treatmentDuration,
+        ongoing_treatment: values.ongoingTreatment,
+        scene_of_accident_treatment: values.sceneOfAccidentTreatment,
+        scene_of_accident_treatment_types: values.sceneOfAccidentTreatmentTypes,
+        went_to_ae: values.wentToAE,
+        hospital_name: values.hospitalName,
+        hospital_treatment: values.hospitalTreatment,
+        went_to_walk_in_gp: values.wentToWalkInGP,
+        days_before_gp_visit: values.daysBeforeGPVisit,
+        current_treatment: values.currentTreatment,
+        physiotherapy_sessions: values.physiotherapySessions
+      };
+      
       // Create a properly formatted object for Supabase insertion
-      // Only include fields that exist in the database table
       const formSubmission = {
-        // Store identifiable information to track submissions without requiring login
+        // Store identifiable information to track submissions
         solicitor_name: values.solicitorName,
         solicitor_reference: values.solicitorReference,
         instructing_party_name: values.instructingPartyName,
@@ -77,30 +169,17 @@ export function useFormSubmission() {
         headache_resolve_days: values.headacheResolveDays ? parseInt(values.headacheResolveDays) : null,
         headache_past_history: values.headachePastHistory,
         
-        // Adding missing fields for travel anxiety, treatment, and medical history
-        // We'll store these as JSON in the comments field since they aren't in the schema
-        travel_anxiety_data: JSON.stringify({
-          travel_anxiety: values.travelAnxiety,
-          travel_anxiety_symptoms: values.travelAnxietySymptoms || [],
-          other_travel_anxiety_symptom: values.otherTravelAnxietySymptom,
-          currently_driving: values.currentlyDriving,
-          anxiety_initial_severity: values.anxietyInitialSeverity,
-          anxiety_current_severity: values.anxietyCurrentSeverity,
-          anxiety_resolve_days: values.anxietyResolveDays,
-          anxiety_past_history: values.anxietyPastHistory,
-          anxiety_duration: values.anxietyDuration
-        }),
+        // Store travel anxiety, lifestyle, and treatment data as JSON in comments
+        travel_anxiety_data: JSON.stringify(travelAnxietyData),
+        lifestyle_data: JSON.stringify(lifestyleData),
+        treatment_data: JSON.stringify(treatmentData),
+        
+        // Store other injuries and past medical history
+        exceptional_injuries: values.exceptionalInjuries,
+        exceptional_injuries_details: values.exceptionalInjuriesDetails
       };
 
       console.log("Submitting data to Supabase:", formSubmission);
-
-      // Check Supabase connection before submission
-      const connectionStatus = await supabase.from('form_submissions').select('id').limit(1);
-      console.log("Connection status:", connectionStatus);
-      
-      if (connectionStatus.error) {
-        throw new Error(`Supabase connection error: ${connectionStatus.error.message}`);
-      }
 
       // Directly store the form data in Supabase
       const { data, error } = await supabase
