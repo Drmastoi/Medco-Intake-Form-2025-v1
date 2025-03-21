@@ -1,20 +1,22 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Send } from "lucide-react";
+import { ChevronLeft, ChevronRight, Send, Loader2 } from "lucide-react";
 
 interface IntakeFormNavButtonsProps {
   currentSection: number;
   totalSections: number;
   setCurrentSection: React.Dispatch<React.SetStateAction<number>>;
   onSubmit?: () => void;
+  isSubmitting?: boolean;
 }
 
 export function IntakeFormNavButtons({
   currentSection,
   totalSections,
   setCurrentSection,
-  onSubmit
+  onSubmit,
+  isSubmitting = false
 }: IntakeFormNavButtonsProps) {
   const isLastSection = currentSection === totalSections - 1;
 
@@ -24,7 +26,7 @@ export function IntakeFormNavButtons({
         type="button"
         variant="outline"
         onClick={() => setCurrentSection(currentSection - 1)}
-        disabled={currentSection === 0}
+        disabled={currentSection === 0 || isSubmitting}
       >
         <ChevronLeft className="mr-2 h-4 w-4" />
         Previous
@@ -34,14 +36,25 @@ export function IntakeFormNavButtons({
         <Button 
           type="button"
           onClick={onSubmit}
+          disabled={isSubmitting}
         >
-          <Send className="mr-2 h-4 w-4" />
-          Submit Questionnaire
+          {isSubmitting ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Submitting...
+            </>
+          ) : (
+            <>
+              <Send className="mr-2 h-4 w-4" />
+              Submit Questionnaire
+            </>
+          )}
         </Button>
       ) : (
         <Button
           type="button"
           onClick={() => setCurrentSection(currentSection + 1)}
+          disabled={isSubmitting}
         >
           Next
           <ChevronRight className="ml-2 h-4 w-4" />

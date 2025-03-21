@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   FormControl,
   FormField,
@@ -56,6 +56,19 @@ const travelAnxietySymptomOptions = [
 export function TravelAnxietySymptoms({ form }: { form: any }) {
   const [showOtherInput, setShowOtherInput] = useState(false);
   
+  useEffect(() => {
+    // Initialize the symptoms array if it's undefined
+    const currentValue = form.getValues("travelAnxietySymptoms");
+    if (!currentValue) {
+      form.setValue("travelAnxietySymptoms", []);
+    }
+    
+    // Check if "other" is selected to show the input field
+    if (currentValue && currentValue.includes("other")) {
+      setShowOtherInput(true);
+    }
+  }, [form]);
+  
   return (
     <FormField
       control={form.control}
@@ -74,7 +87,8 @@ export function TravelAnxietySymptoms({ form }: { form: any }) {
                   <Checkbox
                     checked={field.value?.includes(option.id)}
                     onCheckedChange={(checked) => {
-                      const currentValue = field.value || [];
+                      // Ensure field.value is an array
+                      const currentValue = Array.isArray(field.value) ? field.value : [];
                       let updatedValue: string[];
                       
                       if (checked) {

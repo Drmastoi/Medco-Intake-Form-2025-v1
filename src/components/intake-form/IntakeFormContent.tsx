@@ -13,6 +13,7 @@ interface IntakeFormContentProps {
   totalSections: number;
   setCurrentSection: React.Dispatch<React.SetStateAction<number>>;
   onSubmit?: (values: FormSchema) => Promise<void>;
+  isSubmitting?: boolean;
 }
 
 export function IntakeFormContent({ 
@@ -20,7 +21,8 @@ export function IntakeFormContent({
   currentSection, 
   totalSections, 
   setCurrentSection,
-  onSubmit
+  onSubmit,
+  isSubmitting = false
 }: IntakeFormContentProps) {
   const { toast } = useToast();
   
@@ -89,6 +91,7 @@ export function IntakeFormContent({
           totalSections={totalSections}
           setCurrentSection={setCurrentSection}
           onSubmit={handleFormSubmit}
+          isSubmitting={isSubmitting}
         />
       </form>
     </Form>

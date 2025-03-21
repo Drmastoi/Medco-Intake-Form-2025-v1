@@ -133,7 +133,8 @@ export function IntakeFormContainer() {
     handleSubmit, 
     showCompletionDialog, 
     setShowCompletionDialog,
-    submittedFormData
+    submittedFormData,
+    isSubmitting
   } = useFormSubmission();
 
   // Handle tab changes
@@ -172,6 +173,7 @@ export function IntakeFormContainer() {
         totalSections={totalSections}
         setCurrentSection={setCurrentSection}
         onSubmit={handleSubmit}
+        isSubmitting={isSubmitting}
       />
 
       {/* Report Submission Tab */}
