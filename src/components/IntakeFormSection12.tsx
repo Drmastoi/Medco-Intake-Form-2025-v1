@@ -29,6 +29,7 @@ export function IntakeFormSection12({ form }: { form: any }) {
   const additionalInformationDetails = form.watch("additionalInformationDetails");
   const exceptionalInjuries = form.watch("exceptionalInjuries");
   const exceptionalInjuriesDetails = form.watch("exceptionalInjuriesDetails");
+  const physiotherapyPreference = form.watch("physiotherapyPreference");
   
   const [summaryText, setSummaryText] = useState<string>("");
   
@@ -84,6 +85,17 @@ export function IntakeFormSection12({ form }: { form: any }) {
       text += "The claimant does not report any exceptionally severe physical or psychological injuries. ";
     }
     
+    // Physiotherapy preference
+    if (physiotherapyPreference === "1") {
+      text += "The claimant would like to have physiotherapy if offered. ";
+    } else if (physiotherapyPreference === "2") {
+      text += "The claimant does not want physiotherapy. ";
+    } else if (physiotherapyPreference === "3") {
+      text += "The claimant is already receiving physiotherapy. ";
+    } else if (physiotherapyPreference === "4") {
+      text += "The claimant has already recovered and does not need physiotherapy. ";
+    }
+    
     // Additional information
     if (additionalInformation === "1" && additionalInformationDetails) {
       text += `Additional information provided by the claimant: ${additionalInformationDetails}.`;
@@ -99,7 +111,8 @@ export function IntakeFormSection12({ form }: { form: any }) {
     additionalInformation,
     additionalInformationDetails,
     exceptionalInjuries,
-    exceptionalInjuriesDetails
+    exceptionalInjuriesDetails,
+    physiotherapyPreference
   ]);
 
   return (
@@ -279,6 +292,50 @@ export function IntakeFormSection12({ form }: { form: any }) {
                 )}
               />
             )}
+            
+            {/* Physiotherapy Preference Section - NEW */}
+            <FormField
+              control={form.control}
+              name="physiotherapyPreference"
+              render={({ field }) => (
+                <FormItem className="rounded-md border p-4 bg-card/30 shadow-sm">
+                  <FormLabel>Would you prefer to have physiotherapy if offered?</FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      className="flex flex-col space-y-1 pt-2"
+                    >
+                      <FormItem className="flex items-center space-x-2 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="1" />
+                        </FormControl>
+                        <FormLabel className="font-normal">Yes</FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-2 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="2" />
+                        </FormControl>
+                        <FormLabel className="font-normal">No</FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-2 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="3" />
+                        </FormControl>
+                        <FormLabel className="font-normal">Already ongoing</FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-2 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="4" />
+                        </FormControl>
+                        <FormLabel className="font-normal">Already recovered</FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             
             <FormField
               control={form.control}

@@ -1,4 +1,3 @@
-
 import { z } from "zod";
 
 export const formSchema = z.object({
@@ -171,6 +170,14 @@ export const formSchema = z.object({
   // Section 13 - Previous Medical History
   exceptionalInjuries: z.enum(["1", "2"]).default("2"),
   exceptionalInjuriesDetails: z.string().optional(),
+  previousAccident: z.enum(["1", "2"]).default("2"),
+  previousAccidentDate: z.string().optional(),
+  previousAccidentRecovery: z.enum(["1", "2"]).optional(),
+  previousInjuriesWorse: z.enum(["1", "2"]).optional(),
+  previousConditionWorse: z.string().optional(),
+  additionalInformation: z.enum(["1", "2"]).default("2"),
+  additionalInformationDetails: z.string().optional(),
+  physiotherapyPreference: z.enum(["1", "2", "3", "4"]).optional(),
 });
 
 export type FormSchema = z.infer<typeof formSchema>;

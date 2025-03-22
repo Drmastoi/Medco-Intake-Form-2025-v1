@@ -1,4 +1,3 @@
-
 export interface ReportData {
   prefilled: PrefilledData;
   personal: PersonalData;
@@ -174,4 +173,5 @@ export interface LifestyleData {
 export interface MedicalHistoryData {
   exceptionalInjuries: boolean;
   exceptionalInjuriesDetails: string;
+  physiotherapyPreference?: string;
 }

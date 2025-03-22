@@ -127,6 +127,7 @@ export const prepareFormData = (values: FormSchema) => {
     
     // Store other injuries and past medical history
     exceptional_injuries: values.exceptionalInjuries,
-    exceptional_injuries_details: values.exceptionalInjuriesDetails
+    exceptional_injuries_details: values.exceptionalInjuriesDetails,
+    physiotherapy_preference: values.physiotherapyPreference
   };
 };
