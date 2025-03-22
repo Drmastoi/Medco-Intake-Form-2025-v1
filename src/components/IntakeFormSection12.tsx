@@ -1,3 +1,4 @@
+
 import {
   FormControl,
   FormField,
@@ -17,7 +18,6 @@ import {
   CardTitle, 
   CardDescription 
 } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export function IntakeFormSection12({ form }: { form: any }) {
   const previousAccident = form.watch("previousAccident");
@@ -103,136 +103,173 @@ export function IntakeFormSection12({ form }: { form: any }) {
   ]);
 
   return (
-    <div className="space-y-4">
-      <Card className="bg-white/50 backdrop-blur-sm border-muted">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-xl font-semibold">Past Medical History</CardTitle>
-          <CardDescription>Please provide information about your previous medical conditions</CardDescription>
+    <div className="space-y-6">
+      <Card className="bg-white/70 backdrop-blur-sm border-muted shadow-sm">
+        <CardHeader className="pb-3 border-b">
+          <CardTitle className="text-2xl font-semibold text-primary">Past Medical History</CardTitle>
+          <CardDescription>Please provide information about any previous medical conditions or incidents</CardDescription>
         </CardHeader>
         
-        <CardContent>
-          <Tabs defaultValue="previous-rta" className="w-full">
-            <TabsList className="w-full mb-4 grid grid-cols-3">
-              <TabsTrigger value="previous-rta">Previous RTA</TabsTrigger>
-              <TabsTrigger value="medical-conditions">Medical Conditions</TabsTrigger>
-              <TabsTrigger value="additional-info">Additional Info</TabsTrigger>
-            </TabsList>
+        <CardContent className="pt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Previous RTA Section */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium">Previous Road Traffic Accidents</h3>
             
-            {/* Previous RTA Tab */}
-            <TabsContent value="previous-rta" className="space-y-4 pt-2">
-              <FormField
-                control={form.control}
-                name="previousAccident"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-3 bg-card/50">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value === "1"}
-                        onCheckedChange={(checked) => {
-                          field.onChange(checked ? "1" : "2");
-                        }}
-                      />
-                    </FormControl>
-                    <div className="space-y-1 leading-none">
-                      <FormLabel>Previous road traffic accident?</FormLabel>
-                    </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {previousAccident === "1" && (
-                <div className="space-y-3 rounded-md border p-3 bg-card/50">
-                  <FormField
-                    control={form.control}
-                    name="previousAccidentDate"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Date of previous accident</FormLabel>
-                        <FormControl>
-                          <Input type="date" {...field} className="bg-white" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="previousAccidentRecovery"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Complete recovery from previous accident?</FormLabel>
-                        <FormControl>
-                          <RadioGroup
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                            className="flex flex-row gap-4"
-                          >
-                            <FormItem className="flex items-center space-x-2 space-y-0">
-                              <FormControl>
-                                <RadioGroupItem value="1" />
-                              </FormControl>
-                              <FormLabel className="font-normal">Yes</FormLabel>
-                            </FormItem>
-                            <FormItem className="flex items-center space-x-2 space-y-0">
-                              <FormControl>
-                                <RadioGroupItem value="2" />
-                              </FormControl>
-                              <FormLabel className="font-normal">No</FormLabel>
-                            </FormItem>
-                          </RadioGroup>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="previousInjuriesWorse"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Current accident made previous injuries worse?</FormLabel>
-                        <FormControl>
-                          <RadioGroup
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                            className="flex flex-row gap-4"
-                          >
-                            <FormItem className="flex items-center space-x-2 space-y-0">
-                              <FormControl>
-                                <RadioGroupItem value="1" />
-                              </FormControl>
-                              <FormLabel className="font-normal">Yes</FormLabel>
-                            </FormItem>
-                            <FormItem className="flex items-center space-x-2 space-y-0">
-                              <FormControl>
-                                <RadioGroupItem value="2" />
-                              </FormControl>
-                              <FormLabel className="font-normal">No</FormLabel>
-                            </FormItem>
-                          </RadioGroup>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
+            <FormField
+              control={form.control}
+              name="previousAccident"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 bg-card/30 shadow-sm">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value === "1"}
+                      onCheckedChange={(checked) => {
+                        field.onChange(checked ? "1" : "2");
+                      }}
+                    />
+                  </FormControl>
+                  <div className="space-y-1 leading-none">
+                    <FormLabel>Previous road traffic accident?</FormLabel>
+                  </div>
+                  <FormMessage />
+                </FormItem>
               )}
-            </TabsContent>
+            />
+
+            {previousAccident === "1" && (
+              <div className="space-y-4 rounded-md border p-4 bg-card/30 shadow-sm">
+                <FormField
+                  control={form.control}
+                  name="previousAccidentDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Date of previous accident</FormLabel>
+                      <FormControl>
+                        <Input type="date" {...field} className="bg-white" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="previousAccidentRecovery"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Complete recovery from previous accident?</FormLabel>
+                      <FormControl>
+                        <RadioGroup
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                          className="flex flex-row gap-4"
+                        >
+                          <FormItem className="flex items-center space-x-2 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="1" />
+                            </FormControl>
+                            <FormLabel className="font-normal">Yes</FormLabel>
+                          </FormItem>
+                          <FormItem className="flex items-center space-x-2 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="2" />
+                            </FormControl>
+                            <FormLabel className="font-normal">No</FormLabel>
+                          </FormItem>
+                        </RadioGroup>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="previousInjuriesWorse"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Has the current accident made previous injuries worse?</FormLabel>
+                      <FormControl>
+                        <RadioGroup
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                          className="flex flex-row gap-4"
+                        >
+                          <FormItem className="flex items-center space-x-2 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="1" />
+                            </FormControl>
+                            <FormLabel className="font-normal">Yes</FormLabel>
+                          </FormItem>
+                          <FormItem className="flex items-center space-x-2 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="2" />
+                            </FormControl>
+                            <FormLabel className="font-normal">No</FormLabel>
+                          </FormItem>
+                        </RadioGroup>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            )}
+          </div>
+          
+          {/* Medical Conditions Section */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium">Medical Conditions & Additional Information</h3>
             
-            {/* Medical Conditions Tab */}
-            <TabsContent value="medical-conditions" className="space-y-4 pt-2">
+            <FormField
+              control={form.control}
+              name="previousConditionWorse"
+              render={({ field }) => (
+                <FormItem className="rounded-md border p-4 bg-card/30 shadow-sm">
+                  <FormLabel>Previous medical conditions worsened by this accident</FormLabel>
+                  <FormControl>
+                    <Textarea 
+                      placeholder="Enter details if yes, or leave blank if none" 
+                      {...field} 
+                      className="bg-white resize-none h-24"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            
+            <FormField
+              control={form.control}
+              name="exceptionalInjuries"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 bg-card/30 shadow-sm">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value === "1"}
+                      onCheckedChange={(checked) => {
+                        field.onChange(checked ? "1" : "2");
+                      }}
+                    />
+                  </FormControl>
+                  <div className="space-y-1 leading-none">
+                    <FormLabel>Exceptionally severe physical or psychological injuries?</FormLabel>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {exceptionalInjuries === "1" && (
               <FormField
                 control={form.control}
-                name="previousConditionWorse"
+                name="exceptionalInjuriesDetails"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Previous medical conditions worsened by this accident?</FormLabel>
+                  <FormItem className="rounded-md border p-4 bg-card/30 shadow-sm">
+                    <FormLabel>Please explain why they are exceptionally severe</FormLabel>
                     <FormControl>
                       <Textarea 
-                        placeholder="Enter details if yes, or leave blank if none" 
+                        placeholder="Provide details"
                         {...field} 
                         className="bg-white resize-none h-24"
                       />
@@ -241,101 +278,58 @@ export function IntakeFormSection12({ form }: { form: any }) {
                   </FormItem>
                 )}
               />
-              
-              <FormField
-                control={form.control}
-                name="exceptionalInjuries"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-3 bg-card/50">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value === "1"}
-                        onCheckedChange={(checked) => {
-                          field.onChange(checked ? "1" : "2");
-                        }}
-                      />
-                    </FormControl>
-                    <div className="space-y-1 leading-none">
-                      <FormLabel>Exceptionally severe physical or psychological injuries?</FormLabel>
-                    </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {exceptionalInjuries === "1" && (
-                <FormField
-                  control={form.control}
-                  name="exceptionalInjuriesDetails"
-                  render={({ field }) => (
-                    <FormItem className="rounded-md border p-3 bg-card/50">
-                      <FormLabel>Please explain why they are exceptionally severe</FormLabel>
-                      <FormControl>
-                        <Textarea 
-                          placeholder="Provide details"
-                          {...field} 
-                          className="bg-white resize-none h-24"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              )}
-            </TabsContent>
+            )}
             
-            {/* Additional Info Tab */}
-            <TabsContent value="additional-info" className="space-y-4 pt-2">
+            <FormField
+              control={form.control}
+              name="additionalInformation"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 bg-card/30 shadow-sm">
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value === "1"}
+                      onCheckedChange={(checked) => {
+                        field.onChange(checked ? "1" : "2");
+                      }}
+                    />
+                  </FormControl>
+                  <div className="space-y-1 leading-none">
+                    <FormLabel>Is there anything else you want to add?</FormLabel>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {additionalInformation === "1" && (
               <FormField
                 control={form.control}
-                name="additionalInformation"
+                name="additionalInformationDetails"
                 render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-3 bg-card/50">
+                  <FormItem className="rounded-md border p-4 bg-card/30 shadow-sm">
+                    <FormLabel>Additional details</FormLabel>
                     <FormControl>
-                      <Checkbox
-                        checked={field.value === "1"}
-                        onCheckedChange={(checked) => {
-                          field.onChange(checked ? "1" : "2");
-                        }}
+                      <Textarea 
+                        placeholder="Enter additional details" 
+                        {...field} 
+                        className="bg-white resize-none h-24"
                       />
                     </FormControl>
-                    <div className="space-y-1 leading-none">
-                      <FormLabel>Is there anything else you want to add?</FormLabel>
-                    </div>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-
-              {additionalInformation === "1" && (
-                <FormField
-                  control={form.control}
-                  name="additionalInformationDetails"
-                  render={({ field }) => (
-                    <FormItem className="rounded-md border p-3 bg-card/50">
-                      <FormLabel>Additional details</FormLabel>
-                      <FormControl>
-                        <Textarea 
-                          placeholder="Enter additional details" 
-                          {...field} 
-                          className="bg-white resize-none h-24"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              )}
-            </TabsContent>
-          </Tabs>
+            )}
+          </div>
         </CardContent>
       </Card>
       
       {/* Dynamic Summary Text */}
       {summaryText && (
-        <Card className="bg-muted/50 border-muted">
-          <CardContent className="pt-4">
-            <p className="text-xs text-muted-foreground italic">{summaryText}</p>
+        <Card className="bg-blue-50 border-blue-200">
+          <CardContent className="p-4">
+            <h3 className="text-lg font-medium mb-2 text-blue-800">Summary</h3>
+            <p className="text-sm text-blue-700">{summaryText}</p>
           </CardContent>
         </Card>
       )}

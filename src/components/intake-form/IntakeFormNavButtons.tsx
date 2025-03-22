@@ -1,7 +1,6 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Send, Loader2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 
 interface IntakeFormNavButtonsProps {
   currentSection: number;
@@ -32,26 +31,7 @@ export function IntakeFormNavButtons({
         Previous
       </Button>
 
-      {isLastSection ? (
-        <Button 
-          type="button"
-          onClick={onSubmit}
-          disabled={isSubmitting}
-          className="min-w-[160px] bg-green-600 hover:bg-green-700 text-white"
-        >
-          {isSubmitting ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Submitting...
-            </>
-          ) : (
-            <>
-              <Send className="mr-2 h-4 w-4" />
-              Submit Questionnaire
-            </>
-          )}
-        </Button>
-      ) : (
+      {!isLastSection && (
         <Button
           type="button"
           onClick={() => setCurrentSection(currentSection + 1)}
@@ -61,6 +41,8 @@ export function IntakeFormNavButtons({
           <ChevronRight className="ml-2 h-4 w-4" />
         </Button>
       )}
+      
+      {/* Submit button has been removed */}
     </div>
   );
 }
