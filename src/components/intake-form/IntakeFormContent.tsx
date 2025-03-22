@@ -45,12 +45,13 @@ export function IntakeFormContent({
           return;
         }
         
-        await onSubmit(values);
-        
+        // Show loading toast before submitting
         toast({
-          title: "Form submitted successfully",
-          description: "Thank you for completing the questionnaire!"
+          title: "Submitting your form",
+          description: "Please wait while we submit your questionnaire...",
         });
+        
+        await onSubmit(values);
       } else {
         // If validation fails, show the errors
         const formErrors = form.formState.errors;

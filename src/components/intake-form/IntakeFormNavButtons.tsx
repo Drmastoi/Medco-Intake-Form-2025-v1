@@ -37,7 +37,7 @@ export function IntakeFormNavButtons({
           type="button"
           onClick={onSubmit}
           disabled={isSubmitting}
-          className="min-w-[160px]"
+          className="min-w-[160px] bg-green-600 hover:bg-green-700 text-white"
         >
           {isSubmitting ? (
             <>

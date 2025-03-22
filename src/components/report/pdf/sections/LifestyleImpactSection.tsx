@@ -11,7 +11,20 @@ interface LifestyleImpactSectionProps {
 
 export const LifestyleImpactSection: React.FC<LifestyleImpactSectionProps> = ({ reportData }) => {
   // Safely access lifestyle data with proper defaults
-  const lifestyle = reportData.other?.lifestyle || {};
+  const lifestyle = reportData.other?.lifestyle || {
+    impactOnWork: false,
+    timeOffWork: '',
+    workRestrictions: [],
+    impactOnSleep: false,
+    sleepIssues: [],
+    impactOnDomestic: false,
+    domesticIssues: [],
+    impactOnSports: false,
+    sportsActivities: '',
+    sportsDuration: '',
+    impactOnSocial: false,
+    socialDetails: ''
+  };
   
   // Work impact
   const impactOnWork = lifestyle.impactOnWork || false;

@@ -169,7 +169,7 @@ export function useFormSubmission() {
         headache_resolve_days: values.headacheResolveDays ? parseInt(values.headacheResolveDays) : null,
         headache_past_history: values.headachePastHistory,
         
-        // Store travel anxiety, lifestyle, and treatment data as JSON in comments
+        // Store travel anxiety, lifestyle, and treatment data as JSON strings
         travel_anxiety_data: JSON.stringify(travelAnxietyData),
         lifestyle_data: JSON.stringify(lifestyleData),
         treatment_data: JSON.stringify(treatmentData),

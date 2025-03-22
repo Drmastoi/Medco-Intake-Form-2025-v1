@@ -11,7 +11,11 @@ interface MedicalHistorySectionProps {
 
 const MedicalHistorySection: React.FC<MedicalHistorySectionProps> = ({ reportData }) => {
   // Safely access properties to avoid errors
-  const medicalHistory = reportData.other?.medicalHistory || {};
+  const medicalHistory = reportData.other?.medicalHistory || {
+    exceptionalInjuries: false,
+    exceptionalInjuriesDetails: ''
+  };
+  
   const hasExceptionalInjuries = medicalHistory.exceptionalInjuries || false;
   const exceptionalInjuriesDetails = medicalHistory.exceptionalInjuriesDetails || '';
   
