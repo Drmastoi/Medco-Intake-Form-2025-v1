@@ -12,12 +12,11 @@ const corsHeaders = {
 
 interface SendReportRequest {
   to: string;
-  pdfBase64: string;
-  patientName: string;
-  referenceNumber: string;
-  isClaimantCopy?: boolean;
-  signature?: string;
-  signatureDate?: string;
+  pdf_base64: string;
+  recipient_email: string;
+  recipient_name: string;
+  client_name: string;
+  date_of_accident: string;
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -27,44 +26,38 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
+    // Parse request body
     const { 
-      to, 
-      pdfBase64, 
-      patientName, 
-      referenceNumber, 
-      isClaimantCopy,
-      signature,
-      signatureDate
+      pdf_base64,
+      recipient_email,
+      recipient_name,
+      client_name,
+      date_of_accident
     }: SendReportRequest = await req.json();
 
-    console.log("Sending report email to:", to);
+    console.log("Sending report email to:", recipient_email);
 
-    // Format the signature date if provided
-    const formattedDate = signatureDate ? new Date(signatureDate).toLocaleString('en-GB') : 'Not provided';
-
+    // If recipient_email is not provided, use a default
+    const to = recipient_email || "drawais@gmail.com";
+    const name = recipient_name || "Doctor";
+    
+    // Create PDF attachment from base64 string
     const emailResponse = await resend.emails.send({
       from: "MEDCO Reports <onboarding@resend.dev>",
       to: [to],
-      subject: `MEDCO Report - Reference: ${referenceNumber}`,
+      subject: `Medical Report for ${client_name || "Patient"}`,
       html: `
-        <h1>MEDCO ${isClaimantCopy ? 'Summary' : 'Medical'} Report</h1>
-        <p>Please find attached the ${isClaimantCopy ? 'summary' : 'medical'} report for patient: ${patientName}</p>
-        <p>Reference Number: ${referenceNumber}</p>
-        ${isClaimantCopy ? `
-        <p>A full copy of your medical report has been sent to our medical expert for review.</p>
-        <p>Please save your reference number for future correspondence.</p>
-        ${signature ? `<p>Confirmed and signed by: ${signature} on ${formattedDate}</p>` : ''}
-        ` : `
+        <h1>Medical Report</h1>
+        <p>Dear ${name},</p>
+        <p>Please find attached the medical report for ${client_name || "Patient"}.</p>
+        <p>Date of Accident: ${date_of_accident || "Not specified"}</p>
         <p>This is a full medical report for your review.</p>
-        <p>Please assess and provide your expert opinion on the case.</p>
-        ${signature ? `<p>Patient signature: ${signature} on ${formattedDate}</p>` : ''}
-        `}
         <p>Best regards,<br>Medical Assessment Team</p>
       `,
       attachments: [
         {
-          filename: `MEDCO_${isClaimantCopy ? 'Summary' : 'Medical'}_Report_${patientName}_${referenceNumber}.pdf`,
-          content: pdfBase64,
+          filename: `Medical_Report_${client_name || "Patient"}.pdf`,
+          content: pdf_base64,
         },
       ],
     });

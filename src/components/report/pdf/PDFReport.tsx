@@ -32,10 +32,17 @@ const PDFReport = ({
     handlePDFError
   } = usePDFLoading(isOpen);
 
+  // Handle the close action
+  const handleClose = () => {
+    if (onClose) {
+      onClose();
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="max-w-[90vw] max-h-[90vh] overflow-hidden">
         <PDFDialogHeader 
           isPreview={isPreview} 
@@ -50,7 +57,7 @@ const PDFReport = ({
             loading={loading}
             renderError={renderError}
             reportData={reportData}
-            onClose={onClose}
+            onClose={handleClose}
           />
           
           <div className="w-full h-[70vh] border rounded">

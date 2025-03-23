@@ -14,7 +14,7 @@ import {
 import PDFReport from './pdf/PDFReport';
 import { FormSchema } from '@/schemas/intakeFormSchema';
 import { useReportEmailSubmission } from '@/hooks/useReportEmailSubmission';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Mail } from 'lucide-react';
 import { convertFormDataToReportData } from '@/utils/pdfReportUtils';
 
 interface ReportSubmissionTabProps {
@@ -27,6 +27,7 @@ export const ReportSubmissionTab = ({ isOpen, onClose, formData }: ReportSubmiss
   const [sendToEmail, setSendToEmail] = useState('');
   const [recipientName, setRecipientName] = useState('');
   const [emailDialogOpen, setEmailDialogOpen] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
   
   // Convert form data to report data structure
   const reportData = convertFormDataToReportData(formData);
@@ -66,6 +67,10 @@ export const ReportSubmissionTab = ({ isOpen, onClose, formData }: ReportSubmiss
     submitReportViaEmail(sendToEmail, recipientName);
   };
 
+  const handleClosePDFPreview = () => {
+    setPreviewOpen(false);
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -78,23 +83,35 @@ export const ReportSubmissionTab = ({ isOpen, onClose, formData }: ReportSubmiss
 
         <div className="flex flex-col space-y-4">
           <div className="rounded-md border p-4">
-            <h2 className="text-lg font-semibold mb-2">Download Report</h2>
+            <h2 className="text-lg font-semibold mb-2">Preview Report</h2>
             <p className="text-sm text-gray-500 mb-4">
-              Download the report as a PDF file.
+              Preview the report before downloading or sending.
             </p>
-            <PDFReport 
-              reportData={reportData} 
-              isOpen={true} 
-              onClose={() => {}} 
-              isPreview={true} 
-            />
+            <Button 
+              variant="outline" 
+              onClick={() => setPreviewOpen(true)}
+            >
+              Preview Report
+            </Button>
+            
+            {previewOpen && (
+              <PDFReport 
+                reportData={reportData} 
+                isOpen={previewOpen} 
+                onClose={handleClosePDFPreview} 
+                isPreview={true} 
+              />
+            )}
           </div>
 
           <div className="rounded-md border p-4">
             <h2 className="text-lg font-semibold mb-2">Send Report via Email</h2>
             <Dialog open={emailDialogOpen} onOpenChange={setEmailDialogOpen}>
               <DialogTrigger asChild>
-                <Button variant="outline">Send via Email</Button>
+                <Button variant="outline">
+                  <Mail className="h-4 w-4 mr-2" />
+                  Send via Email
+                </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>

@@ -26,7 +26,6 @@ const PDFDownloadLink = ({ reportData, isLoading }: PDFDownloadLinkProps) => {
     <ReactPDFDownloadLink 
       document={<PDFDocumentContent reportData={reportData} />} 
       fileName={`medical-report-${reportData.prefilled?.medcoReference || 'report'}.pdf`}
-      className="hidden md:block"
       onClick={handleDownloadStart}
     >
       {({ blob, url, loading, error }) => (
