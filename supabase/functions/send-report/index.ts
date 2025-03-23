@@ -11,7 +11,6 @@ const corsHeaders = {
 };
 
 interface SendReportRequest {
-  to: string;
   pdf_base64: string;
   recipient_email: string;
   recipient_name: string;

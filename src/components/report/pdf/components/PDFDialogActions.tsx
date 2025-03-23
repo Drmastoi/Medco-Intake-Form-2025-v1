@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Mail, Download } from 'lucide-react';
 import PDFDownloadLink from './PDFDownloadLink';
@@ -13,6 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useToast } from '@/components/ui/use-toast';
+import { useReportEmailSubmission } from '@/hooks/useReportEmailSubmission';
 
 interface PDFDialogActionsProps {
   isPreview: boolean;
@@ -31,44 +32,25 @@ const PDFDialogActions = ({
   reportData,
   onClose
 }: PDFDialogActionsProps) => {
-  const [sendToDoctor, setSendToDoctor] = React.useState(false);
+  const [sendToDoctor, setSendToDoctor] = useState(false);
   const { toast } = useToast();
+  const { isSubmitting, submitReportViaEmail } = useReportEmailSubmission(reportData);
   const closeButtonText = isPreview ? "Close Preview" : "Close";
   
   const handleSendToDoctor = async () => {
     try {
-      // Close the dialog
-      setSendToDoctor(false);
-      
       // Show loading toast
       toast({
         title: "Sending report",
-        description: "Sending report to doctor...",
+        description: "Sending report to Dr. Awais...",
       });
       
-      // Call the Supabase function to send the email
-      const response = await fetch('https://your-project.supabase.co/functions/v1/send-report', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          to: 'drawais@gmail.com',
-          pdfBase64: '', // This will be generated on the server side
-          patientName: reportData.personal?.fullName || 'Patient',
-          referenceNumber: reportData.prefilled?.medcoReference || 'Unknown',
-          isClaimantCopy: false
-        }),
-      });
+      // Use the email submission hook to send to the doctor
+      await submitReportViaEmail("drawais@gmail.com", "Dr. Awais");
       
-      if (!response.ok) {
-        throw new Error('Failed to send email');
-      }
+      // Close the dialog
+      setSendToDoctor(false);
       
-      toast({
-        title: "Success",
-        description: "Report sent to doctor successfully",
-      });
     } catch (error) {
       console.error('Error sending email:', error);
       toast({
@@ -103,8 +85,8 @@ const PDFDialogActions = ({
                 <Button variant="outline" onClick={() => setSendToDoctor(false)}>
                   Cancel
                 </Button>
-                <Button onClick={handleSendToDoctor}>
-                  Send Report
+                <Button onClick={handleSendToDoctor} disabled={isSubmitting}>
+                  {isSubmitting ? "Sending..." : "Send Report"}
                 </Button>
               </div>
             </DialogContent>

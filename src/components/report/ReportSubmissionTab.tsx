@@ -32,13 +32,6 @@ export const ReportSubmissionTab = ({ isOpen, onClose, formData }: ReportSubmiss
   // Convert form data to report data structure
   const reportData = convertFormDataToReportData(formData);
   
-  console.log("ReportSubmissionTab using formData with lifestyle:", 
-    JSON.stringify(formData.impactOnWork),
-    JSON.stringify(formData.workDifficulties));
-  
-  console.log("ReportSubmissionTab converted to reportData:", 
-    JSON.stringify(reportData.other?.lifestyle, null, 2));
-  
   // Use report email submission hook
   const { isSubmitting, isSuccess, submitReportViaEmail } = useReportEmailSubmission(reportData);
   
