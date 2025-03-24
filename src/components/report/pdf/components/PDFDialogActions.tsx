@@ -71,6 +71,15 @@ const PDFDialogActions = ({
     }
   };
   
+  // Format the lastResponse for better readability
+  const formatLastResponse = (response: any) => {
+    try {
+      return JSON.stringify(response, null, 2);
+    } catch (e) {
+      return String(response);
+    }
+  };
+  
   return (
     <div className="flex flex-col w-full gap-2">
       <div className="flex justify-end w-full space-x-2">
@@ -119,8 +128,8 @@ const PDFDialogActions = ({
                         <Info className="h-3 w-3 mr-1" /> Technical Details
                       </AccordionTrigger>
                       <AccordionContent>
-                        <div className="bg-gray-100 p-2 rounded text-xs overflow-auto max-h-32">
-                          <pre>{JSON.stringify(lastResponse, null, 2)}</pre>
+                        <div className="bg-gray-100 p-2 rounded text-xs overflow-auto max-h-48">
+                          <pre>{formatLastResponse(lastResponse)}</pre>
                         </div>
                       </AccordionContent>
                     </AccordionItem>

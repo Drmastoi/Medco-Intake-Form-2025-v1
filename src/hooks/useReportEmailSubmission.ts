@@ -58,7 +58,7 @@ export const useReportEmailSubmission = (reportData: ReportData) => {
       
       console.log(`PDF generated successfully, size: ${freshPdfBase64.length} characters`);
       
-      if (freshPdfBase64.length > 10000000) {
+      if (freshPdfBase64.length > 5000000) { // Reduced from 10MB to 5MB to be safer
         const errorMsg = "PDF is too large to send via email";
         console.warn(errorMsg, { size: freshPdfBase64.length });
         setLastError(errorMsg);
@@ -125,7 +125,14 @@ export const useReportEmailSubmission = (reportData: ReportData) => {
       } catch (invokeError: any) {
         console.error("Exception invoking edge function:", invokeError);
         setLastError(invokeError.message || "Failed to communicate with server");
-        setLastResponse({ invokeError: invokeError.toString(), stack: invokeError.stack });
+        setLastResponse({ 
+          invokeError: invokeError.toString(), 
+          stack: invokeError.stack,
+          request: {
+            to: recipientEmail,
+            attachmentSize: freshPdfBase64.length
+          }
+        });
         toast.error("Failed to send report", {
           description: `Connection error: ${invokeError.message}. Please try again later.`,
         });

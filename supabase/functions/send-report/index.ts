@@ -30,6 +30,14 @@ const handler = async (req: Request): Promise<Response> => {
     });
   }
 
+  // Add diagnostic info about the request
+  const requestUrl = req.url;
+  const apiKey = Deno.env.get("RESEND_API_KEY");
+  const apiKeyInfo = apiKey ? `API key exists (length: ${apiKey.length}, first 4 chars: ${apiKey.substring(0, 4)}...)` : "API key missing";
+  
+  console.log(`Request URL: ${requestUrl}`);
+  console.log(`Resend API key status: ${apiKeyInfo}`);
+
   try {
     // Parse request body
     let requestBody;
@@ -70,10 +78,32 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    // Log key information for debugging
-    console.log(`Request received to send report to: ${recipient_email}`);
-    console.log(`PDF data size: ${pdf_base64 ? pdf_base64.length : 0} characters`);
-    console.log(`Using RESEND_API_KEY: ${Deno.env.get("RESEND_API_KEY") ? "Key exists" : "Key is missing or empty"}`);
+    // Validate email format
+    if (recipient_email && !recipient_email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+      console.error("Invalid email format:", recipient_email);
+      return new Response(
+        JSON.stringify({ error: "Invalid email format" }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
+    }
+
+    // Check PDF size to avoid limits
+    const pdfSize = pdf_base64 ? pdf_base64.length : 0;
+    console.log(`PDF data size: ${pdfSize} characters`);
+    
+    if (pdfSize > 5000000) { // About 5MB after base64 encoding
+      console.error("PDF data too large, exceeds 5MB when encoded");
+      return new Response(
+        JSON.stringify({ error: "PDF data too large, please reduce file size" }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
+    }
 
     // If recipient_email is not provided, use a default
     const to = recipient_email || "drawais@gmail.com";
@@ -105,19 +135,79 @@ const handler = async (req: Request): Promise<Response> => {
     console.log(`To: ${emailRequest.to.join(", ")}`);
     console.log(`Subject: ${emailRequest.subject}`);
     
-    // Try to send the email
+    // Try to send the email with more detailed error handling
     console.log("Calling Resend API...");
-    let emailResponse;
     try {
-      emailResponse = await resend.emails.send(emailRequest);
+      const emailResponse = await resend.emails.send(emailRequest);
       console.log("Raw Resend API response:", JSON.stringify(emailResponse));
-    } catch (resendError) {
+      
+      // Check for error in response
+      if (emailResponse.error) {
+        console.error("Resend API returned an error:", emailResponse.error);
+        return new Response(
+          JSON.stringify({ 
+            error: emailResponse.error, 
+            message: "Failed to send email through Resend API",
+            request: {
+              to: emailRequest.to,
+              from: emailRequest.from,
+              subject: emailRequest.subject,
+              attachmentSizeBytes: pdfSize
+            }
+          }),
+          {
+            status: 500,
+            headers: { "Content-Type": "application/json", ...corsHeaders },
+          }
+        );
+      }
+
+      console.log("Email sent successfully!");
+      return new Response(JSON.stringify({
+        success: true,
+        message: "Email sent successfully",
+        data: emailResponse,
+        requestDetails: {
+          to: emailRequest.to,
+          from: emailRequest.from,
+          subject: emailRequest.subject
+        }
+      }), {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+          ...corsHeaders,
+        },
+      });
+    } catch (resendError: any) {
+      // Detailed logging of the Resend API error
       console.error("Exception from Resend API:", resendError);
+      console.error("Error details:", JSON.stringify({
+        name: resendError.name,
+        message: resendError.message,
+        stack: resendError.stack,
+        // Extract any response data if available
+        response: resendError.response ? {
+          status: resendError.response.status,
+          data: resendError.response.data
+        } : 'No response data'
+      }));
+      
       return new Response(
         JSON.stringify({ 
           error: "Resend API error", 
           details: resendError.message,
-          stack: resendError.stack
+          stack: resendError.stack,
+          // Include additional context for debugging
+          context: {
+            apiKeyPresent: !!apiKey,
+            requestDetails: {
+              to: emailRequest.to,
+              from: emailRequest.from,
+              subject: emailRequest.subject,
+              attachmentSizeBytes: pdfSize
+            }
+          }
         }),
         {
           status: 500,
@@ -125,36 +215,6 @@ const handler = async (req: Request): Promise<Response> => {
         }
       );
     }
-
-    console.log("Email send attempt complete");
-    
-    // Check for error in response
-    if (emailResponse.error) {
-      console.error("Resend API returned an error:", emailResponse.error);
-      return new Response(
-        JSON.stringify({ 
-          error: emailResponse.error, 
-          message: "Failed to send email through Resend API" 
-        }),
-        {
-          status: 500,
-          headers: { "Content-Type": "application/json", ...corsHeaders },
-        }
-      );
-    }
-
-    console.log("Email sent successfully!");
-    return new Response(JSON.stringify({
-      success: true,
-      message: "Email sent successfully",
-      data: emailResponse
-    }), {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-        ...corsHeaders,
-      },
-    });
   } catch (error: any) {
     console.error("Unhandled error in send-report function:", error);
     console.error("Stack trace:", error.stack);
@@ -163,7 +223,11 @@ const handler = async (req: Request): Promise<Response> => {
       JSON.stringify({ 
         error: error.message,
         stack: error.stack,
-        message: "Exception occurred while sending email" 
+        message: "Exception occurred while sending email",
+        context: {
+          apiKeyPresent: !!apiKey,
+          requestUrl: requestUrl
+        }
       }),
       {
         status: 500,
