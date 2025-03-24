@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Mail, Download, AlertCircle, CheckCircle, Info } from 'lucide-react';
+import { Mail, Download, AlertCircle, CheckCircle, Info, ExternalLink } from 'lucide-react';
 import PDFDownloadLink from './PDFDownloadLink';
 import { ReportData } from '@/types/reportTypes';
 import {
@@ -13,7 +13,7 @@ import {
   DialogTrigger,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useToast } from '@/components/ui/use-toast';
 import { useReportEmailSubmission } from '@/hooks/useReportEmailSubmission';
 import {
@@ -80,6 +80,10 @@ const PDFDialogActions = ({
     }
   };
   
+  // Check if the error is related to the Resend API configuration
+  const isResendConfigError = lastError?.includes('API key') || 
+                             (lastResponse?.data?.error && lastResponse.data.error.includes('API key'));
+  
   return (
     <div className="flex flex-col w-full gap-2">
       <div className="flex justify-end w-full space-x-2">
@@ -105,8 +109,28 @@ const PDFDialogActions = ({
                 {lastError && (
                   <Alert variant="destructive" className="my-2">
                     <AlertCircle className="h-4 w-4" />
+                    <AlertTitle>Error Sending Email</AlertTitle>
                     <AlertDescription>
-                      Error: {lastError}
+                      {lastError}
+                      {isResendConfigError && (
+                        <div className="mt-2 text-xs">
+                          <p>This appears to be a Resend API configuration issue. Please check:</p>
+                          <ul className="list-disc pl-5 mt-1">
+                            <li>Your Resend API key is correctly set</li>
+                            <li>Your sending domain is verified on Resend</li>
+                            <li>
+                              <a 
+                                href="https://resend.com/domains" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="text-blue-500 flex items-center"
+                              >
+                                Verify domain on Resend <ExternalLink className="h-3 w-3 ml-1" />
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      )}
                     </AlertDescription>
                   </Alert>
                 )}

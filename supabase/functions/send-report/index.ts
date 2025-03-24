@@ -30,15 +30,23 @@ const handler = async (req: Request): Promise<Response> => {
     });
   }
 
-  // Add diagnostic info about the request
-  const requestUrl = req.url;
-  const apiKey = Deno.env.get("RESEND_API_KEY");
-  const apiKeyInfo = apiKey ? `API key exists (length: ${apiKey.length}, first 4 chars: ${apiKey.substring(0, 4)}...)` : "API key missing";
-  
-  console.log(`Request URL: ${requestUrl}`);
-  console.log(`Resend API key status: ${apiKeyInfo}`);
-
   try {
+    // Validate API key is present
+    const apiKey = Deno.env.get("RESEND_API_KEY");
+    if (!apiKey) {
+      console.error("RESEND_API_KEY is missing");
+      return new Response(
+        JSON.stringify({ 
+          error: "Configuration error", 
+          details: "Resend API key is not configured" 
+        }),
+        {
+          status: 500,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
+    }
+
     // Parse request body
     let requestBody;
     try {
@@ -134,6 +142,7 @@ const handler = async (req: Request): Promise<Response> => {
     console.log(`From: ${emailRequest.from}`);
     console.log(`To: ${emailRequest.to.join(", ")}`);
     console.log(`Subject: ${emailRequest.subject}`);
+    console.log(`Attachment size: ${pdf_base64.length} bytes`);
     
     // Try to send the email with more detailed error handling
     console.log("Calling Resend API...");
@@ -201,6 +210,7 @@ const handler = async (req: Request): Promise<Response> => {
           // Include additional context for debugging
           context: {
             apiKeyPresent: !!apiKey,
+            apiKeyLength: apiKey ? apiKey.length : 0,
             requestDetails: {
               to: emailRequest.to,
               from: emailRequest.from,
@@ -223,11 +233,7 @@ const handler = async (req: Request): Promise<Response> => {
       JSON.stringify({ 
         error: error.message,
         stack: error.stack,
-        message: "Exception occurred while sending email",
-        context: {
-          apiKeyPresent: !!apiKey,
-          requestUrl: requestUrl
-        }
+        message: "Exception occurred while sending email"
       }),
       {
         status: 500,

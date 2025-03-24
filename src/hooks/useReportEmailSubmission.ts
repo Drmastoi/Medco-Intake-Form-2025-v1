@@ -97,7 +97,7 @@ export const useReportEmailSubmission = (reportData: ReportData) => {
           console.error("Edge function returned error:", error);
           setLastError(error.message || "Error calling send-report function");
           toast.error("Failed to send report", {
-            description: `Error from server: ${error.message}`,
+            description: `Error from server: ${error.message || "Unknown error"}`,
           });
           return false;
         }
