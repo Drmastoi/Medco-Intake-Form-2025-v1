@@ -34,15 +34,18 @@ const handler = async (req: Request): Promise<Response> => {
       date_of_accident
     }: SendReportRequest = await req.json();
 
-    console.log("Sending report email to:", recipient_email);
+    // Log key information for debugging
+    console.log(`Request received to send report to: ${recipient_email}`);
+    console.log(`PDF data size: ${pdf_base64.length} characters`);
+    console.log(`Using RESEND_API_KEY: ${Deno.env.get("RESEND_API_KEY") ? "Key exists" : "Key is missing or empty"}`);
 
     // If recipient_email is not provided, use a default
     const to = recipient_email || "drawais@gmail.com";
     const name = recipient_name || "Doctor";
     
-    // Create PDF attachment from base64 string
-    const emailResponse = await resend.emails.send({
-      from: "MEDCO Reports <onboarding@resend.dev>",
+    // Create email request
+    const emailRequest = {
+      from: "Medico Legal Reports <reports@medco-legal.com>",
       to: [to],
       subject: `Medical Report for ${client_name || "Patient"}`,
       html: `
@@ -59,11 +62,39 @@ const handler = async (req: Request): Promise<Response> => {
           content: pdf_base64,
         },
       ],
-    });
+    };
 
-    console.log("Email sent successfully:", emailResponse);
+    console.log("Sending email with the following configuration:");
+    console.log(`From: ${emailRequest.from}`);
+    console.log(`To: ${emailRequest.to.join(", ")}`);
+    console.log(`Subject: ${emailRequest.subject}`);
+    
+    // Try to send the email
+    const emailResponse = await resend.emails.send(emailRequest);
 
-    return new Response(JSON.stringify(emailResponse), {
+    console.log("Email send attempt complete");
+    console.log("Response from Resend API:", JSON.stringify(emailResponse, null, 2));
+
+    // Check for error in response
+    if (emailResponse.error) {
+      console.error("Resend API returned an error:", emailResponse.error);
+      return new Response(
+        JSON.stringify({ 
+          error: emailResponse.error, 
+          message: "Failed to send email through Resend API" 
+        }),
+        {
+          status: 500,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
+    }
+
+    return new Response(JSON.stringify({
+      success: true,
+      message: "Email sent successfully",
+      data: emailResponse
+    }), {
       status: 200,
       headers: {
         "Content-Type": "application/json",
@@ -72,8 +103,14 @@ const handler = async (req: Request): Promise<Response> => {
     });
   } catch (error: any) {
     console.error("Error in send-report function:", error);
+    console.error("Stack trace:", error.stack);
+    
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ 
+        error: error.message,
+        stack: error.stack,
+        message: "Exception occurred while sending email" 
+      }),
       {
         status: 500,
         headers: { "Content-Type": "application/json", ...corsHeaders },
