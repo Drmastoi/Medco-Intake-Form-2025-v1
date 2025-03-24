@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Mail, Download, AlertCircle, CheckCircle } from 'lucide-react';
+import { Mail, Download, AlertCircle, CheckCircle, Info } from 'lucide-react';
 import PDFDownloadLink from './PDFDownloadLink';
 import { ReportData } from '@/types/reportTypes';
 import {
@@ -16,6 +16,12 @@ import {
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useToast } from '@/components/ui/use-toast';
 import { useReportEmailSubmission } from '@/hooks/useReportEmailSubmission';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 interface PDFDialogActionsProps {
   isPreview: boolean;
@@ -36,7 +42,7 @@ const PDFDialogActions = ({
 }: PDFDialogActionsProps) => {
   const [sendToDoctor, setSendToDoctor] = useState(false);
   const { toast } = useToast();
-  const { isSubmitting, isSuccess, lastError, submitReportViaEmail } = useReportEmailSubmission(reportData);
+  const { isSubmitting, isSuccess, lastError, lastResponse, submitReportViaEmail } = useReportEmailSubmission(reportData);
   const closeButtonText = isPreview ? "Close Preview" : "Close";
   
   const handleSendToDoctor = async () => {
@@ -101,8 +107,24 @@ const PDFDialogActions = ({
                     <CheckCircle className="h-4 w-4 text-green-500" />
                     <AlertDescription className="text-green-500">
                       Report sent successfully to drawais@gmail.com!
+                      <p className="text-xs mt-1">Please check both inbox and spam folders.</p>
                     </AlertDescription>
                   </Alert>
+                )}
+                
+                {lastResponse && (
+                  <Accordion type="single" collapsible className="w-full">
+                    <AccordionItem value="debug-info">
+                      <AccordionTrigger className="text-sm text-gray-500">
+                        <Info className="h-3 w-3 mr-1" /> Technical Details
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        <div className="bg-gray-100 p-2 rounded text-xs overflow-auto max-h-32">
+                          <pre>{JSON.stringify(lastResponse, null, 2)}</pre>
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
                 )}
                 
                 <DialogFooter className="flex justify-end space-x-2 mt-4">

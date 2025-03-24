@@ -19,24 +19,60 @@ interface SendReportRequest {
 }
 
 const handler = async (req: Request): Promise<Response> => {
+  console.log("Edge function triggered with method:", req.method);
+  
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
+    console.log("Handling OPTIONS request");
+    return new Response(null, { 
+      status: 200,
+      headers: corsHeaders 
+    });
   }
 
   try {
     // Parse request body
+    let requestBody;
+    try {
+      requestBody = await req.json();
+      console.log("Request body parsed successfully");
+    } catch (parseError) {
+      console.error("Failed to parse request body:", parseError);
+      return new Response(
+        JSON.stringify({ 
+          error: "Invalid JSON in request body",
+          details: parseError.message 
+        }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
+    }
+
     const { 
       pdf_base64,
       recipient_email,
       recipient_name,
       client_name,
       date_of_accident
-    }: SendReportRequest = await req.json();
+    }: SendReportRequest = requestBody;
+
+    // Validate required fields
+    if (!pdf_base64) {
+      console.error("Missing PDF data");
+      return new Response(
+        JSON.stringify({ error: "Missing PDF data" }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
+    }
 
     // Log key information for debugging
     console.log(`Request received to send report to: ${recipient_email}`);
-    console.log(`PDF data size: ${pdf_base64.length} characters`);
+    console.log(`PDF data size: ${pdf_base64 ? pdf_base64.length : 0} characters`);
     console.log(`Using RESEND_API_KEY: ${Deno.env.get("RESEND_API_KEY") ? "Key exists" : "Key is missing or empty"}`);
 
     // If recipient_email is not provided, use a default
@@ -70,11 +106,28 @@ const handler = async (req: Request): Promise<Response> => {
     console.log(`Subject: ${emailRequest.subject}`);
     
     // Try to send the email
-    const emailResponse = await resend.emails.send(emailRequest);
+    console.log("Calling Resend API...");
+    let emailResponse;
+    try {
+      emailResponse = await resend.emails.send(emailRequest);
+      console.log("Raw Resend API response:", JSON.stringify(emailResponse));
+    } catch (resendError) {
+      console.error("Exception from Resend API:", resendError);
+      return new Response(
+        JSON.stringify({ 
+          error: "Resend API error", 
+          details: resendError.message,
+          stack: resendError.stack
+        }),
+        {
+          status: 500,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
+    }
 
     console.log("Email send attempt complete");
-    console.log("Response from Resend API:", JSON.stringify(emailResponse, null, 2));
-
+    
     // Check for error in response
     if (emailResponse.error) {
       console.error("Resend API returned an error:", emailResponse.error);
@@ -90,6 +143,7 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
+    console.log("Email sent successfully!");
     return new Response(JSON.stringify({
       success: true,
       message: "Email sent successfully",
@@ -102,7 +156,7 @@ const handler = async (req: Request): Promise<Response> => {
       },
     });
   } catch (error: any) {
-    console.error("Error in send-report function:", error);
+    console.error("Unhandled error in send-report function:", error);
     console.error("Stack trace:", error.stack);
     
     return new Response(

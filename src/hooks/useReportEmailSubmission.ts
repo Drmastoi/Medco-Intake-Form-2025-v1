@@ -10,6 +10,7 @@ export const useReportEmailSubmission = (reportData: ReportData) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [lastError, setLastError] = useState<string | null>(null);
+  const [lastResponse, setLastResponse] = useState<any>(null);
 
   // Generate PDF as base64 when needed
   const { data: pdfBase64, refetch: regeneratePdf } = useQuery({
@@ -35,6 +36,7 @@ export const useReportEmailSubmission = (reportData: ReportData) => {
     try {
       setIsSubmitting(true);
       setLastError(null);
+      setLastResponse(null);
       
       // Clear any previous success state
       setIsSuccess(false);
@@ -77,42 +79,62 @@ export const useReportEmailSubmission = (reportData: ReportData) => {
       
       console.log("Calling send-report edge function");
       
-      // Call Supabase Edge Function
-      const { data, error } = await supabase.functions.invoke('send-report', {
-        body: emailData,
-      });
-      
-      console.log("Response from edge function:", data);
-      
-      if (error) {
-        console.error("Edge function error:", error);
-        setLastError(error.message || "Error calling send-report function");
+      try {
+        // Call Supabase Edge Function with timeout
+        const functionResponse = await supabase.functions.invoke('send-report', {
+          body: emailData,
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        });
+        
+        console.log("Raw response from edge function:", functionResponse);
+        setLastResponse(functionResponse);
+        
+        const { data, error } = functionResponse;
+        
+        if (error) {
+          console.error("Edge function returned error:", error);
+          setLastError(error.message || "Error calling send-report function");
+          toast.error("Failed to send report", {
+            description: `Error from server: ${error.message}`,
+          });
+          return false;
+        }
+        
+        if (data?.error) {
+          console.error("Application error from edge function:", data.error);
+          let errorMessage = typeof data.error === 'object' 
+            ? JSON.stringify(data.error) 
+            : String(data.error);
+          setLastError(errorMessage || "Error in email sending process");
+          toast.error("Failed to send report", {
+            description: `Server reported: ${errorMessage || data.message || "Unknown error"}`,
+          });
+          return false;
+        }
+        
+        console.log("Email sent successfully:", data);
+        
+        toast.success("Report sent successfully", {
+          description: `Report has been sent to ${recipientEmail}. Please check your inbox (and spam folder).`,
+        });
+        
+        setIsSuccess(true);
+        return true;
+      } catch (invokeError: any) {
+        console.error("Exception invoking edge function:", invokeError);
+        setLastError(invokeError.message || "Failed to communicate with server");
+        setLastResponse({ invokeError: invokeError.toString(), stack: invokeError.stack });
         toast.error("Failed to send report", {
-          description: `Error from server: ${error.message}`,
+          description: `Connection error: ${invokeError.message}. Please try again later.`,
         });
         return false;
       }
-      
-      if (data?.error) {
-        console.error("Application error from edge function:", data.error);
-        setLastError(data.error.message || "Error in email sending process");
-        toast.error("Failed to send report", {
-          description: `Server reported: ${data.error.message || data.message || "Unknown error"}`,
-        });
-        return false;
-      }
-      
-      console.log("Email sent successfully:", data);
-      
-      toast.success("Report sent successfully", {
-        description: `Report has been emailed to ${recipientEmail}`,
-      });
-      
-      setIsSuccess(true);
-      return true;
     } catch (error: any) {
-      console.error("Exception in submitReportViaEmail:", error);
+      console.error("Unhandled exception in submitReportViaEmail:", error);
       setLastError(error.message || "Unknown error");
+      setLastResponse({ error: error.toString(), stack: error.stack });
       toast.error("Failed to send report", {
         description: error.message || "Please try again or contact support",
       });
@@ -126,6 +148,7 @@ export const useReportEmailSubmission = (reportData: ReportData) => {
     isSubmitting,
     isSuccess,
     lastError,
+    lastResponse,
     submitReportViaEmail
   };
 };
