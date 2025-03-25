@@ -2,7 +2,9 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
 
-const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
+// Create Resend instance with API key validation
+const resendApiKey = Deno.env.get("RESEND_API_KEY");
+const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -32,13 +34,13 @@ const handler = async (req: Request): Promise<Response> => {
 
   try {
     // Validate API key is present
-    const apiKey = Deno.env.get("RESEND_API_KEY");
-    if (!apiKey) {
+    if (!resendApiKey) {
       console.error("RESEND_API_KEY is missing");
       return new Response(
         JSON.stringify({ 
           error: "Configuration error", 
-          details: "Resend API key is not configured" 
+          message: "Resend API key is not configured", 
+          code: "MISSING_API_KEY" 
         }),
         {
           status: 500,
@@ -57,7 +59,8 @@ const handler = async (req: Request): Promise<Response> => {
       return new Response(
         JSON.stringify({ 
           error: "Invalid JSON in request body",
-          details: parseError.message 
+          details: parseError.message,
+          code: "INVALID_JSON"
         }),
         {
           status: 400,
@@ -78,7 +81,10 @@ const handler = async (req: Request): Promise<Response> => {
     if (!pdf_base64) {
       console.error("Missing PDF data");
       return new Response(
-        JSON.stringify({ error: "Missing PDF data" }),
+        JSON.stringify({ 
+          error: "Missing PDF data", 
+          code: "MISSING_PDF" 
+        }),
         {
           status: 400,
           headers: { "Content-Type": "application/json", ...corsHeaders },
@@ -90,7 +96,10 @@ const handler = async (req: Request): Promise<Response> => {
     if (recipient_email && !recipient_email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
       console.error("Invalid email format:", recipient_email);
       return new Response(
-        JSON.stringify({ error: "Invalid email format" }),
+        JSON.stringify({ 
+          error: "Invalid email format", 
+          code: "INVALID_EMAIL" 
+        }),
         {
           status: 400,
           headers: { "Content-Type": "application/json", ...corsHeaders },
@@ -105,9 +114,27 @@ const handler = async (req: Request): Promise<Response> => {
     if (pdfSize > 5000000) { // About 5MB after base64 encoding
       console.error("PDF data too large, exceeds 5MB when encoded");
       return new Response(
-        JSON.stringify({ error: "PDF data too large, please reduce file size" }),
+        JSON.stringify({ 
+          error: "PDF data too large, please reduce file size", 
+          code: "PDF_TOO_LARGE" 
+        }),
         {
           status: 400,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
+    }
+
+    // Validate Resend instance
+    if (!resend) {
+      console.error("Resend instance creation failed");
+      return new Response(
+        JSON.stringify({ 
+          error: "Email service initialization failed", 
+          code: "SERVICE_INIT_FAILED" 
+        }),
+        {
+          status: 500,
           headers: { "Content-Type": "application/json", ...corsHeaders },
         }
       );
@@ -153,10 +180,29 @@ const handler = async (req: Request): Promise<Response> => {
       // Check for error in response
       if (emailResponse.error) {
         console.error("Resend API returned an error:", emailResponse.error);
+        
+        // Check for specific error types
+        let errorCode = "RESEND_API_ERROR";
+        let errorMessage = "Failed to send email through Resend API";
+        
+        // Determine detailed error code based on message patterns
+        const errorString = JSON.stringify(emailResponse.error);
+        if (errorString.includes("API key")) {
+          errorCode = "INVALID_API_KEY";
+          errorMessage = "Invalid Resend API key";
+        } else if (errorString.includes("domain") || errorString.includes("verify")) {
+          errorCode = "DOMAIN_NOT_VERIFIED";
+          errorMessage = "Sending domain not verified";
+        } else if (errorString.includes("rate limit")) {
+          errorCode = "RATE_LIMIT_EXCEEDED";
+          errorMessage = "Rate limit exceeded";
+        }
+        
         return new Response(
           JSON.stringify({ 
             error: emailResponse.error, 
-            message: "Failed to send email through Resend API",
+            message: errorMessage,
+            code: errorCode,
             request: {
               to: emailRequest.to,
               from: emailRequest.from,
@@ -202,15 +248,32 @@ const handler = async (req: Request): Promise<Response> => {
         } : 'No response data'
       }));
       
+      // Check for specific error types
+      let errorCode = "RESEND_API_ERROR";
+      let errorMessage = "Failed to send email";
+      
+      const errorString = resendError.message || "";
+      if (errorString.includes("API key")) {
+        errorCode = "INVALID_API_KEY";
+        errorMessage = "Invalid Resend API key";
+      } else if (errorString.includes("domain") || errorString.includes("verify")) {
+        errorCode = "DOMAIN_NOT_VERIFIED";
+        errorMessage = "Sending domain not verified";
+      } else if (errorString.includes("rate limit")) {
+        errorCode = "RATE_LIMIT_EXCEEDED";
+        errorMessage = "Rate limit exceeded";
+      }
+      
       return new Response(
         JSON.stringify({ 
-          error: "Resend API error", 
+          error: errorCode, 
+          message: errorMessage,
           details: resendError.message,
           stack: resendError.stack,
           // Include additional context for debugging
           context: {
-            apiKeyPresent: !!apiKey,
-            apiKeyLength: apiKey ? apiKey.length : 0,
+            apiKeyPresent: !!resendApiKey,
+            apiKeyLength: resendApiKey ? resendApiKey.length : 0,
             requestDetails: {
               to: emailRequest.to,
               from: emailRequest.from,
@@ -231,9 +294,10 @@ const handler = async (req: Request): Promise<Response> => {
     
     return new Response(
       JSON.stringify({ 
-        error: error.message,
-        stack: error.stack,
-        message: "Exception occurred while sending email"
+        error: "UNHANDLED_ERROR",
+        message: "Exception occurred while sending email",
+        details: error.message,
+        stack: error.stack
       }),
       {
         status: 500,

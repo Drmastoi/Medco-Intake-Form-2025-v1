@@ -42,7 +42,7 @@ const PDFDialogActions = ({
 }: PDFDialogActionsProps) => {
   const [sendToDoctor, setSendToDoctor] = useState(false);
   const { toast } = useToast();
-  const { isSubmitting, isSuccess, lastError, lastResponse, submitReportViaEmail } = useReportEmailSubmission(reportData);
+  const { isSubmitting, isSuccess, lastError, errorCode, lastResponse, submitReportViaEmail } = useReportEmailSubmission(reportData);
   const closeButtonText = isPreview ? "Close Preview" : "Close";
   
   const handleSendToDoctor = async () => {
@@ -80,9 +80,83 @@ const PDFDialogActions = ({
     }
   };
   
-  // Check if the error is related to the Resend API configuration
-  const isResendConfigError = lastError?.includes('API key') || 
-                             (lastResponse?.data?.error && lastResponse.data.error.includes('API key'));
+  // Helper function to render error guidance
+  const renderErrorGuidance = () => {
+    if (errorCode === "DOMAIN_NOT_VERIFIED" || 
+        lastError?.includes('domain') || 
+        (lastResponse?.data?.error && lastResponse.data.error.includes('domain'))) {
+      return (
+        <div className="mt-2 text-xs">
+          <p>This appears to be a domain verification issue. Please check:</p>
+          <ul className="list-disc pl-5 mt-1">
+            <li>Your sending domain 'medco-legal.com' needs to be verified on Resend</li>
+            <li>
+              <a 
+                href="https://resend.com/domains" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-blue-500 flex items-center"
+              >
+                Verify domain on Resend <ExternalLink className="h-3 w-3 ml-1" />
+              </a>
+            </li>
+          </ul>
+        </div>
+      );
+    }
+    
+    if (errorCode === "INVALID_API_KEY" || 
+        lastError?.includes('API key') || 
+        (lastResponse?.data?.error && lastResponse.data.error.includes('API key'))) {
+      return (
+        <div className="mt-2 text-xs">
+          <p>This appears to be a Resend API key issue. Please check:</p>
+          <ul className="list-disc pl-5 mt-1">
+            <li>Your Resend API key is correctly set in Supabase secrets</li>
+            <li>The API key is valid and has not expired</li>
+            <li>
+              <a 
+                href="https://resend.com/api-keys" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-blue-500 flex items-center"
+              >
+                Check API keys on Resend <ExternalLink className="h-3 w-3 ml-1" />
+              </a>
+            </li>
+          </ul>
+        </div>
+      );
+    }
+    
+    if (errorCode === "PDF_TOO_LARGE" || lastError?.includes('too large')) {
+      return (
+        <div className="mt-2 text-xs">
+          <p>The PDF file is too large to send via email. Please try:</p>
+          <ul className="list-disc pl-5 mt-1">
+            <li>Reducing the amount of content in the report</li>
+            <li>Removing any large images</li>
+            <li>Making the report less detailed</li>
+          </ul>
+        </div>
+      );
+    }
+    
+    if (lastError?.includes('Edge Function') || errorCode === "EDGE_FUNCTION_ERROR") {
+      return (
+        <div className="mt-2 text-xs">
+          <p>There was an error calling the Supabase Edge Function. This might be due to:</p>
+          <ul className="list-disc pl-5 mt-1">
+            <li>Missing RESEND_API_KEY in Supabase project settings</li>
+            <li>Network connectivity issues</li>
+            <li>Supabase service disruption</li>
+          </ul>
+        </div>
+      );
+    }
+    
+    return null;
+  };
   
   return (
     <div className="flex flex-col w-full gap-2">
@@ -112,25 +186,7 @@ const PDFDialogActions = ({
                     <AlertTitle>Error Sending Email</AlertTitle>
                     <AlertDescription>
                       {lastError}
-                      {isResendConfigError && (
-                        <div className="mt-2 text-xs">
-                          <p>This appears to be a Resend API configuration issue. Please check:</p>
-                          <ul className="list-disc pl-5 mt-1">
-                            <li>Your Resend API key is correctly set</li>
-                            <li>Your sending domain is verified on Resend</li>
-                            <li>
-                              <a 
-                                href="https://resend.com/domains" 
-                                target="_blank" 
-                                rel="noopener noreferrer"
-                                className="text-blue-500 flex items-center"
-                              >
-                                Verify domain on Resend <ExternalLink className="h-3 w-3 ml-1" />
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                      )}
+                      {renderErrorGuidance()}
                     </AlertDescription>
                   </Alert>
                 )}

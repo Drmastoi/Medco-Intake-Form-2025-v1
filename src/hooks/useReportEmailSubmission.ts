@@ -10,6 +10,7 @@ export const useReportEmailSubmission = (reportData: ReportData) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [lastError, setLastError] = useState<string | null>(null);
+  const [errorCode, setErrorCode] = useState<string | null>(null);
   const [lastResponse, setLastResponse] = useState<any>(null);
 
   // Generate PDF as base64 when needed
@@ -36,6 +37,7 @@ export const useReportEmailSubmission = (reportData: ReportData) => {
     try {
       setIsSubmitting(true);
       setLastError(null);
+      setErrorCode(null);
       setLastResponse(null);
       
       // Clear any previous success state
@@ -50,6 +52,7 @@ export const useReportEmailSubmission = (reportData: ReportData) => {
         const errorMsg = "Failed to generate PDF";
         console.error(errorMsg, pdfError);
         setLastError(errorMsg);
+        setErrorCode("PDF_GENERATION_FAILED");
         toast.error(errorMsg, {
           description: pdfError instanceof Error ? pdfError.message : "Unknown error",
         });
@@ -58,10 +61,11 @@ export const useReportEmailSubmission = (reportData: ReportData) => {
       
       console.log(`PDF generated successfully, size: ${freshPdfBase64.length} characters`);
       
-      if (freshPdfBase64.length > 5000000) { // Reduced from 10MB to 5MB to be safer
+      if (freshPdfBase64.length > 4000000) { // Reduced to 4MB to be safer
         const errorMsg = "PDF is too large to send via email";
         console.warn(errorMsg, { size: freshPdfBase64.length });
         setLastError(errorMsg);
+        setErrorCode("PDF_TOO_LARGE");
         toast.error(errorMsg, {
           description: "Please try reducing the size of the report",
         });
@@ -96,6 +100,7 @@ export const useReportEmailSubmission = (reportData: ReportData) => {
         if (error) {
           console.error("Edge function returned error:", error);
           setLastError(error.message || "Error calling send-report function");
+          setErrorCode("EDGE_FUNCTION_ERROR");
           toast.error("Failed to send report", {
             description: `Error from server: ${error.message || "Unknown error"}`,
           });
@@ -104,13 +109,29 @@ export const useReportEmailSubmission = (reportData: ReportData) => {
         
         if (data?.error) {
           console.error("Application error from edge function:", data.error);
-          let errorMessage = typeof data.error === 'object' 
+          let errorMessage = data.message || (typeof data.error === 'object' 
             ? JSON.stringify(data.error) 
-            : String(data.error);
+            : String(data.error));
+            
           setLastError(errorMessage || "Error in email sending process");
-          toast.error("Failed to send report", {
-            description: `Server reported: ${errorMessage || data.message || "Unknown error"}`,
-          });
+          setErrorCode(data.code || "EMAIL_SEND_ERROR");
+          
+          // Special handling for domain verification errors
+          if (data.code === "DOMAIN_NOT_VERIFIED" || 
+              (typeof data.error === 'string' && data.error.includes("domain"))) {
+            toast.error("Email domain verification error", {
+              description: "The sending domain is not verified on Resend. Please verify at resend.com/domains",
+            });
+          } else if (data.code === "INVALID_API_KEY" || 
+                    (typeof data.error === 'string' && data.error.includes("API key"))) {
+            toast.error("API key error", {
+              description: "The Resend API key may be invalid or expired",
+            });
+          } else {
+            toast.error("Failed to send report", {
+              description: `Server reported: ${errorMessage || "Unknown error"}`,
+            });
+          }
           return false;
         }
         
@@ -125,6 +146,7 @@ export const useReportEmailSubmission = (reportData: ReportData) => {
       } catch (invokeError: any) {
         console.error("Exception invoking edge function:", invokeError);
         setLastError(invokeError.message || "Failed to communicate with server");
+        setErrorCode("INVOKE_ERROR");
         setLastResponse({ 
           invokeError: invokeError.toString(), 
           stack: invokeError.stack,
@@ -141,6 +163,7 @@ export const useReportEmailSubmission = (reportData: ReportData) => {
     } catch (error: any) {
       console.error("Unhandled exception in submitReportViaEmail:", error);
       setLastError(error.message || "Unknown error");
+      setErrorCode("UNHANDLED_ERROR");
       setLastResponse({ error: error.toString(), stack: error.stack });
       toast.error("Failed to send report", {
         description: error.message || "Please try again or contact support",
@@ -155,6 +178,7 @@ export const useReportEmailSubmission = (reportData: ReportData) => {
     isSubmitting,
     isSuccess,
     lastError,
+    errorCode,
     lastResponse,
     submitReportViaEmail
   };
