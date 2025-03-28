@@ -33,6 +33,22 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
+    // Check if the request has content
+    const contentLength = req.headers.get("content-length");
+    if (!contentLength || parseInt(contentLength) === 0) {
+      console.error("Empty request body");
+      return new Response(
+        JSON.stringify({ 
+          error: "Empty request body", 
+          code: "EMPTY_REQUEST" 
+        }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
+    }
+
     // Validate API key is present
     if (!resendApiKey) {
       console.error("RESEND_API_KEY is missing");
@@ -49,17 +65,30 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    // Parse request body
+    // Parse request body with error handling
     let requestBody;
+    let requestText = "";
     try {
-      requestBody = await req.json();
-      console.log("Request body parsed successfully");
+      // Clone the request and read as text first for debugging
+      const clonedReq = req.clone();
+      requestText = await clonedReq.text();
+      console.log("Raw request body:", requestText);
+      
+      // Parse if we have content
+      if (requestText.trim()) {
+        requestBody = JSON.parse(requestText);
+        console.log("Request body parsed successfully");
+      } else {
+        throw new Error("Empty request body");
+      }
     } catch (parseError) {
       console.error("Failed to parse request body:", parseError);
+      console.error("Request text received:", requestText);
       return new Response(
         JSON.stringify({ 
           error: "Invalid JSON in request body",
           details: parseError.message,
+          receivedData: requestText.substring(0, 100) + (requestText.length > 100 ? "..." : ""),
           code: "INVALID_JSON"
         }),
         {
@@ -75,7 +104,7 @@ const handler = async (req: Request): Promise<Response> => {
       recipient_name,
       client_name,
       date_of_accident
-    }: SendReportRequest = requestBody;
+    }: SendReportRequest = requestBody || {};
 
     // Validate required fields
     if (!pdf_base64) {
@@ -200,7 +229,7 @@ const handler = async (req: Request): Promise<Response> => {
         
         return new Response(
           JSON.stringify({ 
-            error: emailResponse.error, 
+            error: errorResponse.error, 
             message: errorMessage,
             code: errorCode,
             request: {

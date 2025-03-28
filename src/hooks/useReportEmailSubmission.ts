@@ -72,10 +72,10 @@ export const useReportEmailSubmission = (reportData: ReportData) => {
         return false;
       }
       
-      // Prepare email data
+      // Prepare email data - ensure all fields are properly defined
       const emailData = {
         pdf_base64: freshPdfBase64,
-        recipient_email: recipientEmail,
+        recipient_email: recipientEmail || "",
         recipient_name: recipientName || "Client",
         client_name: reportData.personal?.fullName || "Unknown Client",
         date_of_accident: reportData.accident?.accidentDate || "Unknown Date"
