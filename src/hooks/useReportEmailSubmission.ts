@@ -131,6 +131,10 @@ export const useReportEmailSubmission = (reportData: ReportData) => {
             toast.error("API key error", {
               description: "The Resend API key may be invalid or expired",
             });
+          } else if (data.code === "MISSING_API_KEY") {
+            toast.error("Configuration error", {
+              description: "RESEND_API_KEY is not configured in Supabase.",
+            });
           } else {
             toast.error("Failed to send report", {
               description: `Server reported: ${errorMessage || "Unknown error"}`,
