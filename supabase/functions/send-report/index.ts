@@ -229,7 +229,7 @@ const handler = async (req: Request): Promise<Response> => {
         
         return new Response(
           JSON.stringify({ 
-            error: errorResponse.error, 
+            error: emailResponse.error, // Fixed the typo from errorResponse to emailResponse
             message: errorMessage,
             code: errorCode,
             request: {
