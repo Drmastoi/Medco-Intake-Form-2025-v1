@@ -173,9 +173,12 @@ const handler = async (req: Request): Promise<Response> => {
     const to = recipient_email || "drawais@gmail.com";
     const name = recipient_name || "Doctor";
     
+    // Using the default Resend domain as a fallback instead of an unverified domain
+    const from = "Medico Legal Reports <onboarding@resend.dev>";
+    
     // Create email request
     const emailRequest = {
-      from: "Medico Legal Reports <reports@medco-legal.com>",
+      from: from,
       to: [to],
       subject: `Medical Report for ${client_name || "Patient"}`,
       html: `

@@ -81,7 +81,11 @@ export const useReportEmailSubmission = (reportData: ReportData) => {
         date_of_accident: reportData.accident?.accidentDate || "Unknown Date"
       };
       
-      console.log("Calling send-report edge function");
+      console.log("Calling send-report edge function with data:", {
+        recipient: emailData.recipient_email,
+        name: emailData.recipient_name,
+        dataSize: freshPdfBase64.length
+      });
       
       try {
         // Call Supabase Edge Function with timeout
@@ -120,7 +124,7 @@ export const useReportEmailSubmission = (reportData: ReportData) => {
           if (data.code === "DOMAIN_NOT_VERIFIED" || 
               (typeof data.error === 'string' && data.error.includes("domain"))) {
             toast.error("Email domain verification error", {
-              description: "The sending domain is not verified on Resend. Please verify at resend.com/domains",
+              description: "The sending domain is not verified on Resend. Using fallback domain.",
             });
           } else if (data.code === "INVALID_API_KEY" || 
                     (typeof data.error === 'string' && data.error.includes("API key"))) {
@@ -138,7 +142,7 @@ export const useReportEmailSubmission = (reportData: ReportData) => {
         console.log("Email sent successfully:", data);
         
         toast.success("Report sent successfully", {
-          description: `Report has been sent to ${recipientEmail}. Please check your inbox (and spam folder).`,
+          description: `Report has been sent to ${recipientEmail}. Please check inbox (and spam folder).`,
         });
         
         setIsSuccess(true);
