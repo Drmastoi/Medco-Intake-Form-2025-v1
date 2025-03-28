@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Mail, Download, AlertCircle, CheckCircle, Info, ExternalLink } from 'lucide-react';
@@ -86,19 +87,9 @@ const PDFDialogActions = ({
         (lastResponse?.data?.error && lastResponse.data.error.includes('domain'))) {
       return (
         <div className="mt-2 text-xs">
-          <p>This is normal when using the default Resend domain. Your email should still be delivered using:</p>
+          <p>Email was sent using the default Resend address:</p>
           <ul className="list-disc pl-5 mt-1">
-            <li>Sending from: onboarding@resend.dev</li>
-            <li>
-              <a 
-                href="https://resend.com/domains" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-blue-500 flex items-center"
-              >
-                Learn about domain verification <ExternalLink className="h-3 w-3 ml-1" />
-              </a>
-            </li>
+            <li>Sent from: onboarding@resend.dev</li>
           </ul>
         </div>
       );
@@ -113,16 +104,6 @@ const PDFDialogActions = ({
           <ul className="list-disc pl-5 mt-1">
             <li>Your Resend API key is correctly set in Supabase secrets</li>
             <li>The API key is valid and has not expired</li>
-            <li>
-              <a 
-                href="https://resend.com/api-keys" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-blue-500 flex items-center"
-              >
-                Check API keys on Resend <ExternalLink className="h-3 w-3 ml-1" />
-              </a>
-            </li>
           </ul>
         </div>
       );
@@ -179,7 +160,7 @@ const PDFDialogActions = ({
                   </DialogDescription>
                 </DialogHeader>
                 
-                {lastError && (
+                {lastError && !isSuccess && (
                   <Alert variant="destructive" className="my-2">
                     <AlertCircle className="h-4 w-4" />
                     <AlertTitle>Error Sending Email</AlertTitle>

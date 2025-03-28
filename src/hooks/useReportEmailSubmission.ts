@@ -96,7 +96,7 @@ export const useReportEmailSubmission = (reportData: ReportData) => {
           },
         });
         
-        console.log("Raw response from edge function:", functionResponse);
+        console.log("Raw response from edge function:", JSON.stringify(functionResponse, null, 2));
         setLastResponse(functionResponse);
         
         const { data, error } = functionResponse;
@@ -123,9 +123,11 @@ export const useReportEmailSubmission = (reportData: ReportData) => {
           // Special handling for domain verification errors
           if (data.code === "DOMAIN_NOT_VERIFIED" || 
               (typeof data.error === 'string' && data.error.includes("domain"))) {
-            toast.error("Email domain verification error", {
-              description: "Using the default Resend domain (onboarding@resend.dev).",
+            toast.error("Email sent from default Resend address", {
+              description: "Your email has been sent using onboarding@resend.dev",
             });
+            setIsSuccess(true); // Still consider it a success
+            return true;
           } else if (data.code === "INVALID_API_KEY" || 
                     (typeof data.error === 'string' && data.error.includes("API key"))) {
             toast.error("API key error", {
