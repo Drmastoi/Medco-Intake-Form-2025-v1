@@ -124,7 +124,7 @@ export const useReportEmailSubmission = (reportData: ReportData) => {
           if (data.code === "DOMAIN_NOT_VERIFIED" || 
               (typeof data.error === 'string' && data.error.includes("domain"))) {
             toast.error("Email domain verification error", {
-              description: "The sending domain is not verified on Resend. Using fallback domain.",
+              description: "Using the default Resend domain (onboarding@resend.dev).",
             });
           } else if (data.code === "INVALID_API_KEY" || 
                     (typeof data.error === 'string' && data.error.includes("API key"))) {

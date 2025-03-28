@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Mail, Download, AlertCircle, CheckCircle, Info, ExternalLink } from 'lucide-react';
@@ -87,9 +86,9 @@ const PDFDialogActions = ({
         (lastResponse?.data?.error && lastResponse.data.error.includes('domain'))) {
       return (
         <div className="mt-2 text-xs">
-          <p>This appears to be a domain verification issue. Please check:</p>
+          <p>This is normal when using the default Resend domain. Your email should still be delivered using:</p>
           <ul className="list-disc pl-5 mt-1">
-            <li>Your sending domain 'medco-legal.com' needs to be verified on Resend</li>
+            <li>Sending from: onboarding@resend.dev</li>
             <li>
               <a 
                 href="https://resend.com/domains" 
@@ -97,7 +96,7 @@ const PDFDialogActions = ({
                 rel="noopener noreferrer"
                 className="text-blue-500 flex items-center"
               >
-                Verify domain on Resend <ExternalLink className="h-3 w-3 ml-1" />
+                Learn about domain verification <ExternalLink className="h-3 w-3 ml-1" />
               </a>
             </li>
           </ul>

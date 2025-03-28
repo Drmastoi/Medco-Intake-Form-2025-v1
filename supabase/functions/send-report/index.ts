@@ -173,7 +173,7 @@ const handler = async (req: Request): Promise<Response> => {
     const to = recipient_email || "drawais@gmail.com";
     const name = recipient_name || "Doctor";
     
-    // Using the default Resend domain as a fallback instead of an unverified domain
+    // Using the default Resend domain
     const from = "Medico Legal Reports <onboarding@resend.dev>";
     
     // Create email request
@@ -232,7 +232,7 @@ const handler = async (req: Request): Promise<Response> => {
         
         return new Response(
           JSON.stringify({ 
-            error: emailResponse.error, // Fixed the typo from errorResponse to emailResponse
+            error: emailResponse.error,
             message: errorMessage,
             code: errorCode,
             request: {
