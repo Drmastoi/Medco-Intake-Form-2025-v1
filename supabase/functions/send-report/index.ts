@@ -3,7 +3,7 @@ import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
 
 // Create Resend instance with API key validation
-const resendApiKey = Deno.env.get("RESEND_API_KEY");
+const resendApiKey = Deno.env.get("RESEND_API_KEY") || "re_BqF25hQp_HQqRXzPWidSjhHvsGbjZHq39";
 const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
 const corsHeaders = {
