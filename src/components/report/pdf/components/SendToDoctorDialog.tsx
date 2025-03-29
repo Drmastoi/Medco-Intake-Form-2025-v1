@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Mail, CheckCircle, Info, AlertCircle } from 'lucide-react';
+import { Mail, CheckCircle, Info, Loader2 } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -11,11 +11,10 @@ import {
   DialogTrigger,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { useToast } from '@/components/ui/use-toast';
-import { useReportEmailSubmission } from '@/hooks/useReportEmailSubmission';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { ReportData } from '@/types/reportTypes';
-import { EmailErrorDisplay } from './EmailErrorDisplay';
+import { useEmailSender } from '@/hooks/useEmailSender';
+import { generatePdfAsBase64, formatFileName } from '@/utils/pdfGenerator';
 import {
   Accordion,
   AccordionContent,
@@ -29,44 +28,51 @@ interface SendToDoctorDialogProps {
 
 export const SendToDoctorDialog = ({ reportData }: SendToDoctorDialogProps) => {
   const [open, setOpen] = useState(false);
-  const { toast } = useToast();
-  const { isSubmitting, isSuccess, lastError, errorCode, lastResponse, submitReportViaEmail } = useReportEmailSubmission(reportData);
+  const { sendEmail, isSending, isSuccess, error } = useEmailSender();
+  const [errorDetails, setErrorDetails] = useState<any>(null);
   
   const handleSendToDoctor = async () => {
     try {
-      // Show loading toast
-      toast({
-        title: "Sending report",
-        description: "Sending report to Dr. Awais...",
+      // Generate PDF as base64
+      const pdfBase64 = await generatePdfAsBase64(reportData);
+      
+      // Format filename
+      const fileName = formatFileName(reportData);
+      
+      // Send email to Dr. Awais
+      const success = await sendEmail({
+        pdfBase64,
+        recipientEmail: "drawais@gmail.com",
+        recipientName: "Dr. Awais",
+        subject: `Medical Report: ${reportData.personal?.fullName || 'Patient'}`,
+        fileName
       });
       
-      // Use the email submission hook to send to the doctor
-      const success = await submitReportViaEmail("drawais@gmail.com", "Dr. Awais");
-      
-      // Only close the dialog if successful
       if (success) {
-        setOpen(false);
+        // Only close dialog if successful
+        setTimeout(() => setOpen(false), 2000);
       }
-      
-    } catch (error) {
-      console.error('Error sending email:', error);
-      toast({
-        title: "Error",
-        description: "Failed to send report to doctor",
-        variant: "destructive",
+    } catch (err: any) {
+      console.error("Failed to send email:", err);
+      setErrorDetails({
+        message: err.message,
+        stack: err.stack
       });
     }
   };
   
-  // Format the lastResponse for better readability
-  const formatLastResponse = (response: any) => {
+  // Format technical details for display
+  const formatTechnicalDetails = () => {
     try {
-      return JSON.stringify(response, null, 2);
+      if (errorDetails) {
+        return JSON.stringify(errorDetails, null, 2);
+      }
+      return "No error details available";
     } catch (e) {
-      return String(response);
+      return String(errorDetails || error);
     }
   };
-  
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -83,12 +89,16 @@ export const SendToDoctorDialog = ({ reportData }: SendToDoctorDialogProps) => {
           </DialogDescription>
         </DialogHeader>
         
-        {lastError && !isSuccess && (
-          <EmailErrorDisplay errorMessage={lastError} errorCode={errorCode} />
+        {error && !isSuccess && (
+          <Alert className="my-2 border-red-500 bg-red-50">
+            <AlertDescription className="text-red-500">
+              Failed to send email: {error}
+            </AlertDescription>
+          </Alert>
         )}
         
         {isSuccess && (
-          <Alert className="my-2 border-green-500">
+          <Alert className="my-2 border-green-500 bg-green-50">
             <CheckCircle className="h-4 w-4 text-green-500" />
             <AlertDescription className="text-green-500">
               Report sent successfully to drawais@gmail.com!
@@ -97,7 +107,7 @@ export const SendToDoctorDialog = ({ reportData }: SendToDoctorDialogProps) => {
           </Alert>
         )}
         
-        {lastResponse && (
+        {(error || errorDetails) && (
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="debug-info">
               <AccordionTrigger className="text-sm text-gray-500">
@@ -105,7 +115,7 @@ export const SendToDoctorDialog = ({ reportData }: SendToDoctorDialogProps) => {
               </AccordionTrigger>
               <AccordionContent>
                 <div className="bg-gray-100 p-2 rounded text-xs overflow-auto max-h-48">
-                  <pre>{formatLastResponse(lastResponse)}</pre>
+                  <pre>{formatTechnicalDetails()}</pre>
                 </div>
               </AccordionContent>
             </AccordionItem>
@@ -118,10 +128,14 @@ export const SendToDoctorDialog = ({ reportData }: SendToDoctorDialogProps) => {
           </Button>
           <Button 
             onClick={handleSendToDoctor} 
-            disabled={isSubmitting}
-            className={isSubmitting ? "opacity-70" : ""}
+            disabled={isSending}
           >
-            {isSubmitting ? "Sending..." : "Send Report"}
+            {isSending ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" /> 
+                Sending...
+              </>
+            ) : 'Send Report'}
           </Button>
         </DialogFooter>
       </DialogContent>
