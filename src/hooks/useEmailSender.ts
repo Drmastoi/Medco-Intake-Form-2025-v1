@@ -2,8 +2,9 @@
 import { useState } from 'react';
 import { toast } from "sonner";
 import { supabase } from '@/integrations/supabase/client';
-import { generatePdfAsBase64, formatFileName } from '@/utils/pdfGenerator';
+import { generatePdfAsBase64 } from '@/utils/pdfGenerationUtils';
 import { ReportData } from '@/types/reportTypes';
+import { formatFileName } from '@/utils/pdfGenerator';
 
 export function useEmailSender() {
   const [isSending, setIsSending] = useState(false);
@@ -22,35 +23,50 @@ export function useEmailSender() {
     
     try {
       // Show loading toast
-      toast.loading("Generating PDF and sending email...");
+      const toastId = toast.loading("Generating PDF and sending email...");
       
       // Generate PDF as base64
-      const pdfBase64 = await generatePdfAsBase64(reportData);
+      let pdfBase64;
+      try {
+        pdfBase64 = await generatePdfAsBase64(reportData);
+        console.log("PDF generated successfully, size:", pdfBase64.length);
+      } catch (pdfError) {
+        console.error("PDF generation error:", pdfError);
+        toast.dismiss(toastId);
+        toast.error("Failed to generate PDF", {
+          description: pdfError instanceof Error ? pdfError.message : String(pdfError)
+        });
+        setError(pdfError instanceof Error ? pdfError.message : String(pdfError));
+        return false;
+      }
       
       // Format filename
       const fileName = formatFileName(reportData);
       
       console.log(`Sending email to ${recipientEmail}`);
       
-      // Call Supabase Edge Function with simple payload
-      const { data, error } = await supabase.functions.invoke('send-report', {
+      // Call Supabase Edge Function with detailed payload
+      const { data, error: invokeError } = await supabase.functions.invoke('send-report', {
         body: {
           pdfBase64,
           recipientEmail,
           recipientName: "Dr. Awais",
           subject: `Medical Report: ${reportData.personal?.fullName || 'Patient'}`,
           fileName
+        },
+        headers: {
+          'Content-Type': 'application/json'
         }
       });
       
       // Dismiss loading toast
-      toast.dismiss();
+      toast.dismiss(toastId);
       
-      if (error) {
-        console.error("Edge function error:", error);
-        setError(error.message);
+      if (invokeError) {
+        console.error("Edge function error:", invokeError);
+        setError(invokeError.message);
         toast.error("Failed to send email", {
-          description: error.message
+          description: invokeError.message
         });
         return false;
       }
@@ -59,9 +75,19 @@ export function useEmailSender() {
         console.error("Email sending error:", data.error);
         setError(data.error);
         
-        toast.error("Failed to send email", {
-          description: data.error
-        });
+        if (data.code === "MISSING_API_KEY") {
+          toast.error("API key not configured", {
+            description: "Please configure the RESEND_API_KEY in Supabase"
+          });
+        } else if (data.code && data.code.includes("400")) {
+          toast.error("Email validation error", {
+            description: "There may be an issue with the recipient email or attachment"
+          });
+        } else {
+          toast.error("Failed to send email", {
+            description: data.error
+          });
+        }
         return false;
       }
       

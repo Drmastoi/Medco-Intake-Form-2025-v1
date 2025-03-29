@@ -37,7 +37,7 @@ serve(async (req: Request): Promise<Response> => {
     if (!apiKey) {
       console.error("RESEND_API_KEY not set");
       return new Response(
-        JSON.stringify({ error: "API key not configured" }),
+        JSON.stringify({ error: "API key not configured", code: "MISSING_API_KEY" }),
         { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
       );
     }
@@ -70,7 +70,7 @@ serve(async (req: Request): Promise<Response> => {
       );
     }
     
-    // Initialize Resend
+    // Initialize Resend with the API key
     const resend = new Resend(apiKey);
     
     // Create safe values
@@ -116,6 +116,7 @@ serve(async (req: Request): Promise<Response> => {
       return new Response(
         JSON.stringify({ 
           error: error.message || "Unknown error",
+          code: error.statusCode ? `ERROR_${error.statusCode}` : "EMAIL_SEND_ERROR",
           details: error.details || null
         }),
         { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }

@@ -8,9 +8,7 @@ export async function generatePdfAsBase64(reportData: ReportData): Promise<strin
   try {
     console.log("Generating PDF...");
     
-    // Create PDF document
-    // The error is happening here - we need to fix the type incompatibility
-    // by providing props that match what @react-pdf/renderer expects
+    // Create PDF document with proper props
     const pdfDoc = React.createElement(PDFDocumentContent, { reportData });
     
     // Explicitly cast the result to make TypeScript happy
@@ -24,11 +22,16 @@ export async function generatePdfAsBase64(reportData: ReportData): Promise<strin
     return new Promise<string>((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => {
-        const base64String = reader.result as string;
-        // Extract the base64 data part from the data URL
-        const base64Data = base64String.split(',')[1];
-        console.log("PDF converted to base64 successfully");
-        resolve(base64Data);
+        try {
+          const base64String = reader.result as string;
+          // Extract the base64 data part from the data URL
+          const base64Data = base64String.split(',')[1];
+          console.log("PDF converted to base64 successfully");
+          resolve(base64Data);
+        } catch (error) {
+          console.error("Error processing base64 data:", error);
+          reject(error);
+        }
       };
       reader.onerror = (error) => {
         console.error("FileReader error:", error);

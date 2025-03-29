@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Mail, CheckCircle, Loader2 } from 'lucide-react';
+import { Mail, CheckCircle, Loader2, AlertCircle } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -22,10 +22,17 @@ interface SendToDoctorDialogProps {
 export const SendToDoctorDialog = ({ reportData }: SendToDoctorDialogProps) => {
   const [open, setOpen] = useState(false);
   const { sendEmail, isSending, isSuccess, error } = useEmailSender();
+  const [attemptCount, setAttemptCount] = useState(0);
   
   const handleSendToDoctor = async () => {
     try {
-      const success = await sendEmail(reportData, "drawais@gmail.com");
+      setAttemptCount(prev => prev + 1);
+      console.log(`Attempt #${attemptCount + 1} to send email`);
+      
+      const targetEmail = "drawais@gmail.com";
+      console.log(`Target email: ${targetEmail}`);
+      
+      const success = await sendEmail(reportData, targetEmail);
       
       if (success) {
         // Only close dialog if successful
@@ -54,8 +61,12 @@ export const SendToDoctorDialog = ({ reportData }: SendToDoctorDialogProps) => {
         
         {error && !isSuccess && (
           <Alert className="my-2 border-red-500 bg-red-50">
+            <AlertCircle className="h-4 w-4 text-red-500" />
             <AlertDescription className="text-red-500">
               Failed to send email: {error}
+              <p className="text-xs mt-1">
+                {attemptCount > 0 ? "Please check the console logs for more details." : ""}
+              </p>
             </AlertDescription>
           </Alert>
         )}
