@@ -2,31 +2,21 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
 
-// CORS headers for cross-origin requests
+// CORS headers
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-// Handle CORS preflight requests
+// Handle CORS preflight
 function handleCorsPreflightRequest(): Response {
   return new Response(null, { headers: corsHeaders });
 }
 
-// Define request interface
-interface EmailRequest {
-  pdfBase64: string;
-  recipientEmail: string;
-  recipientName: string;
-  subject: string;
-  fileName: string;
-}
-
-// Main handler function
-async function handleRequest(req: Request): Promise<Response> {
+serve(async (req: Request): Promise<Response> => {
   console.log("Email function triggered");
   
-  // Handle CORS preflight requests
+  // Handle preflight requests
   if (req.method === "OPTIONS") {
     return handleCorsPreflightRequest();
   }
@@ -52,22 +42,11 @@ async function handleRequest(req: Request): Promise<Response> {
       );
     }
     
-    // Initialize Resend
-    const resend = new Resend(apiKey);
-    
     // Parse request body
-    const bodyText = await req.text();
-    if (!bodyText) {
-      return new Response(
-        JSON.stringify({ error: "Empty request body" }),
-        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
-      );
-    }
-    
-    let data: EmailRequest;
+    let data;
     try {
-      data = JSON.parse(bodyText);
-      console.log("Request parsed successfully");
+      data = await req.json();
+      console.log("Request data received successfully");
     } catch (error) {
       console.error("Failed to parse request:", error);
       return new Response(
@@ -90,6 +69,9 @@ async function handleRequest(req: Request): Promise<Response> {
         { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
       );
     }
+    
+    // Initialize Resend
+    const resend = new Resend(apiKey);
     
     // Create safe values
     const recipientName = data.recipientName || "Recipient";
@@ -131,23 +113,9 @@ async function handleRequest(req: Request): Promise<Response> {
     } catch (error) {
       console.error("Error sending email:", error);
       
-      // Determine if it's a Resend API error
-      const isResendError = error.name === "ResendError" || 
-                            (error.message && (
-                              error.message.includes("API key") || 
-                              error.message.includes("domain")
-                            ));
-      
-      const errorMessage = error.message || "Unknown error";
-      const errorCode = isResendError ? 
-        (error.message?.includes("API key") ? "INVALID_API_KEY" : 
-         error.message?.includes("domain") ? "DOMAIN_NOT_VERIFIED" : "RESEND_ERROR") 
-        : "EMAIL_SEND_ERROR";
-      
       return new Response(
         JSON.stringify({ 
-          error: errorMessage,
-          code: errorCode,
+          error: error.message || "Unknown error",
           details: error.details || null
         }),
         { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
@@ -162,6 +130,4 @@ async function handleRequest(req: Request): Promise<Response> {
       { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
     );
   }
-}
-
-serve(handleRequest);
+});

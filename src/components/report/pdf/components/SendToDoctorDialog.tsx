@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Mail, CheckCircle, Info, Loader2 } from 'lucide-react';
+import { Mail, CheckCircle, Loader2 } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -14,13 +14,6 @@ import {
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { ReportData } from '@/types/reportTypes';
 import { useEmailSender } from '@/hooks/useEmailSender';
-import { generatePdfAsBase64, formatFileName } from '@/utils/pdfGenerator';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 
 interface SendToDoctorDialogProps {
   reportData: ReportData;
@@ -29,24 +22,10 @@ interface SendToDoctorDialogProps {
 export const SendToDoctorDialog = ({ reportData }: SendToDoctorDialogProps) => {
   const [open, setOpen] = useState(false);
   const { sendEmail, isSending, isSuccess, error } = useEmailSender();
-  const [errorDetails, setErrorDetails] = useState<any>(null);
   
   const handleSendToDoctor = async () => {
     try {
-      // Generate PDF as base64
-      const pdfBase64 = await generatePdfAsBase64(reportData);
-      
-      // Format filename
-      const fileName = formatFileName(reportData);
-      
-      // Send email to Dr. Awais
-      const success = await sendEmail({
-        pdfBase64,
-        recipientEmail: "drawais@gmail.com",
-        recipientName: "Dr. Awais",
-        subject: `Medical Report: ${reportData.personal?.fullName || 'Patient'}`,
-        fileName
-      });
+      const success = await sendEmail(reportData, "drawais@gmail.com");
       
       if (success) {
         // Only close dialog if successful
@@ -54,22 +33,6 @@ export const SendToDoctorDialog = ({ reportData }: SendToDoctorDialogProps) => {
       }
     } catch (err: any) {
       console.error("Failed to send email:", err);
-      setErrorDetails({
-        message: err.message,
-        stack: err.stack
-      });
-    }
-  };
-  
-  // Format technical details for display
-  const formatTechnicalDetails = () => {
-    try {
-      if (errorDetails) {
-        return JSON.stringify(errorDetails, null, 2);
-      }
-      return "No error details available";
-    } catch (e) {
-      return String(errorDetails || error);
     }
   };
 
@@ -105,21 +68,6 @@ export const SendToDoctorDialog = ({ reportData }: SendToDoctorDialogProps) => {
               <p className="text-xs mt-1">Please check both inbox and spam folders.</p>
             </AlertDescription>
           </Alert>
-        )}
-        
-        {(error || errorDetails) && (
-          <Accordion type="single" collapsible className="w-full">
-            <AccordionItem value="debug-info">
-              <AccordionTrigger className="text-sm text-gray-500">
-                <Info className="h-3 w-3 mr-1" /> Technical Details
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="bg-gray-100 p-2 rounded text-xs overflow-auto max-h-48">
-                  <pre>{formatTechnicalDetails()}</pre>
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
         )}
         
         <DialogFooter className="flex justify-end space-x-2 mt-4">

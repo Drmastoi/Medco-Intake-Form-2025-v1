@@ -2,28 +2,17 @@
 import { useState } from 'react';
 import { toast } from "sonner";
 import { supabase } from '@/integrations/supabase/client';
-
-interface EmailSendingOptions {
-  pdfBase64: string;
-  recipientEmail: string;
-  recipientName?: string;
-  subject?: string;
-  fileName?: string;
-}
+import { generatePdfAsBase64, formatFileName } from '@/utils/pdfGenerator';
+import { ReportData } from '@/types/reportTypes';
 
 export function useEmailSender() {
   const [isSending, setIsSending] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
-  const sendEmail = async (options: EmailSendingOptions) => {
-    if (!options.pdfBase64) {
-      toast.error("Missing PDF data");
-      return false;
-    }
-    
-    if (!options.recipientEmail) {
-      toast.error("Missing recipient email");
+  const sendEmail = async (reportData: ReportData, recipientEmail: string = "drawais@gmail.com") => {
+    if (!reportData) {
+      toast.error("Missing report data");
       return false;
     }
     
@@ -33,21 +22,24 @@ export function useEmailSender() {
     
     try {
       // Show loading toast
-      toast.loading("Sending email...");
+      toast.loading("Generating PDF and sending email...");
       
-      console.log(`Sending email to ${options.recipientEmail}`);
+      // Generate PDF as base64
+      const pdfBase64 = await generatePdfAsBase64(reportData);
       
-      // Call Supabase Edge Function
+      // Format filename
+      const fileName = formatFileName(reportData);
+      
+      console.log(`Sending email to ${recipientEmail}`);
+      
+      // Call Supabase Edge Function with simple payload
       const { data, error } = await supabase.functions.invoke('send-report', {
-        body: JSON.stringify({
-          pdfBase64: options.pdfBase64,
-          recipientEmail: options.recipientEmail,
-          recipientName: options.recipientName || "Recipient",
-          subject: options.subject || "Medical Report",
-          fileName: options.fileName || "medical_report.pdf"
-        }),
-        headers: {
-          'Content-Type': 'application/json'
+        body: {
+          pdfBase64,
+          recipientEmail,
+          recipientName: "Dr. Awais",
+          subject: `Medical Report: ${reportData.personal?.fullName || 'Patient'}`,
+          fileName
         }
       });
       
@@ -67,15 +59,6 @@ export function useEmailSender() {
         console.error("Email sending error:", data.error);
         setError(data.error);
         
-        // Handle domain verification error gracefully
-        if (data.code === "DOMAIN_NOT_VERIFIED") {
-          toast.success("Email sent from default Resend address", {
-            description: "Using onboarding@resend.dev as sender"
-          });
-          setIsSuccess(true);
-          return true;
-        }
-        
         toast.error("Failed to send email", {
           description: data.error
         });
@@ -86,7 +69,7 @@ export function useEmailSender() {
       setIsSuccess(true);
       
       toast.success("Email sent successfully", {
-        description: `Email has been sent to ${options.recipientEmail}`
+        description: `Email has been sent to ${recipientEmail}`
       });
       
       return true;
@@ -95,7 +78,7 @@ export function useEmailSender() {
       setError(error.message || "Unknown error");
       
       toast.error("Failed to send email", {
-        description: "An unexpected error occurred"
+        description: error.message || "An unexpected error occurred"
       });
       
       return false;
