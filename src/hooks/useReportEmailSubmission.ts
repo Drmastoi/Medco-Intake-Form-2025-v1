@@ -88,9 +88,9 @@ export const useReportEmailSubmission = (reportData: ReportData) => {
       });
       
       try {
-        // Call Supabase Edge Function with timeout
+        // Call Supabase Edge Function with explicit content-type header
         const functionResponse = await supabase.functions.invoke('send-report', {
-          body: emailData,
+          body: JSON.stringify(emailData), // Explicitly stringify the body
           headers: {
             'Content-Type': 'application/json'
           },

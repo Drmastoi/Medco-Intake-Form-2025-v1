@@ -181,13 +181,36 @@ async function handleRequest(req: Request): Promise<Response> {
   }
   
   try {
-    // Check if the request body is empty
-    const contentLength = req.headers.get("content-length");
-    if (!contentLength || parseInt(contentLength) === 0) {
+    // Check if the request has a body and proper content-type
+    const contentType = req.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+      console.error("Invalid content type:", contentType);
+      return createErrorResponse({ 
+        message: "Content-Type must be application/json", 
+        code: "INVALID_CONTENT_TYPE" 
+      });
+    }
+    
+    // Ensure request body is not empty
+    const bodyText = await req.text();
+    if (!bodyText || bodyText.trim() === '') {
       console.error("Empty request body");
       return createErrorResponse({ 
         message: "Empty request body", 
         code: "EMPTY_REQUEST_BODY" 
+      });
+    }
+    
+    // Parse request body
+    let requestData;
+    try {
+      requestData = JSON.parse(bodyText);
+      console.log("Request body parsed successfully");
+    } catch (parseError) {
+      console.error("Failed to parse request body:", parseError);
+      return createErrorResponse({ 
+        message: "Failed to parse request body: " + (parseError.message || "Invalid JSON"), 
+        code: "INVALID_JSON" 
       });
     }
     
@@ -199,9 +222,6 @@ async function handleRequest(req: Request): Promise<Response> {
     
     // Initialize Resend client
     const resend = new Resend(apiKeyResult.key);
-    
-    // Parse request body
-    const requestData = await req.json();
     
     // Validate required fields
     const validationResult = validateRequestData(requestData);
