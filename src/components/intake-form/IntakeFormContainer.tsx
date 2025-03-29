@@ -10,11 +10,13 @@ import { useReportGeneration } from "@/hooks/useReportGeneration";
 import { ReportSubmissionTab } from "@/components/report/ReportSubmissionTab";
 import { useFormSubmission } from "@/components/intake-form/useFormSubmission";
 import { CompletionDialog } from "@/components/report/components/CompletionDialog";
+import { useToast } from "@/components/ui/use-toast";
 
 export function IntakeFormContainer() {
   const [currentSection, setCurrentSection] = useState(0);
   const [showSubmissionTab, setShowSubmissionTab] = useState(false);
   const totalSections = 13;
+  const { toast } = useToast();
 
   const tabNames = [
     "Prefilled Details",
@@ -142,19 +144,31 @@ export function IntakeFormContainer() {
     setCurrentSection(parseInt(value));
   };
 
-  // Handler for opening submission tab
-  const handleOpenSubmissionTab = () => {
+  // Handler for opening report generation tab
+  const handleOpenGenerateReport = () => {
     // Basic validation check
     const values = form.getValues();
     if (!values.fullName) {
       form.setError("fullName", {
         type: "manual",
-        message: "Please fill in your full name before submitting",
+        message: "Please fill in your full name before generating a report",
       });
       setCurrentSection(1); // Navigate to personal info section
+      toast({
+        title: "Missing information",
+        description: "Please fill in your full name before generating a report",
+        variant: "destructive"
+      });
       return;
     }
     
+    // Show loading toast
+    toast({
+      title: "Preparing report",
+      description: "Your medical report is being prepared...",
+    });
+    
+    // Open the report submission tab
     setShowSubmissionTab(true);
   };
 
@@ -164,7 +178,7 @@ export function IntakeFormContainer() {
         currentSection={currentSection}
         onTabChange={handleTabChange}
         tabNames={tabNames}
-        onGenerateReport={handleOpenSubmissionTab}
+        onGenerateReport={handleOpenGenerateReport}
       />
       
       <IntakeFormContent 

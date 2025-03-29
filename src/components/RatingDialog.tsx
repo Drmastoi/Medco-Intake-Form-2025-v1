@@ -32,8 +32,8 @@ export function RatingDialog({
         <DialogHeader>
           <DialogTitle>Thank You for Completing Your Assessment</DialogTitle>
           <DialogDescription className="space-y-4">
-            <p>Your report has been successfully submitted for review.</p>
-            <p>A summary copy has been sent to your email address, and a full medical report has been sent to {expertName} for review.</p>
+            <p>Your report has been successfully generated.</p>
+            <p>A copy has been prepared for review, and you can choose to send it to {expertName} for medical review.</p>
             <div className="mt-4">
               <p className="mb-2">How would you rate your experience?</p>
               <div className="flex gap-2 justify-center">

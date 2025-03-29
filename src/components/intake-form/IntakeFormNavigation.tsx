@@ -1,8 +1,8 @@
 
-import * as Tabs from "@radix-ui/react-tabs";
+import React from "react";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { FileSignature } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { FileText } from "lucide-react";
 
 interface IntakeFormNavigationProps {
   currentSection: number;
@@ -11,45 +11,37 @@ interface IntakeFormNavigationProps {
   onGenerateReport: () => void;
 }
 
-export function IntakeFormNavigation({ 
-  currentSection, 
-  onTabChange, 
+export function IntakeFormNavigation({
+  currentSection,
+  onTabChange,
   tabNames,
   onGenerateReport
 }: IntakeFormNavigationProps) {
   return (
-    <div className="overflow-x-auto no-scrollbar -mx-3 px-3 mb-4">
-      <div className="flex justify-between items-center">
-        <Tabs.Root value={currentSection.toString()} onValueChange={onTabChange}>
-          <Tabs.List className="inline-flex min-w-full space-x-1 border-b border-gray-200 pb-1 no-scrollbar">
-            {tabNames.map((name, index) => (
-              <Tabs.Trigger
-                key={index}
-                value={index.toString()}
-                className={cn(
-                  "px-2 py-1.5 text-xs font-bold whitespace-normal rounded-t-lg transition-colors",
-                  "hover:bg-gray-100",
-                  "data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                )}
-              >
-                {name}
-              </Tabs.Trigger>
-            ))}
-          </Tabs.List>
-        </Tabs.Root>
-        
-        <div className="flex space-x-2">
-          <Button 
-            onClick={onGenerateReport}
-            variant="outline"
-            size="sm"
-            className="bg-blue-600 text-white hover:bg-blue-700 border-blue-600 whitespace-nowrap"
-          >
-            <FileSignature className="mr-1 h-4 w-4" />
-            Submit Report
-          </Button>
-        </div>
-      </div>
+    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+      <Tabs
+        defaultValue={currentSection.toString()}
+        value={currentSection.toString()}
+        onValueChange={onTabChange}
+        className="overflow-x-auto w-full sm:w-auto"
+      >
+        <TabsList className="inline-flex w-full sm:w-auto">
+          {tabNames.map((name, index) => (
+            <TabsTrigger key={index} value={index.toString()} className="whitespace-nowrap">
+              {name}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
+      
+      <Button 
+        variant="default" 
+        className="flex items-center gap-2 whitespace-nowrap" 
+        onClick={onGenerateReport}
+      >
+        <FileText className="h-4 w-4" />
+        Generate Report
+      </Button>
     </div>
   );
 }
