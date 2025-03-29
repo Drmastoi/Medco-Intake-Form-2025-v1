@@ -18,13 +18,18 @@ export function useReportFeedback(reportData: ReportData) {
     setIsSubmitting(true);
 
     try {
+      // Get the email from the prefilled details if available, or use emailId from personal data
+      const email = reportData.prefilled?.claimantEmail || 
+                    reportData.personal?.emailId || 
+                    null;
+
       // Save rating to Supabase
       const { error } = await supabase
         .from('feedback_ratings')
         .insert([
           {
             rating,
-            email: reportData.personal?.email || reportData.prefilled?.claimantEmail || null,
+            email,
             user_name: reportData.personal?.fullName || null,
             feedback_type: 'report_generation'
           }

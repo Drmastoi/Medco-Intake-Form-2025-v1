@@ -22,6 +22,7 @@ export interface PrefilledData {
   expertSpecialty: string;
   expertTitle: string;
   gmcNumber: string;
+  claimantEmail?: string; // Add this property as optional
 }
 
 export interface PersonalData {
@@ -32,6 +33,7 @@ export interface PersonalData {
   occupation: string;
   workType: string;
   idType: string;
+  emailId?: string; // Add this property as optional
 }
 
 export interface AccidentData {
